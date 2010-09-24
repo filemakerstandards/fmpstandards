@@ -75,11 +75,8 @@
       <print-info-key name="OOScaleDocumentToFitPageWidth" type="boolean">true</print-info-key>
     </print-info>
   </settings>
-  <editor content-size="{959, 937}" scroll-position="{0, 510}" status-visible="no" is-spellchecking-enabled="yes">
-    <drawer palette-height="460"/>
-    <selected-rows ids="mjKripSGQLx"/>
-    <selected-columns ids="dTpN3JwYpBn"/>
-    <selected-characters range="{82, 0}"/>
+  <editor content-size="{959, 937}" status-visible="no" is-spellchecking-enabled="yes">
+    <drawer display="sections" palette-height="460"/>
   </editor>
   <columns>
     <column id="dTpN3JwYpBn" type="text" width="18" minimum-width="18" maximum-width="18" text-export-width="1" is-note-column="yes">
@@ -305,7 +302,7 @@
             <null/>
           </values>
           <children>
-            <item id="mnf6XDAMF3B">
+            <item id="mnf6XDAMF3B" expanded="yes">
               <values>
                 <text>
                   <p>
@@ -361,7 +358,7 @@
                 </item>
               </children>
             </item>
-            <item id="pvUBWc9z_Hf">
+            <item id="pvUBWc9z_Hf" expanded="yes">
               <values>
                 <text>
                   <p>
@@ -444,7 +441,7 @@
                 </item>
               </children>
             </item>
-            <item id="b1Lbs5z1FRq">
+            <item id="b1Lbs5z1FRq" expanded="yes">
               <values>
                 <text>
                   <p>
@@ -635,7 +632,7 @@
                 </item>
               </children>
             </item>
-            <item id="imF9fIB7UJO">
+            <item id="imF9fIB7UJO" expanded="yes">
               <values>
                 <text>
                   <p>
@@ -745,7 +742,7 @@
                 <null/>
               </values>
             </item>
-            <item id="at9UYiH7qRa">
+            <item id="at9UYiH7qRa" expanded="yes">
               <values>
                 <text>
                   <p>
@@ -801,7 +798,7 @@
                 </item>
               </children>
             </item>
-            <item id="cHc-WBDUp2q">
+            <item id="cHc-WBDUp2q" expanded="yes">
               <values>
                 <text>
                   <p>
@@ -852,7 +849,7 @@
                     </text>
                   </note>
                 </item>
-                <item id="ppPWH2k5N7_">
+                <item id="ppPWH2k5N7_" expanded="yes">
                   <values>
                     <text>
                       <p>
@@ -949,7 +946,7 @@
                 </item>
               </children>
             </item>
-            <item id="bzkjG-6yyNk">
+            <item id="bzkjG-6yyNk" expanded="yes">
               <values>
                 <text>
                   <p>
@@ -1005,7 +1002,7 @@
                 </item>
               </children>
             </item>
-            <item id="lDLXw5xAGKn">
+            <item id="lDLXw5xAGKn" expanded="yes">
               <values>
                 <text>
                   <p>
@@ -1061,7 +1058,7 @@
                 </item>
               </children>
             </item>
-            <item id="mpYDd3Latsd">
+            <item id="mpYDd3Latsd" expanded="yes">
               <values>
                 <text>
                   <p>
@@ -1191,7 +1188,7 @@
                 </item>
               </children>
             </item>
-            <item id="n0MvGzC1Ux2">
+            <item id="n0MvGzC1Ux2" expanded="yes">
               <values>
                 <text>
                   <p>
@@ -1223,7 +1220,7 @@
                 </item>
               </children>
             </item>
-            <item id="lNPlkNUYudB">
+            <item id="lNPlkNUYudB" expanded="yes">
               <values>
                 <text>
                   <p>
@@ -1291,7 +1288,7 @@
                 </item>
               </children>
             </item>
-            <item id="afLtZBlkY06">
+            <item id="afLtZBlkY06" expanded="yes">
               <values>
                 <text>
                   <p>
@@ -1309,7 +1306,7 @@
                 <null/>
               </values>
               <children>
-                <item id="lSSLZ0Ze6UN">
+                <item id="lSSLZ0Ze6UN" expanded="yes">
                   <values>
                     <text>
                       <p>
@@ -1445,7 +1442,7 @@
                 </item>
               </children>
             </item>
-            <item id="b0oB2TnObzj">
+            <item id="b0oB2TnObzj" expanded="yes">
               <values>
                 <text>
                   <p>
@@ -1501,7 +1498,7 @@
                 </item>
               </children>
             </item>
-            <item id="phakxz_H0g2">
+            <item id="phakxz_H0g2" expanded="yes">
               <values>
                 <text>
                   <p>
@@ -2271,9 +2268,7 @@
                           <lit>		);</lit>
                         </run>
                       </p>
-                      <p>
-                        <run/>
-                      </p>
+                      <p/>
                       <p>
                         <run>
                           <lit>	2 + 2 = 4;</lit>
@@ -2289,9 +2284,7 @@
                           <lit>		True; // result 2</lit>
                         </run>
                       </p>
-                      <p>
-                        <run/>
-                      </p>
+                      <p/>
                       <p>
                         <run>
                           <lit>	False // default result on it&apos;s own line</lit>
