@@ -11,6 +11,13 @@
     <style-attribute version="0" key="font-size" group="font" name="size" class="number">12</style-attribute>
     <style-attribute version="0" key="font-weight" group="font" name="weight" class="number">5</style-attribute>
     <style-attribute version="0" key="item-child-indentation(com.omnigroup.OmniOutliner)" group="row" name="child indent" class="number">16</style-attribute>
+    <style-attribute version="0" key="item-handle-mode(com.omnigroup.OmniOutliner)" group="row" name="draw handles" class="enum">
+      <enum-name-table default-value="0">
+        <enum-name-table-element value="0" name="always"/>
+        <enum-name-table-element value="1" name="never"/>
+        <enum-name-table-element value="2" name="hover"/>
+      </enum-name-table>
+    </style-attribute>
     <style-attribute version="0" key="item-post-gap(com.omnigroup.OmniOutliner)" group="row" name="post gap" class="number">0</style-attribute>
     <style-attribute version="0" key="item-pre-gap(com.omnigroup.OmniOutliner)" group="row" name="pre gap" class="number">1</style-attribute>
     <style-attribute version="0" key="text-background-color" group="text" name="background color" class="color">
@@ -75,7 +82,7 @@
       <print-info-key name="OOScaleDocumentToFitPageWidth" type="boolean">true</print-info-key>
     </print-info>
   </settings>
-  <editor content-size="{959, 937}" status-visible="no" is-spellchecking-enabled="yes">
+  <editor content-size="{977, 729}" scroll-position="{0, 701}" status-visible="no" is-spellchecking-enabled="yes">
     <drawer display="sections" palette-height="460"/>
   </editor>
   <columns>
@@ -93,7 +100,7 @@
         </text>
       </title>
     </column>
-    <column id="jFqHUGd_Dg1" type="text" width="822" minimum-width="13" maximum-width="1000000" text-export-width="72" is-outline-column="yes">
+    <column id="jFqHUGd_Dg1" type="text" width="840" minimum-width="13" maximum-width="1000000" text-export-width="72" is-outline-column="yes">
       <title>
         <text>
           <p>
@@ -117,13 +124,11 @@
     </column>
   </columns>
   <root>
-    <style>
-      <value key="font-weight">9</value>
-      <value key="underline-style">single</value>
-    </style>
+    <style/>
     <style>
       <value key="font-size">36</value>
       <value key="item-child-indentation(com.omnigroup.OmniOutliner)">31</value>
+      <value key="item-handle-mode(com.omnigroup.OmniOutliner)">never</value>
     </style>
     <style>
       <value key="font-weight">9</value>
@@ -142,6 +147,9 @@
     <style>
       <value key="font-size">13</value>
     </style>
+    <style>
+      <value key="font-size">13</value>
+    </style>
     <item id="dL-2-4CeZ_A" expanded="yes">
       <values>
         <text>
@@ -154,7 +162,7 @@
         <null/>
       </values>
       <children>
-        <item id="koLGF1kYFo5" expanded="yes">
+        <item id="koLGF1kYFo5">
           <values>
             <text>
               <p>
@@ -243,7 +251,7 @@
             </item>
           </children>
         </item>
-        <item id="pckv_PgI2FB" expanded="yes">
+        <item id="pckv_PgI2FB">
           <values>
             <text>
               <p>
@@ -290,7 +298,7 @@
             </item>
           </children>
         </item>
-        <item id="eKkJbC65eNw" expanded="yes">
+        <item id="eKkJbC65eNw">
           <values>
             <text>
               <p>
@@ -302,7 +310,240 @@
             <null/>
           </values>
           <children>
-            <item id="mnf6XDAMF3B" expanded="yes">
+            <item id="jaGTN8HVAlU">
+              <style>
+                <value key="font-weight">9</value>
+              </style>
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Overview</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+              </values>
+              <children>
+                <item id="h754fBIq67m">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>Tablename</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                  </values>
+                </item>
+                <item id="cVt-UE_FO3O">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>dataFieldName</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                  </values>
+                </item>
+                <item id="nJnbJ7OREb_">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>summaryCountField</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                  </values>
+                </item>
+                <item id="fXxF46yKX7l">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>GLOBALFIELD</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                  </values>
+                </item>
+                <item id="kFHYQv3VB9a">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>CLIPBOARD (is a reserved temporary global field)</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                  </values>
+                </item>
+                <item id="cuKV7Bsk3Wn">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>%unstoredDisplayCalculation</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                  </values>
+                </item>
+                <item id="gGAHVH-E3DK">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>id (is the primary key)</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                  </values>
+                </item>
+                <item id="iY540Lbj47u">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>id_tablename (is a foreign key)</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                  </values>
+                </item>
+                <item id="kE4Eg7Iog-f">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>$variableName</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                  </values>
+                </item>
+                <item id="nbQ9-b6ce3m">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>$$GLOBAL.VARIABLE</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                  </values>
+                </item>
+                <item id="jjQclE7mT6L">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>Basetablename » Table Occurrence</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                  </values>
+                </item>
+                <item id="juDVZTD993c">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>Basetablename » | Portal Occurrence |</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                  </values>
+                </item>
+                <item id="ooj67t13eZf">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>@ Basetable (is the name for developer table occurrences)</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                  </values>
+                </item>
+                <item id="cjyfUdBqxCQ">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>Tablename: Layout Name (form|list)</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                  </values>
+                </item>
+                <item id="g-Kmfu5AedZ">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>portal.layoutObjectName</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                  </values>
+                </item>
+                <item id="obM7s81hCdJ">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>Script Name</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                  </values>
+                </item>
+                <item id="dkAOQBsbEGj">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>Script Name ( with, parameters )</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                  </values>
+                </item>
+                <item id="hvLTSp6mx4S">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>CustomFunction</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                  </values>
+                </item>
+              </children>
+            </item>
+            <item id="mnf6XDAMF3B">
               <values>
                 <text>
                   <p>
@@ -358,7 +599,7 @@
                 </item>
               </children>
             </item>
-            <item id="pvUBWc9z_Hf" expanded="yes">
+            <item id="pvUBWc9z_Hf">
               <values>
                 <text>
                   <p>
@@ -441,7 +682,7 @@
                 </item>
               </children>
             </item>
-            <item id="b1Lbs5z1FRq" expanded="yes">
+            <item id="b1Lbs5z1FRq">
               <values>
                 <text>
                   <p>
@@ -632,7 +873,7 @@
                 </item>
               </children>
             </item>
-            <item id="imF9fIB7UJO" expanded="yes">
+            <item id="imF9fIB7UJO">
               <values>
                 <text>
                   <p>
@@ -742,7 +983,7 @@
                 <null/>
               </values>
             </item>
-            <item id="at9UYiH7qRa" expanded="yes">
+            <item id="at9UYiH7qRa">
               <values>
                 <text>
                   <p>
@@ -798,7 +1039,7 @@
                 </item>
               </children>
             </item>
-            <item id="cHc-WBDUp2q" expanded="yes">
+            <item id="cHc-WBDUp2q">
               <values>
                 <text>
                   <p>
@@ -821,7 +1062,7 @@
                     <text>
                       <p>
                         <run>
-                          <lit>The primary key in each table is simply named &quot;id&quot; - Fields are identified by FileMaker inherently by the TableName::id nomenclature.</lit>
+                          <lit>The primary key in each table is simply named &quot;id&quot; - Fields are identified by FileMaker inherently by the TableName::id nomenclature. (e.g. People::id)</lit>
                         </run>
                       </p>
                     </text>
@@ -849,12 +1090,12 @@
                     </text>
                   </note>
                 </item>
-                <item id="ppPWH2k5N7_" expanded="yes">
+                <item id="ppPWH2k5N7_">
                   <values>
                     <text>
                       <p>
                         <run>
-                          <lit>Foreign keys within any table are named using an underscore followed by the lowercase version of their Title case table name. (e.g id_table). Only foreign keys use the underscore.</lit>
+                          <lit>Foreign keys within any table are named using an underscore followed by the lowercase version of their Title case table name. (e.g id_tablename). Only foreign keys use the underscore.</lit>
                         </run>
                       </p>
                     </text>
@@ -946,7 +1187,7 @@
                 </item>
               </children>
             </item>
-            <item id="bzkjG-6yyNk" expanded="yes">
+            <item id="bzkjG-6yyNk">
               <values>
                 <text>
                   <p>
@@ -1002,7 +1243,7 @@
                 </item>
               </children>
             </item>
-            <item id="lDLXw5xAGKn" expanded="yes">
+            <item id="lDLXw5xAGKn">
               <values>
                 <text>
                   <p>
@@ -1058,7 +1299,7 @@
                 </item>
               </children>
             </item>
-            <item id="mpYDd3Latsd" expanded="yes">
+            <item id="mpYDd3Latsd">
               <values>
                 <text>
                   <p>
@@ -1123,7 +1364,39 @@
                 </item>
               </children>
             </item>
-            <item id="mjKripSGQLx" expanded="yes">
+            <item id="n0MvGzC1Ux2">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <style>
+                        <value key="font-weight">9</value>
+                      </style>
+                      <lit>Table occurrences: </lit>
+                    </run>
+                    <run>
+                      <lit>when used for a portal on a layout, are indicated using the Vertical Line ( known as bar or pipe ) on either side of the name</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+              </values>
+              <children>
+                <item id="hVv0QeH0Ruc">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>People » | Members List |</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                  </values>
+                </item>
+              </children>
+            </item>
+            <item id="mjKripSGQLx">
               <values>
                 <text>
                   <p>
@@ -1188,39 +1461,7 @@
                 </item>
               </children>
             </item>
-            <item id="n0MvGzC1Ux2" expanded="yes">
-              <values>
-                <text>
-                  <p>
-                    <run>
-                      <style>
-                        <value key="font-weight">9</value>
-                      </style>
-                      <lit>Table occurrences: </lit>
-                    </run>
-                    <run>
-                      <lit>when used for a portal on a layout, are indicated using the Vertical Line ( known as bar or pipe ) on either side of the name</lit>
-                    </run>
-                  </p>
-                </text>
-                <null/>
-              </values>
-              <children>
-                <item id="hVv0QeH0Ruc">
-                  <values>
-                    <text>
-                      <p>
-                        <run>
-                          <lit>People » | Members List |</lit>
-                        </run>
-                      </p>
-                    </text>
-                    <null/>
-                  </values>
-                </item>
-              </children>
-            </item>
-            <item id="lNPlkNUYudB" expanded="yes">
+            <item id="lNPlkNUYudB">
               <values>
                 <text>
                   <p>
@@ -1288,7 +1529,7 @@
                 </item>
               </children>
             </item>
-            <item id="afLtZBlkY06" expanded="yes">
+            <item id="afLtZBlkY06">
               <values>
                 <text>
                   <p>
@@ -1306,7 +1547,7 @@
                 <null/>
               </values>
               <children>
-                <item id="lSSLZ0Ze6UN" expanded="yes">
+                <item id="lSSLZ0Ze6UN">
                   <values>
                     <text>
                       <p>
@@ -1442,7 +1683,7 @@
                 </item>
               </children>
             </item>
-            <item id="b0oB2TnObzj" expanded="yes">
+            <item id="b0oB2TnObzj">
               <values>
                 <text>
                   <p>
@@ -1498,7 +1739,7 @@
                 </item>
               </children>
             </item>
-            <item id="phakxz_H0g2" expanded="yes">
+            <item id="phakxz_H0g2">
               <values>
                 <text>
                   <p>
@@ -1556,7 +1797,7 @@
             </item>
           </children>
         </item>
-        <item id="eIgBHmXQCn0" expanded="yes">
+        <item id="eIgBHmXQCn0">
           <values>
             <text>
               <p>
@@ -1582,7 +1823,7 @@
             </item>
           </children>
         </item>
-        <item id="bVRoUZIffE_" expanded="yes">
+        <item id="bVRoUZIffE_">
           <values>
             <text>
               <p>
@@ -1594,7 +1835,7 @@
             <null/>
           </values>
           <children>
-            <item id="nUfMheyzk_g" expanded="yes">
+            <item id="nUfMheyzk_g">
               <values>
                 <text>
                   <p>
@@ -1644,7 +1885,7 @@
                 </item>
               </children>
             </item>
-            <item id="gE5RGveR3Ts" expanded="yes">
+            <item id="gE5RGveR3Ts">
               <values>
                 <text>
                   <p>
@@ -1732,7 +1973,7 @@
             </item>
           </children>
         </item>
-        <item id="be8U4Pdo1pq" expanded="yes">
+        <item id="be8U4Pdo1pq">
           <values>
             <text>
               <p>
@@ -1744,7 +1985,7 @@
             <null/>
           </values>
           <children>
-            <item id="deCwWrTcT9n" expanded="yes">
+            <item id="deCwWrTcT9n">
               <values>
                 <text>
                   <p>
@@ -1794,9 +2035,109 @@
                 </item>
               </children>
             </item>
+            <item id="pBZvqbitSBN" expanded="yes">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Do not use a space when incrementing or decrementing in calculations</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+              </values>
+              <children>
+                <item id="b0Es1MU9J78">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>Left ( Table::fieldName; Length ( Table::fieldName ) -1 )</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>good</lit>
+                        </run>
+                      </p>
+                    </text>
+                  </values>
+                </item>
+                <item id="aW4OzdeDhBD">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>Left ( Table::fieldName; Length ( Table::fieldName ) - 1 )</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>bad</lit>
+                        </run>
+                      </p>
+                    </text>
+                  </values>
+                </item>
+              </children>
+            </item>
+            <item id="dqmQfQ-y4xM" expanded="yes">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Preferred comparisons</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+              </values>
+              <children>
+                <item id="pUU34aUfExr">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>≠ over &lt;&gt;</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                  </values>
+                </item>
+                <item id="eT-KkwhuMml">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>≥ over &gt;=</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                  </values>
+                </item>
+                <item id="h_eO5cXY_6J">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>≤ over &lt;=</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                  </values>
+                </item>
+              </children>
+            </item>
           </children>
         </item>
-        <item id="mURFHBQ6zu-" expanded="yes">
+        <item id="mURFHBQ6zu-">
           <values>
             <text>
               <p>
@@ -1808,12 +2149,12 @@
             <null/>
           </values>
           <children>
-            <item id="cqoln66ynv5" expanded="yes">
+            <item id="cqoln66ynv5">
               <values>
                 <text>
                   <p>
                     <run>
-                      <lit>Use one space between function name and opening parenthesis</lit>
+                      <lit>Use a single space between function name and opening parenthesis</lit>
                     </run>
                   </p>
                 </text>
@@ -1867,7 +2208,7 @@
                 </item>
               </children>
             </item>
-            <item id="bZUY29dYXi5" expanded="yes">
+            <item id="bZUY29dYXi5">
               <values>
                 <text>
                   <p>
@@ -1928,7 +2269,7 @@
             </item>
           </children>
         </item>
-        <item id="ns1xtgQoiLD" expanded="yes">
+        <item id="ns1xtgQoiLD">
           <values>
             <text>
               <p>
@@ -1940,7 +2281,7 @@
             <null/>
           </values>
           <children>
-            <item id="d6xH5k-RJmA" expanded="yes">
+            <item id="d6xH5k-RJmA">
               <values>
                 <text>
                   <p>
@@ -2086,7 +2427,7 @@
                 </item>
               </children>
             </item>
-            <item id="nGDzAETcJKn" expanded="yes">
+            <item id="nGDzAETcJKn">
               <values>
                 <text>
                   <p>
@@ -2146,7 +2487,7 @@
                 </item>
               </children>
             </item>
-            <item id="jdqaSQevcs7" expanded="yes">
+            <item id="jdqaSQevcs7">
               <values>
                 <text>
                   <p>
@@ -2303,7 +2644,7 @@
             </item>
           </children>
         </item>
-        <item id="c-Ld7OrZRen" expanded="yes">
+        <item id="c-Ld7OrZRen">
           <values>
             <text>
               <p>
@@ -2320,7 +2661,7 @@
                 <text>
                   <p>
                     <run>
-                      <lit>Let functions within only one variable declaration can defined on one line</lit>
+                      <lit>Let functions with only one variable declaration can be defined on one line</lit>
                     </run>
                   </p>
                 </text>
@@ -2332,7 +2673,7 @@
                     <text>
                       <p>
                         <run>
-                          <lit>Let ( var.someVar = Table::fieldName ; If ( var.someVar = &quot;Active&quot; ; True ; False )</lit>
+                          <lit>Let ( var.someVar = Table::fieldName; If ( var.someVar = &quot;Active&quot;; True; False ) )</lit>
                         </run>
                       </p>
                     </text>
@@ -2341,7 +2682,7 @@
                 </item>
               </children>
             </item>
-            <item id="oBqDZlCYbtZ" expanded="yes">
+            <item id="oBqDZlCYbtZ">
               <values>
                 <text>
                   <p>
@@ -2396,7 +2737,7 @@
                 </item>
               </children>
             </item>
-            <item id="khZsc9mSI0Y" expanded="yes">
+            <item id="khZsc9mSI0Y">
               <values>
                 <text>
                   <p>
@@ -2446,7 +2787,7 @@
                 </item>
               </children>
             </item>
-            <item id="lFchMuEa-0v" expanded="yes">
+            <item id="lFchMuEa-0v">
               <values>
                 <text>
                   <p>
@@ -2505,7 +2846,7 @@
                 </item>
               </children>
             </item>
-            <item id="cVHasp5QRdE" expanded="yes">
+            <item id="cVHasp5QRdE">
               <values>
                 <text>
                   <p>
@@ -2553,11 +2894,23 @@
                     <null/>
                   </values>
                 </item>
+                <item id="nybEwhR-zDm">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>not var.containsEmailAddress</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                  </values>
+                </item>
               </children>
             </item>
           </children>
         </item>
-        <item id="d75Cmgg9BSJ" expanded="yes">
+        <item id="d75Cmgg9BSJ">
           <values>
             <text>
               <p>
@@ -2569,7 +2922,7 @@
             <null/>
           </values>
           <children>
-            <item id="fTtPengBc7W" expanded="yes">
+            <item id="fTtPengBc7W">
               <values>
                 <text>
                   <p>
@@ -2753,7 +3106,7 @@
             </item>
           </children>
         </item>
-        <item id="cvDbA8PqqSA" expanded="yes">
+        <item id="cvDbA8PqqSA">
           <values>
             <text>
               <p>
@@ -2765,7 +3118,7 @@
             <null/>
           </values>
           <children>
-            <item id="al3U3iyX0Ks" expanded="yes">
+            <item id="al3U3iyX0Ks">
               <values>
                 <text>
                   <p>
@@ -2803,7 +3156,7 @@
                 </item>
               </children>
             </item>
-            <item id="fUeR4_nlWr3" expanded="yes">
+            <item id="fUeR4_nlWr3">
               <style/>
               <style>
                 <value key="font-family">Monaco</value>
@@ -2826,7 +3179,7 @@
                     <text>
                       <p>
                         <run>
-                          <lit>/*</lit>
+                          <lit>/**</lit>
                         </run>
                       </p>
                       <p>
@@ -2952,12 +3305,12 @@
             </item>
           </children>
         </item>
-        <item id="kAXgSZWdJLH" expanded="yes">
+        <item id="kAXgSZWdJLH">
           <values>
             <text>
               <p>
                 <run>
-                  <lit>Layout object naming &amp; references</lit>
+                  <lit>Layout references</lit>
                 </run>
               </p>
             </text>
@@ -3063,42 +3416,7 @@
                 </item>
               </children>
             </item>
-            <item id="eamPf2Fesh9">
-              <values>
-                <text>
-                  <p>
-                    <run>
-                      <lit>Color use</lit>
-                    </run>
-                  </p>
-                </text>
-                <null/>
-              </values>
-            </item>
-            <item id="iQl9mYajUER">
-              <values>
-                <text>
-                  <p>
-                    <run>
-                      <lit>Table Occurrence</lit>
-                    </run>
-                    <run>
-                      <style>
-                        <value key="font-family">Helvetica</value>
-                        <value key="font-size">12</value>
-                        <value key="font-weight">5</value>
-                      </style>
-                      <lit>  </lit>
-                    </run>
-                    <run>
-                      <lit>Naming</lit>
-                    </run>
-                  </p>
-                </text>
-                <null/>
-              </values>
-            </item>
-            <item id="j1RptBOfROD">
+            <item id="j1RptBOfROD" expanded="yes">
               <values>
                 <text>
                   <p>
@@ -3109,10 +3427,50 @@
                 </text>
                 <null/>
               </values>
+              <children>
+                <item id="dm5vDepJqtE">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>Unfinished</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                  </values>
+                </item>
+              </children>
+            </item>
+            <item id="eamPf2Fesh9" expanded="yes">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Color use</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+              </values>
+              <children>
+                <item id="n1ImHvrc-R3">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>Unfinished</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                  </values>
+                </item>
+              </children>
             </item>
           </children>
         </item>
-        <item id="pbSkkpfMHKe">
+        <item id="pbSkkpfMHKe" expanded="yes">
           <values>
             <text>
               <p>
@@ -3123,8 +3481,34 @@
             </text>
             <null/>
           </values>
+          <children>
+            <item id="okZ4d2FqecF">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>$checkScriptName is a reserved variable for GetVariables( ) custom function</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+              </values>
+            </item>
+            <item id="lXjf3eMaEpS">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>CLIPBOARD is a reserved global field name for temporary actions, data or relationships</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+              </values>
+            </item>
+          </children>
         </item>
-        <item id="jE_ehcdiTC1">
+        <item id="jE_ehcdiTC1" expanded="yes">
           <values>
             <text>
               <p>
@@ -3135,6 +3519,148 @@
             </text>
             <null/>
           </values>
+          <children>
+            <item id="aymIBuvf7cH" expanded="yes">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Script folders are used to provide a basic structural outline as follows</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+              </values>
+              <children>
+                <item id="mRmTin9TMFe">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>Developer</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                  </values>
+                </item>
+                <item id="hTASeZ2E8yn" expanded="yes">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>Application</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                  </values>
+                  <children>
+                    <item id="cEo-N5VPpAD">
+                      <values>
+                        <text>
+                          <p>
+                            <run>
+                              <lit>Startup</lit>
+                            </run>
+                          </p>
+                        </text>
+                        <null/>
+                      </values>
+                    </item>
+                    <item id="n95K8a0Zt9R">
+                      <values>
+                        <text>
+                          <p>
+                            <run>
+                              <lit>Shutdown</lit>
+                            </run>
+                          </p>
+                        </text>
+                        <null/>
+                      </values>
+                    </item>
+                    <item id="hJPUYqn7Lgl">
+                      <values>
+                        <text>
+                          <p>
+                            <run>
+                              <lit>Menus</lit>
+                            </run>
+                          </p>
+                        </text>
+                        <null/>
+                      </values>
+                    </item>
+                    <item id="jq1DuSt9zH3">
+                      <values>
+                        <text>
+                          <p>
+                            <run>
+                              <lit>Shared</lit>
+                            </run>
+                          </p>
+                        </text>
+                        <null/>
+                      </values>
+                    </item>
+                  </children>
+                </item>
+                <item id="fhWchmxXXK1" expanded="yes">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>User Interface</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                  </values>
+                  <children>
+                    <item id="fu5BXpLtu8H" expanded="yes">
+                      <values>
+                        <text>
+                          <p>
+                            <run>
+                              <lit>Layouts</lit>
+                            </run>
+                          </p>
+                        </text>
+                        <null/>
+                      </values>
+                      <children>
+                        <item id="fkpfTLXF8as">
+                          <values>
+                            <text>
+                              <p>
+                                <run>
+                                  <lit>[Name of folder matches Layout Name]</lit>
+                                </run>
+                              </p>
+                            </text>
+                            <null/>
+                          </values>
+                        </item>
+                      </children>
+                    </item>
+                  </children>
+                </item>
+              </children>
+            </item>
+            <item id="aS2eBW8xu6A">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Scripts related to</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+              </values>
+            </item>
+          </children>
         </item>
       </children>
     </item>
