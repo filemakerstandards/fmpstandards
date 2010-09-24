@@ -75,11 +75,11 @@
       <print-info-key name="OOScaleDocumentToFitPageWidth" type="boolean">true</print-info-key>
     </print-info>
   </settings>
-  <editor content-size="{1149, 1001}" status-visible="no" is-spellchecking-enabled="yes">
-    <drawer palette-height="167"/>
-    <selected-rows ids="o9ic5WmEEPY"/>
-    <selected-columns ids="jFqHUGd_Dg1"/>
-    <selected-characters range="{95, 0}"/>
+  <editor content-size="{959, 937}" scroll-position="{0, 510}" status-visible="no" is-spellchecking-enabled="yes">
+    <drawer palette-height="460"/>
+    <selected-rows ids="mjKripSGQLx"/>
+    <selected-columns ids="dTpN3JwYpBn"/>
+    <selected-characters range="{82, 0}"/>
   </editor>
   <columns>
     <column id="dTpN3JwYpBn" type="text" width="18" minimum-width="18" maximum-width="18" text-export-width="1" is-note-column="yes">
@@ -96,7 +96,7 @@
         </text>
       </title>
     </column>
-    <column id="jFqHUGd_Dg1" type="text" width="1012" minimum-width="13" maximum-width="1000000" text-export-width="72" is-outline-column="yes">
+    <column id="jFqHUGd_Dg1" type="text" width="822" minimum-width="13" maximum-width="1000000" text-export-width="72" is-outline-column="yes">
       <title>
         <text>
           <p>
@@ -130,14 +130,17 @@
     </style>
     <style>
       <value key="font-weight">9</value>
+      <value key="item-child-indentation(com.omnigroup.OmniOutliner)">40</value>
       <value key="item-post-gap(com.omnigroup.OmniOutliner)">9</value>
       <value key="item-pre-gap(com.omnigroup.OmniOutliner)">24</value>
     </style>
     <style>
+      <value key="item-child-indentation(com.omnigroup.OmniOutliner)">50</value>
       <value key="item-pre-gap(com.omnigroup.OmniOutliner)">10</value>
     </style>
     <style>
       <value key="font-size">13</value>
+      <value key="item-pre-gap(com.omnigroup.OmniOutliner)">4</value>
     </style>
     <style>
       <value key="font-size">13</value>
@@ -302,12 +305,18 @@
             <null/>
           </values>
           <children>
-            <item id="mnf6XDAMF3B" expanded="yes">
+            <item id="mnf6XDAMF3B">
               <values>
                 <text>
                   <p>
                     <run>
-                      <lit>Tables are named using a single word in Title case and should not be represented by attributes. (e.g. &quot;Employee&quot; is an attribute of &quot;People&quot; and &quot;Schedule&quot; is a group of &quot;Events&quot;)</lit>
+                      <style>
+                        <value key="font-weight">9</value>
+                      </style>
+                      <lit>Tables:</lit>
+                    </run>
+                    <run>
+                      <lit> are named using a single word in Title case and should not be represented by attributes. (e.g. &quot;Employee&quot; is an attribute of &quot;People&quot; and &quot;Schedule&quot; is a group of &quot;Events&quot;)</lit>
                     </run>
                   </p>
                 </text>
@@ -352,12 +361,18 @@
                 </item>
               </children>
             </item>
-            <item id="pvUBWc9z_Hf" expanded="yes">
+            <item id="pvUBWc9z_Hf">
               <values>
                 <text>
                   <p>
                     <run>
-                      <lit>Field names use camelCase starting with a lowercase letter</lit>
+                      <style>
+                        <value key="font-weight">9</value>
+                      </style>
+                      <lit>Fields:</lit>
+                    </run>
+                    <run>
+                      <lit> (used for solution data) use camelCase starting with a lowercase letter</lit>
                     </run>
                   </p>
                 </text>
@@ -429,12 +444,375 @@
                 </item>
               </children>
             </item>
-            <item id="cHc-WBDUp2q" expanded="yes">
+            <item id="b1Lbs5z1FRq">
               <values>
                 <text>
                   <p>
                     <run>
-                      <lit>Key fields</lit>
+                      <style>
+                        <value key="font-weight">9</value>
+                      </style>
+                      <lit>Fields:</lit>
+                    </run>
+                    <run>
+                      <lit> summary fields are prefixed by the word &quot;summary&quot; and their type before their identity</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+              </values>
+              <children>
+                <item id="gUizx7lSHqx">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>summaryCountMembers</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>good</lit>
+                        </run>
+                      </p>
+                    </text>
+                  </values>
+                </item>
+                <item id="bNDMX9EaZYX">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>summaryMemberCount</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>bad</lit>
+                        </run>
+                      </p>
+                    </text>
+                  </values>
+                </item>
+                <item id="biPtDFwzu8_">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>memberCount</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>bad</lit>
+                        </run>
+                      </p>
+                    </text>
+                  </values>
+                </item>
+                <item id="jOnY1XsP24t">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>summaryMaxId_event</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>good</lit>
+                        </run>
+                      </p>
+                    </text>
+                  </values>
+                  <note expanded="yes">
+                    <text>
+                      <p>
+                        <run>
+                          <lit>Note you can identify this as a summary of a foreign key because of the underscore</lit>
+                        </run>
+                      </p>
+                    </text>
+                  </note>
+                </item>
+                <item id="dWwDPjHmzP6">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>summaryMinAmountSpent</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>good</lit>
+                        </run>
+                      </p>
+                    </text>
+                  </values>
+                </item>
+                <item id="g9cLmdWTFuf">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>summaryAvgPaid</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>good</lit>
+                        </run>
+                      </p>
+                    </text>
+                  </values>
+                </item>
+                <item id="jJucfHaLz9e">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>summaryTotalUsers</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>good</lit>
+                        </run>
+                      </p>
+                    </text>
+                  </values>
+                </item>
+                <item id="c5KgfClGaVy">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>summaryStdDevWhatever</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>good</lit>
+                        </run>
+                      </p>
+                    </text>
+                  </values>
+                </item>
+                <item id="aRP5JHPaGLF">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>summaryFracTotalMetrics</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>good</lit>
+                        </run>
+                      </p>
+                    </text>
+                  </values>
+                </item>
+              </children>
+            </item>
+            <item id="imF9fIB7UJO">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <style>
+                        <value key="font-weight">9</value>
+                      </style>
+                      <lit>Fields:</lit>
+                    </run>
+                    <run>
+                      <lit> all GLOBAL fields are UPPERCASE</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+              </values>
+              <children>
+                <item id="lDI5B_QbW_k">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>CREATE</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>good</lit>
+                        </run>
+                      </p>
+                    </text>
+                  </values>
+                </item>
+                <item id="mqQx16ky0CW">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>EVENTFILTER</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>good</lit>
+                        </run>
+                      </p>
+                    </text>
+                  </values>
+                </item>
+                <item id="oX6oyLisEEy">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>CUSTOMERSEARCH</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>good</lit>
+                        </run>
+                      </p>
+                    </text>
+                  </values>
+                </item>
+                <item id="lMB-ZlS_U7b">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>CLIPBOARD</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>good</lit>
+                        </run>
+                      </p>
+                    </text>
+                  </values>
+                </item>
+              </children>
+            </item>
+            <item id="ajK4aauXJQo">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <style>
+                        <value key="font-weight">9</value>
+                      </style>
+                      <lit>Fields:</lit>
+                    </run>
+                    <run>
+                      <lit> the universal temporary Global field is named CLIPBOARD within any table</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+              </values>
+            </item>
+            <item id="at9UYiH7qRa">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <style>
+                        <value key="font-weight">9</value>
+                      </style>
+                      <lit>Fields:</lit>
+                    </run>
+                    <run>
+                      <lit> unstored calculated fields and non-data fields (those used for UI/Utility purposes) are prefixed with the percent sign and use camelCase</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+              </values>
+              <children>
+                <item id="bg8_2NdR8cv">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>%userEventCount</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>good</lit>
+                        </run>
+                      </p>
+                    </text>
+                  </values>
+                </item>
+                <item id="dsriVd-MP1z">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>uc_EventCount</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>bad</lit>
+                        </run>
+                      </p>
+                    </text>
+                  </values>
+                </item>
+              </children>
+            </item>
+            <item id="cHc-WBDUp2q">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <style>
+                        <value key="font-weight">9</value>
+                      </style>
+                      <lit>Fields:</lit>
+                    </run>
+                    <run>
+                      <lit> key fields</lit>
                     </run>
                   </p>
                 </text>
@@ -474,12 +852,12 @@
                     </text>
                   </note>
                 </item>
-                <item id="ppPWH2k5N7_" expanded="yes">
+                <item id="ppPWH2k5N7_">
                   <values>
                     <text>
                       <p>
                         <run>
-                          <lit>Foreign keys within any table are named using an underscore followed by the lowercase version of their Title case table name. (e.g id_table)</lit>
+                          <lit>Foreign keys within any table are named using an underscore followed by the lowercase version of their Title case table name. (e.g id_table). Only foreign keys use the underscore.</lit>
                         </run>
                       </p>
                     </text>
@@ -571,12 +949,18 @@
                 </item>
               </children>
             </item>
-            <item id="bzkjG-6yyNk" expanded="yes">
+            <item id="bzkjG-6yyNk">
               <values>
                 <text>
                   <p>
                     <run>
-                      <lit>Locally scoped variables ($variableName) use camelCase. Similar to fields, it&apos;s the $ which distinguishes them.</lit>
+                      <style>
+                        <value key="font-weight">9</value>
+                      </style>
+                      <lit>Variables:</lit>
+                    </run>
+                    <run>
+                      <lit> locally scoped variables ($variableName) use camelCase. Similar to fields, it&apos;s the $ which distinguishes them.</lit>
                     </run>
                   </p>
                 </text>
@@ -621,12 +1005,18 @@
                 </item>
               </children>
             </item>
-            <item id="lDLXw5xAGKn" expanded="yes">
+            <item id="lDLXw5xAGKn">
               <values>
                 <text>
                   <p>
                     <run>
-                      <lit>Global variables ($$VARIABLE.NAME) are capitalized and use domain specific prefixes relevant to their functional use within the solution. Each level of the domain is delineated using dot notation (a period).</lit>
+                      <style>
+                        <value key="font-weight">9</value>
+                      </style>
+                      <lit>Variables:</lit>
+                    </run>
+                    <run>
+                      <lit> global variables ($$VARIABLE.NAME) are capitalized and use domain specific prefixes relevant to their functional use within the solution. Each level of the domain is delineated using dot notation (a period).</lit>
                     </run>
                   </p>
                 </text>
@@ -671,12 +1061,18 @@
                 </item>
               </children>
             </item>
-            <item id="mpYDd3Latsd" expanded="yes">
+            <item id="mpYDd3Latsd">
               <values>
                 <text>
                   <p>
                     <run>
-                      <lit>Table occurrence names are always prefixed with their &quot;base table&quot; name and separated using the » character ( Right-pointing Double Angle Quotation Mark – \x00BB ) using a space on either side of the ».</lit>
+                      <style>
+                        <value key="font-weight">9</value>
+                      </style>
+                      <lit>Table occurrences:</lit>
+                    </run>
+                    <run>
+                      <lit> are always prefixed with their &quot;base table&quot; name and separated using the » character ( Right-pointing Double Angle Quotation Mark – \x00BB ) using a space on either side of the ».</lit>
                     </run>
                   </p>
                 </text>
@@ -730,12 +1126,83 @@
                 </item>
               </children>
             </item>
-            <item id="n0MvGzC1Ux2" expanded="yes">
+            <item id="mjKripSGQLx" expanded="yes">
               <values>
                 <text>
                   <p>
                     <run>
-                      <lit>In cases where a table occurrence is used for a portal on a layout, it is indicated using the Vertical Line ( known as bar or pipe ) on either side of the name</lit>
+                      <style>
+                        <value key="font-weight">9</value>
+                      </style>
+                      <lit>Table occurrences:</lit>
+                    </run>
+                    <run>
+                      <lit> which are dedicated for internal development and have no relationships are prefixed with the @ symbol and one space</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+              </values>
+              <note expanded="yes">
+                <text>
+                  <p>
+                    <run>
+                      <lit>This sorts developer table occurrences at the top of the list for selecting tables</lit>
+                    </run>
+                  </p>
+                </text>
+              </note>
+              <children>
+                <item id="bBXL9ciDMLr">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>@ People</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>good</lit>
+                        </run>
+                      </p>
+                    </text>
+                  </values>
+                </item>
+                <item id="hhXuxH8nxLc">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>Developer People Table</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>bad</lit>
+                        </run>
+                      </p>
+                    </text>
+                  </values>
+                </item>
+              </children>
+            </item>
+            <item id="n0MvGzC1Ux2">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <style>
+                        <value key="font-weight">9</value>
+                      </style>
+                      <lit>Table occurrences: </lit>
+                    </run>
+                    <run>
+                      <lit>when used for a portal on a layout, are indicated using the Vertical Line ( known as bar or pipe ) on either side of the name</lit>
                     </run>
                   </p>
                 </text>
@@ -756,12 +1223,18 @@
                 </item>
               </children>
             </item>
-            <item id="lNPlkNUYudB" expanded="yes">
+            <item id="lNPlkNUYudB">
               <values>
                 <text>
                   <p>
                     <run>
-                      <lit>Layout names are prefixed according to their use within the solution. Prefixes, of which there can be multiple levels, are delimited by a single colon. Suggested approach is to use the &quot;base table&quot; name as the initial prefix.</lit>
+                      <style>
+                        <value key="font-weight">9</value>
+                      </style>
+                      <lit>Layouts:</lit>
+                    </run>
+                    <run>
+                      <lit> are prefixed according to their use within the solution. Prefixes, of which there can be multiple levels, are delimited by a single colon. Suggested approach is to use the &quot;base table&quot; name as the initial prefix.</lit>
                     </run>
                   </p>
                 </text>
@@ -818,24 +1291,228 @@
                 </item>
               </children>
             </item>
-            <item id="b0oB2TnObzj">
+            <item id="afLtZBlkY06">
               <values>
                 <text>
                   <p>
                     <run>
-                      <lit>Scripts</lit>
+                      <style>
+                        <value key="font-weight">9</value>
+                      </style>
+                      <lit>Layout objects:</lit>
+                    </run>
+                    <run>
+                      <lit> are prefixed by their corresponding reserved name.</lit>
                     </run>
                   </p>
                 </text>
                 <null/>
               </values>
+              <children>
+                <item id="lSSLZ0Ze6UN">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>Reserved object prefixes are the following</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                  </values>
+                  <children>
+                    <item id="b93PV-BYV1H">
+                      <values>
+                        <text>
+                          <p>
+                            <run>
+                              <lit>field</lit>
+                            </run>
+                          </p>
+                        </text>
+                        <null/>
+                      </values>
+                    </item>
+                    <item id="hPB_2Et_bNe">
+                      <values>
+                        <text>
+                          <p>
+                            <run>
+                              <lit>label</lit>
+                            </run>
+                          </p>
+                        </text>
+                        <null/>
+                      </values>
+                    </item>
+                    <item id="lfxGZyKsT84">
+                      <values>
+                        <text>
+                          <p>
+                            <run>
+                              <lit>tab</lit>
+                            </run>
+                          </p>
+                        </text>
+                        <null/>
+                      </values>
+                    </item>
+                    <item id="c9txLiztT_z">
+                      <values>
+                        <text>
+                          <p>
+                            <run>
+                              <lit>button</lit>
+                            </run>
+                          </p>
+                        </text>
+                        <null/>
+                      </values>
+                    </item>
+                    <item id="pA2RYDjlMTb">
+                      <values>
+                        <text>
+                          <p>
+                            <run>
+                              <lit>portal</lit>
+                            </run>
+                          </p>
+                        </text>
+                        <null/>
+                      </values>
+                    </item>
+                    <item id="mFRRCetJI38">
+                      <values>
+                        <text>
+                          <p>
+                            <run>
+                              <lit>webview</lit>
+                            </run>
+                          </p>
+                        </text>
+                        <null/>
+                      </values>
+                    </item>
+                    <item id="ekeT5Xv2nV_">
+                      <values>
+                        <text>
+                          <p>
+                            <run>
+                              <lit>chart</lit>
+                            </run>
+                          </p>
+                        </text>
+                        <null/>
+                      </values>
+                    </item>
+                  </children>
+                </item>
+                <item id="naNLZydGU2c">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>field.customerName</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                  </values>
+                </item>
+                <item id="lWUZbByuKF7">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>portal.sideBar</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                  </values>
+                </item>
+                <item id="e7Z9LvSMcg_">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>webview.help</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                  </values>
+                </item>
+              </children>
             </item>
-            <item id="phakxz_H0g2" expanded="yes">
+            <item id="b0oB2TnObzj">
               <values>
                 <text>
                   <p>
                     <run>
-                      <lit>Custom functions are named in the familiar FileMaker format of TitleCamelCase.</lit>
+                      <style>
+                        <value key="font-weight">9</value>
+                      </style>
+                      <lit>Scripts:</lit>
+                    </run>
+                    <run>
+                      <lit> are named using a prefix which corresponds to the functional relevance to which they belong.</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+              </values>
+              <children>
+                <item id="oyHfO1feQst">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>Sidebar SelectRow Customer List</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>good</lit>
+                        </run>
+                      </p>
+                    </text>
+                  </values>
+                </item>
+                <item id="oYCAIo2AUHF">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>Select Customer in Portal</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>bad</lit>
+                        </run>
+                      </p>
+                    </text>
+                  </values>
+                </item>
+              </children>
+            </item>
+            <item id="phakxz_H0g2">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <style>
+                        <value key="font-weight">9</value>
+                      </style>
+                      <lit>Custom functions:</lit>
+                    </run>
+                    <run>
+                      <lit> are named in the familiar FileMaker format of TitleCamelCase.</lit>
                     </run>
                   </p>
                 </text>
@@ -2294,154 +2971,6 @@
             <null/>
           </values>
           <children>
-            <item id="afLtZBlkY06" expanded="yes">
-              <values>
-                <text>
-                  <p>
-                    <run>
-                      <lit>All named layout objects are prefixed by their corresponding reserved name.</lit>
-                    </run>
-                  </p>
-                </text>
-                <null/>
-              </values>
-              <children>
-                <item id="lSSLZ0Ze6UN" expanded="yes">
-                  <values>
-                    <text>
-                      <p>
-                        <run>
-                          <lit>Reserved object prefixes are the following</lit>
-                        </run>
-                      </p>
-                    </text>
-                    <null/>
-                  </values>
-                  <children>
-                    <item id="b93PV-BYV1H">
-                      <values>
-                        <text>
-                          <p>
-                            <run>
-                              <lit>field</lit>
-                            </run>
-                          </p>
-                        </text>
-                        <null/>
-                      </values>
-                    </item>
-                    <item id="hPB_2Et_bNe">
-                      <values>
-                        <text>
-                          <p>
-                            <run>
-                              <lit>label</lit>
-                            </run>
-                          </p>
-                        </text>
-                        <null/>
-                      </values>
-                    </item>
-                    <item id="lfxGZyKsT84">
-                      <values>
-                        <text>
-                          <p>
-                            <run>
-                              <lit>tab</lit>
-                            </run>
-                          </p>
-                        </text>
-                        <null/>
-                      </values>
-                    </item>
-                    <item id="c9txLiztT_z">
-                      <values>
-                        <text>
-                          <p>
-                            <run>
-                              <lit>button</lit>
-                            </run>
-                          </p>
-                        </text>
-                        <null/>
-                      </values>
-                    </item>
-                    <item id="pA2RYDjlMTb">
-                      <values>
-                        <text>
-                          <p>
-                            <run>
-                              <lit>portal</lit>
-                            </run>
-                          </p>
-                        </text>
-                        <null/>
-                      </values>
-                    </item>
-                    <item id="mFRRCetJI38">
-                      <values>
-                        <text>
-                          <p>
-                            <run>
-                              <lit>webview</lit>
-                            </run>
-                          </p>
-                        </text>
-                        <null/>
-                      </values>
-                    </item>
-                    <item id="ekeT5Xv2nV_">
-                      <values>
-                        <text>
-                          <p>
-                            <run>
-                              <lit>chart</lit>
-                            </run>
-                          </p>
-                        </text>
-                        <null/>
-                      </values>
-                    </item>
-                  </children>
-                </item>
-                <item id="naNLZydGU2c">
-                  <values>
-                    <text>
-                      <p>
-                        <run>
-                          <lit>field.customerName</lit>
-                        </run>
-                      </p>
-                    </text>
-                    <null/>
-                  </values>
-                </item>
-                <item id="lWUZbByuKF7">
-                  <values>
-                    <text>
-                      <p>
-                        <run>
-                          <lit>portal.sideBar</lit>
-                        </run>
-                      </p>
-                    </text>
-                    <null/>
-                  </values>
-                </item>
-                <item id="e7Z9LvSMcg_">
-                  <values>
-                    <text>
-                      <p>
-                        <run>
-                          <lit>webview.help</lit>
-                        </run>
-                      </p>
-                    </text>
-                    <null/>
-                  </values>
-                </item>
-              </children>
-            </item>
             <item id="fea7BTDBC8d" expanded="yes">
               <values>
                 <text>
@@ -2515,6 +3044,32 @@
             <null/>
           </values>
           <children>
+            <item id="ktJvnrT6s9U" expanded="yes">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Table Occurrence field order</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+              </values>
+              <children>
+                <item id="dK0BogTy0Z9">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>Field sorting order within the fields tab are arranged using the View by &quot;custom order&quot; option. When arranging table occurrences on the graph, they are placed based on the &quot;custom order&quot; setting.</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                  </values>
+                </item>
+              </children>
+            </item>
             <item id="eamPf2Fesh9">
               <values>
                 <text>
