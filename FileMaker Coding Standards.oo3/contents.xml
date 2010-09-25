@@ -82,8 +82,9 @@
       <print-info-key name="OOScaleDocumentToFitPageWidth" type="boolean">true</print-info-key>
     </print-info>
   </settings>
-  <editor content-size="{977, 729}" scroll-position="{0, 701}" status-visible="no" is-spellchecking-enabled="yes">
-    <drawer display="sections" palette-height="460"/>
+  <editor content-size="{981, 712}" status-visible="no" is-spellchecking-enabled="yes">
+    <drawer palette-height="460"/>
+    <selected-rows ids="pbSkkpfMHKe"/>
   </editor>
   <columns>
     <column id="dTpN3JwYpBn" type="text" width="18" minimum-width="18" maximum-width="18" text-export-width="1" is-note-column="yes">
@@ -100,7 +101,7 @@
         </text>
       </title>
     </column>
-    <column id="jFqHUGd_Dg1" type="text" width="840" minimum-width="13" maximum-width="1000000" text-export-width="72" is-outline-column="yes">
+    <column id="jFqHUGd_Dg1" type="text" width="844" minimum-width="13" maximum-width="1000000" text-export-width="72" is-outline-column="yes">
       <title>
         <text>
           <p>
@@ -167,7 +168,7 @@
             <text>
               <p>
                 <run>
-                  <lit>Coding guidlines</lit>
+                  <lit>Coding guidelines</lit>
                 </run>
               </p>
             </text>
@@ -963,6 +964,24 @@
                     </text>
                   </values>
                 </item>
+                <item id="pYvbfeX1ls-">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>g_GlobalFieldName</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>bad</lit>
+                        </run>
+                      </p>
+                    </text>
+                  </values>
+                </item>
               </children>
             </item>
             <item id="ajK4aauXJQo">
@@ -1229,6 +1248,24 @@
                       <p>
                         <run>
                           <lit>$variablename</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>bad</lit>
+                        </run>
+                      </p>
+                    </text>
+                  </values>
+                </item>
+                <item id="omhWWcdEkW5">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>$variable_name</lit>
                         </run>
                       </p>
                     </text>
@@ -1985,7 +2022,7 @@
             <null/>
           </values>
           <children>
-            <item id="deCwWrTcT9n">
+            <item id="deCwWrTcT9n" expanded="yes">
               <values>
                 <text>
                   <p>
@@ -2281,7 +2318,7 @@
             <null/>
           </values>
           <children>
-            <item id="d6xH5k-RJmA">
+            <item id="d6xH5k-RJmA" expanded="yes">
               <values>
                 <text>
                   <p>
@@ -2427,7 +2464,7 @@
                 </item>
               </children>
             </item>
-            <item id="nGDzAETcJKn">
+            <item id="nGDzAETcJKn" expanded="yes">
               <values>
                 <text>
                   <p>
@@ -2487,7 +2524,7 @@
                 </item>
               </children>
             </item>
-            <item id="jdqaSQevcs7">
+            <item id="jdqaSQevcs7" expanded="yes">
               <values>
                 <text>
                   <p>
@@ -2682,7 +2719,7 @@
                 </item>
               </children>
             </item>
-            <item id="oBqDZlCYbtZ">
+            <item id="oBqDZlCYbtZ" expanded="yes">
               <values>
                 <text>
                   <p>
@@ -2737,7 +2774,7 @@
                 </item>
               </children>
             </item>
-            <item id="khZsc9mSI0Y">
+            <item id="khZsc9mSI0Y" expanded="yes">
               <values>
                 <text>
                   <p>
@@ -2787,7 +2824,7 @@
                 </item>
               </children>
             </item>
-            <item id="lFchMuEa-0v">
+            <item id="lFchMuEa-0v" expanded="yes">
               <values>
                 <text>
                   <p>
@@ -2846,7 +2883,7 @@
                 </item>
               </children>
             </item>
-            <item id="cVHasp5QRdE">
+            <item id="cVHasp5QRdE" expanded="yes">
               <values>
                 <text>
                   <p>
@@ -2922,7 +2959,7 @@
             <null/>
           </values>
           <children>
-            <item id="fTtPengBc7W">
+            <item id="fTtPengBc7W" expanded="yes">
               <values>
                 <text>
                   <p>
@@ -3135,7 +3172,7 @@
                     <text>
                       <p>
                         <run>
-                          <lit><cell href="http://en.wikipedia.org/wiki/Doxygen" name="en.wikipedia.org—Doxygen" type="link"/></lit>
+                          <lit><cell href="http://en.wikipedia.org/wiki/Doxygen" name="en.wikipedia.org—Doxygen" expanded="yes" type="link"/></lit>
                         </run>
                       </p>
                     </text>
@@ -3147,7 +3184,7 @@
                     <text>
                       <p>
                         <run>
-                          <lit><cell href="http://www.stack.nl/~dimitri/doxygen/index.html" name="www.stack.nl—index.html" type="link"/></lit>
+                          <lit><cell href="http://www.stack.nl/~dimitri/doxygen/index.html" name="www.stack.nl—index.html" expanded="yes" type="link"/></lit>
                         </run>
                       </p>
                     </text>
@@ -3168,6 +3205,18 @@
                   <p>
                     <run>
                       <lit>C style comments (/* */) and standard C++ comments (//) are both fine, though the former is discouraged within functions (even for multiple lines, repeat the // single-line comment).</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+              </values>
+            </item>
+            <item id="iFCTyTDO7uA">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Custom functions should use the minimum header</lit>
                     </run>
                   </p>
                 </text>
@@ -3378,7 +3427,7 @@
             </item>
           </children>
         </item>
-        <item id="eSeory6kcLf" expanded="yes">
+        <item id="eSeory6kcLf">
           <values>
             <text>
               <p>
@@ -3470,7 +3519,7 @@
             </item>
           </children>
         </item>
-        <item id="pbSkkpfMHKe" expanded="yes">
+        <item id="pbSkkpfMHKe">
           <values>
             <text>
               <p>
@@ -3508,7 +3557,7 @@
             </item>
           </children>
         </item>
-        <item id="jE_ehcdiTC1" expanded="yes">
+        <item id="jE_ehcdiTC1">
           <values>
             <text>
               <p>
@@ -3520,7 +3569,7 @@
             <null/>
           </values>
           <children>
-            <item id="aymIBuvf7cH" expanded="yes">
+            <item id="aymIBuvf7cH">
               <values>
                 <text>
                   <p>
@@ -3653,7 +3702,7 @@
                 <text>
                   <p>
                     <run>
-                      <lit>Scripts related to</lit>
+                      <lit>Script parameter passing is handled via the GetVariables ( ) function</lit>
                     </run>
                   </p>
                 </text>
