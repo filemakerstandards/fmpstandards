@@ -1,0 +1,43 @@
+/**
+ * =====================================================
+ * DeveloperProperties ( hide )
+ * 
+ * PURPOSE:
+ *                Set reserved namespace variables of
+ *                $$ CURRENT.WHATEVER to contain useful
+ *                developer information for the purpose
+ *                of viewing within the Data Viewer.
+ *                Typically used within conditional
+ *                formatting on layout text label.
+ * PARAMETERS:
+ *                @hide = (boolean) True or False
+ * RETURNS:
+ *                (boolean) Whether or not there is a calculation error
+ * DEPENDENCIES:
+ *                Developer()
+ * NOTES:
+ *                Note the use of the space after the $$
+ *                this causes these global variables to
+ *                be sorted at the top of the Data Viewer
+ * =====================================================
+ * 
+ */
+
+If ( Developer; // only set global variables for developers to prevent snooping
+	Let ( [
+		$$ CURRENT.TABLE = Get ( LayoutTableName );
+		$$ CURRENT.LAYOUT = Get ( LayoutName );
+		$$ CURRENT.FIELD = Get ( ActiveFieldName );
+		$$ CURRENT.FIELDTABLE = Get ( ActiveFieldTableName );
+		$$ CURRENT.OBJECTS = Substitute (
+		   LayoutObjectNames ( Get ( FileName ) ; Get ( LayoutName ) );
+			[ "¶<¶" ; "¶  »  " ];
+			[ ">¶" ; Null ];
+			[ ">" ; Null ]
+		)
+	];
+		// This result is intended to be used on conditional formatting
+		// when the text is set to hide using the same color as the background
+		If ( not hide ; False ; True )
+	)
+)
