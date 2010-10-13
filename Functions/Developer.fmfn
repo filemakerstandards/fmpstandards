@@ -1,0 +1,33 @@
+/**
+ * =====================================================
+ * Developer ( )
+ * 
+ * PARAMETERS:
+ *						none
+ * RETURNS:
+ *                (bool) True or False based on proper   
+ *                evaluation
+ * DEPENDENCIES:
+ *                none 
+ * NOTES:         Because FileMaker changed Get ( PrivilegeSetName )
+ *                Evaluate () must be used
+ *
+ * RELEASE:       101011
+ * =====================================================
+ * 
+ */
+
+Let ( [ 
+
+	var.developers = List( ""; "" )  // Add the names of the accounts which are valid developer accounts
+
+];
+
+	PatternCount ( ¶& var.developers &¶ ; ¶& Get ( AccountName ) &¶ ) ≥ 1
+	or
+	If ( GetAsNumber ( Get ( ApplicationVersion ) ) < 11;
+		Evaluate ( "Get ( PrivilegeSetName )" ) = "[Full Access]";
+		Evaluate ( "Get ( AccountPrivilegeSetName )" ) = "[Full Access]"
+	)
+
+)

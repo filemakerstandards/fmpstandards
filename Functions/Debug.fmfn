@@ -1,0 +1,57 @@
+/**
+ * =====================================================
+ * Debug ( )
+ * 
+ * PARAMETERS:
+ *						none
+ * RETURNS:
+ *						(string) A list of informative values
+ *						about the current FMP environment.
+ * DEPENDENCIES:
+ *						Developer () 
+ * NOTES:
+ *
+ * RELEASE:			101009
+ * =====================================================
+ * 
+ */
+
+If ( Developer;
+	Let ( [
+		// Variables
+		$$DEBUG = List (
+			"App Version = " & Abs ( Get ( ApplicationVersion ) );
+			"App Current Time = " & GetAsText ( Get ( CurrentTimeStamp ) );
+			"Host Name = " & Get ( HostName );
+			"Host IP = " & Get ( HostIPAddress );
+			"File Location = " & Get ( FilePath );
+			"Account = " & Get ( AccountName );
+			"-----------------------------------";
+			"Script Param = " & Get ( ScriptParameter );
+			"Script Result = " & Get ( ScriptResult );
+			"-----------------------------------";
+			"Last Error = " & Get ( LastError );
+			"Last ODBC = " & Get ( LastODBCError );
+			"-----------------------------------";
+			"Layout = " & Get ( LayoutName );
+			"Layout Table = " & Get ( LayoutTableName );
+			"-----------------------------------";
+			"Open Records = " & Get ( RecordOpenCount );
+			"Record Modified = " & Get ( RecordModificationCount );
+			"-----------------------------------";
+			"Active Field = " & Get ( ActiveFieldName );
+			"Active Field Table = " & Get ( ActiveFieldTableName );
+			"Active Layout Object = " & Get ( ActiveLayoutObjectName );
+			"Active Layout Table = " & Get ( LayoutTableName );
+			"-----------------------------------";
+			"Local time = " & Get ( CurrentTimeStamp );
+			"Host time = " & Get ( CurrentHostTimeStamp );
+			"-----------------------------------";
+		)
+  ];
+
+		// Return value
+		$$DEBUG
+
+  )
+)
