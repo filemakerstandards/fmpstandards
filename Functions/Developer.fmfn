@@ -12,22 +12,24 @@
  * NOTES:         Because FileMaker changed Get ( PrivilegeSetName )
  *                Evaluate () must be used
  *
- * RELEASE:       101011
+ * RELEASE:       101015
  * =====================================================
  * 
  */
 
 Let ( [ 
 
-	var.developers = List( ""; "" )  // Add the names of the accounts which are valid developer accounts
+	var.developers = List( ""; "" );  // Add the names of the accounts which are valid developer accounts
+	var.appVersion = Get ( ApplicationVersion )
 
 ];
 
 	PatternCount ( ¶& var.developers &¶ ; ¶& Get ( AccountName ) &¶ ) ≥ 1
 	or
-	If ( GetAsNumber ( Get ( ApplicationVersion ) ) < 11;
-		Evaluate ( "Get ( PrivilegeSetName )" ) = "[Full Access]";
-		Evaluate ( "Get ( AccountPrivilegeSetName )" ) = "[Full Access]"
+	If ( PatternCount ( var.appVersion; "Go" ) = True
+			or GetAsNumber ( var.appVersion ) ≥ 11;
+		Evaluate ( "Get ( AccountPrivilegeSetName )" ) = "[Full Access]";
+		Evaluate ( "Get ( PrivilegeSetName )" ) = "[Full Access]"
 	)
 
 )
