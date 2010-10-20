@@ -1,0 +1,29 @@
+/**
+ * =====================================================
+ * GetFieldNameAsGet ( field )
+ *
+ * PURPOSE:
+ *                To be used within an auto-enter calculation
+ *                in order to evaluate the name of the field
+ *                as a Get () parameter
+ * 
+ * PARAMETERS:
+ *                @field = (reference) a field
+ * RETURNS:
+ *                (variable) the content of a variable with
+ *                the same name as the field.
+ * DEPENDENCIES:
+ *                none
+ * NOTES:
+ *                This function has a very specific use
+ * =====================================================
+ * 
+ */
+
+Let ( [
+	var.field = GetFieldName ( field );
+	var.parts = Substitute ( var.field ; "::" ; ¶ );
+	var.result = Evaluate ( "Get ( " & GetValue ( var.parts ; 2 ) & " )" )
+];
+	If ( var.result = "?" ; False ; var.result )
+)

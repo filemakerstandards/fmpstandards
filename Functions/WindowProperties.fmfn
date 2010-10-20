@@ -1,0 +1,47 @@
+/*
+ * =====================================================
+ * WindowProperties ( method )
+ * 
+ * PARAMETERS:
+ *                @method (enum) default, piped, let, variables
+ * RETURNS:
+ *                (list) window properties according to specified method
+ * DEPENDENCIES:
+ *                ObjectID(),VariableList()
+ * NOTES:
+ *                Provides multiple methods for returning the
+ *                properties of the current window
+ *                See the WindowCenter companion function
+ * =====================================================
+ * 
+ */
+
+Let ( [
+	var.keys = List( "name"; "layout"; "id"; "top";"left";"width";"height");
+	var.values = List(
+						Get ( WindowName );
+						Get ( LayoutName );
+						object.id ( Get ( LayoutName ); "Layout"; ""; "" );
+						Get ( WindowTop );
+						Get ( WindowLeft );
+						Get ( WindowWidth );
+						Get ( WindowHeight )
+	)
+];
+	// returns
+	Case(
+		method = "" or
+		method = "default";
+			var.values;
+
+		method = "piped";
+			Substitute ( var.values ; ¶ ; "|" );
+
+		// global variables are returned by VariableList() - use Substitute ( properties ; "$$" ; "$" ) to make local
+		method = "let";
+			VariableList ( var.keys; var.values ; "global" );
+
+		// default
+		var.values
+	)
+)

@@ -1,0 +1,26 @@
+/*
+ * =====================================================
+ * Error ( )
+ * 
+ * RETURNS:
+ *                (list) error variables
+ * DEPENDENCIES:
+ *                none
+ * NOTES:
+ *                Provides multiple methods for returning the
+ * =====================================================
+ * 
+ */
+
+Let ( [
+	var.error = Get ( LastError )
+];
+	List (
+		"$error=" & If ( var.error ≠ 0 ; True ; False );
+		"$errorType=" & Quote ( "fmp" );
+		"$errorNum=" & var.error;
+		"$errorString=" & Quote ( ErrorString ( var.error ) );
+		"$errorScript=" & Quote ( Get ( ScriptName ) );
+		"$errorData=" & Quote ( ErrorData );
+	)
+)

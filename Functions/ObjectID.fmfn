@@ -1,0 +1,154 @@
+/**
+ * =====================================================================
+ * ObjectID ( object; type; file; layout )
+ * 
+ * PARAMETERS:
+ *                  @object supply either the name or internal id of an object
+ *                          (see type variable for supported objects)
+ *                  @type (enum) One of the following
+ *                          "Table", "Layout", "Field", "Script", or "ValueList" or (T,L,F,S,V) for shorthand
+ *                  @file [optional] specify the name of the file (if using multiple files) - empty implies current file
+ *                  @layout [optional] required only if @type contains "Field".
+ *                  Empty implies current layout (or the field table occurrence, read the note below).
+ *                  The layout should be tied to the table occurrence of the field
+ * 
+ * RETURNS:
+ *                  (mixed) Internal FileMaker ID if name of object is supplied
+ *                  and inverse if ID of object is supplied
+ * 
+ * DEPENDENCIES:
+ *                  None
+ * AUTHOR:
+ *                  Fabrice Nordman
+ * NOTES:
+ *                  for fields (_TLFSV = "F"), if you use the full field name
+ *                  (table::fieldname) AND an empty var.layout parameter, the
+ *                  function will assume you are referring not to current layout but
+ *                  to the table occurrence found in the _TLFSV
+ * 
+ * =====================================================================
+ */
+
+
+Let ( [
+	file = If ( IsEmpty ( file );
+						Get ( FileName ); // use current file name... otherwise
+						file
+	);
+	layout = Case (
+							IsEmpty ( layout );
+								Case ( 
+									PatternCount ( object; "::" );
+										GetValue ( Substitute ( object; "::"; ¶ ); 1 );
+								Get ( LayoutName ) // default
+								);
+							layout // default
+						);
+	layout = Case (
+						Int ( layout ) = layout and Length ( layout ) = 7;
+							object.id ( layout; "T"; file; "" );
+						layout
+						);
+	var.object = object;
+
+	// Allow type to be a single character (T,L,F,S,V)
+	var.type = Left ( type; 1 );
+	var.type = Choose( Position ( "TLFSV"; var.type; 1; 1 ) - 1; "Table"; "Layout"; "Field"; "Script"; "ValueList" );
+	var.object = Case ( // remove the repetition number
+								var.type = "Field" and PatternCount ( var.object; "[" );
+									Left ( var.object; Position ( var.object; "["; 10000; -1 ) -1 );
+								var.object
+								);
+	var.object = Case ( // for fields, do not take TO
+								var.type = "Field" and PatternCount ( var.object; "::" );
+									Replace ( var.object; 1; Position ( var.object; "::"; 1; 1 ) + 1; "" );
+								var.object
+								);
+	var.endOfString = "( \"" & file & "\"" & Case ( var.type = "field"; "; \"" & layout & "\"" ) & ")";
+	var.names = Evaluate ( var.type & "Names" & var.endOfString );
+	var.ids = Evaluate ( var.type & "IDs" & var.endOfString )
+
+];
+
+	Case (
+		var.object = GetAsNumber ( var.object );
+    
+			// Convert ID -> Name
+			Case (
+				not IsEmpty ( FilterValues ( var.object; var.ids ));
+					GetValue ( var.names; Let ([
+																			_text = var.ids;
+																			_item = var.object;
+																			_adj = ¶ & _text & ¶ 
+																];
+																	PatternCount ( Left ( _adj; Position ( _adj; ¶ & _item & ¶; 1; 1 ) + 1 ); ¶ )
+																)
+					)
+			);
+			// Convert Name -> ID
+			Case (
+				not IsEmpty ( FilterValues ( var.object; var.names ));
+					GetValue ( var.ids; Let ([
+																			_text = var.names;
+																			_item = var.object;
+																			_adj = ¶ & _text & ¶
+															];
+																PatternCount ( Left ( _adj; Position ( _adj; ¶ & _item & ¶; 1; 1 ) + 1 ); ¶ )
+															)
+					)
+			)
+	)
+)
+
+
+/*
+
+Original function by Fabrice Nordmann
+Reformatted by Matt Petrowsky
+
+Avoids hard-coding in FileMaker by using IDs instead of names
+
+v.1.6, Mar 2009
+    Accepts field parameters such as FMvar.name_id ( 1065234::24; "F"; ""; "" )
+v.1.5.2, Feb 2009
+    Removes the repetition number if a fieldname with a repetition number is passed ( field[n]).  Does not handle field names with [ anymore.
+v.1.5.1, Dec 2008
+    Documentation update (thanks to Kevin Frank's comment)
+v.1.5, Oct 2008
+    Documentation error fix
+    Returns an empty result if item not found
+v.1.4, Aug 2008
+    Bug fix (major) : could return erroneous result if an item ID was found in another ID.
+v.1.3, July 2008
+    A field ID can be obtained by passing its full name (with table occurrence) in var.name_id and leaving var.layout empty
+    e.g.   FMvar.name_id ( "myTable::myField"; "F"; ""; "" )
+v.1.2, June 2008
+    Doesn't require Position value
+v.1, May 2008
+    Requires: PositionValue ( _text; _searchValue; _start; _occurrence )
+
+// Test code for raw data 
+Let ( [
+  f = Get ( FileName );
+  l = Get ( LayoutName )
+];
+  List (
+    "--- TABLES ---";
+    TableNames ( f );
+    TableIDs ( f );
+    "--- LAYOUTS ---";
+    LayoutNames ( f );
+    LayoutIDs ( f );
+    "--- FIELDS ---";
+    FieldNames ( f; l );
+    FieldIDs ( f; l );
+    "--- SCRIPTS ---";
+    ScriptNames ( f );
+    ScriptIDs ( f );
+    "--- VALUE LISTS ---";
+    ValueListNames ( f );
+    ValueListIDs ( f )
+  )
+)
+    
+*/

@@ -1,0 +1,31 @@
+/**
+ * =====================================================
+ * GetFieldNameVariable ( field ; prefix )
+ *
+ * PURPOSE:
+ *                To be used within an auto-enter calculation
+ *                when you want to extract the name of
+ *                the current field and capture a variable
+ *                of the same name.
+ * 
+ * PARAMETERS:
+ *                @field = (reference) a field
+ *                @prefix = (enum) either "$" or "$$"
+ * RETURNS:
+ *                (variable) the content of a variable with
+ *                the same name as the field.
+ * DEPENDENCIES:
+ *                none
+ * NOTES:
+ *                This function has a very specific use
+ * =====================================================
+ * 
+ */
+
+Let ( [
+	var.field = GetFieldName ( field );
+	var.parts = Substitute ( var.field ; "::" ; ¶ );
+	var.result = Evaluate ( prefix & GetValue ( var.parts ; 2 ) )
+];
+	If ( var.result = "?" ; False ; var.result )
+)
