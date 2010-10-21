@@ -17,11 +17,20 @@
  */
 
 Let ( [
-	var.keys = List( "name"; "layout"; "id"; "top";"left";"width";"height");
-	var.values = List(
+	var.keys = List ( "name"; "layout"; "id"; "top";"left";"width";"height");
+	var.parent = List (
+		"parentWindowName";
+		"parentWindowLayout";
+		"parentWindowID";
+		"parentWindowTop";
+		"parentWindowLeft";
+		"parentWindowWidth";
+		"parentWindowHeight";
+		);
+	var.values = List (
 						Get ( WindowName );
 						Get ( LayoutName );
-						object.id ( Get ( LayoutName ); "Layout"; ""; "" );
+						ObjectID ( Get ( LayoutName ); "Layout"; ""; "" );
 						Get ( WindowTop );
 						Get ( WindowLeft );
 						Get ( WindowWidth );
@@ -40,6 +49,9 @@ Let ( [
 		// global variables are returned by VariableList() - use Substitute ( properties ; "$$" ; "$" ) to make local
 		method = "let";
 			VariableList ( var.keys; var.values ; "global" );
+			
+		method = "parentVars";
+			VariableList ( var.parent; var.values ; "local" );
 
 		// default
 		var.values
