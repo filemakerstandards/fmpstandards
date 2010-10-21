@@ -1,0 +1,67 @@
+/**
+ * =====================================================
+ * DeveloperPropertiesDisplay ( )
+ * 
+ * PURPOSE:
+ *                Used to display the information created
+ *                in the DeveloperProperties function
+ * PARAMETERS:
+ *                none
+ * RETURNS:
+ *                (string) Whether or not there is a calculation error
+ * DEPENDENCIES:
+ *                Developer(), DeveloperProperties()
+ * NOTES:
+ * =====================================================
+ * 
+ */
+
+If ( Developer;
+	Let ( [
+		var.prefix = "      "
+	];
+		List (
+			"TABLE OCCURRENCE NAME";
+			var.prefix & Substitute (
+				$$ CURRENT.TABLE;
+				[ ¶ ; ¶& var.prefix ]
+			);
+			"------------------";
+			"LAYOUT NAME";
+			var.prefix & Substitute (
+				$$ CURRENT.LAYOUT;
+				[ ¶ ; ¶& var.prefix ]
+			);
+			"------------------";
+			"FIELD";
+			var.prefix & Substitute (
+				$$ CURRENT.FIELD;
+				[ ¶ ; ¶& var.prefix ]
+			);
+			"------------------";
+			"FIELD'S TABLE";
+			var.prefix & Substitute (
+				$$ CURRENT.FIELDTABLE;
+				[ ¶ ; ¶& var.prefix ]
+			);
+			"------------------";
+			"OBJECT NAMES";
+			var.prefix & Substitute (
+				$$ CURRENT.OBJECTS;
+				[ ¶ ; ¶& var.prefix ]
+			);
+			"------------------";
+			"OBJECT IDS";
+			var.prefix & Substitute (
+				$$ CURRENT.OBJECTIDS;
+				[ ¶ ; ¶& var.prefix ]
+			);
+			"------------------";
+			"FILE PATH";
+			var.prefix & Substitute (
+				$$ CURRENT.FILEPATH;
+				[ ¶ ; ¶& var.prefix ]
+			);
+		)
+	)
+)
