@@ -12,9 +12,9 @@
  * PARAMETERS:
  *                @hide = (boolean) True or False
  * RETURNS:
- *                (boolean) Whether or not there is a calculation error
+ *                (boolean) True or False
  * DEPENDENCIES:
- *                Developer()
+ *                Developer(), ObjectID()
  * NOTES:
  *                Note the use of the space after the $$
  *                this causes these global variables to
@@ -30,14 +30,22 @@ If ( Developer; // only set global variables for developers to prevent snooping
 		$$ CURRENT.FIELD = Get ( ActiveFieldName );
 		$$ CURRENT.FIELDTABLE = Get ( ActiveFieldTableName );
 		$$ CURRENT.OBJECTS = Substitute (
-		   LayoutObjectNames ( Get ( FileName ) ; Get ( LayoutName ) );
-			[ "¶<¶" ; "¶  »  " ];
-			[ ">¶" ; Null ];
-			[ ">" ; Null ]
-		)
+				   LayoutObjectNames ( Get ( FileName ) ; Get ( LayoutName ) );
+					[ "<¶>¶" ; Null ];
+					[ "¶<¶" ; "¶  »  " ];
+					[ ">¶" ; Null ];
+					[ ">" ; Null ]
+		);
+		$$ CURRENT.OBJECTIDS =
+			"Layout ID = " & ObjectID ( Get ( LayoutName ) ; "Layout" ; "" ; "" )
+			& " | " &
+			"Table ID = " & ObjectID ( Get ( LayoutTableName ) ; "Table" ; "" ; "" );
+		$$ CURRENT.FILEPATH = Get ( FilePath );
 	];
 		// This result is intended to be used on conditional formatting
 		// when the text is set to hide using the same color as the background
 		If ( not hide ; False ; True )
-	)
+	);
+	
+	True // Always return true for non developer when used on conditional formatting
 )
