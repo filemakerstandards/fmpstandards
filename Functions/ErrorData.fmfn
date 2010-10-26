@@ -1,0 +1,32 @@
+/*
+ * =====================================================
+ * ErrorData ( )
+ * 
+ * RETURNS:
+ *                  (list) error variables
+ * DEPENDENCIES:
+ *                  none
+ * NOTES:
+ *                  Supplies additional error tracking
+ *                  data to the Error() funtion
+ * =====================================================
+ * 
+ */
+
+List (
+	"$errorFile=" & Quote ( Get ( FileName ) );
+	"$errorType=" & Quote ( If ( IsEmpty ( $errorType ) ; "fmp" ; $errorType ) );
+	"$scriptName=" & Quote ( Get ( ScriptName ) );
+	"$scriptParameter=" & Quote ( Get ( ScriptParameter ) );
+	"$scriptResult=" & Quote ( Get ( ScriptResult ) );
+	"$lastError=" & Quote ( Get ( LastError ) );
+	"$lastODBCError=" & Quote ( Get ( LastODBCError ) );
+	"$layoutName=" & Quote ( Get ( LayoutName ) );
+	"$layoutTableName=" & Quote ( Get ( LayoutTableName ) );
+	"$recordOpenCount=" & Quote ( Get ( RecordOpenCount ) );
+	"$recordModificationCount=" & Quote ( Get ( RecordModificationCount ) );
+	"$activeFieldName=" & Quote ( Get ( ActiveFieldName ) );
+	"$activeFieldTableName=" & Quote ( Get ( ActiveFieldTableName ) );
+	"$activeLayoutObjectName=" & Quote ( Get ( ActiveLayoutObjectName ) );
+	// Add your additional application error tracking data here
+)

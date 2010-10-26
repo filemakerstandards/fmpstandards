@@ -1,0 +1,48 @@
+/**
+ * =====================================================
+ * LayoutObjectHierarchy ( content )
+ * 
+ * PURPOSE:
+ *                Display indented version of LayoutObjectNames
+ * PARAMETERS:
+ *                @content = LayoutObjectNames
+ * RETURNS:
+ *                (list) Indented version of LayoutObjectNames
+ * DEPENDENCIES:
+ *                none
+ * NOTES:
+ *                This is a special use function for showing
+ *                a developer the hierarchy of Layout objects
+ * =====================================================
+ * 
+ */
+
+Let ( [
+	content = If ( IsEmpty ( content ) ; LayoutObjectNames ( Get ( FileName ) ; Get ( LayoutName ) ) ; content );
+	var.topRow = GetValue ( content ; 1 );
+	var.remainingData = RightValues ( content ; ValueCount ( content ) -1 );
+	var.prefixChar = "» ";
+	var.indentChars = "																													";
+	var.isIndent = If ( var.topRow = "<" ; True );
+	var.isOutdent = If ( var.topRow = ">" ; True );
+	$$FUNCTION.LAYOUTOBJECTHIERARCHY = Case (
+		var.isIndent;
+			Left ( var.indentChars ; Length ( $$FUNCTION.LAYOUTOBJECTHIERARCHY ) +1 );
+
+		var.isOutdent;
+			Left ( var.indentChars ; Length ( $$FUNCTION.LAYOUTOBJECTHIERARCHY ) -1 );
+
+		$$FUNCTION.LAYOUTOBJECTHIERARCHY
+	);
+	var.useRow = not ( var.isIndent or var.isOutdent );
+	var.resultRow = If ( Length ( $$FUNCTION.LAYOUTOBJECTHIERARCHY ) ≥ 1 ;
+						$$FUNCTION.LAYOUTOBJECTHIERARCHY & var.prefixChar ) & var.topRow;
+	$$FUNCTION.LAYOUTOBJECTHIERARCHY[2] = List ( $$FUNCTION.LAYOUTOBJECTHIERARCHY[2] ; If ( var.useRow ; var.resultRow ; "" ) )
+];
+	If ( ValueCount ( var.remainingData ) = 1 or IsEmpty ( content );
+		// Return result and reset global variables being used
+		$$FUNCTION.LAYOUTOBJECTHIERARCHY[2] & Let ( [ $$FUNCTION.LAYOUTOBJECTHIERARCHY = "" ; $$FUNCTION.LAYOUTOBJECTHIERARCHY[2] = "" ]; "" ); // final result
+		// Recursion (not using this as result because of stack inversion)
+		LayoutObjectHierarchy ( var.remainingData )
+	)
+)

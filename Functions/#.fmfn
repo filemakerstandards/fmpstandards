@@ -1,0 +1,26 @@
+/*
+ * =====================================================
+ * # ( key ; value )
+ * 
+ * RETURNS:
+ *                  (string) Formatted variable declaration
+ *					such as "$variable="
+ * DEPENDENCIES:
+ *                  none 
+ * NOTES:
+ *                  This is a wrapper function according to
+ *                  http://filemakerstandards.org/display/bp/Script+Parameter+Custom+Function+Names+and+Behavior
+ * RELEASE:         101026
+ * =====================================================
+ * 
+ */
+
+Let ( [
+	var.isVariable = PatternCount ( key; "$" ) ≥ 1;
+	var.isNumber  = Length ( GetAsNumber ( Filter ( value; "0123456789.-" ) ) ) = Length ( value )
+];
+	If ( not var.isVariable;
+		"$" & key ;
+		key
+	) & "=" & If ( var.isNumber and not IsEmpty ( value ) ; value ; Quote ( value ) )
+)
