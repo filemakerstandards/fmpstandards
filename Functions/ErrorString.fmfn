@@ -5,7 +5,7 @@
  * RETURNS:
  *                (string) FileMaker's error string
  * DEPENDENCIES:
- *                ErrorString(), ErrorData()
+ *                none
  * NOTES:
  *                http://www.filemaker.com/help/html/error_codes.html
  * =====================================================

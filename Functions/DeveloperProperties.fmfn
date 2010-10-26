@@ -14,7 +14,7 @@
  * RETURNS:
  *                (boolean) True or False
  * DEPENDENCIES:
- *                Developer(), ObjectID()
+ *                Developer(), ObjectID(), LayoutObjectHierarchy()
  * NOTES:
  *                Note the use of the space after the $$
  *                this causes these global variables to
@@ -29,13 +29,7 @@ If ( Developer; // only set global variables for developers to prevent snooping
 		$$ CURRENT.LAYOUT = Get ( LayoutName );
 		$$ CURRENT.FIELD = Get ( ActiveFieldName );
 		$$ CURRENT.FIELDTABLE = Get ( ActiveFieldTableName );
-		$$ CURRENT.OBJECTS = Substitute (
-				   LayoutObjectNames ( Get ( FileName ) ; Get ( LayoutName ) );
-					[ "<¶>¶" ; Null ];
-					[ "¶<¶" ; "¶  »  " ];
-					[ ">¶" ; Null ];
-					[ ">" ; Null ]
-		);
+		$$ CURRENT.OBJECTS = LayoutObjectHierarchy ( "" );
 		$$ CURRENT.OBJECTIDS =
 			"Layout ID = " & ObjectID ( Get ( LayoutName ) ; "Layout" ; "" ; "" )
 			& " | " &
