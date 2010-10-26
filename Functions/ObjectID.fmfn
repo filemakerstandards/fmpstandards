@@ -46,7 +46,7 @@ Let ( [
 						);
 	layout = Case (
 						Int ( layout ) = layout and Length ( layout ) = 7;
-							object.id ( layout; "T"; file; "" );
+							ObjectID ( layout; "T"; file; "" );
 						layout
 						);
 	var.object = object;

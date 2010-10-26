@@ -40,7 +40,7 @@ If ( Developer; // only set global variables for developers to prevent snooping
 			"Layout ID = " & ObjectID ( Get ( LayoutName ) ; "Layout" ; "" ; "" )
 			& " | " &
 			"Table ID = " & ObjectID ( Get ( LayoutTableName ) ; "Table" ; "" ; "" );
-		$$ CURRENT.FILEPATH = Get ( FilePath );
+		$$ CURRENT.FILEPATH = Get ( FilePath )
 	];
 		// This result is intended to be used on conditional formatting
 		// when the text is set to hide using the same color as the background
