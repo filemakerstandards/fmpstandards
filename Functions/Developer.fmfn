@@ -9,25 +9,25 @@
  *                evaluation
  * DEPENDENCIES:
  *                none 
- * NOTES:         Because Filemaker Changed Get ( Privilegesetname )
+ * NOTES:         Because Filemaker Changed Get ( PrivilegeSetName )
  *                Evaluate () must be used
  *
- * RELEASE:       101015
+ * RELEASE:       101210
  * =====================================================
  * 
  */
 
 Let ( [ 
 
-	var.developers = List( ""; "" );  // Add the names of the accounts which are valid developer accounts
-	var.appVersion = Get ( ApplicationVersion )
+	~developers = List( ""; "" );  // Add the names of the accounts which are valid developer accounts
+	~appVersion = GetAsNumber ( Substitute ( Get ( ApplicationVersion ) ; "," ; "." ) ) // account for foreign versions with comma
 
 ];
 
-	PatternCount ( ¶& var.developers &¶ ; ¶& Get ( AccountName ) &¶ ) ≥ 1
+	PatternCount ( ¶& ~developers &¶ ; ¶& Get ( AccountName ) &¶ ) ≥ 1
 	or
-	If ( PatternCount ( var.appVersion; "Go" ) = True
-			or GetAsNumber ( var.appVersion ) ≥ 11;
+	If ( PatternCount ( ~appVersion; "Go" ) = True
+			or GetAsNumber ( ~appVersion ) ≥ 11;
 		Evaluate ( "Get ( AccountPrivilegeSetName )" ) = "[Full Access]";
 		Evaluate ( "Get ( PrivilegeSetName )" ) = "[Full Access]"
 	)
