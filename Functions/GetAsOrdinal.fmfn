@@ -1,0 +1,24 @@
+/*
+ * =====================================================
+ * GetAsOrdinal ( number )
+ * 
+ * RETURNS:
+ *                (string) Ordinal formatted number
+ * DEPENDENCIES:
+ *                none
+ * NOTES:
+ *                Adapted from http://www.briandunning.com/cf/737
+ * =====================================================
+ * 
+ */
+
+
+Let ( [ 
+	~style = "Superscript"; // Can be made null to remove formatting
+	~digit = Int( GetAsNumber( number ) );
+	~tens = Mod ( Abs( ~digit ); 100 )
+];
+
+	~digit & TextStyleAdd ( Choose ( Min ( 4 ; Mod ( ~tens ; 10 ) ) * ( ( ~tens < 11 ) or ( ~tens > 13 ) ); "th"; "st"; "nd"; "rd"; "th" ); Evaluate ( ~style ) )
+
+)
