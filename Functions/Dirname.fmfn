@@ -1,0 +1,40 @@
+/**
+ * =====================================================
+ * Dirname ( path )
+ * 
+ * PURPOSE:
+ *                Return the parent folder of the
+ *                supplied path
+ * PARAMETERS:
+ *                path
+ * RETURNS:
+ *                (string) path to parent folder
+ * DEPENDENCIES:
+ *                none
+ * NOTES:
+ * =====================================================
+ * 
+ */
+
+Let ( [
+	~separatorMac = PatternCount ( path ; "/" );
+	~separatorWin = PatternCount ( path ; "\\" );
+	~separator = If ( ~separatorMac > 0 ; "/" ; "\\");
+	~lastCharIsSeparator = Right ( path ; 1 ) = ~separator;
+	~pathParts = Substitute ( path ; ~separator ; ¶ );
+	~partCount = ValueCount ( ~pathParts )
+];
+
+	Substitute ( LeftValues ( ~pathParts ; If ( ~lastCharIsSeparator ; ~partCount ; ~partCount -1 ) - 1 ) ; ¶ ; ~separator )
+
+)
+
+/*
+//Unit tests
+List (
+	Dirname ( "/Volumes/Macintosh HD/Users/User Name/Library/Application Support/FileMaker/Extensions/" );
+	Dirname ( "C:\Documents and Settings\User Name\Local Settings\Application Data\FileMaker\Extensions\" );
+	Dirname ( "C:\Users\User Name\AppData\Local\FileMaker\Extensions" );
+	Dirname ( "file:Folder/Parent/Path" );
+)
+*/
