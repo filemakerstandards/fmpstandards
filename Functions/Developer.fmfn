@@ -3,7 +3,7 @@
  * Developer ( )
  * 
  * PARAMETERS:
- *						none
+ *                none
  * RETURNS:
  *                (bool) True or False based on proper   
  *                evaluation
@@ -12,22 +12,25 @@
  * NOTES:         Because Filemaker Changed Get ( PrivilegeSetName )
  *                Evaluate () must be used
  *
- * RELEASE:       101210
+ * RELEASE:       101229
  * =====================================================
  * 
  */
 
 Let ( [ 
 
-	~developers = List( ""; "" );  // Add the names of the accounts which are valid developer accounts
-	~appVersion = GetAsNumber ( Substitute ( Get ( ApplicationVersion ) ; "," ; "." ) ) // account for foreign versions with comma
+	~developers = List( ""; "" );  // Add names of the accounts which are valid developer accounts
+	~version = Get ( ApplicationVersion );
+	~isProAdvanced = PatternCount ( ~version; "ProAdvanced" ) = True;
+	~isPro = PatternCount ( ~version; "Pro" ) = True;
+	~isGo = PatternCount ( ~version; "Go" ) = True;
+	~versionNumber = GetAsNumber ( Substitute ( Get ( ApplicationVersion ) ; "," ; "." ) ) // account for foreign versions using comma
 
 ];
 
 	PatternCount ( ¶& ~developers &¶ ; ¶& Get ( AccountName ) &¶ ) ≥ 1
 	or
-	If ( PatternCount ( ~appVersion; "Go" ) = True
-			or GetAsNumber ( ~appVersion ) ≥ 11;
+	If ( ~isGo or ~versionNumber ≥ 11;
 		Evaluate ( "Get ( AccountPrivilegeSetName )" ) = "[Full Access]";
 		Evaluate ( "Get ( PrivilegeSetName )" ) = "[Full Access]"
 	)
