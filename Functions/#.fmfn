@@ -1,26 +1,24 @@
-/*
+/**
  * =====================================================
  * # ( key ; value )
+ *
+ * PURPOSE:
+ *                  Creates a string designed to be sent as a script parameter
+ *                  to a script using the DeclareVariables function to receive
+ *                  named parameters. You can create a string for multiple named
+ *                  parameters by concatenating multiple calls to this function.
  * 
  * RETURNS:
  *                  (string) Formatted variable declaration
- *					such as "$variable="
+ *                  such as "$variable="
  * DEPENDENCIES:
  *                  none 
  * NOTES:
  *                  This is a wrapper function according to
- *                  http://filemakerstandards.org/display/bp/Script+Parameter+Custom+Function+Names+and+Behavior
- * RELEASE:         101026
+ *                  http://filemakerstandards.org/pages/viewpage.action?pageId=557462
+ * RELEASE:         2010-11-23
  * =====================================================
  * 
  */
 
-Let ( [
-	var.isVariable = PatternCount ( key; "$" ) ≥ 1;
-	var.isNumber  = Length ( GetAsNumber ( Filter ( value; "0123456789.-" ) ) ) = Length ( value )
-];
-	If ( not var.isVariable;
-		"$" & key ;
-		key
-	) & "=" & If ( var.isNumber and not IsEmpty ( value ) ; value ; Quote ( value ) )
-)
+"$" & Substitute ( name ; "$" ; "" ) & " = " & Quote ( value ) & ";¶"
