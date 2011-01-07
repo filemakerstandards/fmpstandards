@@ -1,0 +1,24 @@
+﻿/**
+ * =======================================================
+ * DeveloperModifierKeys
+ *
+ * PURPOSE:
+ * Returns the active modifier keys on the condition that a [Full Access] user
+ * is holding them.
+ *
+ * RETURNS:
+ * The result of Get ( ActiveModifierKeys ) if the account has [Full Access]
+ * privileges. Returns Null "" otherwise.
+ *
+ * PARAMETERS: none
+ *
+ * DEPENDENCIES:
+ * Developer (custom function)
+ *
+ * HISTORY:
+ * MODIFIED on 2010-12-02 by Jeremy Bante of The Support Group
+ * (jbante@supportgroup.com) to use this header comment format.
+ * =======================================================
+ */
+
+If ( Developer ; Get ( ActiveModifierKeys ) )
