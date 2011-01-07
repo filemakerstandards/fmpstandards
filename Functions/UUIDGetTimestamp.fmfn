@@ -1,0 +1,34 @@
+﻿/**
+ * ======================================
+ * UUIDGetTimestamp
+ *
+ * PURPOSE:
+ * UUIDGetTimestamp( uuid ) extracts the creation timestamp (FileMaker format)
+ * from a numeric UUID, such as created by the UUID function.
+ *
+ * RETURNS:
+ * A number representing the number of seconds since 0001-01-01 00:00:00 when the
+ * uuid passed as a parameter to the function was created.
+ *
+ * PARAMETERS:
+ * uuid: The integer-encoded UUID to extract a timestamp from.
+ *
+ * DEPENDENCIES: none
+ *
+ * HISTORY:
+ * MODIFIED on 2010-11-22 by Jeremy Bante of The Support Group
+ * (jbante@supportgroup.com) to extract timestamps from the updated output
+ * format for UUID.New.
+ * CREATED on 2010-09-12 by Jeremy Bante of Kyo Logic (jeremy@kyologic.com).
+ * INSPIRED by UUID functions created by Ray Cologon.
+ *
+ * REFERENCES:
+ * Key values Best Practice: http://filemakerstandards.org/display/bp/Key+values
+ * Ray Cologon's uID functions: http://www.nightwing.com.au/FileMaker/demos9/demo910.html
+ * ======================================
+ */
+Let( [
+        ~uuidAsNumber = GetAsNumber ( uuid )
+];
+        Middle ( ~uuidAsNumber ; 2; 11 )
+)

@@ -1,0 +1,53 @@
+﻿/**
+ * ======================================
+ * UUIDRandom
+ *
+ * PURPOSE:
+ * UUIDRandom creates a numeric universally unique identifier suitable for use
+ * as a primary key in FileMaker number fields. The UUID uses random digits in
+ * place of the record ID and NIC (MAC) address. This may be required in some
+ * situations to preserve the anonymity of the device that generated the UUID.
+ *
+ * RETURNS:
+ * A delimited number of the form 4-nnnnnnnnnnn-nnnnnn-nnnnnnnnnnnnnnn
+ * (1 digit version & "." & 11 digit timestamp in seconds & "." &
+ * 6 random digits & "@" & 15 random digits)
+ *
+ * PARAMETERS: none
+ *
+ * DEPENDENCIES: none
+ *
+ * NOTES:
+ * UUIDRandom encodes the creation timestamp and several random digits as a
+ * single delimited integer. For most purposes, FileMaker will ignore the hyphen
+ * "-" in number fields; they are only readability aids.
+ *
+ * This function generates UUIDs that are meaningfully sortable. UUIDs will first
+ * sort by version (non-random, then random), then by creation timestamp.
+ *
+ * This function creates a (decimal) numeric UUID, which has performance
+ * advantages for file size and find speed in FileMaker. This can be converted
+ * to a more conventional text string UUID with the UUIDGetAsRFC4122( uuid )
+ * function, which converts the integer into the conventional hexadecimal
+ * representation of an RFC 4122 UUID.
+ *
+ * The creation timestamp can be extracted with UUIDGetTimestamp( uuid ).
+ *
+ * HISTORY:
+ * CREATED on 2010-12-02 by Jeremy Bante of The Support Group (jbante@supportgroup.com).
+ *
+ * REFERENCES:
+ * Key values Best Practice: http://filemakerstandards.org/display/bp/Key+values
+ * RFC 4122 UUID standard specification: http://tools.ietf.org/html/rfc4122
+ * ======================================
+ */
+
+Let ( [
+        ~version = 4;
+        ~timestamp = GetAsNumber ( Get ( CurrentHostTimeStamp ) );
+        ~timestamp = Right ( "00000000000" & ~timestamp ; 11 );
+        ~recordID = Right ( Random ; 6 );
+        ~nicAddress = Mod ( Right ( Random ; 16 ) ; 718525023289342 ) + 281474976710657
+];
+        ~version & "-" & ~timestamp & "-" & ~recordID & "-" & ~nicAddress
+)

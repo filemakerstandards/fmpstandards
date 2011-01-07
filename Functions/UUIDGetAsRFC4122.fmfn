@@ -1,0 +1,114 @@
+﻿/**
+ * ======================================
+ * UUIDGetAsRFC4122 ( uuid )
+ *
+ * PURPOSE:
+ * UUIDGetAsRFC4122( uuid ) converts a FileMaker numeric UUID, such as created
+ * by the UUID custom function, to the conventional hexadecimal (base 16)
+ * representation of an RFC 4122 UUID.
+ *
+ * RETURNS:
+ * A text string representing an RFC 4122 universally unique identifier.
+ *
+ * PARAMETERS:
+ * uuid: The numeric uuid to convert to RFC 4122 hexadecimal format
+ *
+ * DEPENDENCIES: none
+ *
+ * NOTES:
+ * RFC 4122 specifies a timestamp in 100-nanosecond increments, 7 digits more
+ * precision than afforded by FileMaker-generated timestamps (seconds). This UUID
+ * solution uses six digits of the RecordID and a zero for padding to fill the
+ * extra 7 digits.
+ *
+ * RFC 4122 specifies a 14-bit "clock sequence" using information that FileMaker
+ * developers do not have access to. A fixed default value is used instead.
+ *
+ * HISTORY:
+ * MODIFIED on 2010-11-22 by Jeremy Bante of The Support Group
+ * (jbante@supportgroup.com) to handle the updated output format of UUID.New.
+ * MODIFIED on 2010-10-04 by jeremy@kyologic.com to handle randomly generated
+ * substitutes for NICAddresses outside the possible range of NICAddresses.
+ * CREATED on 2010-09-12 by Jeremy Bante of Kyo Logic (jeremy@kyologic.com).
+ * INSPIRED by a UUID function created by Tom Robinson.
+ *
+ * REFERENCES:
+ * Key values Best Practice: http://filemakerstandards.org/display/bp/Key+values
+ * RFC 4122 UUID standard specification: http://tools.ietf.org/html/rfc4122
+ * Tom Robinson's UUID function: http://www.briandunning.com/cf/969
+ * ======================================
+ */
+Case (
+        /*First call to UUIDGetAsRFC4122: extract and set-up UUID components*/
+        not $~step;
+                Let ( [
+                        ~uuidAsNumber = GetAsNumber ( uuid );
+                        ~uuidLength = Length ( ~uuidAsNumber );
+                
+                        $~timestamp = Middle ( ~uuidAsNumber ; 2; 11 );
+                        $~timestamp = Abs ( $~timestamp - 49916304000 ); //move timestamp epoch from 0001-01-01T00:00:00 to 1582-10-15T00:00:00
+                        $~timestamp = $~timestamp & Middle ( ~uuidAsNumber ; 13 ; 6 ) & "0"; //use RecordID & 0 for 7 extra digits of precision in RFC 4122
+ 
+                        $~nicAddress = Mod ( Right ( ~uuidAsNumber ; 15 ) ; 281474979710656 ); //Mod() forces randomly-generated values into possible range
+ 
+                        $~base16 = "0123456789abcdef";
+                        $~hexTimestamp = "";
+                        $~hexNICAddress = "";
+                        $~step = 1 //move to next step
+                ];
+                        UUIDGetAsRFC4122 ( "" )
+                );
+        
+        /*Convert timestamp to base 16*/
+        $~step = 1;
+                Let ( [
+                        $~hexTimestamp =
+                                Middle ( $~base16 ; Mod ( $~timestamp ; 16 ) + 1 ; 1 ) & 
+                                $~hexTimestamp;
+                        $~timestamp = Div ( $~timestamp ; 16 );
+                        $~step =
+                                Case (
+                                        $~timestamp ; $~step; //there's still more timestamp to parse
+                                        /*else*/ $~step +1 //move to next step
+                                )
+                ];
+                        UUIDGetAsRFC4122 ( "" )
+                );
+        
+        /*Convert NICAddress to base 16*/
+        $~step = 2;
+                Let ( [
+                        $~hexNICAddress =
+                                Middle ( $~base16 ; Mod ( $~nicAddress ; 16 ) + 1 ; 1 ) & 
+                                $~hexNICAddress;
+                        $~nicAddress = Div ( $~nicAddress ; 16 );
+                        $~step =
+                                Case (
+                                        $~nicAddress ; $~step; //there's still more NICAddress to parse
+                                        /*else*/ $~step +1 //move to next step
+                                )
+                ];
+                        UUIDGetAsRFC4122 ( "" )
+                );
+        
+        /*Concatenate, and return result*/
+        $~step = 3;
+                Let ( [
+                        ~result =
+                                Right ( $~hexTimestamp ; 8 ) & "-" & //RFC 4122 time_low
+                                Middle ( $~hexTimestamp ; 4 ; 4 ) & "-" & //time_mid
+                                "1" & Left ( $~hexTimestamp ; 3 ) & "-" & //time_hi_and_version
+                                "8000-" & //clock_seq_hi_and_reserved & clock_seq_low
+                                Right ( "0000000000000000" & $~hexNICAddress ; 12 ); //node
+                                
+                        //clear variables
+                        $~timestamp = "";
+                        $~nicAddress = "";
+                        $~base16 = "";
+                        $~hexTimestamp = "";
+                        $~hexNICAddress = "";
+                        $~step = ""
+                ];
+                        ~result
+                )
+)
