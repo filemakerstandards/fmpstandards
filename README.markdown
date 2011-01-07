@@ -10,4 +10,4 @@ If you need more information about using this resource
 (beyond simple copy/pasting - which is certainly doable)
 then see the following link.
 
-http://filemakerstandards.org/pages/viewpage.action?pageId=1179667
+[Github information on filemakerstandards.org](http://filemakerstandards.org/pages/viewpage.action?pageId=1179667)
