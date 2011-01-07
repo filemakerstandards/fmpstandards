@@ -44,7 +44,7 @@ Let (
         ~evaluateString =
                 "Let( [¶"
                 & parameters
-                & "$void = $void"&  //terminating variable to keep semicolon-delimited sytax in variableString consistent
+                & "$void = $void"  //terminating variable to keep semicolon-delimited sytax in variableString consistent
                 & "¶];¶"
                 & "True¶)";
  
