@@ -53,13 +53,13 @@
  */
  
 Case (
-        /*First call to UUIDNew, check for pre-parsed NIC address*/
+        /*First call to UUID, check for pre-parsed NIC address*/
         not $~step;
                 Let ( [
                         $~node = $$~UUID.NICADDRESS;
                         $~step = If ( $~node ; 4 ; /*else*/ 1 )
                 ];
-                        UUIDNew
+                        UUID
                 );
  
         /*Get NICAddress (if necessary)*/
@@ -75,10 +75,10 @@ Case (
                         $~i = 0;
                         $~step = If ( not $~nicIsRandom ; 2 ; /*else*/ 4 )
                 ];
-                        UUIDNew
+                        UUID
                 );
  
-        /*Parse NICAddress from hexadecimal to a FileMaker (base 10) number*/
+        /*Parse NIC Address from hexadecimal to a FileMaker (base 10) number*/
         $~step = 2;
                 Let ( [
                         $~nicDigit = Middle ( $~nicAddress ; 12 - $~i ; 1 );
@@ -87,7 +87,7 @@ Case (
                         $~step = If ( $~i < 11 ; 2 ; /*else*/ 3 ); //advance to next digit, if necessary
                         $~i = $~i + 1
                 ];
-                        UUIDNew
+                        UUID
                 );
  
         /*Store NIC address for future reference*/
@@ -96,7 +96,7 @@ Case (
                         $$~UUID.NICADDRESS = $~node;
                         $~step = 4
                 ];
-                        UUIDNew
+                        UUID
                 );
  
         /*Concatenate information*/
