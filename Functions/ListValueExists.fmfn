@@ -1,0 +1,20 @@
+/**
+ * =====================================================
+ * ListValueExists ( value ; valueList )
+ *
+ * PURPOSE:
+ *                  Return if a value exists within a return delimited list
+ * 
+ * RETURNS:
+ *                  (boolean) True if it exists, False if not
+ * DEPENDENCIES:
+ *                  none 
+ * NOTES:
+ *                  none
+ *
+ * HISTORY:         1/13/11 - Petrowsky - Added to custom functions
+ * =====================================================
+ * 
+ */
+
+PatternCount ( ¶& valueList &¶ ; ¶& value &¶ ) ≥ 1

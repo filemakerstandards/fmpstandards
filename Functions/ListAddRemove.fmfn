@@ -1,0 +1,68 @@
+/**
+ * =====================================================
+ * ListAddRemove ( value ; valueList )
+ *
+ * PURPOSE:
+ *                  Add or remove a value from a return delimited list of data
+ * 
+ * RETURNS:
+ *                  (string) Return delimited list of values
+ * DEPENDENCIES:
+ *                  none 
+ * NOTES:
+ *                  none
+ *
+ * HISTORY:         1/13/11 - Petrowsky - Modified to filemakerstandards.org format
+ * =====================================================
+ * 
+ */
+
+Let ( [
+
+	~newList = Substitute ( If ( Left ( valuelist; 1 ) ≠ ¶; "^") & valuelist & "^"; ¶; "^^" ); // List minus all returns
+	~match = "^" & value & "^" // Value to match
+
+];
+
+	Case ( 
+		PatternCount ( ~newList; ~match );
+			Let ( [
+				~removed = Substitute ( ~newList; ~match; "" ); // Kill matching values
+				~newList = Substitute ( ~removed; "^^"; ¶ ); // Put returns back in
+				~newList = Middle ( ~newList; 2; 100000 ); // Trim leading ^
+				~newList = Left ( ~newList; Length ( ~newList ) - 1 ); // Trim trailing ^
+				~cleaned = Substitute ( ~newList; ¶; "" ); // Remove returns for trimming
+				~firstChar = Position ( ~newList; Left ( ~cleaned; 1 ); 0; 1 ); // Position of firt non cleaned char
+				~lastChar = Position ( ~newList; Right ( ~cleaned; 1 ); Length ( ~newList ); -1 ) // Position of last non cleaned char
+			];
+				Middle ( ~newList; ~firstChar; ~lastChar - ~firstChar + 1 )
+			);
+
+		If ( valuelist ≠ ""; valuelist & ¶ ) & value // default
+	)
+
+)
+
+/*
+ * Unit tests
+ */
+
+/*
+Let (
+_ = "--------------------";
+
+ List (
+  List ( "At beginning ( one )"; _; list.addRemove ( "one"; List ( "one"; "two"; "three" ) ); _ );
+  List ( "At ending ( three )"; _; list.addRemove ( "three"; List ( "one"; "two"; "three" ) ); _ );
+  List ( "With multiple spread out ( one )"; _; list.addRemove ( "one"; List ( "one"; "two"; "one"; "three" ) ); _ );
+  List ( "With multiple at beginning ( one )"; _; list.addRemove ( "one"; List ( "one"; "one"; "two"; "three" ) ); _ );
+  List ( "With multiple at ending ( three )"; _; list.addRemove ( "three"; List ( "one"; "two"; "three"; "three" ) ); _ );
+  List ( "With multiple in middle ( two )"; _; list.addRemove ( "two"; List ( "one"; "two"; "two"; "three" ) ); _ );
+  List ( "With even returns at start ( two )"; _; list.addRemove ( "two"; "¶¶¶¶one¶two¶three" ); _ );
+  List ( "With odd returns at start ( two )"; _; list.addRemove ( "two"; "¶¶¶one¶two¶three" ); _ );
+  List ( "With even returns at end ( two )"; _; list.addRemove ( "two"; "one¶two¶three¶¶¶¶" ); _ );
+  List ( "With odd returns at end ( two )"; _; list.addRemove ( "two"; "one¶two¶three¶¶¶" ); _ );
+  List ( "Without value ( one )"; _; list.addRemove ( "one"; List ( "two"; "three" ) ); _ );
+  )
+)
+*/
