@@ -29,7 +29,7 @@
 
 Let ( [
 	~name = "¶$" & name & " = ";
-	~parameters = Get ( ScriptParamter );
+	~parameters = Get ( ScriptParameter );
 	~namePosition = Position ( "¶" & ~parameters ; ~name ; 1 ; 1	);
 	~valuePosition = ~namePosition + Length ( ~name ) - 1;
 	~endPosition = Position ( ~parameters ; ";¶" ; ~namePosition ; 1 );
