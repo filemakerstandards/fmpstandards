@@ -1,6 +1,6 @@
 /**
  * =====================================================
- * # ( key ; value )
+ * # ( name ; value )
  *
  * PURPOSE:
  *                  Creates a string designed to be sent as a script parameter
