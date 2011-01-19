@@ -1,0 +1,36 @@
+/**
+ * =====================================================
+ * PortalRowToggleValue ( keyField ; rowField )
+ *
+ * PURPOSE:
+ *                  Add or remove a portal row field value
+ *                  from a target key field (global or normal).
+ * PARAMETERS:
+ *                  keyField = global or normal field reference
+ *                  rowField = field reference from a portal row
+ * RETURNS:
+ *                  (string) Return delimited list of values
+ *                  with the value either added or removed.
+ * DEPENDENCIES:
+ *                  none 
+ * NOTES:
+ * HISTORY:         1/18/11 - Matt Petrowsky
+ * =====================================================
+ * 
+ */
+
+Let ( [
+	~keyField = keyField;
+	~rowValue = GetNthRecord ( rowField ; Get ( ActivePortalRowNumber ) )
+];
+	If ( IsEmpty ( FilterValues ( ~keyField ; ~rowValue ) ); // it doesn't exist
+		
+		List ( ~keyField; ~rowValue ); // add it, otherwise...
+		
+		Substitute( "¶¶" & ~keyField & "¶¶"; // remove it
+					[ ¶ & ~rowValue & ¶ ; ¶ ];
+					["¶¶¶"; ""];
+					["¶¶"; ""]
+		)
+	)
+)
