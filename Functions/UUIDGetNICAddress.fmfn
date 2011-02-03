@@ -1,28 +1,28 @@
 ﻿/**
  * ======================================
- * UUIDGetNICAddress ( uuid )
+ * UUIDGetNICAddress ( theID )
  *
  * PURPOSE:
- * UUIDGetNICAddress ( uuid ) extracts the hexadecimal NIC (MAC) address from a
- * number-encoded (not hexadecimal) UUID, such as created by the UUID
- * function.
+ * Extracts the hexadecimal NIC (MAC) address from a numeric (not hexadecimal)
+ * UUID created by this family of functions.
  *
  * RETURNS:
  * A string of the form nn:nn:nn:nn:nn:nn representing the hexadecimal NIC
- * address of the machine that created the uuid passed as a parameter, if that
- * uuid actually contains it. This function returns False (0, zero) if the NIC
- * address is outside the range of valid IPv4 MAC addresses, such as if the uuid
- * used a random number in place of a NIC address.
+ * address of the machine that created the UUID passed as a parameter. Returns
+ * Null ("") if the UUID is in a format that does not contain a retrievable NIC
+ * address.
  *
  * PARAMETERS:
- * uuid: The integer-encoded UUID to extract a NIC address from
+ * theID: The UUID to extract a NIC address from
  *
  * DEPENDENCIES: none
  *
  * HISTORY:
+ * MODIFIED on 2011-02-02 by jbante@supportgroup.com to use a format with a
+ * one-to-one relationship with UUIDs in RFC 4122 format.
  * MODIFIED on 2010-11-22 by Jeremy Bante of The Support Group
  * (jbante@supportgroup.com) to extract NIC addresses from the updated output
- * format for UUID.New.
+ * format for UUIDNew.
  * MODIFIED on 2010-10-04 by jeremy@kyologic.com to return False when
  * passed a UUID value with a randomly-generated NICAddress.
  * CREATED on 2010-09-12 by Jeremy Bante of Kyo Logic (jeremy@kyologic.com).
@@ -31,73 +31,79 @@
  * REFERENCES:
  * Key values Best Practice: http://filemakerstandards.org/display/bp/Key+values
  * Ray Cologon's uID functions: http://www.nightwing.com.au/FileMaker/demos9/demo910.html
+ * UUIDGetAsRFC4122: http://www.briandunning.com/cf/1221
+ * UUIDGetAsUUID: http://www.briandunning.com/cf/1273
+ * UUIDGetNICAddress: http://www.briandunning.com/cf/1222
+ * UUIDGetSeconds: http://www.briandunning.com/cf/1223
+ * UUIDNew: http://www.briandunning.com/cf/1220
+ * UUIDRandom: http://www.briandunning.com/cf/1246
  * ======================================
  */
 Case (
-        /*Step 0: pull NICAddress from UUID, and prep for parse loop*/
-        not $~step;
-                Let ( [
-                        ~uuidAsNumber = GetAsNumber ( uuid );
-                        $~nicAddress = Right ( ~uuidAsNumber ; 15 );
-                        $~hexNICAddress = "";
-                        $~base16 = "0123456789abcdef";
-                        $~step =
-                                Case (
-                                        $~nicAddress ≤ 281474976710656 ; 1; //NIC is valid, advance to next step
-                                        /*else*/ 3 //skip to error-handling step
-                                )
-                ];
-                        UUIDGetNICAddress ( "" )
-                );
+	/*Pull NICAddress from UUID, and set-up parse loop*/
+	not $~step;
+		Let ( [
+			~idAsNumber = GetAsNumber ( theID );
+			~version = Left ( ~idAsNumber ; Length ( ~idAsNumber ) - 40 );
+			$~nicAddress = Right ( ~idAsNumber ; 15 );
+			$~hexNICAddress = "";
+			$~base16 = "0123456789abcdef";
+			$~step =
+				If (
+					~version < 3  //NIC is valid
+					and $~nicAddress ≤ 281474976710656;
+						1;
+					/*else*/
+						3 //error
+				)
+		];
+			UUIDGetNICAddress ( "" )
+		);
  
-        /*Step 1: convert NICAddress from number to base 16*/
-        $~step = 1;
-                Let ( [
-                        $~hexNICAddress =
-                                Middle ( $~base16 ; Mod ( $~nicAddress ; 16 ) + 1 ; 1 ) & 
-                                $~hexNICAddress;
-                        $~nicAddress = Div ( $~nicAddress ; 16 );
-                        $~step =
-                                Case(
-                                        $~nicAddress ; $~step; //there's still more NICAddress to parse
-                                        /*else*/ $~step +1 //move to next step
-                                )
-                ];
-                        UUIDGetNICAddress( "" )
-                );
+	/*Convert NIC address from base 10 to base 16*/
+	$~step = 1;
+		Let ( [
+			$~hexNICAddress =
+				Middle ( $~base16 ; Mod ( $~nicAddress ; 16 ) + 1 ; 1 ) & 
+				$~hexNICAddress;
+				$~nicAddress = Div ( $~nicAddress ; 16 );
+				$~step = If ( $~nicAddress ; $~step ; /*else*/ $~step + 1 )
+		];
+			UUIDGetNICAddress( "" )
+		);
  
-        /*Step 2: Insert colons and return result*/
-        $~step = 2;
-                Let ( [
-                        ~NICAddress = Right ( "000000000000" & $~hexNICAddress ; 12 );
-                        ~NICAddress =
-                                Middle ( ~NICAddress ; 1 ; 2 ) & ":" &
-                                Middle ( ~NICAddress ; 3 ; 2 ) & ":" &
-                                Middle ( ~NICAddress ; 5 ; 2 ) & ":" &
-                                Middle ( ~NICAddress ; 7 ; 2 ) & ":" &
-                                Middle ( ~NICAddress ; 9 ; 2 ) & ":" &
-                                Middle ( ~NICAddress ; 11 ; 2 );
+	/*Insert colons and return result*/
+	$~step = 2;
+		Let ( [
+			~nicAddress = Right ( "000000000000" & $~hexNICAddress ; 12 );
+			~nicAddress =
+				Middle ( ~nicAddress ; 1 ; 2 ) & ":"
+				& Middle ( ~nicAddress ; 3 ; 2 ) & ":"
+				& Middle ( ~nicAddress ; 5 ; 2 ) & ":"
+				& Middle ( ~nicAddress ; 7 ; 2 ) & ":"
+				& Middle ( ~nicAddress ; 9 ; 2 ) & ":"
+				& Middle ( ~nicAddress ; 11 ; 2 );
  
-                        //clear variables
-                        $~nicAddress = "";
-                        $~hexNICAddress = "";
-                        $~base16 = "";
-                        $~i = "";
-                        $~step = ""
-                ];
-                        ~NICAddress
-                );
+			//purge variables
+			$~nicAddress = "";
+			$~hexNICAddress = "";
+			$~base16 = "";
+			$~i = "";
+			$~step = ""
+		];
+			~nicAddress
+		);
  
-        /*NIC is not within the possible range, return False (error)*/
-        $~step = 3;
-                Let ( [
-                        //clear variables
-                        $~nicAddress = "";
-                        $~hexNICAddress = "";
-                        $~base16 = "";
-                        $~i = "";
-                        $~step = ""
-                ];
-                        False
-                )
+	/*Return error value*/
+	$~step = 3;
+		Let ( [
+			//purge variables
+			$~nicAddress = "";
+			$~hexNICAddress = "";
+			$~base16 = "";
+			$~i = "";
+			$~step = ""
+		];
+			"" //Null
+		)
 )
