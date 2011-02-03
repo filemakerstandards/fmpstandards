@@ -1,0 +1,114 @@
+﻿/**
+ * ======================================
+ * UUIDGetAsUUID ( rfc4122 )
+ *
+ * PURPOSE:
+ * Converts a UUID in the canonical RFC 4122 hexadecimal format to a numeric
+ * format with better performance characteristics as a primary key in FileMaker
+ * records.
+ *
+ * RETURNS:
+ * A 41-digit delimited number of the form:
+ * v-r-mmmmmmmmmmmmTsssssss-ccccc@nnnnnnnnnnnnnnn
+ * With version 1 and 2 UUIDs, the sections of the UUID correspond to:
+ * v: The UUID version (type) number
+ * r: A variant code reserved by the RFC 4122 standard
+ * m: The creation timestamp (seconds since 0001-01-01T00:00:00)
+ * s: The sub-second portion of the original UUID's timestamp
+ * c: The "clock sequence"
+ * n: The NIC address ("node") of the device that created the UUID
+ *
+ * PARAMETERS:
+ * rfc4122: The hexadecimal UUID to convert
+ *
+ * DEPENDENCIES: none
+ *
+ * HISTORY:
+ * CREATED on 2011-02-02 by Jeremy Bante of The Support Group
+ * (jbante@supportgroup.com).
+ *
+ * REFERENCES:
+ * Key values Best Practice: http://filemakerstandards.org/display/bp/Key+values
+ * RFC 4122 UUID standard specification: http://tools.ietf.org/html/rfc4122
+ * UUIDGetAsRFC4122: http://www.briandunning.com/cf/1221
+ * UUIDGetAsUUID: http://www.briandunning.com/cf/1273
+ * UUIDGetNICAddress: http://www.briandunning.com/cf/1222
+ * UUIDGetSeconds: http://www.briandunning.com/cf/1223
+ * UUIDNew: http://www.briandunning.com/cf/1220
+ * UUIDRandom: http://www.briandunning.com/cf/1246
+ * ======================================
+ */
+Case (
+	/*Set-up conversion from base 16 to base 10*/
+	not $~step;
+		Let ( [
+			$~step = 1
+		];
+			UUIDGetAsUUID (
+				Right ( Filter ( Lower ( rfc4122 ) ; "0123456789abcdef" ) ; 32 )
+			)
+		);
+        
+	/*Convert to base 10*/
+	$~step = 1;
+		Let ( [
+			$~i = $~i + 1;
+			~hexDigit = Middle ( rfc4122 ; $~i ; 1 );
+			$~decimal =
+				$~decimal * 16
+				+ ( Position ( "0123456789abcdef" ; ~hexDigit ; 1 ; 1 ) - 1 );
+			$~step = If ( $~i < 32 ; $~step ; /*else*/ $~step + 1 )
+		];
+			UUIDGetAsUUID ( rfc4122 )
+		);
+        
+	/*Format and return result*/
+	$~step = 2;
+		Let ( [
+			//extract RFC 4122 components
+			~node = Mod ( $~decimal ; 2^48 );
+			~clock_seq_and_reserved = Mod ( Div ( $~decimal ; 2^48 ) ; 2^16 );
+			~reserved =
+				Case (
+					~clock_seq_and_reserved < 2^15 ; 0;
+					~clock_seq_and_reserved < 2^15 + 2^14 ; 2;
+					~clock_seq_and_reserved < 2^15 + 2^14 + 2^13 ; 6;
+					/*else*/ 7
+				);
+			~clock_seq =
+				Case (
+					~reserved = 0 ; ~clock_seq_and_reserved;
+					~reserved = 2 ; Mod ( ~clock_seq_and_reserved ; 2^14 );
+					~reserved ≥ 6 ; Mod ( ~clock_seq_and_reserved ; 2^13 );
+				);
+			~time_hi_and_version = Mod ( Div ( $~decimal ; 2^64 ) ; 2^16 );
+			~time_hi = Mod ( ~time_hi_and_version ; 2^12 );
+			~version = Div ( ~time_hi_and_version ; 2^12 );
+			~time_mid = Mod ( Div ( $~decimal ; 2^80 ) ; 2^16 );
+			~time_low = Mod ( Div ( $~decimal ; 2^96 ) ; 2^32 );
+			
+			//convert to FileMaker-centric format
+			~timestamp =
+				~time_hi * 2^48
+				+ ~time_mid * 2^32
+				+ ~time_low;
+			~serialNumber = Right ( ~timestamp ; 7 );
+			//move epoch from 0001-01-01T00:00:00 to 1582-10-15T00:00:00
+			~timestamp = Div ( ~timestamp ; 10000000 ) + 49916304000;
+                                
+			//purge variables
+			$~decimal = "";
+			$~i = "";
+			$~step = ""
+		];
+			//format result
+			~version & "-"
+			& ~reserved & "-"
+			& Right ( "000000000000" & ~timestamp ; 12 )
+			& If ( ~version ≤ 2 ; "T" ; /*else*/ "-" )
+			& Right ( "0000000" & ~serialNumber ; 7 ) & "-"
+			& Right ( "00000" & ~clock_seq ; 5 )
+			& If ( ~version ≤ 2 ; "@" ; /*else*/ "-" )
+			& Right ( "000000000000000" & ~node ; 15 )
+		)
+)
