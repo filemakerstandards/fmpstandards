@@ -25,7 +25,7 @@
  * INSPIRED by a UUID function created by Tom Robinson.
  *
  * REFERENCES:
- * Key values Best Practice: http://filemakerstandards.org/display/bp/Key+values
+ * Key values Best Practice: http://filemakerstandards.org/pages/viewpage.action?pageId=557386
  * RFC 4122 UUID standard specification: http://tools.ietf.org/html/rfc4122
  * Tom Robinson's UUID function: http://www.briandunning.com/cf/969
  * UUIDGetAsRFC4122: http://www.briandunning.com/cf/1221

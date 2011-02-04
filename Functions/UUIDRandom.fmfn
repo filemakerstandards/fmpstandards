@@ -42,7 +42,7 @@
  * (jbante@supportgroup.com).
  *
  * REFERENCES:
- * Key values Best Practice: http://filemakerstandards.org/display/bp/Key+values
+ * Key values Best Practice: http://filemakerstandards.org/pages/viewpage.action?pageId=557386
  * RFC 4122 standard UUID specification: http://tools.ietf.org/html/rfc4122
  * UUIDGetAsRFC4122: http://www.briandunning.com/cf/1221
  * UUIDGetAsUUID: http://www.briandunning.com/cf/1273

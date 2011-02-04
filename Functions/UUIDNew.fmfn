@@ -58,7 +58,7 @@
  * INSPIRED by UUID functions created by Tom Robinson and Ray Cologon.
  *
  * REFERENCES:
- * Key values Best Practice: http://filemakerstandards.org/display/bp/Key+values
+ * Key values Best Practice: httphttp://filemakerstandards.org/pages/viewpage.action?pageId=557386
  * RFC 4122 standard UUID specification: http://tools.ietf.org/html/rfc4122
  * RFC 5322 Internet Message Format specification: http://www.rfc-editor.org/rfc/rfc5322.txt
  * Tom Robinson's UUID function: http://www.briandunning.com/cf/969

@@ -29,7 +29,7 @@
  * INSPIRED by UUID functions created by Ray Cologon.
  *
  * REFERENCES:
- * Key values Best Practice: http://filemakerstandards.org/display/bp/Key+values
+ * Key values Best Practice: http://filemakerstandards.org/pages/viewpage.action?pageId=557386
  * Ray Cologon's uID functions: http://www.nightwing.com.au/FileMaker/demos9/demo910.html
  * UUIDGetAsRFC4122: http://www.briandunning.com/cf/1221
  * UUIDGetAsUUID: http://www.briandunning.com/cf/1273
