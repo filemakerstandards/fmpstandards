@@ -1,0 +1,42 @@
+/*
+ * =====================================================
+ * WindowActiveTabs ( init ; theList )
+ * 
+ * PARAMETERS:
+ *		@init (num) starting point according to layout stacking order
+ *		@theList
+ * RETURNS:
+ *		(list) List of all active frontmost tabs
+ * DEPENDENCIES:
+ *		none
+ * NOTES:
+ *		Original by Koen Van Hulle (SHpartners.com)
+ * =====================================================
+ * 
+ */
+
+Let ( [ 
+	init = init +1; 
+	~objects = LayoutObjectNames ( Get( FileName ); Get ( LayoutName ) ); 
+	~tabToCheck = Substitute ( GetValue( ~objects ; init ) ; [ ¶ ; "" ] ); 
+	~parentTab = GetLayoutObjectAttribute ( ~tabToCheck; "enclosingObject" ); 
+	~isCurrentTab = Case(
+						IsEmpty ( ~tabToCheck );
+							False;
+
+						GetLayoutObjectAttribute ( ~tabToCheck ; "isFrontTabPanel" )
+						and IsEmpty ( ~parentTab );
+							True;
+							
+						GetLayoutObjectAttribute ( ~tabToCheck; "isFrontTabPanel" )
+						and PatternCount ( ¶ & theList & ¶; ¶ & ~parentTab & ¶ );
+							True;
+							
+	                    False
+					); 
+
+	theList = theList & If ( ~isCurrentTab ; ~tabToCheck & ¶ ) 
+
+];
+	If ( not IsEmpty ( ~tabToCheck ) ; WindowActiveTabs ( init ; theList ) ; theList ) 
+)
