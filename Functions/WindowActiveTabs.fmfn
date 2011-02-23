@@ -4,7 +4,7 @@
  * 
  * PARAMETERS:
  *		@init (num) starting point according to layout stacking order
- *		@theList
+ *		@theList (list) the list of tabs pushed into each iteration of the recursion
  * RETURNS:
  *		(list) List of all active frontmost tabs
  * DEPENDENCIES:
@@ -16,23 +16,23 @@
  */
 
 Let ( [ 
-	init = init +1; 
+	init = init +1; // increment counter
 	~objects = LayoutObjectNames ( Get( FileName ); Get ( LayoutName ) ); 
-	~tabToCheck = Substitute ( GetValue( ~objects ; init ) ; [ ¶ ; "" ] ); 
+	~tabToCheck = GetValue ( ~objects ; init ); 
 	~parentTab = GetLayoutObjectAttribute ( ~tabToCheck; "enclosingObject" ); 
 	~isCurrentTab = Case(
-						IsEmpty ( ~tabToCheck );
+						IsEmpty ( ~tabToCheck ); // there's no tab name
 							False;
 
 						GetLayoutObjectAttribute ( ~tabToCheck ; "isFrontTabPanel" )
-						and IsEmpty ( ~parentTab );
+						and IsEmpty ( ~parentTab ); // does not have a parent
 							True;
 							
 						GetLayoutObjectAttribute ( ~tabToCheck; "isFrontTabPanel" )
-						and PatternCount ( ¶ & theList & ¶; ¶ & ~parentTab & ¶ );
+						and PatternCount ( ¶ & theList & ¶; ¶ & ~parentTab & ¶ ); // parent is already in theList
 							True;
 							
-	                    False
+						False
 					); 
 
 	theList = theList & If ( ~isCurrentTab ; ~tabToCheck & ¶ ) 
