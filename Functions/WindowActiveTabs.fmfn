@@ -20,20 +20,22 @@ Let ( [
 	~tabToCheck = GetValue ( $~objects ; $~i );
 	~parentTab = GetLayoutObjectAttribute ( ~tabToCheck; "enclosingObject" );
 	~isFront = GetLayoutObjectAttribute ( ~tabToCheck ; "isFrontTabPanel" );
-	~isCurrentTab = Case(
-						IsEmpty ( ~tabToCheck ); // there's no tab name
-							False;
+	~isCurrentTab =
+		Case(
+			IsEmpty ( ~tabToCheck ); // there's no tab name
+				False;
 
-						~isFront
-						and IsEmpty ( ~parentTab ); // does not have a parent
-							True;
+			~isFront
+			and IsEmpty ( ~parentTab ); // does not have a parent
+				True;
 							
-						~isFront
-						and PatternCount ( ¶ & $~tabList & ¶; ¶ & ~parentTab & ¶ ); // parent is already in $~tabList
-							True;
+			~isFront
+			and PatternCount ( ¶ & $~tabList & ¶; ¶ & ~parentTab & ¶ ); // parent is already in $~tabList
+				True;
 							
-						False
-					);
+			/*Else*/
+				False
+		);
 	$~tabList = List ( $~tabList ; If ( ~isCurrentTab ; ~tabToCheck ) )
 
 ];
