@@ -1,10 +1,9 @@
 /*
  * =====================================================
- * WindowActiveTabs ( init ; theList )
+ * WindowActiveTabs ()
+ *		https://github.com/petrowsky/fmpstandards/blob/master/Functions/WindowActiveTabs.fmfn
  * 
- * PARAMETERS:
- *		@init (num) starting point according to layout stacking order
- *		@theList (list) the list of tabs pushed into each iteration of the recursion
+ * PARAMETERS: none
  * RETURNS:
  *		(list) List of all active frontmost tabs
  * DEPENDENCIES:
@@ -12,31 +11,45 @@
  * NOTES:
  *		Original by Koen Van Hulle (SHpartners.com)
  * =====================================================
- * 
  */
 
-Let ( [ 
-	init = init +1; // increment counter
-	~objects = LayoutObjectNames ( Get( FileName ); Get ( LayoutName ) ); 
-	~tabToCheck = GetValue ( ~objects ; init ); 
-	~parentTab = GetLayoutObjectAttribute ( ~tabToCheck; "enclosingObject" ); 
+Let ( [
+
+	$~i = $~i +1; // increment counter
+	$~objects = LayoutObjectNames ( Get( FileName ); Get ( LayoutName ) );
+	~tabToCheck = GetValue ( $~objects ; $~i );
+	~parentTab = GetLayoutObjectAttribute ( ~tabToCheck; "enclosingObject" );
+	~isFront = GetLayoutObjectAttribute ( ~tabToCheck ; "isFrontTabPanel" );
 	~isCurrentTab = Case(
 						IsEmpty ( ~tabToCheck ); // there's no tab name
 							False;
 
-						GetLayoutObjectAttribute ( ~tabToCheck ; "isFrontTabPanel" )
+						~isFront
 						and IsEmpty ( ~parentTab ); // does not have a parent
 							True;
 							
-						GetLayoutObjectAttribute ( ~tabToCheck; "isFrontTabPanel" )
-						and PatternCount ( ¶ & theList & ¶; ¶ & ~parentTab & ¶ ); // parent is already in theList
+						~isFront
+						and PatternCount ( ¶ & $~tabList & ¶; ¶ & ~parentTab & ¶ ); // parent is already in $~tabList
 							True;
 							
 						False
-					); 
-
-	theList = theList & If ( ~isCurrentTab ; ~tabToCheck & ¶ ) 
+					);
+	$~tabList = List ( $~tabList ; If ( ~isCurrentTab ; ~tabToCheck ) )
 
 ];
-	If ( not IsEmpty ( ~tabToCheck ) ; WindowActiveTabs ( init ; theList ) ; theList ) 
+
+	If ( not IsEmpty ( ~tabToCheck );
+		WindowActiveTabs;
+	/*Else*/
+		$~tabList
+		& Let ( [
+			// purge variables
+			$~i = "";
+			$~objects = "";
+			$~tabList = ""
+		];
+			"" // null
+		)
+	) 
+	
 )
