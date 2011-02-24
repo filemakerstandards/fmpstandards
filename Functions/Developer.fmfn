@@ -1,6 +1,7 @@
 /**
  * =====================================================
  * Developer ( )
+ *                https://github.com/petrowsky/fmpstandards/blob/master/Functions/Developer.fmfn
  * 
  * PARAMETERS:
  *                none
@@ -12,27 +13,31 @@
  * NOTES:         Because Filemaker Changed Get ( PrivilegeSetName )
  *                Evaluate () must be used
  *
- * RELEASE:       101229
+ * RELEASE:       2011-02-23
  * =====================================================
  * 
  */
 
 Let ( [ 
 
-	~developers = List( ""; "" );  // Add names of the accounts which are valid developer accounts
+	~developers = List ( "" ; "" );  // Add names of the accounts which are valid developer accounts
 	~version = Get ( ApplicationVersion );
-	~isProAdvanced = PatternCount ( ~version; "ProAdvanced" ) = True;
-	~isPro = PatternCount ( ~version; "Pro" ) = True;
 	~isGo = PatternCount ( ~version; "Go" ) = True;
-	~versionNumber = GetAsNumber ( Substitute ( Get ( ApplicationVersion ) ; "," ; "." ) ) // account for foreign versions using comma
+	~versionNumber = GetAsNumber ( Substitute ( ~version ; "," ; "." ) ); // account for foreign versions using comma
+	~extendedPrivileges = // Add "developer" extended privilege to groups which are valid developer groups
+		If (  ~isGo or ~versionNumber ≥ 11;
+			Evaluate ( "Get ( AccountExtendedPrivileges )" );
+			/*else*/ Evaluate ( "Get ( ExtendedPrivileges )" )
+		)
 
 ];
 
 	PatternCount ( ¶& ~developers &¶ ; ¶& Get ( AccountName ) &¶ ) ≥ 1
+	or PatternCount ( ¶& ~extendedPrivileges &¶ ; ¶& "developer" &¶ ) ≥ 1
 	or
 	If ( ~isGo or ~versionNumber ≥ 11;
 		Evaluate ( "Get ( AccountPrivilegeSetName )" ) = "[Full Access]";
-		Evaluate ( "Get ( PrivilegeSetName )" ) = "[Full Access]"
+		/*else*/ Evaluate ( "Get ( PrivilegeSetName )" ) = "[Full Access]"
 	)
 
 )
