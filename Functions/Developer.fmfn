@@ -1,17 +1,21 @@
 /**
  * =====================================================
  * Developer ( )
- *                https://github.com/petrowsky/fmpstandards/blob/master/Functions/Developer.fmfn
+ *		https://github.com/petrowsky/fmpstandards/blob/master/Functions/Developer.fmfn
  * 
  * PARAMETERS:
- *                none
+ *		none
+ *
  * RETURNS:
- *                (bool) True or False based on proper   
- *                evaluation
+ *		(bool) True or False based on proper   
+ *		evaluation
+ *
  * DEPENDENCIES:
- *                none 
- * NOTES:         Because Filemaker Changed Get ( PrivilegeSetName )
- *                Evaluate () must be used
+ *		none
+ *
+ * NOTES:
+ *		Because Filemaker Changed Get ( PrivilegeSetName )
+ *		Evaluate () must be used
  *
  * RELEASE:       2011-02-23
  * =====================================================
