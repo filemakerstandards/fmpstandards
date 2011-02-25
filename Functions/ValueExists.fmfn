@@ -1,18 +1,19 @@
 /**
  * =====================================================
- * ListValueExists ( value ; valueList )
+ * ValueExists ( value ; valueList )
  *
  * PURPOSE:
- *                  Return if a value exists within a return delimited list
+ *		Return if a value exists within a return delimited list
  * 
  * RETURNS:
- *                  (boolean) True if it exists, False if not
+ *		(boolean) True if it exists, False if not
  * DEPENDENCIES:
- *                  none 
+ *		none 
  * NOTES:
- *                  none
+ *		none
  *
- * HISTORY:         1/13/11 - Petrowsky - Added to custom functions
+ * HISTORY:
+ *		2/24/11 - Petrowsky - Added to custom functions
  * =====================================================
  * 
  */
