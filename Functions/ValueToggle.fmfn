@@ -1,18 +1,17 @@
 /**
  * =====================================================
- * ListAddRemove ( value ; valueList )
+ * ValueToggle ( value ; valueList )
  *
  * PURPOSE:
- *                  Add or remove a value from a return delimited list of data
- * 
+ *		Add or remove a value from a return delimited list of data
  * RETURNS:
- *                  (string) Return delimited list of values
+ *		(string) Return delimited list of values
  * DEPENDENCIES:
- *                  none 
+ *		none 
  * NOTES:
- *                  none
- *
- * HISTORY:         1/13/11 - Petrowsky - Modified to filemakerstandards.org format
+ *		none
+ * HISTORY:
+ *		1/13/11 - Petrowsky - Modified to filemakerstandards.org format
  * =====================================================
  * 
  */
