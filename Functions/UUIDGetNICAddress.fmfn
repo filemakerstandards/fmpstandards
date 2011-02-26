@@ -1,77 +1,65 @@
 ﻿/**
  * ======================================
  * UUIDGetNICAddress ( theID )
+ *		https://github.com/petrowsky/fmpstandards/blob/master/Functions/UUIDGetNICAddress.fmfn
  *
  * PURPOSE:
- * Extracts the hexadecimal NIC (MAC) address from a numeric (not hexadecimal)
- * UUID created by this family of functions.
+ *		Extracts the hexadecimal NIC address from a numeric (not hexadecimal)
+ *		UUID created by this family of functions.
  *
  * RETURNS:
- * A string of the form nn:nn:nn:nn:nn:nn representing the hexadecimal NIC
- * address of the machine that created the UUID passed as a parameter. Returns
- * Null ("") if the UUID is in a format that does not contain a retrievable NIC
- * address.
+ *		A string of the form nn:nn:nn:nn:nn:nn representing the hexadecimal NIC
+ *		address of the machine that created the UUID passed as a parameter.
+ *		Returns Null ("") if the UUID does not contain a retrievable NIC
+ *		address.
  *
  * PARAMETERS:
- * theID: The UUID to extract a NIC address from
+ *		theID: The UUID to extract a NIC address from
  *
  * DEPENDENCIES: none
  *
- * HISTORY:
- * MODIFIED on 2011-02-02 by jbante@supportgroup.com to use a format with a
- * one-to-one relationship with UUIDs in RFC 4122 format.
- * MODIFIED on 2010-11-22 by Jeremy Bante of The Support Group
- * (jbante@supportgroup.com) to extract NIC addresses from the updated output
- * format for UUIDNew.
- * MODIFIED on 2010-10-04 by jeremy@kyologic.com to return False when
- * passed a UUID value with a randomly-generated NICAddress.
- * CREATED on 2010-09-12 by Jeremy Bante of Kyo Logic (jeremy@kyologic.com).
- * INSPIRED by UUID functions created by Ray Cologon.
+ * RELEASE: 2011-02-25
  *
  * REFERENCES:
- * Key values Best Practice: http://filemakerstandards.org/pages/viewpage.action?pageId=557386
- * Ray Cologon's uID functions: http://www.nightwing.com.au/FileMaker/demos9/demo910.html
- * UUIDGetAsRFC4122: http://www.briandunning.com/cf/1221
- * UUIDGetAsUUID: http://www.briandunning.com/cf/1273
- * UUIDGetNICAddress: http://www.briandunning.com/cf/1222
- * UUIDGetSeconds: http://www.briandunning.com/cf/1223
- * UUIDNew: http://www.briandunning.com/cf/1220
- * UUIDRandom: http://www.briandunning.com/cf/1246
+ *		Key values Best Practice: http://filemakerstandards.org/display/bp/Key+values
+ *		Ray Cologon's uID functions: http://www.nightwing.com.au/FileMaker/demos9/demo910.html
  * ======================================
  */
 Case (
-	/*Pull NICAddress from UUID, and set-up parse loop*/
+	/*Pull node field from UUID, and set-up conversion loop*/
 	not $~step;
 		Let ( [
 			~idAsNumber = GetAsNumber ( theID );
 			~version = Left ( ~idAsNumber ; Length ( ~idAsNumber ) - 40 );
 			$~nicAddress = Right ( ~idAsNumber ; 15 );
+			~isMulticast = Mod ( Div ( $~nicAddress ; 1099511627776 ) ; 2 );
 			$~hexNICAddress = "";
 			$~base16 = "0123456789abcdef";
 			$~step =
 				If (
 					~version < 3  //NIC is valid
-					and $~nicAddress ≤ 281474976710656;
+					and $~nicAddress ≤ 281474976710656
+					and not ~isMulticast;
 						1;
 					/*else*/
-						3 //error
+						-1 //error
 				)
 		];
 			UUIDGetNICAddress ( "" )
 		);
- 
+
 	/*Convert NIC address from base 10 to base 16*/
 	$~step = 1;
 		Let ( [
 			$~hexNICAddress =
-				Middle ( $~base16 ; Mod ( $~nicAddress ; 16 ) + 1 ; 1 ) & 
+				Middle ( $~base16 ; Mod ( $~nicAddress ; 16 ) + 1 ; 1 ) &
 				$~hexNICAddress;
 				$~nicAddress = Div ( $~nicAddress ; 16 );
 				$~step = If ( $~nicAddress ; $~step ; /*else*/ $~step + 1 )
 		];
-			UUIDGetNICAddress( "" )
+			UUIDGetNICAddress ( "" )
 		);
- 
+
 	/*Insert colons and return result*/
 	$~step = 2;
 		Let ( [
@@ -83,7 +71,7 @@ Case (
 				& Middle ( ~nicAddress ; 7 ; 2 ) & ":"
 				& Middle ( ~nicAddress ; 9 ; 2 ) & ":"
 				& Middle ( ~nicAddress ; 11 ; 2 );
- 
+
 			//purge variables
 			$~nicAddress = "";
 			$~hexNICAddress = "";
@@ -93,9 +81,9 @@ Case (
 		];
 			~nicAddress
 		);
- 
+
 	/*Return error value*/
-	$~step = 3;
+	$~step = -1;
 		Let ( [
 			//purge variables
 			$~nicAddress = "";

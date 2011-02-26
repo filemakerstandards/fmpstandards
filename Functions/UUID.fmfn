@@ -5,4 +5,4 @@
  * http://filemakerstandards.org/pages/viewpage.action?pageId=557138
  */
  
-UUIDNew // change this to another UUID function if desired
+UUIDTimeNIC // change this to another UUID function if desired
