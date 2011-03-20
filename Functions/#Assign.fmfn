@@ -69,6 +69,7 @@ explicit formatting from #()
 List(
 #Assign ( # ( "foo" ; "bar" ) ); // using # without $
 #Assign ( # ( "$foo" ; "bar" ) ); // using # with $
+#Assign ( # ( "$foo" ; "bar" ) & # ( "bar" ; "baz" ) ); // concatenated #()
 #Assign ( List ( # ( "foo" ; "bar" ); # ( "$bar" ; "baz" ) ) ); // List with & without $
 #Assign ( "$foo = \"bar\"" ); // single line raw  Let declaration
 #Assign ( "$foo = \"bar\";¶$bar = \"baz\""); // multi-line raw Let
