@@ -5,7 +5,8 @@
  * PURPOSE:
  * 		#Assign ( parameters ) uses the output of the # ( name ; value ) function (or
  * 		the concatenated results from several #() calls) to declare and populate a
- * 		series of locally-scoped script variables.
+ * 		series of locally-scoped script variables. #Assign also handles native
+ * 		Let() function formatting which limits dependancies on #() by other custom fuctions.
  *
  * RETURNS:
  * 		True (1) when parameters is a valid set of name-value pairs (which includes
@@ -48,7 +49,7 @@ Let (
 		& parameters
 		& If ( Right ( parameters ; 1 ) = ";"
 				or Right ( parameters ; 1 ) = ¶;
-				"$~ = $~")  //terminating variable to keep semicolon-delimited sytax in variableString consistent
+				"$~ = $~")  //terminating variable to keep semicolon-delimited sytax in parameters consistent
 		& "¶];¶"
 		& "True¶)";
 
