@@ -30,7 +30,7 @@ Let ( [
 	var.values = List (
 						Get ( WindowName );
 						Get ( LayoutName );
-						ObjectID ( Get ( LayoutName ); "Layout"; ""; "" );
+						GetValue ( LayoutIDs ( Get ( FileName ) ) ; Get ( LayoutNumber ) );
 						Get ( WindowTop );
 						Get ( WindowLeft );
 						Get ( WindowWidth );

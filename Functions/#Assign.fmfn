@@ -46,7 +46,9 @@ Let (
 	~evaluateString =
 		"Let( [¶"
 		& parameters
-		& If ( Right ( parameters ; 1 ) = ";"; "$~ = $~")  //terminating variable to keep semicolon-delimited sytax in variableString consistent
+		& If ( Right ( parameters ; 1 ) = ";"
+				or Right ( parameters ; 1 ) = ¶;
+				"$~ = $~")  //terminating variable to keep semicolon-delimited sytax in variableString consistent
 		& "¶];¶"
 		& "True¶)";
 
@@ -58,3 +60,17 @@ Let (
 		False
 	)
 )
+
+/*
+Unit tests
+Accounting for both a native Let() format and the more
+explicit formatting from #()
+
+List(
+#Assign ( # ( "foo" ; "bar" ) ); // using # without $
+#Assign ( # ( "$foo" ; "bar" ) ); // using # with $
+#Assign ( List ( # ( "foo" ; "bar" ); # ( "$bar" ; "baz" ) ) ); // List with & without $
+#Assign ( "$foo = \"bar\"" ); // single line raw  Let declaration
+#Assign ( "$foo = \"bar\";¶$bar = \"baz\""); // multi-line raw Let
+)
+*/
