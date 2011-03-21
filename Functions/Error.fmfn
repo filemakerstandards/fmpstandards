@@ -1,26 +1,53 @@
-/*
- * =====================================================
+/**
+ * =====================================
  * Error ( )
- * 
+ *
+ * PURPOSE:
+ *		Assign a set of reserved variables to contain useful error handing 
+ *		information. Default assignment assumes a FileMaker error and can
+ *		be overridden to contain errors related to plugins, the solution
+ *		or other custom functions.
+ *		
  * RETURNS:
- *                (list) error variables
+ *		A Let() formatted array of reserved varible names and error related data
+ *		
+ * PARAMETERS:
+ *		none
+ *
+ * EXAMPLES:
+ * 		Error // to return information about an internal FileMaker error
+ *		List ( Error ; #( "$errorType" ; "app" ) & #( "$errorNum" ; 20000 ) & #( "$errorString" ; "My app error" ) ) // application error
+ *		List ( Error ; #( "$errorType" ; "plugin" ) & #( "$errorNum" ; SMLastError ) & #( "$errorString" ; SMLastError ) ) // ScriptMaster error
+ *
  * DEPENDENCIES:
- *                ErrorString(), ErrorData()
+ *		ErrorString(), ErrorData()
+ *
  * NOTES:
- *                Provides multiple methods for returning the
- * =====================================================
- * 
+ *		Error handling can be accomplished in a variety of ways when scripting.
+ *		This function returns a pre-defined set of reserved variables for use
+ *		when handling errors. The variables declared below should ONLY be used
+ *		within your solution for the purpose of error handling.
+ *		IMPORTANT!! When capturing errors, you should handle the error within
+ *		the script where the error might occur. This allows you to know which
+ *		script caused the error.
+ *
+ * HISTORY:
+ *		MODIFIED on 2011-03-20 by matt@filemakermagazine.com - reformatted
+ *
+ * REFERENCES:
+ *		none
+ * =====================================
  */
 
 Let ( [
-	var.error = Get ( LastError )
+	~error = Get ( LastError )
 ];
 	List (
-		"$error=" & If ( var.error ≠ 0 ; True ; False );
-		"$errorType=" & Quote ( "fmp" );
-		"$errorNum=" & var.error;
-		"$errorString=" & Quote ( ErrorString ( var.error ) );
-		"$errorScript=" & Quote ( Get ( ScriptName ) );
-		"$errorData=" & Quote ( ErrorData );
+		"$error = " & If ( ~error ≠ 0 ; True ; False );
+		"$errorType = " & Quote ( "fmp" ); // enumeration fmp, app, plugin, func
+		"$errorNum = " & ~error; // set to your own error or plugin error when overriding
+		"$errorString = " & Quote ( ErrorString ( ~error ) ); // set your own string if needed
+		"$errorScript = " & Quote ( Get ( ScriptName ) );
+		"$errorData = " & Quote ( ErrorData );
 	)
 )
