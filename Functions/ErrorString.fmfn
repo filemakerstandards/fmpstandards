@@ -1,15 +1,37 @@
-/*
- * =====================================================
+/**
+ * =====================================
  * ErrorString ( num )
- * 
+ *
+ * PURPOSE:
+ *		Provide the human-readable error string associated to a numerical error
+ *		
  * RETURNS:
- *                (string) FileMaker's error string
+ *		(string) FileMaker's error string
+ *		
+ * PARAMETERS:
+ *		none
+ *
+ * EXAMPLES:
+ * 		(see Error function)
+ *
  * DEPENDENCIES:
- *                none
+ *		none
+ *
  * NOTES:
- *                http://www.filemaker.com/help/html/error_codes.html
- * =====================================================
- * 
+ *		The ErrorString function can be used to contain your own
+ *		solution specific errors. It is advised that you use
+ *		numerical values which may never potentially conflict
+ *		with any possible future internal FileMaker error numbers.
+ *		For example: -5000 or 50000+ However, even then, FileMaker
+ *		may use these values at some point so you may wish to modify
+ *		the way you handle your own errors.
+ *
+ * HISTORY:
+ *		MODIFIED on 2011-03-20 by matt@filemakermagazine.com - reformatted
+ *
+ * REFERENCES:
+ *		http://www.filemaker.com/help/html/error_codes.html
+ * =====================================
  */
 
 Case (
