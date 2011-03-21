@@ -42,12 +42,15 @@
 Let ( [
 	~error = Get ( LastError )
 ];
-	List (
-		"$error = " & If ( ~error ≠ 0 ; True ; False );
-		"$errorType = " & Quote ( "fmp" ); // enumeration fmp, app, plugin, func
-		"$errorNum = " & ~error; // set to your own error or plugin error when overriding
-		"$errorString = " & Quote ( ErrorString ( ~error ) ); // set your own string if needed
-		"$errorScript = " & Quote ( Get ( ScriptName ) );
-		"$errorData = " & Quote ( ErrorData );
+	Substitute ( // add semi-colons for proper Let() formatting
+		List (
+			"$error = " & If ( ~error ≠ 0 ; True ; False );
+			"$errorType = " & Quote ( "fmp" ); // enumeration fmp, app, plugin, func
+			"$errorNum = " & ~error; // set to your own error or plugin error when overriding
+			"$errorString = " & Quote ( ErrorString ( ~error ) ); // set your own string if needed
+			"$errorScript = " & Quote ( Get ( ScriptName ) );
+			"$errorData = " & Quote ( ErrorData );
+		);
+		[ ¶ ; ";¶" ]
 	)
 )

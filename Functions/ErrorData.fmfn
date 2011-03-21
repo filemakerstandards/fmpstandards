@@ -34,18 +34,21 @@
  * =====================================
  */
 
-List (
-	"$errorFile = " & Quote ( Get ( FileName ) );
-	"$errorType = " & Quote ( If ( IsEmpty ( $errorType ) ; "fmp" ; $errorType ) );
-	"$scriptParameter = " & Quote ( Get ( ScriptParameter ) );
-	"$scriptResult = " & Quote ( Get ( ScriptResult ) );
-	"$lastODBCError = " & Quote ( Get ( LastODBCError ) );
-	"$layoutName = " & Quote ( Get ( LayoutName ) );
-	"$layoutTableName = " & Quote ( Get ( LayoutTableName ) );
-	"$recordOpenCount = " & Quote ( Get ( RecordOpenCount ) );
-	"$recordModificationCount = " & Quote ( Get ( RecordModificationCount ) );
-	"$activeFieldName = " & Quote ( Get ( ActiveFieldName ) );
-	"$activeFieldTableName = " & Quote ( Get ( ActiveFieldTableName ) );
-	"$activeLayoutObjectName = " & Quote ( Get ( ActiveLayoutObjectName ) );
-	// Add any additional application specific error data here
+Substitute (
+	List (
+		"$errorFile = " & Quote ( Get ( FileName ) );
+		"$errorType = " & Quote ( If ( IsEmpty ( $errorType ) ; "fmp" ; $errorType ) );
+		"$scriptParameter = " & Quote ( Get ( ScriptParameter ) );
+		"$scriptResult = " & Quote ( Get ( ScriptResult ) );
+		"$lastODBCError = " & Quote ( Get ( LastODBCError ) );
+		"$layoutName = " & Quote ( Get ( LayoutName ) );
+		"$layoutTableName = " & Quote ( Get ( LayoutTableName ) );
+		"$recordOpenCount = " & Get ( RecordOpenCount );
+		"$recordModificationCount = " & Get ( RecordModificationCount );
+		"$activeFieldName = " & Quote ( Get ( ActiveFieldName ) );
+		"$activeFieldTableName = " & Quote ( Get ( ActiveFieldTableName ) );
+		"$activeLayoutObjectName = " & Quote ( Get ( ActiveLayoutObjectName ) );
+		// Add any additional application specific error data here
+	);
+	[ ¶ ; ";¶" ]
 )
