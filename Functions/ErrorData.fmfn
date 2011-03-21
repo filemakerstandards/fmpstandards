@@ -1,32 +1,51 @@
-/*
- * =====================================================
+/**
+ * =====================================
  * ErrorData ( )
- * 
+ *
+ * PURPOSE:
+ *		Provide extended error related information when calling the Error() function
+ *		
  * RETURNS:
- *                  (list) error variables
+ *		A Let() formatted array of error related variables used by Error()
+ *		
+ * PARAMETERS:
+ *		none
+ *
+ * EXAMPLES:
+ * 		(see Error function)
+ *
  * DEPENDENCIES:
- *                  none
+ *		none
+ *
  * NOTES:
- *                  Supplies additional error tracking
- *                  data to the Error() funtion
- * =====================================================
- * 
+ *		ErrorData is expected to be modified based on the solution being
+ *		designed. Additional information may be added to the result of
+ *		ErrorData for the purpose of capturing the error data into an error
+ *		log table. Anything contained within this funtion is provided within
+ *		the reserved variable of $errorData and can be evaluated with the
+ *		#Assign() function. You can append your own fixed error data or
+ *		include any other error related functions.
+ *
+ * HISTORY:
+ *		MODIFIED on 2011-03-20 by matt@filemakermagazine.com - reformatted
+ *
+ * REFERENCES:
+ *		none
+ * =====================================
  */
 
 List (
-	"$errorFile=" & Quote ( Get ( FileName ) );
-	"$errorType=" & Quote ( If ( IsEmpty ( $errorType ) ; "fmp" ; $errorType ) );
-	"$scriptName=" & Quote ( Get ( ScriptName ) );
-	"$scriptParameter=" & Quote ( Get ( ScriptParameter ) );
-	"$scriptResult=" & Quote ( Get ( ScriptResult ) );
-	"$lastError=" & Quote ( Get ( LastError ) );
-	"$lastODBCError=" & Quote ( Get ( LastODBCError ) );
-	"$layoutName=" & Quote ( Get ( LayoutName ) );
-	"$layoutTableName=" & Quote ( Get ( LayoutTableName ) );
-	"$recordOpenCount=" & Quote ( Get ( RecordOpenCount ) );
-	"$recordModificationCount=" & Quote ( Get ( RecordModificationCount ) );
-	"$activeFieldName=" & Quote ( Get ( ActiveFieldName ) );
-	"$activeFieldTableName=" & Quote ( Get ( ActiveFieldTableName ) );
-	"$activeLayoutObjectName=" & Quote ( Get ( ActiveLayoutObjectName ) );
-	// Add your additional application error tracking data here
+	"$errorFile = " & Quote ( Get ( FileName ) );
+	"$errorType = " & Quote ( If ( IsEmpty ( $errorType ) ; "fmp" ; $errorType ) );
+	"$scriptParameter = " & Quote ( Get ( ScriptParameter ) );
+	"$scriptResult = " & Quote ( Get ( ScriptResult ) );
+	"$lastODBCError = " & Quote ( Get ( LastODBCError ) );
+	"$layoutName = " & Quote ( Get ( LayoutName ) );
+	"$layoutTableName = " & Quote ( Get ( LayoutTableName ) );
+	"$recordOpenCount = " & Quote ( Get ( RecordOpenCount ) );
+	"$recordModificationCount = " & Quote ( Get ( RecordModificationCount ) );
+	"$activeFieldName = " & Quote ( Get ( ActiveFieldName ) );
+	"$activeFieldTableName = " & Quote ( Get ( ActiveFieldTableName ) );
+	"$activeLayoutObjectName = " & Quote ( Get ( ActiveLayoutObjectName ) );
+	// Add any additional application specific error data here
 )
