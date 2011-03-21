@@ -52,3 +52,10 @@ Substitute (
 	);
 	[ ¶ ; ";¶" ]
 )
+
+/*
+Unit tests
+Using #Assign to make sure the Error variables will be set.
+
+#Assign ( Error );
+*/
