@@ -3,15 +3,18 @@
  * Dirname ( path )
  * 
  * PURPOSE:
- *                Return the parent folder of the
- *                supplied path
+ *		Return the parent folder of the supplied path
  * PARAMETERS:
- *                path
+ *		path = (string)
  * RETURNS:
- *                (string) path to parent folder
+ *		(string) path to parent folder
  * DEPENDENCIES:
- *                none
+ *		none
  * NOTES:
+ *		This function does not query to operating system
+ *		to determine whether the path is a file or folder
+ *		it can only use information within the path - such
+ *		as the existence of a trailing path separator
  * =====================================================
  * 
  */
@@ -33,8 +36,10 @@ Let ( [
 //Unit tests
 List (
 	Dirname ( "/Volumes/Macintosh HD/Users/User Name/Library/Application Support/FileMaker/Extensions/" );
-	Dirname ( "C:\Documents and Settings\User Name\Local Settings\Application Data\FileMaker\Extensions\" );
+	Dirname ( "C:\Documents and Settings\User Name\Local Settings\Application Data\FileMaker\Extensions\\" );
 	Dirname ( "C:\Users\User Name\AppData\Local\FileMaker\Extensions" );
 	Dirname ( "file:Folder/Parent/Path" );
+	Dirname ( "file:Folder/Parent/Path/" );
+	Dirname ( "file:/LightSpeed/Users/matt/Dropbox/Transfer/FMP Standards/Standards.fp7" );
 )
 */
