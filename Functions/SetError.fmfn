@@ -1,0 +1,48 @@
+/**
+ * =====================================
+ * SetError ( type ; num ; halt ; dialog ; capture )
+ *
+ * PURPOSE:
+ *		Explicitly set an error. Useful when setting an application
+ *		error or getting a plugin or custom function error
+ *		
+ * RETURNS:
+ *		(array) A $variable array of $error variables
+ *		
+ * PARAMETERS:
+ *		type = (enumeration) fmp, app, plugin, func
+ *		num = (number) the numerical value for that error type
+ *		halt = (bool) whether the error should cause a script halt
+ *		dialog = (bool) whether the error should show a dialog
+ *		capture = (bool) whether the error should be captured
+ *
+ * EXAMPLES:
+ *		(see Error function)
+ *
+ * DEPENDENCIES:
+ *		Error(), ErrorData(), ErrorString()
+ *
+ * NOTES:
+ *		See the Error function for information about error overrides
+ *
+ * HISTORY:
+ *		MODIFIED on 2011-03-20 by matt@filemakermagazine.com - reformatted
+ *
+ * REFERENCES:
+ *		none
+ * =====================================
+ */
+
+Error &
+Substitute ( // add semi-colons for proper Let() formatting
+	List (
+		"$errorState = " & True; // explicitly set the error to true
+		"$errorType = " & Quote ( type ); // enumeration app, plugin, func
+		"$errorNum = " & num; // error number
+		"$errorString = " & Quote ( ErrorString ( type ; num ) ); // override for errorString - put your errors in ErrorString
+		"$errorHalt = " & halt;
+		"$errorDialog = " & dialog;
+		"$errorCapture = " & capture;
+	);
+	[ ¶ ; ";¶" ]
+)
