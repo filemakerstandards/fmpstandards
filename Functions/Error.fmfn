@@ -51,8 +51,8 @@ Let (
 			"$errorScript = " & Quote ( Get ( ScriptName ) );
 			// only set defaults if not already set
 			"$errorHalt = " & If ( not IsEmpty ( $errorHalt ) ; $errorHalt ; True );
-			"$errorDialog = " & If ( not IsEmpty ( $errorDialog ) ; $errorHalt ; True );
-			"$errorCapture = " & If ( not IsEmpty ( $errorCapture ) ; $errorHalt ; True );
+			"$errorDialog = " & If ( not IsEmpty ( $errorDialog ) ; $errorDialog ; True );
+			"$errorCapture = " & If ( not IsEmpty ( $errorCapture ) ; $errorCapture ; True );
 		);
 		[ ¶ ; ";¶" ]
 	)
