@@ -74,14 +74,14 @@ Case (
 		*/
 
 		end = Case (
-					( Diff > Choose ( V ; 500000  ; 150000 ) )
-					or ( end < start )
-					or IsEmpty ( start )
-					or IsEmpty ( end );
-						"Error";
-					
-					end
-					);
+				( Diff > Choose ( V ; 500000  ; 150000 ) )
+				or ( end < start )
+				or IsEmpty ( start )
+				or IsEmpty ( end );
+					"Error";
+				
+				end
+				);
 		
 		$~null = "\"\"";
 
@@ -155,28 +155,28 @@ Case (
 		*/
 
 		Case (
-				( Length ( Result ) and ( Result = Filter ( Result; "?" ) ) )
-				or end = "Error";
-					Let ([
-						/*****DEBUGGING MODE*****/   // Case Debug = 1, returned error "[error_CL], Number, Name and Calculation error" ,if Debug  <> 1, returned error is "?"
-						Debug = "1";
-						Write = Substitute ( function; "[n]"; 1 ); NumError = EvaluationError ( Evaluate ( Write ) );
-						Error = "[" & NumError & "] " & "Unlisted error | Unknown error, check calculation or check \"start\" and \"end\" ¶102 | Field is missing¶103 | Relationship is missing¶106 | Table is missing¶113 | Function is missing¶1204 | Number, text constant, field name or \"(\" expected¶1205 | Comment is not terminated with \"*/\"¶1206 | Text constant must end with a quotation mark¶1207 | Unbalanced parenthesis¶1208 | Operator or function missing or \"(\" not expected¶1211 | List usage is not allowed in this function¶1212 | An operator (for example, +, -, *,;) is expected here¶1215 | This parameter is an invalid Get function parameter";
-						Pos = ValueCount ( Left ( Error; Position ( Error; NumError & " "; 1; 1 ) ) )
-					];
-						Case (
-							Debug = 1;
-								"[Error_CL]  | Return error : "
-								& GetValue ( Error; Case ( Pos = 0; 1; Pos ) )
-								& ¶
-								& TextStyleAdd ( "Calculation ( for [n] = 1 ) : "; Bold )
-								& Write;
-					
-							"?"
-						)
-					);
-		
-				Result
+			( Length ( Result ) and ( Result = Filter ( Result; "?" ) ) )
+			or end = "Error";
+				Let ([
+					/*****DEBUGGING MODE*****/   // Case Debug = 1, returned error "[error_CL], Number, Name and Calculation error" ,if Debug  <> 1, returned error is "?"
+					Debug = "1";
+					Write = Substitute ( function; "[n]"; 1 ); NumError = EvaluationError ( Evaluate ( Write ) );
+					Error = "[" & NumError & "] " & "Unlisted error | Unknown error, check calculation or check \"start\" and \"end\" ¶102 | Field is missing¶103 | Relationship is missing¶106 | Table is missing¶113 | Function is missing¶1204 | Number, text constant, field name or \"(\" expected¶1205 | Comment is not terminated with \"*/\"¶1206 | Text constant must end with a quotation mark¶1207 | Unbalanced parenthesis¶1208 | Operator or function missing or \"(\" not expected¶1211 | List usage is not allowed in this function¶1212 | An operator (for example, +, -, *,;) is expected here¶1215 | This parameter is an invalid Get function parameter";
+					Pos = ValueCount ( Left ( Error; Position ( Error; NumError & " "; 1; 1 ) ) )
+				];
+					Case (
+						Debug = 1;
+							"[Error_CL]  | Return error : "
+							& GetValue ( Error; Case ( Pos = 0; 1; Pos ) )
+							& ¶
+							& TextStyleAdd ( "Calculation ( for [n] = 1 ) : "; Bold )
+							& Write;
+				
+						"?"
+					)
+				);
+	
+			Result
 		)
 	)
 )
