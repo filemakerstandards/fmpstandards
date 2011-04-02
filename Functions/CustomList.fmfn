@@ -63,7 +63,7 @@ Case (
 	Let ( [
 		start = GetAsNumber ( start );
 		end = GetAsNumber ( end );
-		Diff = end - start + 1;
+		diff = end - start + 1;
 		V = Left ( Get ( ApplicationVersion ) ; 2 ) = "Go";
 		PL = Choose ( V ; 1700  ; 400 );
 
@@ -74,7 +74,7 @@ Case (
 		*/
 
 		end = Case (
-				( Diff > Choose ( V ; 500000  ; 150000 ) )
+				( diff > Choose ( V ; 500000  ; 150000 ) )
 				or ( end < start )
 				or IsEmpty ( start )
 				or IsEmpty ( end );
@@ -95,11 +95,11 @@ Case (
 		iter = Let ( $~CLExeCount = $~CLExeCount + 1 ; $~CLExeCount & PatternCount ( function ; "CustomList" ) + 1 );
 		$~CLn[ iter ] = start - 1;
 
-		Calc = Case (
-					Diff ≥ ( PL - 10 );
+		calc = Case (
+					diff ≥ ( PL - 10 );
 						( PL / 10 );
 						
-					Floor ( Diff / 10 ) + 1
+					Floor ( diff / 10 ) + 1
 				);
 
 		/*
@@ -109,13 +109,13 @@ Case (
 		which is the current limit of the FileMaker Evaluate function
 		*/
 
-		First = Substitute ( ( 10 ^ Calc ) - 1; 9; "__________" ) ;  
-		X = Floor ( Diff / PL );
-		$~CLRemainder[ iter ]  = Diff - ( X * PL );
+		first = Substitute ( ( 10 ^ calc ) - 1; 9; "__________" ) ;  
+		X = Floor ( diff / PL );
+		$~CLRemainder[ iter ]  = diff - ( X * PL );
 
 		/*When the "function" argument is left empty, CustomList() will return a numeric list based on the range defined */
 
-		FunctionR = Case ( IsEmpty ( function ); "~CLNum"; Substitute ( function; ["[n]"; "~CLNum"] ; [¶ ; ""] ) );
+		functionR = Case ( IsEmpty ( function ); "~CLNum"; Substitute ( function; ["[n]"; "~CLNum"] ; [¶ ; ""] ) );
 
 		/*
 		Each repeating variable's content is parsed in order
@@ -128,21 +128,21 @@ Case (
 		*/
 
 		$~CLExecute[ iter ] = Case ( Left ( Substitute ( Lower ( function ); ["definir"; "Let" ]; [" "; ""]; ["¶"; ""]); 5 ) = "Let([";
-		                   Substitute (  First ; [ "_";  "Let([$~CLn[" & iter & "]=$~CLn[" & iter & "]+1;~CLNum=$~CLn[" & iter & "];" &
-		                   Replace ( FunctionR; 1; Position ( FunctionR; "["; 1; 1 ); "" ) & "&\¶&¶"] );
-		                   Substitute ( First ; [ "_";  "Let([$~CLn[" & iter & "]=$~CLn[" & iter & "]+1;~CLNum=$~CLn[" & iter & "]];" & FunctionR & ")&\¶&¶"] ) );
+		                   Substitute (  first ; [ "_";  "Let([$~CLn[" & iter & "]=$~CLn[" & iter & "]+1;~CLNum=$~CLn[" & iter & "];" &
+		                   Replace ( functionR; 1; Position ( functionR; "["; 1; 1 ); "" ) & "&\¶&¶"] );
+		                   Substitute ( first ; [ "_";  "Let([$~CLn[" & iter & "]=$~CLn[" & iter & "]+1;~CLNum=$~CLn[" & iter & "]];" & functionR & ")&\¶&¶"] ) );
 
 		/*
 		Final compilation starts here. The remaining part
 		beyond each group of 1,700 values is treated now.
 		*/
 
-		 Final = Case ( X > 0; Substitute ( ( 10 ^ X ) - 1; 9; "Evaluate ( $~CLExecute[" & iter & "] & $~null ) & " ) ) &
+		 final = Case ( X > 0; Substitute ( ( 10 ^ X ) - 1; 9; "Evaluate ( $~CLExecute[" & iter & "] & $~null ) & " ) ) &
 		             "Evaluate( LeftValues ( $~CLExecute[" & iter & "] ; $~CLRemainder[" & iter & "]  ) & $~null ) & " & $~null;
 
 		/*The Final variable can now be evaluated to get our List*/
 
-		 Result  =   Case ( end <> "Error"; Substitute ( "#^#" & Evaluate  ( Final ) & "#^#";
+		 Result  =   Case ( end <> "Error"; Substitute ( "#^#" & Evaluate  ( final ) & "#^#";
 		                  [ "#^#|#^#"; "¶" ]; [ "¶"; "¶#^#" ]; [ "#^#¶"; "" ]; [ "¶#^#"; "¶" ]; [ "¶#^#"; "" ]; [ "#^#"; "" ] ) ) ;
 		 $~CLExecute[ iter ]  = "" 
 
