@@ -1,0 +1,8 @@
+// LoopCounter ( iterator )
+
+// Adapted from http://www.fmfunctions.com/fid/278
+// Wanted to do operator evaluation outside of the function
+
+Let ( ~variable = "$" & Substitute ( iterator ; "$" ; "" );
+	Evaluate ( "Let ( " & ~variable & " = " & ~variable & " +1 ; " & ~variable & " )" )
+)
