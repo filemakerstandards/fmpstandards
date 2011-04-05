@@ -1,0 +1,34 @@
+/**
+ * =====================================================
+ * WebviewerHTMLData ( type ; head ; css ; body )
+ *
+ * PURPOSE:
+ *		Apply the data:text/html setting to any valid
+ *		HTML which will be displayed using a web viewer.
+ * 
+ * RETURNS:
+ *		(string) local html content for a web viewer
+ *
+ * PARAMETERS:
+ *		type = (enumeration) any of the valid html document types or none
+ *		head = (string) any content which may be used within the <head></head> section
+ *		css = (string) valid css (see the HTMLCSS function)
+ *		body = (string) HTML body content
+ *
+ * DEPENDENCIES:
+ *		HTMLDocument
+ *
+ * NOTES:
+ *		All parameters are simply forwarded to HTMLDocument
+ *
+ * HISTORY:
+ *		2011-04-04
+ *
+ * REFERENCES:
+ *		none
+ * =====================================================
+ * 
+ */
+
+"data:text/html," &
+HTMLDocument ( type ; head ; css ; body )
