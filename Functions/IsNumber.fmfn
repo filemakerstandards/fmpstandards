@@ -1,0 +1,59 @@
+/**
+ * =====================================================
+ * IsNumber ( value )
+ * 
+ * PURPOSE:
+ *		Determine if the supplied value is numeric
+ * PARAMETERS:
+ *		value = (string or number)
+ * RETURNS:
+ *		(boolean) whether value is numeric or not
+ * DEPENDENCIES:
+ *		none
+ * NOTES:
+ *		Adapted from the following function
+ *		http://fmfunctions.com/functions_display_record.php?functionId=161
+ * =====================================================
+ * 
+ */
+
+Let ( [
+	~decimalSeparator = Middle ( 3/2 ; 2 ; 1 ); // do some division to get separator
+	~cleanedValue = Substitute ( value ;
+		[ "e+" ; "" ];
+		[ "E+" ; "" ];
+		[ "e-" ; "" ];
+		[ "E-" ; "" ]
+		);
+	~filteredValue = Filter ( ~cleanedValue ; "1234567890-" & ~decimalSeparator );
+	~decimalCount = PatternCount ( value ; ~decimalSeparator )
+];
+	Exact ( ~filteredValue ; ~cleanedValue )
+	and (	Left ( value ; 1 ) ≠ "0"
+			or value = "0"
+			or Left ( value ; 2 ) = "-0"
+			or Left ( value ; 2 ) = "0" & ~decimalSeparator
+		)
+	and ~decimalCount ≤ 1
+	and value ≠ "-"
+)
+
+/*
+// Unit tests
+List(
+	"These should be true";
+	IsNumber ( 0 );
+	IsNumber ( -0 );
+	IsNumber ( 0.1 );
+	IsNumber ( 1 );
+	IsNumber ( 1.2 );
+	IsNumber ( -1.2 );
+	IsNumber ( 1.234e+124 );
+	IsNumber ( -1.234e+124 );
+	IsNumber ( 10^50 );
+	"These should be false";
+	IsNumber ( "abc" );
+	IsNumber ( "1.2.3" );
+	IsNumber ( "0001" );
+)
+*/
