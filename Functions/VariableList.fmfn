@@ -3,46 +3,47 @@
  * VariableList ( keys; values; scope )
  * 
  * RETURNS:
- *                  (string) key/value pairs as $key = value in
- *                  positional order
+ *		(string) key/value pairs as $key = value in
+ *		positional order
+ *
  * PARAMETERS:
- *                  @keys = List() of key names
- *                  @values = List() of values
- *                  @scope = (enum) global, local
+ *		@keys = List() of key names
+ *		@values = List() of values
+ *		@scope = (enum) global, local
+ *
  * DEPENDENCIES:
- *                  none
+ *		none
+ *
  * PURPOSE:
- *                  Takes two compliment set of lists
- *                  and turns them into FMP defined variables
+ *		Takes two compliment set of lists
+ *		and turns them into FMP defined variables
+ *
  * NOTES:
- *                  none
+ *		none
  * =====================================================
  *
  */
  
 Let ( [
-	var.singleValue = ValueCount ( keys ) = 1 and ValueCount ( values ) = 1; // only one key/value pair
-	var.isValid  = ValueCount ( keys ) = ValueCount ( values ); // both lists have the same number of values
-	var.notEmpty = not IsEmpty( keys ) and not IsEmpty ( values ); // lists aren't empty
-	var.value = GetValue ( values ; 1 );
-	var.valueIsNumber  = Length ( GetAsNumber ( Filter ( var.value; "0123456789.-" ) ) ) = Length ( var.value );
-	valueIsTimestamp = GetAsTimestamp ( var.value ) = var.value; // doesn't work
-	valueIsDate = GetAsDate ( var.value ) = var.value; // doesn't work
-	valueIsTime = GetAsTime ( var.value ) = var.value; // doesn't work
-	var.value = Case (
-		var.valueIsNumber;
-			var.value;
+	~singleValue = ValueCount ( keys ) = 1 and ValueCount ( values ) = 1; // only one key/value pair
+	~isValid  = ValueCount ( keys ) = ValueCount ( values ); // both lists have the same number of values
+	~notEmpty = not IsEmpty( keys ) and not IsEmpty ( values ); // lists aren't empty
+	~value = GetValue ( values ; 1 );
+	~valueIsNumber  = Length ( GetAsNumber ( Filter ( ~value; "0123456789.-" ) ) ) = Length ( ~value );
+	~value = Case (
+		~valueIsNumber;
+			~value;
 
-		Quote ( var.value ) // default for all strings
+		Quote ( ~value ) // default for all strings
 	);
-	var.string = If ( scope = "global" ; "$$" ; "$" ) & GetValue ( keys ; 1 )  & " = " & var.value & If ( ValueCount( keys ) = 1; "" ; ";¶" )
+	~string = If ( scope = "global" ; "$$" ; "$" ) & GetValue ( keys ; 1 )  & " = " & ~value & If ( ValueCount( keys ) = 1; "" ; ";¶" )
 ];
 	Case (
-		var.singleValue;
-			var.string;
+		~singleValue;
+			~string;
 			
-		var.isValid and var.notEmpty;
-			var.string &
+		~isValid and ~notEmpty;
+			~string &
 			VariableList ( MiddleValues ( keys ; 2 ; 1000000 ) ; MiddleValues ( values ; 2 ; 1000000 ) ; scope );
 		
 		// default
@@ -52,7 +53,7 @@ Let ( [
 
 /*
 // Testing code
-var.list (
+~list (
   List(
     "foo";
     "bar"
