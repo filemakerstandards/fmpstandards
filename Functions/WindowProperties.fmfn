@@ -3,22 +3,25 @@
  * WindowProperties ( method )
  * 
  * PARAMETERS:
- *                @method (enum) default, piped, let, variables
+ *		@method (enum) default, piped, let, variables
+ *
  * RETURNS:
- *                (list) window properties according to specified method
+ *		(list) window properties according to specified method
+ *
  * DEPENDENCIES:
- *                ObjectID(),VariableList()
+ *		VariableList()
+ *
  * NOTES:
- *                Provides multiple methods for returning the
- *                properties of the current window
- *                See the WindowCenter companion function
+ *		Provides multiple methods for returning the
+ *		properties of the current window
+ *		See the WindowCenter companion function
  * =====================================================
  * 
  */
 
 Let ( [
-	var.keys = List ( "name"; "layout"; "id"; "top";"left";"width";"height");
-	var.parent = List (
+	~keys = List ( "name"; "layout"; "id"; "top";"left";"width";"height");
+	~parent = List (
 		"parentWindowName";
 		"parentWindowLayout";
 		"parentWindowID";
@@ -27,33 +30,34 @@ Let ( [
 		"parentWindowWidth";
 		"parentWindowHeight";
 		);
-	var.values = List (
-						Get ( WindowName );
-						Get ( LayoutName );
-						GetValue ( LayoutIDs ( Get ( FileName ) ) ; Get ( LayoutNumber ) );
-						Get ( WindowTop );
-						Get ( WindowLeft );
-						Get ( WindowWidth );
-						Get ( WindowHeight )
+	~values = List (
+				Get ( WindowName );
+				Get ( LayoutName );
+				GetValue ( LayoutIDs ( Get ( FileName ) ) ; Get ( LayoutNumber ) );
+				Get ( WindowTop );
+				Get ( WindowLeft );
+				Get ( WindowWidth );
+				Get ( WindowHeight )
 	)
 ];
 	// returns
 	Case(
 		method = "" or
 		method = "default";
-			var.values;
+			~values;
 
 		method = "piped";
-			Substitute ( var.values ; ¶ ; "|" );
+			Substitute ( ~values ; ¶ ; "|" );
 
 		// global variables are returned by VariableList() - use Substitute ( properties ; "$$" ; "$" ) to make local
 		method = "let";
-			VariableList ( var.keys; var.values ; "global" );
+			VariableList ( ~keys; ~values ; "global" );
 			
-		method = "parentVars";
-			VariableList ( var.parent; var.values ; "local" );
+		method = "parentVars"
+		or method = "parent";
+			VariableList ( ~parent; ~values ; "local" );
 
 		// default
-		var.values
+		~values
 	)
 )
