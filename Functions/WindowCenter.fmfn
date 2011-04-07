@@ -22,17 +22,34 @@
 
 Let ([
 	
-	var.vertical = PatternCount ( dimension ; "vert" );
-	var.horizontal = PatternCount ( dimension ; "horiz" );
-	var.parentHeight = If ( IsEmpty ( $parentWindowHeight ) ; Get ( WindowDesktopHeight ) ; $parentWindowHeight );
-	var.parentWidth = If ( IsEmpty ( $parentWindowWidth ) ; Get ( WindowDesktopWidth ) ; $parentWindowWidth )
-
+	~vertical = PatternCount ( dimension ; "vert" );
+	~horizontal = PatternCount ( dimension ; "horiz" );
+	~parentHeight = If ( IsEmpty ( $parentWindowHeight );
+			Get ( WindowDesktopHeight );
+		/*else*/
+			$parentWindowHeight
+		);
+	~parentWidth = If ( IsEmpty ( $parentWindowWidth );
+			Get ( WindowDesktopWidth );
+		/*else*/
+			$parentWindowWidth
+		);
+	~childHeight = If ( IsEmpty ( $childWindowHeight );
+			Get ( WindowHeight );
+		/*else*/
+			$childWindowHeight
+		);
+	~childWidth = If ( IsEmpty ( $childWindowWidth );
+			Get ( WindowWidth );
+		/*else*/
+			$childWindowWidth
+		)
 ];
 
 	Case (
-		var.vertical;
-			( var.parentHeight / 2) - ( Get ( WindowHeight ) / 2 ) + $parentWindowTop;
-		var.horizontal;
-			( var.parentWidth / 2) - ( Get ( WindowWidth ) / 2 )  + $parentWindowLeft
+		~vertical;
+			( ~parentHeight / 2) - ( ~childHeight / 2 ) + $parentWindowTop;
+		~horizontal;
+			( ~parentWidth / 2) - ( ~childWidth / 2 )  + $parentWindowLeft
 	)
 )
