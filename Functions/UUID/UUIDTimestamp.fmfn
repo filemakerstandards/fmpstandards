@@ -45,7 +45,7 @@
  *		with the UUIDGetSeconds function.
  *
  *
- * RELEASE: 2011-04-06
+ * RELEASE: 2011-04-07
  *
  * REFERENCES:
  *		Key values Best Practice: http://filemakerstandards.org/pages/viewpage.action?pageId=557138
@@ -80,11 +80,14 @@ Let ( [
 			/*else*/
 				~session
 		);
-	~magnitude = Left ( Substitute ( ~serial ; "." ; "" ) ; 1 );
+	~magnitude =
+		Max (
+			Left ( Substitute ( ~serial ; "." ; "" ) ; 1 );
+			1
+		);
 	~serial =
 		Case (
 			~now ≠ ~lastTimestamp or ~serial = .9999999 ; 0;
-			~magnitude = 0 ; .1;
 			~serial < .7 ; ~serial + 10 ^ ( 0 - ~magnitude );
 			/* Else */ ~serial + 10 ^ -7
 		);
