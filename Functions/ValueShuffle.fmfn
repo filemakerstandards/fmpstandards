@@ -1,0 +1,39 @@
+/**
+ * ValueShuffle ( valueList )
+ *
+ * RETURNS:
+ *		The contents of valueList in random order.
+ *
+ * PARAMETERS:
+ *		valueList: A ¶-delimited list of values to shuffle
+ *
+ * RELEASE: 2011-03-31
+ */
+
+Let ( [
+	~valueCount = ValueCount ( valueList );
+	~selection =
+		If ( ~valueCount > 1;
+			Max ( Ceiling ( Random * ~valueCount ) ; 1 );
+			/* Else */ 1
+		);
+	$~shuffledList =
+		List (
+			$~shuffledList;
+			GetValue ( valueList ; ~selection )
+		);
+	~leftList = LeftValues ( valueList ; ~selection - 1 );
+	~rightList = RightValues ( valueList ; ~valueCount - ~selection )
+];
+	If ( ~valueCount > 1;
+		ValueShuffle ( ~leftList & ~rightList );
+
+	/* Else */
+		Let ( [
+			~shuffledList = $~shuffledList;
+			$~shuffledList = "" // purge variable
+		];
+			~shuffledList
+		)
+	)
+)

@@ -1,0 +1,258 @@
+/**
+ * ValueSort ( valueList )
+ *
+ * PURPOSE:
+ *		Sorts the contents of valueList. Values are sorted as text; even
+ *		numeric-only values will be treated as text ("10" < "2"). To sort
+ *		according to numeric values (2 < 10), use the NumberSort function.
+ *
+ * PARAMETERS:
+ *		valueList: A ¶-delimited list of values to sort
+ *
+ * RETURNS:
+ *		A ¶-delimited list of the values from valueList in increasing order.
+ *
+ * NOTES:
+ *		This function uses a variation on the timsort algorithm. This provides
+ *		very good performance in terms of function call stack depth and
+ *		calculation speed.
+ *
+ * RELEASE: 2011-04-13
+ *
+ * REFERENCES:
+ *		Timsort: http://bugs.python.org/file4451/timsort.txt
+ */
+
+Case (
+	/* Step 0, initialize variables */
+	not $~step;
+		Let ( [
+			$~runStart = 1;
+			$~runMin = GetValue ( valueList ; 1 );
+			$~runMax = GetValue ( valueList ; 1 );
+			$~valueCount = ValueCount ( valueList );
+			$~step = 1
+		];
+			ValueSort ( valueList )
+		);
+
+	/* Step 1, search for runs */
+	$~step = 1;
+		Let ( [
+			~value = GetValue ( valueList ; $~runStart );
+			~isLastRun = $~runStart > $~valueCount;
+			$~runStart = $~runStart + 1
+		];
+			Case (
+				~value < $~runMin and not ~isLastRun;
+					Let ( [ // Append ~value to current run
+						$~runList = List ( ~value ; $~runList );
+						$~runMin = ~value;
+						$~runSize = $~runSize + 1
+					];
+						ValueSort ( valueList )
+					);
+
+				~value ≥ $~runMax and not ~isLastRun;
+					Let ( [ // Append ~value to current run
+						$~runList = List ( $~runList ; ~value );
+						$~runMax = ~value;
+						$~runSize = $~runSize + 1
+					];
+						ValueSort ( valueList )
+					);
+				/* Else */
+					Let ( [
+						// Save run for merge
+						$~mergeList = List ( $~mergeList ; $~runList );
+						$~mergeSizeList = List ( $~mergeSizeList ; $~runSize );
+						$~mergeCount = $~mergeCount + 1;
+
+						// Reset run
+						$~runList = ~value;
+						$~runMin = ~value;
+						$~runMax = ~value;
+						$~runSize = 1;
+
+						$~step = If ( ~isLastRun ; $~step + 1 ; $~step )
+					];
+						ValueSort ( valueList )
+					)
+			)
+		);
+
+	/* Step 2, initialize merge passes through valueList */
+	$~step = 2;
+		Let ( [
+			~oddRunSize =
+				If ( Mod ( $~runCount ; 2 ); // Odd
+					GetValue ( $~runSizeList ; $~runCount )
+				);
+			$~sortedList =
+				List (
+					$~mergeList;
+					RightValues ( $~sortedList ; ~oddRunSize )
+				);
+			$~runSizeList = List ( $~mergeSizeList ; ~oddRunSize );
+			$~runCount = ValueCount ( $~runSizeList );
+			$~runPair = 1;
+			$~run2End = "";
+
+			$~mergeList = "";
+			$~mergeSizeList = "";
+			$~mergeCount = "";
+
+			$~step =
+				If ( // There are no more merges to do
+					$~runCount ≤ 1;
+						5;
+					/* Else */
+						$~step + 1
+				)
+		];
+			ValueSort ( "" )
+		);
+
+	/* Step 3, initialize merges of successive pairs of runs */
+	$~step = 3;
+		Let ( [
+			$~run1Start = $~run2End + 1;
+			~run1Size = GetValue ( $~runSizeList ; $~runPair * 2 - 1 );
+			$~run1End = $~run1Start + ~run1Size - 1;
+			$~run1Value = GetValue ( $~sortedList ; $~run1Start );
+			$~run1Max = GetValue ( $~sortedList ; $~run1End );
+
+			$~run2Start = $~run1End + 1;
+			~run2Size = GetValue ( $~runSizeList ; $~runPair * 2 );
+			$~run2End = $~run2Start + ~run2Size - 1;
+			$~run2Value = GetValue ( $~sortedList ; $~run2Start );
+			$~run2Max = GetValue ( $~sortedList ; $~run2End );
+
+			$~mergeSizeList = List ( $~mergeSizeList ; ~run1Size + ~run2Size );
+			$~mergeCount = $~mergeCount + 1;
+			$~runPair = $~runPair + 1;
+
+			$~step = $~step + 1
+		];
+			ValueSort ( "" )
+		);
+
+	/* Step 4, merge pair of runs */
+	$~step = 4
+	and $~run1Max < $~run2Value; // run1 is less
+		Let ( [
+			~run1 =
+				Substitute (
+					MiddleValues (
+						$~sortedList;
+						$~run1Start;
+						$~run1End - $~run1Start + 1
+					)
+					& "¶END";
+					[ "¶¶END" ; "" ] ; [ "¶END" ; "" ]
+				);
+			~run2 =
+				Substitute (
+					MiddleValues (
+						$~sortedList;
+						$~run2Start;
+						$~run2End - $~run2Start + 1
+					)
+					& "¶END";
+					[ "¶¶END" ; "" ] ; [ "¶END" ; "" ]
+				);
+			$~mergeList = List ( $~mergeList ; ~run1 ; ~run2 );
+
+			$~step =
+				If ( $~runCount > $~runPair * 2 - 1;
+					$~step - 1;
+					/* Else */ $~step - 2
+				)
+		];
+			ValueSort ( "" )
+		);
+
+	$~step = 4
+	and $~run1Value ≥ $~run2Max; // run2 is less
+		Let ( [
+			~run1 =
+				Substitute (
+					MiddleValues (
+						$~sortedList;
+						$~run1Start;
+						$~run1End - $~run1Start + 1
+					)
+					& "¶END";
+					[ "¶¶END" ; "" ] ; [ "¶END" ; "" ]
+				);
+			~run2 =
+				Substitute (
+					MiddleValues (
+						$~sortedList;
+						$~run2Start;
+						$~run2End - $~run2Start + 1
+					)
+					& "¶END";
+					[ "¶¶END" ; "" ] ; [ "¶END" ; "" ]
+				);
+			$~mergeList = List ( $~mergeList ; ~run2 ; ~run1 );
+			$~step =
+				If ( $~runCount > $~runPair * 2 - 1;
+					$~step - 1;
+					/* Else */ $~step - 2
+				)
+		];
+			ValueSort ( "" )
+		);
+
+	$~step = 4
+	and $~run1Value < $~run2Value; // run1Value is less
+		Let ( [
+			$~mergeList = List ( $~mergeList ; $~run1Value );
+			$~run1Start = $~run1Start + 1;
+			$~run1Value = GetValue ( $~sortedList ; $~run1Start )
+		];
+			ValueSort ( "" )
+		);
+
+	$~step = 4; // run2Value is less
+		Let ( [
+			$~mergeList = List ( $~mergeList ; $~run2Value );
+			$~run2Start = $~run2Start + 1;
+			$~run2Value = GetValue ( $~sortedList ; $~run2Start )
+		];
+			ValueSort ( "" )
+		);
+
+	/* Step 5, clean-up and return result */
+	$~step = 5;
+		Let ( [
+			~sortedList = $~sortedList;
+
+			// purge variables
+			$~mergeList = "";
+			$~mergeCount = "";
+			$~mergeSizeList = "";
+			$~run1End = "";
+			$~run1Max = "";
+			$~run1Start = "";
+			$~run1Value = "";
+			$~run2End = "";
+			$~run2Max = "";
+			$~run2Start = "";
+			$~run2Value = "";
+			$~runCount = "";
+			$~runList = "";
+			$~runMax = "";
+			$~runMin = "";
+			$~runPair = "";
+			$~runSize = "";
+			$~runSizeList = "";
+			$~runStart = "";
+			$~sortedList = "";
+			$~step = "";
+			$~valueCount = ""
+		];
+			~sortedList
+		)
+)
