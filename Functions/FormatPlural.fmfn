@@ -1,0 +1,32 @@
+/**
+ * =====================================================
+ * FormatPlural ( number ; singular ; plural )
+ *
+ * PURPOSE:
+ *		Provide a method to return the singular or plural version
+ *		of a count of something
+ *
+ * RETURNS:
+ *		(string) Either the supplied singular or plural string
+ *
+ * DEPENDENCIES:
+ *		none
+ *
+ * NOTES:
+ *		none
+ *
+ * HISTORY:
+ *		4/14/11 - Petrowsky - Added
+ * =====================================================
+ * 
+ */
+
+Case (
+	number = 0;
+		plural;
+	
+	number = 1;
+		singular;
+
+	plural
+)
