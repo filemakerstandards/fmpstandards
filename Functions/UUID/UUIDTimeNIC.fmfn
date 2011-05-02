@@ -44,7 +44,7 @@
  *		address can be extracted with the UUIDGetTimestamp and UUIDGetNICAddress
  *		functions.
  *
- * RELEASE: 2011-04-07
+ * RELEASE: 2011-05-02
  *
  * REFERENCES:
  *		Key values Best Practice: http://filemakerstandards.org/display/bp/Key+values
@@ -83,7 +83,7 @@ Case (
 	$~step = 2;
 		Let ( [
 			$~nicDigit = Middle ( $~nicAddress ; 12 - $~i ; 1 );
-			$~nicDigit = Position ( "0123456789abcdefg" ; $~nicDigit ; 1 ; 1 ) - 1; //convert digit to number
+			$~nicDigit = Position ( "0123456789abcdef" ; $~nicDigit ; 1 ; 1 ) - 1; //convert digit to number
 			$~node = $~nicDigit * ( 16 ^ $~i ) + $~node; //add digit to node
 			$~step = If ( $~i < 11 ; $~step ; /*else*/ $~step + 1  );
 			$~i = $~i + 1
@@ -97,7 +97,7 @@ Case (
 			//Set-up timestamp, serial number, and session key
 			~session = GetValue ( $$~UUID_DATA ; 1 );
 			~lastTimestamp = GetValue ( $$~UUID_DATA ; 2 );
-			~serial = GetValue ( $$~UUID_DATA ; 3 );
+			~serial = GetAsNumber ( GetValue ( $$~UUID_DATA ; 3 ) );
 
 			~now =
 				Mod (
@@ -109,7 +109,7 @@ Case (
 					IsEmpty ( ~session ); //new session
 						Floor ( Random * 16384 );
 
-					~serial ≥ 9999999 //serial number overflow
+					~serial ≥ .9999999 //serial number overflow
 					and ~now = ~lastTimestamp
 					or ~now < ~lastTimestamp; //clock change
 						Mod ( ~session + 1 ; 16384 );
@@ -125,6 +125,7 @@ Case (
 			~serial =
 				Case (
 					~now ≠ ~lastTimestamp or ~serial = .9999999 ; 0;
+					~serial = 0 ; .1;
 					~serial < .7 ; ~serial + 10 ^ ( 0 - ~magnitude );
 					/* Else */ ~serial + 10 ^ -7
 				);

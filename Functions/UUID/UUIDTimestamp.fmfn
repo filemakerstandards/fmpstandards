@@ -45,7 +45,7 @@
  *		with the UUIDGetSeconds function.
  *
  *
- * RELEASE: 2011-04-07
+ * RELEASE: 2011-05-02
  *
  * REFERENCES:
  *		Key values Best Practice: http://filemakerstandards.org/pages/viewpage.action?pageId=557138
@@ -59,7 +59,7 @@ Let ( [
 	//Set-up timestamp, serial number, and session key
 	~session = GetValue ( $$~UUID_DATA[2] ; 1 );
 	~lastTimestamp = GetValue ( $$~UUID_DATA[2] ; 2 );
-	~serial = GetValue ( $$~UUID_DATA[2] ; 3 );
+	~serial = GetAsNumber ( GetValue ( $$~UUID_DATA[2] ; 3 ) );
 	~node = GetValue ( $$~UUID_DATA[2] ; 4 );
 
 	~now =
@@ -72,8 +72,10 @@ Let ( [
 			IsEmpty ( ~session ); //new session
 				Floor ( Random * 16384 );
 
-			~serial ≥ .9999999 //serial number overflow
-			and ~now = ~lastTimestamp
+			(
+				~serial ≥ .9999999 //serial number overflow
+				and ~now = ~lastTimestamp
+			)
 			or ~now < ~lastTimestamp; //clock change
 				Mod ( ~session + 1 ; 16384 );
 
@@ -88,6 +90,7 @@ Let ( [
 	~serial =
 		Case (
 			~now ≠ ~lastTimestamp or ~serial = .9999999 ; 0;
+			~serial = 0 ; .1;
 			~serial < .7 ; ~serial + 10 ^ ( 0 - ~magnitude );
 			/* Else */ ~serial + 10 ^ -7
 		);
