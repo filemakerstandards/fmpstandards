@@ -1,6 +1,6 @@
 /**
  * =====================================
- * UISortIndicator ( field ; tabs )
+ * UISortListIndicator ( field ; tabs )
  *
  * PURPOSE:
  *		Return a boolean value if the specified field
@@ -19,7 +19,7 @@
  *
  * EXAMPLES:
  *		When used on conditional formatting for a button attached to a sort script
- *		UISortIndicator ( FunctionalArea » Tablename::fieldName ; 2 ) // = True if the same field
+ *		UISortListIndicator ( FunctionalArea » Tablename::fieldName ; 2 ) // = True if the same field
  *
  * DEPENDENCIES:
  *		none
@@ -36,9 +36,9 @@ Let ( [
 	~layoutID = GetValue ( LayoutIDs ( Get ( FileName ) ) ; Get ( LayoutNumber ) );
 	~fieldName = GetFieldName ( field );
 	~sortVarPrefix = "$$SORT.LAYOUT." & ~layoutID;
-	~sortVarField = ~sortVarPrefix & ".FIELD";
-	~sortVarDirection = ~sortVarPrefix & ".DIRECTION";
-	~sortVarIndicator = ~sortVarPrefix & ".INDICATOR";
+	~sortVarField = ~sortVarPrefix & ".LIST.FIELD";
+	~sortVarDirection = ~sortVarPrefix & ".LIST.DIRECTION";
+	~sortVarIndicator = ~sortVarPrefix & ".LIST.INDICATOR";
 	~sortCurrentField = GetAsText ( Evaluate ( ~sortVarField ) );
 	~isSameSortField = ~sortCurrentField = ~fieldName;
 	~sortDirection = Evaluate ( ~sortVarDirection );

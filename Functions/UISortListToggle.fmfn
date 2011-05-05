@@ -1,6 +1,6 @@
 /**
  * =====================================
- * UISortToggle ( field )
+ * UISortListToggle ( field )
  *
  * PURPOSE:
  *		Assign a reserved set of global variables to values used
@@ -33,8 +33,8 @@ Let ( [
 	~layoutID = GetValue ( LayoutIDs ( Get ( FileName ) ) ; Get ( LayoutNumber ) );
 	~fieldName = GetFieldName ( field );
 	~sortVarPrefix = "$$SORT.LAYOUT." & ~layoutID;
-	~sortVarField = ~sortVarPrefix & ".FIELD";
-	~sortVarDirection = ~sortVarPrefix & ".DIRECTION";
+	~sortVarField = ~sortVarPrefix & ".LIST.FIELD";
+	~sortVarDirection = ~sortVarPrefix & ".LIST.DIRECTION";
 	~sortCurrentField = GetAsText ( Evaluate ( ~sortVarField ) );
 	~isNewFieldSelection = ~sortCurrentField ≠ ~fieldName;
 	~sortNewDirection = If ( ~isNewFieldSelection or not Get ( SortState ) ; 1 ; Evaluate ( ~sortVarDirection ) xor True );

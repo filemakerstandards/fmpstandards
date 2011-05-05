@@ -1,6 +1,6 @@
 /**
  * =====================================
- * UISortDirection ( field )
+ * UISortListDirection ( field )
  *
  * PURPOSE:
  *		Return the human readable value of "Ascending" or "Descending"
@@ -15,7 +15,7 @@
  *
  * EXAMPLES:
  *		When used within a script If[] step
- *		If [ UISortDirection ( FunctionalArea » Tablename::fieldName ) = "Ascending" ] // = True if the same field
+ *		If [ UISortListdirection ( FunctionalArea » Tablename::fieldName ) = "Ascending" ] // = True if the same field
  *
  * DEPENDENCIES:
  *		none
@@ -32,8 +32,8 @@ Let ( [
 	~layoutID = GetValue ( LayoutIDs ( Get ( FileName ) ) ; Get ( LayoutNumber ) );
 	~fieldName = GetFieldName ( field );
 	~sortVarPrefix = "$$SORT.LAYOUT." & ~layoutID;
-	~sortVarField = ~sortVarPrefix & ".FIELD";
-	~sortVarDirection = ~sortVarPrefix & ".DIRECTION";
+	~sortVarField = ~sortVarPrefix & ".LIST.FIELD";
+	~sortVarDirection = ~sortVarPrefix & ".LIST.DIRECTION";
 	~sortCurrentField = GetAsText ( Evaluate ( ~sortVarField ) );
 	~isSameSortField = ~sortCurrentField = ~fieldName;
 	~sortDirection = Evaluate ( ~sortVarDirection )
