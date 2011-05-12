@@ -1,0 +1,46 @@
+/**
+ * =====================================
+ * VariableCheckbox ( globalVariable )
+ *
+ * PURPOSE:
+ *		Toggle a Boolean value within a global variable
+ *		
+ * RETURNS:
+ *		(string) a visual character of a √ mark
+ *		
+ * PARAMETERS:
+ *		none
+ *
+ * EXAMPLES:
+ * 		(see Error function)
+ *
+ * DEPENDENCIES:
+ *		none
+ *
+ * NOTES:
+ *		ErrorData is expected to be modified based on the solution being
+ *
+ * HISTORY:
+ *		MODIFIED on 2011-05-12 by matt@filemakermagazine.com - created
+ *
+ * REFERENCES:
+ *		none
+ * =====================================
+ */
+
+
+If ( isempty ( "Evaluate ( " & globalVariable & " )" );
+	"Let ( " & globalVariable & " = √";
+	"Let ( " & globalVariable & " = \"\""
+)
+
+/*
+Let ( [
+	~result = "Let ( " & globalVariable & " = Evaluate ( " & globalVariable & " ) xor True ; Evaluate ( " & globalVariable & " ) )"
+];
+	If ( Evaluate ( ~result );
+		Char ( 8730 );
+		""
+	)
+)
+*/
