@@ -3,22 +3,23 @@
  * VariableCheckbox ( globalVariable )
  *
  * PURPOSE:
- *		Toggle a Boolean value within a global variable
+ *		Toggle a global variable on and off to show a checkmark character
  *		
  * RETURNS:
- *		(string) a visual character of a √ mark
+ *		(boolean) True or False based on the globalVariable existing or not
  *		
  * PARAMETERS:
- *		none
+ *		globalVariable = (string) the name of the global variable
  *
  * EXAMPLES:
- * 		(see Error function)
+ * 		When used as a script parameter pointing to a script named Refresh[]
+ *		VariableCheckbox ( "$$FILTER.PORTAL.ON" )
  *
  * DEPENDENCIES:
  *		none
  *
  * NOTES:
- *		ErrorData is expected to be modified based on the solution being
+ *		This is used as a technique to avoid creating global fields
  *
  * HISTORY:
  *		MODIFIED on 2011-05-12 by matt@filemakermagazine.com - created
@@ -29,18 +30,7 @@
  */
 
 
-If ( isempty ( "Evaluate ( " & globalVariable & " )" );
-	"Let ( " & globalVariable & " = √";
-	"Let ( " & globalVariable & " = \"\""
+If ( IsEmpty ( Evaluate ( globalVariable ) );
+	Evaluate ( "Let ( " & globalVariable & " = \"√\" ; True )" );
+	Evaluate ( "Let ( " & globalVariable & " = \"\" ; False )" )
 )
-
-/*
-Let ( [
-	~result = "Let ( " & globalVariable & " = Evaluate ( " & globalVariable & " ) xor True ; Evaluate ( " & globalVariable & " ) )"
-];
-	If ( Evaluate ( ~result );
-		Char ( 8730 );
-		""
-	)
-)
-*/
