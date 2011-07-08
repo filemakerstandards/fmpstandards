@@ -3,7 +3,7 @@
  * LayoutVariables ( layout )
  *
  * PURPOSE:
- *		Extract all layout objects which start with a $
+ *		Extract all layout objects named as a $variable
  *		in order to declare those objects and their
  *		content as valid $variables.
  *		
@@ -14,14 +14,15 @@
  *		layout = the name of the target layout
  *
  * EXAMPLES:
- * 		none
+ * 		Name a given field as $field.variable then call
+ *		LayoutVariables ( Get ( Layoutname ) ) // returns $field.variable = "field content"
  *
  * DEPENDENCIES:
- *		CustomList(), LayoutObjects(), ValueFilter()
+ *		ValueFilter(), LayoutObjects(), CustomList()
  *
  * NOTES:
  *		This function can be used to get information from
- *		fields into variables in a very quick fashion.
+ *		fields named as $variables in a very quick fashion.
  *
  * HISTORY:
  *		MODIFIED on 2011-07-08 by matt@filemakermagazine.com - added
