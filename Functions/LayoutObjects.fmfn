@@ -1,0 +1,32 @@
+/**
+ * =====================================
+ * LayoutObjects ( layout )
+ *
+ * PURPOSE:
+ *		Get a return delimited list of all layout objects from
+ *		a specified layout
+ *		
+ * RETURNS:
+ *		(string) Return delimited array layout objects
+ *		
+ * PARAMETERS:
+ *		none
+ *
+ * EXAMPLES:
+ * 		none
+ *
+ * DEPENDENCIES:
+ *		none
+ *
+ * NOTES:
+ *		This is a helper function
+ *
+ * HISTORY:
+ *		MODIFIED on 2011-07-08 by matt@filemakermagazine.com - added
+ *
+ * REFERENCES:
+ *		none
+ * =====================================
+ */
+
+Substitute ( LayoutObjectNames ( Get( FileName ) ; layout ) ; ["<¶" ; ""] ; ["¶>" ; ""] )
