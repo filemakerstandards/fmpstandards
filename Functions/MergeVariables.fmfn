@@ -23,7 +23,9 @@
  *		#Assign()
  *
  * NOTES:
- *		This function is designed to be used with the LayoutVariables() function
+ *		This function is designed to be used with the LayoutVariables() function.
+ *		The exposed nature of the Evaluate() could be a security consideration.
+ *		Historical credit given to Mike Duncan http://www.briandunning.com/cf/438
  *
  * HISTORY:
  *		MODIFIED on 2011-07-08 by matt@filemakermagazine.com - added
