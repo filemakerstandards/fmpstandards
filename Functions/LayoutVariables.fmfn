@@ -1,0 +1,48 @@
+/**
+ * =====================================
+ * LayoutVariables ( layout )
+ *
+ * PURPOSE:
+ *		Extract all layout objects which start with a $
+ *		in order to declare those objects and their
+ *		content as valid $variables.
+ *		
+ * RETURNS:
+ *		(string) Internal portion of a Let() for use with #Assign()
+ *		
+ * PARAMETERS:
+ *		layout = the name of the target layout
+ *
+ * EXAMPLES:
+ * 		none
+ *
+ * DEPENDENCIES:
+ *		CustomList(), LayoutObjects(), ValueFilter()
+ *
+ * NOTES:
+ *		This function can be used to get information from
+ *		fields into variables in a very quick fashion.
+ *
+ * HISTORY:
+ *		MODIFIED on 2011-07-08 by matt@filemakermagazine.com - added
+ *
+ * REFERENCES:
+ *		none
+ * =====================================
+ */
+
+
+Let( [
+	$~layoutVariables = ValueFilter ( "$" ; LayoutObjects ( layout ) ); // will find both local and global variables
+	~function = "Let ( ~value = GetValue ( $~layoutVariables ; [n] );
+			If ( Left ( ~value ; 1 ) = \"$\";
+				Substitute ( ~value;
+					[ ~value ; ~value & \" = \" & Quote ( GetLayoutObjectAttribute ( ~value ; \"content\" ) ) ]
+				)
+			)
+	)
+		"
+];
+	// wrap semi-colons on ends of lines
+	Substitute ( CustomList ( 1 ; ValueCount ( $~layoutVariables ); ~function ) ; [ ¶ ; ";¶" ] )
+)
