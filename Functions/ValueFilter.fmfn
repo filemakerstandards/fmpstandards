@@ -4,7 +4,7 @@
  *
  * PURPOSE:
  *		Extract a return delimited list of values based
- *		on the supplied match value
+ *		on the supplied match value.
  *		
  * RETURNS:
  *		(string) Return delimited array of matching string values
@@ -20,7 +20,8 @@
  *		CustomLilst()
  *
  * NOTES:
- *		none
+ *		This is a simple straight match function. It does not
+ *		find values based on Regular Expressions.
  *
  * HISTORY:
  *		MODIFIED on 2011-07-08 by matt@filemakermagazine.com - added
@@ -33,9 +34,9 @@
 Let( [
 	$~valueList = valueList;
 	$~match = match;
-	~function = "Let( Value = GetValue( $~objects ; [n] ) ; If( PatternCount( Value ; $~match ) ; Value ) )"
+	~function = "Let ( ~value = GetValue( $~valueList ; [n] ) ; If ( PatternCount ( ~value ; $~match ) ; ~value ) )"
 ];
 
-	CustomList ( 1 ; ValueCount ( $~objects ) ; ~function )
+	CustomList ( 1 ; ValueCount ( $~valueList ) ; ~function )
 
 )
