@@ -1,0 +1,41 @@
+/**
+ * =====================================
+ * ValueFilter ( match ; valueList )
+ *
+ * PURPOSE:
+ *		Extract a return delimited list of values based
+ *		on the supplied match value
+ *		
+ * RETURNS:
+ *		(string) Return delimited array of matching string values
+ *		
+ * PARAMETERS:
+ *		match = (string) the target match value
+ *		valueList = (string) array of values
+ *
+ * EXAMPLES:
+ * 		none
+ *
+ * DEPENDENCIES:
+ *		CustomLilst()
+ *
+ * NOTES:
+ *		none
+ *
+ * HISTORY:
+ *		MODIFIED on 2011-07-08 by matt@filemakermagazine.com - added
+ *
+ * REFERENCES:
+ *		none
+ * =====================================
+ */
+
+Let( [
+	$~valueList = valueList;
+	$~match = match;
+	~function = "Let( Value = GetValue( $~objects ; [n] ) ; If( PatternCount( Value ; $~match ) ; Value ) )"
+];
+
+	CustomList ( 1 ; ValueCount ( $~objects ) ; ~function )
+
+)
