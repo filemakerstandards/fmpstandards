@@ -25,9 +25,10 @@
  *		Ray Cologon's uID functions: http://www.nightwing.com.au/FileMaker/demos9/demo910.html
  * ======================================
  */
+
 Case (
 	/*Pull node field from UUID, and set-up conversion loop*/
-	not $~step;
+	not $~uuid.step;
 		Let ( [
 			~idAsNumber = GetAsNumber ( theID );
 			~version = Left ( ~idAsNumber ; Length ( ~idAsNumber ) - 40 );
@@ -35,7 +36,7 @@ Case (
 			~isMulticast = Mod ( Div ( $~nicAddress ; 1099511627776 ) ; 2 );
 			$~hexNICAddress = "";
 			$~base16 = "0123456789abcdef";
-			$~step =
+			$~uuid.step =
 				If (
 					~version < 3  //NIC is valid
 					and $~nicAddress ≤ 281474976710656
@@ -49,19 +50,19 @@ Case (
 		);
 
 	/*Convert NIC address from base 10 to base 16*/
-	$~step = 1;
+	$~uuid.step = 1;
 		Let ( [
 			$~hexNICAddress =
 				Middle ( $~base16 ; Mod ( $~nicAddress ; 16 ) + 1 ; 1 ) &
 				$~hexNICAddress;
 				$~nicAddress = Div ( $~nicAddress ; 16 );
-				$~step = If ( $~nicAddress ; $~step ; /*else*/ $~step + 1 )
+				$~uuid.step = If ( $~nicAddress ; $~uuid.step ; /*else*/ $~uuid.step + 1 )
 		];
 			UUIDGetNICAddress ( "" )
 		);
 
 	/*Insert colons and return result*/
-	$~step = 2;
+	$~uuid.step = 2;
 		Let ( [
 			~nicAddress = Right ( "000000000000" & $~hexNICAddress ; 12 );
 			~nicAddress =
@@ -77,20 +78,20 @@ Case (
 			$~hexNICAddress = "";
 			$~base16 = "";
 			$~i = "";
-			$~step = ""
+			$~uuid.step = ""
 		];
 			~nicAddress
 		);
 
 	/*Return error value*/
-	$~step = -1;
+	$~uuid.step = -1;
 		Let ( [
 			//purge variables
 			$~nicAddress = "";
 			$~hexNICAddress = "";
 			$~base16 = "";
 			$~i = "";
-			$~step = ""
+			$~uuid.step = ""
 		];
 			"" //Null
 		)

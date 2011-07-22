@@ -44,7 +44,7 @@
  *		address can be extracted with the UUIDGetTimestamp and UUIDGetNICAddress
  *		functions.
  *
- * RELEASE: 2011-05-02
+ * RELEASE: 2011-07-22
  *
  * REFERENCES:
  *		Key values Best Practice: http://filemakerstandards.org/display/bp/Key+values
@@ -55,17 +55,17 @@
  */
 
 Case (
-	/*First call to UUIDTimeNIC, check for pre-processed node data*/
-	not $~step;
+	/* First call to UUIDTimeNIC, check for pre-processed node data */
+	not $~uuid.step;
 		Let ( [
-				$~node = GetValue ( $$~UUID_DATA ; 4 );
-				$~step = If ( $~node ; 3 ; /*else*/ 1 )
+				$~node = GetValue ( $$~UUID.DATA ; 4 );
+				$~uuid.step = If ( $~node ; 3 ; /*else*/ 1 )
 		];
 			UUIDTimeNIC
 		);
 
-	/*Get NIC address, if possible*/
-	$~step = 1;
+	/* Get NIC address, if possible */
+	$~uuid.step = 1;
 		Let ( [
 			$~nicAddress =
 				Substitute (
@@ -73,31 +73,32 @@ Case (
 					":";
 					""
 				);
-			$~i = 0;
-			$~step = If ( $~nicAddress ; $~step + 1 ; /*else*/ 3 )
+			$~uuid.i = 0;
+			$~uuid.step = If ( $~nicAddress ; $~uuid.step + 1 ; /*else*/ 3 )
 		];
 			UUIDTimeNIC
 		);
 
-	/*Parse NIC address from hexadecimal to a (base 10) number*/
-	$~step = 2;
+	/* Parse NIC address from hexadecimal to a (base 10) number */
+	$~uuid.step = 2;
 		Let ( [
-			$~nicDigit = Middle ( $~nicAddress ; 12 - $~i ; 1 );
-			$~nicDigit = Position ( "0123456789abcdef" ; $~nicDigit ; 1 ; 1 ) - 1; //convert digit to number
-			$~node = $~nicDigit * ( 16 ^ $~i ) + $~node; //add digit to node
-			$~step = If ( $~i < 11 ; $~step ; /*else*/ $~step + 1  );
-			$~i = $~i + 1
+			$~nicDigit = Middle ( $~nicAddress ; 12 - $~uuid.i ; 1 );
+			$~nicDigit = Position ( "0123456789abcdef" ; $~nicDigit ; 1 ; 1 ) - 1;	// convert digit to number
+			$~node = $~nicDigit * ( 16 ^ $~uuid.i ) + $~node;	// add digit to node
+			$~uuid.step =
+				If ( $~uuid.i < 11 ; $~uuid.step ; /*else*/ $~uuid.step + 1  );
+			$~uuid.i = $~uuid.i + 1
 		];
 			UUIDTimeNIC
 		);
 
-	/*Concatenate information*/
-	$~step = 3;
+	/* Concatenate information */
+	$~uuid.step = 3;
 		Let ( [
-			//Set-up timestamp, serial number, and session key
-			~session = GetValue ( $$~UUID_DATA ; 1 );
-			~lastTimestamp = GetValue ( $$~UUID_DATA ; 2 );
-			~serial = GetAsNumber ( GetValue ( $$~UUID_DATA ; 3 ) );
+			// Set-up timestamp, serial number, and session key
+			~session = GetValue ( $$~UUID.DATA ; 1 );
+			~lastTimestamp = GetValue ( $$~UUID.DATA ; 2 );
+			~serial = GetAsNumber ( GetValue ( $$~UUID.DATA ; 3 ) );
 
 			~now =
 				Mod (
@@ -106,15 +107,15 @@ Case (
 				);
 			~session =
 				Case (
-					IsEmpty ( ~session ); //new session
+					IsEmpty ( ~session );	// new session
 						Floor ( Random * 16384 );
 
-					~serial ≥ .9999999 //serial number overflow
+					~serial ≥ .9999999	// serial number overflow
 					and ~now = ~lastTimestamp
-					or ~now < ~lastTimestamp; //clock change
+					or ~now < ~lastTimestamp;	// clock change
 						Mod ( ~session + 1 ; 16384 );
 
-					/*else*/
+					/* Else */
 						~session
 				);
 			~magnitude =
@@ -132,23 +133,23 @@ Case (
 			~node =
 				If ( $~node;
 					$~node;
-				/*Else, new random node*/
-					//set multicast bit to avoid colliding with NIC addresses
+				/* Else, new random node */
+					// set multicast bit to avoid colliding with NIC addresses
 					( Floor ( Random * 128 ) *2 + 1 ) * 1099511627776
 					+ Floor ( Random * 1099511627776 )
 				);
 
 			//Store data for future reference
-			$$~UUID_DATA = List ( ~session ; ~now ; ~serial ; ~node );
+			$$~UUID.DATA = List ( ~session ; ~now ; ~serial ; ~node );
 
 			//purge variables
-			$~i = "";
+			$~uuid.i = "";
 			$~nicAddress = "";
 			$~nicDigit = "";
 			$~node = "";
-			$~step = ""
+			$~uuid.step = ""
 		];
-			//v-r-tttt tttt tttt-sss ssss-ccccc-nnnnn nnnnn nnnnn
+			// v-r-tttt tttt tttt-sss ssss-ccccc-nnnnn nnnnn nnnnn
 			"1-2-" //version and reserved variant code
 			& Right ( "000000000000" & ~now ; 12 )
 			& "-"

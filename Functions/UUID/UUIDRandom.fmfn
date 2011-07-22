@@ -35,11 +35,7 @@
  * converted to RFC 4122 canonical form (hexadecimal) with the
  * UUIDGetAsRFC4122 function.
  *
- * HISTORY:
- * MODIFIED on 2011-02-02 by jbante@supportgroup.com to use a format with a
- * one-to-one relationship with UUIDs in RFC 4122 format.
- * CREATED on 2010-12-02 by Jeremy Bante of The Support Group
- * (jbante@supportgroup.com).
+ * RELEASE: 2011-02-02
  *
  * REFERENCES:
  * Key values Best Practice: http://filemakerstandards.org/pages/viewpage.action?pageId=557386
@@ -53,8 +49,8 @@
  * ======================================
  */
 
-//v-r-mmm mmm mmm mmmTsss ssss-ccccc@nnnnn nnnnn nnnnn
-"4-2-" //version and reserved variant code
+// v-r-mmm mmm mmm mmm-sss ssss-ccccc-nnnnn nnnnn nnnnn
+"4-2-"	// version and reserved variant code
 & Right ( "000000000000" & Floor ( Random * 165208454460 ) ; 12 ) & "-"
 & Right ( Random ; 7 ) & "-"
 & Right ( "00000" & Floor ( Random * 16384 ) ; 5 ) & "-"

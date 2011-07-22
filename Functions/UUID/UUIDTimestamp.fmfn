@@ -28,7 +28,7 @@
  * DEPENDENCIES: none
  *
  * VARIABLES:
- *		$$~UUID_DATA[2]
+ *		$$~UUID.DATA[2]
  *
  * NOTES:
  *		For most practical purposes, FileMaker will ignore the text delimiters
@@ -45,7 +45,7 @@
  *		with the UUIDGetSeconds function.
  *
  *
- * RELEASE: 2011-05-02
+ * RELEASE: 2011-07-22
  *
  * REFERENCES:
  *		Key values Best Practice: http://filemakerstandards.org/pages/viewpage.action?pageId=557138
@@ -56,11 +56,11 @@
  */
 
 Let ( [
-	//Set-up timestamp, serial number, and session key
-	~session = GetValue ( $$~UUID_DATA[2] ; 1 );
-	~lastTimestamp = GetValue ( $$~UUID_DATA[2] ; 2 );
-	~serial = GetAsNumber ( GetValue ( $$~UUID_DATA[2] ; 3 ) );
-	~node = GetValue ( $$~UUID_DATA[2] ; 4 );
+	// Set-up timestamp, serial number, and session key
+	~session = GetValue ( $$~UUID.DATA[2] ; 1 );
+	~lastTimestamp = GetValue ( $$~UUID.DATA[2] ; 2 );
+	~serial = GetAsNumber ( GetValue ( $$~UUID.DATA[2] ; 3 ) );
+	~node = GetValue ( $$~UUID.DATA[2] ; 4 );
 
 	~now =
 		Mod (
@@ -79,7 +79,7 @@ Let ( [
 			or ~now < ~lastTimestamp; //clock change
 				Mod ( ~session + 1 ; 16384 );
 
-			/*else*/
+			/* Else */
 				~session
 		);
 	~magnitude =
@@ -97,16 +97,16 @@ Let ( [
 	~node =
 		If ( ~node;
 			~node;
-		/*Else, new random node*/
+		/* Else, new random node */
 			//set multicast bit to avoid colliding with NIC addresses
 			( Floor ( Random * 128 ) *2 + 1 ) * 1099511627776
 			+ Floor ( Random * 1099511627776 )
 		);
 
-	//Store data for future reference
-	$$~UUID_DATA[2] = List ( ~session ; ~now ; ~serial ; ~node )
+	// Store data for future reference
+	$$~UUID.DATA[2] = List ( ~session ; ~now ; ~serial ; ~node )
 ];
-	//v-r-tttt tttt tttt-sss ssss-ccccc-nnnnn nnnnn nnnnn
+	// v-r-tttt tttt tttt-sss ssss-ccccc-nnnnn nnnnn nnnnn
 	"1-2-" //version and reserved variant code
 	& Right ( "000000000000" & ~now ; 12 )
 	& "-"
