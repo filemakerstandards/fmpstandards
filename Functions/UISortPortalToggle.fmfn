@@ -5,7 +5,7 @@
  * PURPOSE:
  *		Assign a reserved set of global variables to values used
  *		by a sorting script (see UISortPortalDirection and UISortPortalIndicator)
- *		Reserved global variables are classed to $$SORT.LAYOUT.[id].PORTAL.* where
+ *		Reserved global variables are classed to $$SORT.PORTAL.[object].* where
  *		[id] is the internal ID of the current layout.
  *
  * RETURNS:
@@ -16,7 +16,7 @@
  *
  * EXAMPLES:
  *		When used as a script parameter on a button defined to run a sort script
- *		UISortPortalToggle ( FunctionalArea » Tablename::fieldName ; "portal.name" ) // = Assignment of $$SORT.PORTAL.object.* variables
+ *		UISortPortalToggle ( FunctionalArea » Tablename::fieldName ; "portal.name" ) // = Assignment of $$SORT.PORTAL.[object].* variables
  *
  * DEPENDENCIES:
  *		#Assign()

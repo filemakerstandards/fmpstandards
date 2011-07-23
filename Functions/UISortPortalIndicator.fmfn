@@ -10,7 +10,7 @@
  *		(see UISortPortalToggle and UISortPortalDirection)
  *
  * RETURNS:
- *		(string) Up or down arrow based on the contents $$SORT.PORTAL.object.FIELD
+ *		(string) Up or down arrow based on the contents $$SORT.PORTAL.[object].FIELD
  *
  * PARAMETERS:
  *		field: A field reference
