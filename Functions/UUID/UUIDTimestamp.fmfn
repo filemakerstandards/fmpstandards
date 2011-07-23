@@ -1,6 +1,6 @@
 ﻿/**
  * =====================================
- * UUIDTimeStamp
+ * UUIDTimestamp
  *
  * PURPOSE:
  *		Creates a universally unique identifier suitable for use as a primary
@@ -14,7 +14,7 @@
  *
  * RETURNS:
  *		A 41-digit delimited number of the form:
- *		v-r-tttttttttttt-sssssss-ccccc@nnnnnnnnnnnnnnn
+ *		v-r-tttttttttttt-sssssss-ccccc-nnnnnnnnnnnnnnn
  *		The sections of the UUID correspond to:
  *		v: A UUID version (type) number
  *		r: A variant code reserved by the RFC 4122 standard
@@ -28,7 +28,7 @@
  * DEPENDENCIES: none
  *
  * VARIABLES:
- *		$$~UUID_DATA[2]
+ *		$$~UUID.DATA[2]
  *
  * NOTES:
  *		For most practical purposes, FileMaker will ignore the text delimiters
@@ -44,10 +44,11 @@
  *		the UUIDGetAsRFC4122 function. The creation timestamp can be extracted
  *		with the UUIDGetSeconds function.
  *
- * RELEASE: 2011-02-25
+ *
+ * RELEASE: 2011-07-22
  *
  * REFERENCES:
- *		Key values Best Practice: http://filemakerstandards.org/display/bp/Key+values
+ *		Key values Best Practice: http://filemakerstandards.org/pages/viewpage.action?pageId=557138
  *		RFC 4122 standard UUID specification: http://tools.ietf.org/html/rfc4122
  *		Tom Robinson's UUID function: http://www.briandunning.com/cf/969
  *		Ray Cologon's uID functions: http://www.nightwing.com.au/FileMaker/demos9/demo910.html
@@ -55,11 +56,11 @@
  */
 
 Let ( [
-	//Set-up timestamp, serial number, and session key
-	~session = GetValue ( $$~UUID_DATA[2] ; 1 );
-	~lastTimestamp = GetValue ( $$~UUID_DATA[2] ; 2 );
-	~serial = GetValue ( $$~UUID_DATA[2] ; 3 );
-	~node = GetValue ( $$~UUID_DATA[2] ; 4 );
+	// Set-up timestamp, serial number, and session key
+	~session = GetValue ( $$~UUID.DATA[2] ; 1 );
+	~lastTimestamp = GetValue ( $$~UUID.DATA[2] ; 2 );
+	~serial = GetAsNumber ( GetValue ( $$~UUID.DATA[2] ; 3 ) );
+	~node = GetValue ( $$~UUID.DATA[2] ; 4 );
 
 	~now =
 		Mod (
@@ -71,36 +72,45 @@ Let ( [
 			IsEmpty ( ~session ); //new session
 				Floor ( Random * 16384 );
 
-			~serial ≥ 9999999 //serial number overflow
-			and ~now = ~lastTimestamp
+			(
+				~serial ≥ .9999999 //serial number overflow
+				and ~now = ~lastTimestamp
+			)
 			or ~now < ~lastTimestamp; //clock change
 				Mod ( ~session + 1 ; 16384 );
 
-			/*else*/
+			/* Else */
 				~session
 		);
+	~magnitude =
+		Max (
+			Left ( Substitute ( ~serial ; "." ; "" ) ; 1 );
+			1
+		);
 	~serial =
-		If ( ~now = ~lastTimestamp;
-			Mod ( ~serial + 1 ; 10000000 );
-			/*else*/ 0
+		Case (
+			~now ≠ ~lastTimestamp or ~serial = .9999999 ; 0;
+			~serial = 0 ; .1;
+			~serial < .7 ; ~serial + 10 ^ ( 0 - ~magnitude );
+			/* Else */ ~serial + 10 ^ -7
 		);
 	~node =
 		If ( ~node;
 			~node;
-		/*Else, new random node*/
+		/* Else, new random node */
 			//set multicast bit to avoid colliding with NIC addresses
 			( Floor ( Random * 128 ) *2 + 1 ) * 1099511627776
 			+ Floor ( Random * 1099511627776 )
 		);
 
-	//Store data for future reference
-	$$~UUID_DATA[2] = List ( ~session ; ~now ; ~serial ; ~node )
+	// Store data for future reference
+	$$~UUID.DATA[2] = List ( ~session ; ~now ; ~serial ; ~node )
 ];
-	//v-r-tttt tttt tttt-sss ssss-ccccc@nnnnn nnnnn nnnnn
+	// v-r-tttt tttt tttt-sss ssss-ccccc-nnnnn nnnnn nnnnn
 	"1-2-" //version and reserved variant code
 	& Right ( "000000000000" & ~now ; 12 )
 	& "-"
-	& Right ( "0000000" & ~serial ; 7 )
+	& Left ( Substitute ( ~serial ; "." ; "" ) & "0000000" ; 7 )
 	& "-"
 	& Right ( "00000" & ~session ; 5 )
 	& "-"

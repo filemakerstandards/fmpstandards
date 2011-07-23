@@ -9,7 +9,7 @@
  *
  * RETURNS:
  * A 41-digit delimited number of the form:
- * v-r-mmmmmmmmmmmmTsssssss-ccccc@nnnnnnnnnnnnnnn
+ * v-r-mmmmmmmmmmmm-sssssss-ccccc-nnnnnnnnnnnnnnn
  * With version 1 and 2 UUIDs, the sections of the UUID correspond to:
  * v: The UUID version (type) number
  * r: A variant code reserved by the RFC 4122 standard
@@ -23,9 +23,7 @@
  *
  * DEPENDENCIES: none
  *
- * HISTORY:
- * CREATED on 2011-02-02 by Jeremy Bante of The Support Group
- * (jbante@supportgroup.com).
+ * RELEASE: 2011-07-22
  *
  * REFERENCES:
  * Key values Best Practice: http://filemakerstandards.org/pages/viewpage.action?pageId=557386
@@ -38,32 +36,34 @@
  * UUIDRandom: http://www.briandunning.com/cf/1246
  * ======================================
  */
+
 Case (
 	/*Set-up conversion from base 16 to base 10*/
-	not $~step;
+	not $~uuid.step;
 		Let ( [
-			$~step = 1
+			$~uuid.step = 1
 		];
 			UUIDGetAsUUID (
 				Right ( Filter ( Lower ( rfc4122 ) ; "0123456789abcdef" ) ; 32 )
 			)
 		);
-        
+
 	/*Convert to base 10*/
-	$~step = 1;
+	$~uuid.step = 1;
 		Let ( [
-			$~i = $~i + 1;
-			~hexDigit = Middle ( rfc4122 ; $~i ; 1 );
+			$~uuid.i = $~uuid.i + 1;
+			~hexDigit = Middle ( rfc4122 ; $~uuid.i ; 1 );
 			$~decimal =
 				$~decimal * 16
 				+ ( Position ( "0123456789abcdef" ; ~hexDigit ; 1 ; 1 ) - 1 );
-			$~step = If ( $~i < 32 ; $~step ; /*else*/ $~step + 1 )
+			$~uuid.step =
+				If ( $~uuid.i < 32 ; $~uuid.step ; /*else*/ $~uuid.step + 1 )
 		];
 			UUIDGetAsUUID ( rfc4122 )
 		);
-        
+
 	/*Format and return result*/
-	$~step = 2;
+	$~uuid.step = 2;
 		Let ( [
 			//extract RFC 4122 components
 			~node = Mod ( $~decimal ; 2^48 );
@@ -86,7 +86,7 @@ Case (
 			~version = Div ( ~time_hi_and_version ; 2^12 );
 			~time_mid = Mod ( Div ( $~decimal ; 2^80 ) ; 2^16 );
 			~time_low = Mod ( Div ( $~decimal ; 2^96 ) ; 2^32 );
-			
+
 			//convert to FileMaker-centric format
 			~timestamp =
 				~time_hi * 2^48
@@ -95,20 +95,20 @@ Case (
 			~serialNumber = Right ( ~timestamp ; 7 );
 			//move epoch from 0001-01-01T00:00:00 to 1582-10-15T00:00:00
 			~timestamp = Div ( ~timestamp ; 10000000 ) + 49916304000;
-                                
+
 			//purge variables
 			$~decimal = "";
-			$~i = "";
-			$~step = ""
+			$~uuid.i = "";
+			$~uuid.step = ""
 		];
 			//format result
 			~version & "-"
 			& ~reserved & "-"
 			& Right ( "000000000000" & ~timestamp ; 12 )
-			& If ( ~version ≤ 2 ; "T" ; /*else*/ "-" )
+			& "-"
 			& Right ( "0000000" & ~serialNumber ; 7 ) & "-"
 			& Right ( "00000" & ~clock_seq ; 5 )
-			& If ( ~version ≤ 2 ; "@" ; /*else*/ "-" )
+			& "-"
 			& Right ( "000000000000000" & ~node ; 15 )
 		)
 )

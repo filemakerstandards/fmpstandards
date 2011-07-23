@@ -1,7 +1,6 @@
 /**
  * =====================================
- * UUIDNew
- *		https://github.com/petrowsky/fmpstandards/blob/master/Functions/UUIDNew.fmfn
+ * UUIDTimeNIC
  *
  * PURPOSE:
  *		Creates a universally unique identifier suitable for use as a primary
@@ -14,7 +13,7 @@
  *
  * RETURNS:
  *		A 41-digit delimited number of the form:
- *		v-r-tttttttttttt-sssssss-ccccc@nnnnnnnnnnnnnnn
+ *		v-r-tttttttttttt-sssssss-ccccc-nnnnnnnnnnnnnnn
  *		The sections of the UUID correspond to:
  *		v: A UUID version (type) number
  *		r: A variant code reserved by the RFC 4122 standard
@@ -45,125 +44,119 @@
  *		address can be extracted with the UUIDGetTimestamp and UUIDGetNICAddress
  *		functions.
  *
- * RELEASE: 2011-02-23
+ * RELEASE: 2011-07-22
  *
  * REFERENCES:
  *		Key values Best Practice: http://filemakerstandards.org/display/bp/Key+values
  *		RFC 4122 standard UUID specification: http://tools.ietf.org/html/rfc4122
- *		RFC 5322 Internet Message Format specification: http://www.rfc-editor.org/rfc/rfc5322.txt
  *		Tom Robinson's UUID function: http://www.briandunning.com/cf/969
  *		Ray Cologon's uID functions: http://www.nightwing.com.au/FileMaker/demos9/demo910.html
- *		UUIDGetAsRFC4122: http://www.briandunning.com/cf/1221
- *		UUIDGetAsUUID: http://www.briandunning.com/cf/1273
- *		UUIDGetNICAddress: http://www.briandunning.com/cf/1222
- *		UUIDGetSeconds: http://www.briandunning.com/cf/1223
- *		UUIDNew: http://www.briandunning.com/cf/1220
- *		UUIDRandom: http://www.briandunning.com/cf/1246
  * =====================================
  */
 
 Case (
-	/*First call to UUIDNew, check for pre-processed session/node data*/
-	not $~step;
+	/* First call to UUIDTimeNIC, check for pre-processed node data */
+	not $~uuid.step;
 		Let ( [
-				$~node = GetValue ( $$~UUID_DATA ; 1 );
-				$~step = If ( $~node ; 3 ; /*else*/ 1 )
+				$~node = GetValue ( $$~UUID.DATA ; 4 );
+				$~uuid.step = If ( $~node ; 3 ; /*else*/ 1 )
 		];
-			UUIDNew
+			UUIDTimeNIC
 		);
 
-	/*Get NIC address, if possible*/
-	$~step = 1;
+	/* Get NIC address, if possible */
+	$~uuid.step = 1;
 		Let ( [
-			$~nicAddress = Substitute ( GetValue ( Get ( SystemNICAddress ) ; 1 ); ":" ; "" );
-			$~i = 0;
-			$~step = If ( $~nicAddress ; $~step + 1 ; /*else*/ -1 )
+			$~nicAddress =
+				Substitute (
+					GetValue ( Get ( SystemNICAddress ); 1 );
+					":";
+					""
+				);
+			$~uuid.i = 0;
+			$~uuid.step = If ( $~nicAddress ; $~uuid.step + 1 ; /*else*/ 3 )
 		];
-			UUIDNew
+			UUIDTimeNIC
 		);
 
-	/*Parse NIC address from hexadecimal to a (base 10) number*/
-	$~step = 2;
+	/* Parse NIC address from hexadecimal to a (base 10) number */
+	$~uuid.step = 2;
 		Let ( [
-			$~nicDigit = Middle ( $~nicAddress ; 12 - $~i ; 1 );
-			$~nicDigit = Position ( "0123456789abcdefg" ; $~nicDigit ; 1 ; 1 ) - 1; //convert digit to number
-			$~node = $~nicDigit * ( 16 ^ $~i ) + $~node; //add digit to node
-			$~step = If ( $~i < 11 ; $~step ; /*else*/ $~step + 1  );
-			$~i = $~i + 1
+			$~nicDigit = Middle ( $~nicAddress ; 12 - $~uuid.i ; 1 );
+			$~nicDigit = Position ( "0123456789abcdef" ; $~nicDigit ; 1 ; 1 ) - 1;	// convert digit to number
+			$~node = $~nicDigit * ( 16 ^ $~uuid.i ) + $~node;	// add digit to node
+			$~uuid.step =
+				If ( $~uuid.i < 11 ; $~uuid.step ; /*else*/ $~uuid.step + 1  );
+			$~uuid.i = $~uuid.i + 1
 		];
-			UUIDNew
+			UUIDTimeNIC
 		);
 
-	/*Concatenate information*/
-	$~step = 3;
+	/* Concatenate information */
+	$~uuid.step = 3;
 		Let ( [
-			//Set-up timestamp, serial number, and session key
-			~session = GetValue ( $$~UUID_DATA ; 2 );
-			~lastTimestamp = GetValue ( $$~UUID_DATA ; 3 );
-			~serial = GetValue ( $$~UUID_DATA ; 4 );
+			// Set-up timestamp, serial number, and session key
+			~session = GetValue ( $$~UUID.DATA ; 1 );
+			~lastTimestamp = GetValue ( $$~UUID.DATA ; 2 );
+			~serial = GetAsNumber ( GetValue ( $$~UUID.DATA ; 3 ) );
 
 			~now =
 				Mod (
-					GetAsNumber ( Get ( CurrentHostTimestamp ) );
+					GetAsNumber ( Get ( CurrentHostTimeStamp ) );
 					165208454460
 				);
 			~session =
 				Case (
-					IsEmpty ( ~session ); //new session
+					IsEmpty ( ~session );	// new session
 						Floor ( Random * 16384 );
 
-					~serial ≥ 9999999 //serial number overflow
-					and ~now = ~lastTimestamp;
+					~serial ≥ .9999999	// serial number overflow
+					and ~now = ~lastTimestamp
+					or ~now < ~lastTimestamp;	// clock change
 						Mod ( ~session + 1 ; 16384 );
 
-					/*else*/
+					/* Else */
 						~session
 				);
-			~serial =
-				If ( ~now = ~lastTimestamp;
-					Mod ( ~serial + 1 ; 10000000 );
-					/*else*/ 0
+			~magnitude =
+				Max (
+					Left ( Substitute ( ~serial ; "." ; "" ) ; 1 );
+					1
 				);
-			~node = $~node;
-			
+			~serial =
+				Case (
+					~now ≠ ~lastTimestamp or ~serial = .9999999 ; 0;
+					~serial = 0 ; .1;
+					~serial < .7 ; ~serial + 10 ^ ( 0 - ~magnitude );
+					/* Else */ ~serial + 10 ^ -7
+				);
+			~node =
+				If ( $~node;
+					$~node;
+				/* Else, new random node */
+					// set multicast bit to avoid colliding with NIC addresses
+					( Floor ( Random * 128 ) *2 + 1 ) * 1099511627776
+					+ Floor ( Random * 1099511627776 )
+				);
+
 			//Store data for future reference
-			$$~UUID_DATA = List ( ~node ; ~session ; ~now ; ~serial );
+			$$~UUID.DATA = List ( ~session ; ~now ; ~serial ; ~node );
 
 			//purge variables
-			$~i = "";
+			$~uuid.i = "";
 			$~nicAddress = "";
 			$~nicDigit = "";
 			$~node = "";
-			$~step = ""
+			$~uuid.step = ""
 		];
-			//v-r-tttt tttt tttt-sss ssss-ccccc@nnnnn nnnnn nnnnn
+			// v-r-tttt tttt tttt-sss ssss-ccccc-nnnnn nnnnn nnnnn
 			"1-2-" //version and reserved variant code
 			& Right ( "000000000000" & ~now ; 12 )
 			& "-"
-			& Right ( "0000000" & ~serial ; 7 )
+			& Left ( Substitute ( ~serial ; "." ; "" ) & "0000000" ; 7 )
 			& "-"
 			& Right ( "00000" & ~session ; 5 )
-			& "@"
-			& Right ( "000000000000000" & ~node ; 15 ) 
-		);
-
-	/*No NIC address, use Random numbers instead*/
-	$~step = -1;
-		Let ( [
-			//purge variables
-			$~i = "";
-			$~nicAddress = "";
-			$~node = "";
-			$~step = ""
-		];
-			//v-r-tttt tttt tttt-sss ssss-ccccc-nnnnn nnnnn nnnnn
-			"4-2-" //version and reserved variant code
-			& Right ( "000000000000" & Floor ( Random * 165208454460 ) ; 12 )
 			& "-"
-			& Right ( Random ; 7 )
-			& "-"
-			& Right ( "00000" & Floor ( Random * 16384 ) ; 5 )
-			& "-"
-			& Right ( "000000000000000" & Floor ( Random * 281474976710656 ) ; 15 )
+			& Right ( "000000000000000" & ~node ; 15 )
 		)
 )
