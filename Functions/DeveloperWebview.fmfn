@@ -1,0 +1,105 @@
+/**
+ * =====================================================
+ * DeveloperWebview ( )
+ * 
+ * PURPOSE:
+ *		Use a web viewer to display developer specific information
+ *		about the current layout.
+ * PARAMETERS:
+ *		none
+ * RETURNS:
+ *		(string) Web viewer html
+ * DEPENDENCIES:
+ *		none
+ * NOTES:
+ *		none
+ * =====================================================
+ * 
+ */
+
+Let ( [
+	@title = "class=" & Quote ( "title" );
+	@data = "class=" & Quote ( "data" );
+	~css = "
+	* {
+		margin: 0;
+	}
+	html, body {
+		font: 11px \"DejaVu Sans Mono\", \"Courier New\", Courier, mono;
+		background-color:#eee;
+	}
+	ul {
+	    list-style: none;
+		-webkit-padding-start: 15px
+	}
+	li:before {
+	    content: \"» \";
+	    color: gray;
+	}
+	div {
+	}
+	.title {
+		background-color: blue;
+		color: white;
+		padding: 4px;
+		margin: 5px 0;
+	}
+	.data {
+		margin-left: 15px;
+	}
+	"
+];
+	List (
+		"data:text/html,";
+		"<html>";
+		"<head>";
+		"<title>Developer Details</title>";
+		"<style type=\"text/css\">" & ~css & "</style>";
+		"</head>";
+		"<body>";
+		// Table
+		"<div style=\"margin-top: 0px;\"" & @title & ">TABLE OCCURRENCE NAME</div>";
+		"<div " & @data & ">";
+			Get ( LayoutTableName );
+		"</div>";
+		// Layout name & id
+		"<div " & @title & ">LAYOUT NAME &amp; ID</div>";
+		"<div " & @data & ">";
+			Get ( LayoutName ) & "(" & GetValue ( LayoutIDs ( Get ( FileName ) ) ; Get ( LayoutNumber ) ) & ")";
+		"</div>";
+		// Layout objects
+		"<div " & @title & ">LAYOUT OBJECTS</div>";
+		"<div style=\"margin: 0;\"" & @data & ">";
+		Let ( ~html = "<ul><li>" & Substitute (
+			LayoutObjectNames ( Get ( FileName ) ; Get ( LayoutName ) );
+			[ "<¶<¶>¶>" ; "" ];	// remove embedded empty containers
+			[ "<¶>" ; "" ];		// remove empty containers
+			[ "¶¶¶" ; "¶" ];	// clean up
+			[ "¶¶" ; "¶" ];		// more clean up
+			[ ¶ ; "¶<li>" ];	// prefix lines
+			[ "¶<li><¶" ; "¶<ul>" ];
+			[ "¶<li>>¶" ; "</li></ul>" ];
+			[ ¶ ; "</li>¶" ]
+		);
+
+		Replace ( ~html ; Length ( ~html ) - 3 ; 4 ; "</ul>" )
+
+		);
+		"</div>";
+		// Layout fields
+		"<div " & @title & ">LAYOUT FIELDS</div>";
+		"<div " & @data & ">";
+			"<p>" & Substitute (
+				FieldNames ( get ( fileName ) ; get ( layoutName ) );
+				[ ¶ ; "</p>¶<p>" ]
+			) & "</p>";
+		"</div>";
+		// File path
+		"<div " & @title & ">FILE PATH</div>";
+		"<div " & @data & ">";
+			Get ( FilePath );
+		"</div>";
+		"</body>";
+		"</html>"
+	)
+)
