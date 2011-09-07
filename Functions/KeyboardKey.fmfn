@@ -1,0 +1,165 @@
+/*
+ * =====================================================
+ * keycode.istype( type )
+ * 
+ * RETURNS:    (boolean) Whether the keystoke used is within the specified type
+ * DEPS:       none
+ * NOTES:      
+ * =====================================================
+ */
+
+Let (
+[
+  // Capture the keystroke for use
+  
+  var.keystroke = Code ( Get ( TriggerKeystroke ) );
+  
+  // Possible keystokes & combinations
+  
+  var.arrows = var.keystroke ≥ 28 and var.keystroke ≤ 31;
+  var.uppercase = var.keystroke ≥ 65 and var.keystroke ≤ 90;
+  var.lowercase = var.keystroke ≥ 97 and var.keystroke ≤ 122;
+  var.letter = var.uppercase or var.lowercase;
+  var.number = var.keystroke ≥ 48 and var.keystroke ≤ 57;
+
+  // Common editing keystrokes
+  
+  var.home       = var.keystroke = 1;
+  var.pageup     = var.keystroke = 2;
+  var.pagedown   = var.keystroke = 3;
+  var.end        = var.keystroke = 4;
+  var.backspace  = var.keystroke = 8;
+  var.tab        = var.keystroke = 9;
+  var.enter      = var.keystroke = 10;
+  var.return     = var.keystroke = 13;
+  var.escape     = var.keystroke = 27;
+  var.leftarrow  = var.keystroke = 28;
+  var.uparrow    = var.keystroke = 29;
+  var.rightarrow = var.keystroke = 30;
+  var.downarrow  = var.keystroke = 31;
+  var.space      = var.keystroke = 32;
+  var.delete     = var.keystroke = 127;
+  
+  // Punctiation & Math
+  
+  var.exclamation  = var.keystroke = 33;
+  var.doublequote  = var.keystroke = 34;
+  var.numbersign   = var.keystroke = 35;
+  var.dollar       = var.keystroke = 36;
+  var.percent      = var.keystroke = 37;
+  var.ampersand    = var.keystroke = 38;
+  var.singlequote  = var.keystroke = 39;
+  var.openparen    = var.keystroke = 40;
+  var.closeparen   = var.keystroke = 41;
+  var.asterisk     = var.keystroke = 42;
+  var.plus         = var.keystroke = 43;
+  var.comma        = var.keystroke = 44;
+  var.minus        = var.keystroke = 45;
+  var.period       = var.keystroke = 46;
+  var.slash        = var.keystroke = 47;
+  var.colon        = var.keystroke = 58;
+  var.semicolon    = var.keystroke = 59;
+  var.lessthan     = var.keystroke = 60;
+  var.equals       = var.keystroke = 61;
+  var.greaterthan  = var.keystroke = 62;
+  var.questionmark = var.keystroke = 63;
+  var.openbracket  = var.keystroke = 91;
+  var.backslash    = var.keystroke = 92;
+  var.closebracket = var.keystroke = 93;
+  var.caret        = var.keystroke = 94;
+  var.underscore   = var.keystroke = 95;
+  var.openbrace    = var.keystroke = 123;
+  var.pipe         = var.keystroke = 124;
+  var.closebrace   = var.keystroke = 125;
+  var.tilde        = var.keystroke = 126;
+  
+  // Special combinations and groupings
+  
+  var.edit = var.home
+                or var.pageup
+                or var.pagedown
+                or var.end
+                or var.backspace
+                or var.tab
+                or var.enter
+                or var.return
+                or var.escape
+                or var.return
+                or var.space
+                or var.delete;
+
+  var.punctuation = var.period
+                or var.exclamation
+                or var.questionmark
+                or var.comma
+                or var.semicolon
+                or var.colon
+                or var.space
+                or var.singlequote
+                or var.doublequote
+                or var.openparen
+                or var.closeparen
+                or var.openbrace
+                or var.closebrace
+                or var.openbracket
+                or var.closebracket
+  
+];
+  // English named versions of keystrokes
+  
+  If (
+    type = "arrows" and var.arrows  or
+    type = "uppercase" and var.uppercase  or
+    type = "lowercase" and var.lowercase  or
+    type = "letter" and var.letter  or
+    type = "number" and var.number  or
+    type = "home" and var.home  or
+    type = "pageup" and var.pageup  or
+    type = "pagedown" and var.pagedown  or
+    type = "end" and var.end  or
+    type = "backspace" and var.backspace  or
+    type = "tab" and var.tab  or
+    type = "enter" and var.enter  or
+    type = "return" and var.return  or
+    type = "escape" and var.escape  or
+    (type = "leftarrow" or type = "left arrow") and var.leftarrow  or
+    type = "uparrow" and var.uparrow    or
+    type = "rightarrow" and var.rightarrow or
+    type = "downarrow" and var.downarrow or
+    type = "space" and var.space  or
+    type = "delete" and var.delete or
+    type = "exclamation" and var.exclamation or
+    type = "doublequote" and var.doublequote or
+    type = "number sign" and var.numbersign or
+    type = "dollar" and var.dollar or
+    type = "percent" and var.percent or
+    type = "ampersand" and var.ampersand or
+    type = "singlequote" and var.singlequote or
+    type = "openparen" and var.openparen or
+    type = "closeparen" and var.closeparen or
+    type = "asterisk" and var.asterisk or
+    type = "plus" and var.plus or
+    type = "comma" and var.comma or
+    type = "minus" and var.minus or
+    type = "period" and var.period or
+    type = "slash" and var.slash or
+    type = "colon" and var.colon or
+    type = "semicolon" and var.semicolon or
+    type = "lessthan" and var.lessthan or
+    type = "equals" and var.equals or
+    type = "greaterthan" and var.greaterthan or
+    type = "questionmark" and var.questionmark or
+    type = "openbracket" and var.openbracket or
+    type = "backslash" and var.backslash or
+    type = "closebracket" and var.closebracket or
+    type = "caret" and var.caret or
+    type = "underscore" and var.underscore or
+    type = "openbrace" and var.openbrace or
+    type = "pipe" and var.pipe or
+    type = "closebrace" and var.closebrace or
+    type = "tilde" and var.tilde or
+    type = "editing" and var.edit or
+    type = "punctuation" and var.punctuation; True;
+    False
+  )
+)
