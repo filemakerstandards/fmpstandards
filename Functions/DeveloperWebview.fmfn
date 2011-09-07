@@ -85,21 +85,25 @@ Let ( [
 		"<div " & @title & ">LAYOUT OBJECTS</div>";
 		"<div style=\"margin: 0;\"" & @data & ">";
 		Let ( [
-			$~html = Let ( ~html = "<ul><li>" & Substitute (
-				LayoutObjectNames ( Get ( FileName ) ; Get ( LayoutName ) );
-				[ "<¶<¶>¶>" ; "" ];	// remove embedded empty containers
-				[ "<¶>" ; "" ];		// remove empty containers
-				[ "¶¶¶" ; "¶" ];	// clean up
-				[ "¶¶" ; "¶" ];		// more clean up
-				[ ¶ ; "¶<li>" ];	// prefix lines
-				[ "¶<li><¶" ; "¶<ul>" ];
-				[ "¶<li>>¶" ; "</li></ul>" ];
-				[ ¶ ; "</li>¶" ]
-			);
+			$~html = "<ul>¶" & Let ( [
+				$~objects = LayoutObjectNames ( Get ( FileName ) ; Get ( LayoutName ) );
+				$~level = 0;
+				$~indent = "<";
+				$~outdent = ">";
+				~function = "Let ( ~value = GetValue ( $~objects ; [n] ) ;
+								Case (
+									~value = $~indent ;
+										Let ( $~level = $~level + 1 ; \"<ul>\" );
 
-			Replace ( ~html ; Length ( ~html ) - 3 ; 4 ; "</ul>" )
+									~value = $~outdent;
+										Let ( $~level = $~level - 1 ; \"</ul>\" );
 
-			);
+									\"<li>\" & ~value & \"</li>\"
+								)
+							)"
+			];
+				CustomList ( 1 ; ValueCount ( $~objects ) ; ~function )
+			) & "¶</ul>";
 			$~objects = Substitute ( LayoutObjectNames ( Get ( FileName ) ; Get ( LayoutName ) ) ; ["<¶" ; ""] ; ["¶>" ; ""] );
 			$~menubar = 15; //@todo - need to account for windows vs. mac
 			~swap = CustomList ( 1; ValueCount ( $~objects ); // creating internal Substitution() block
@@ -113,7 +117,7 @@ Let ( [
 				~result = Evaluate ( ~apply )
 			];
 				If ( ~result = "?"; // the CustomList was not evaluated properly
-					$~html; // default html without the position values
+					"CustomList function is needed for this area"; 
 					~result // super helpful list of objects with position values
 				)
 			)
