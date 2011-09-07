@@ -49,6 +49,13 @@ Let ( [
 	}
 	div {
 	}
+	#header{
+		background-color: blue;
+		color: white;
+		padding: 6px;
+		font-size: 22px;
+		margin-bottom: 5px;
+	}
 	.title {
 		background-color: #3f3f3f;
 		color: white;
@@ -71,8 +78,24 @@ Let ( [
 		"<style type=\"text/css\">" & ~css & "</style>";
 		"</head>";
 		"<body>";
+		// Header
+		"<div id=\"header\">Developer Details</div>";
+		"<div " & @data & ">"; // an anchor link to FileMaker Help @todo need to account for windows
+			Let ( [
+				~pathPrefix = Substitute ( MiddleValues ( Substitute ( Get ( FileMakerPath ) ; "/" ; ¶ ) ; 3 ; 10000 ) ; ¶ ; "/" );
+				~appName = Case (
+					PatternCount ( Get ( ApplicationVersion ) ; "ProAdvanced" );
+						"FileMaker Pro Advanced.app";
+
+					"FileMaker Pro.app"
+				);
+				~pathSuffix = "/Contents/Resources/English.lproj/FileMaker Pro Help/"
+			];
+				"<a href=" & Quote ( "file:///" & ~pathPrefix & ~appName & ~pathSuffix ) & " target=\"_blank\">FileMaker Help</a>"
+			);
+		"</div>";
 		// Table
-		"<div style=\"margin-top: 0px;\"" & @title & ">TABLE OCCURRENCE NAME</div>";
+		"<div " & @title & ">TABLE OCCURRENCE NAME</div>";
 		"<div " & @data & ">";
 			Get ( LayoutTableName );
 		"</div>";
