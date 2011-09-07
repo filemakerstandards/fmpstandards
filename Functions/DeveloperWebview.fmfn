@@ -5,14 +5,21 @@
  * PURPOSE:
  *		Use a web viewer to display developer specific information
  *		about the current layout.
+ *
  * PARAMETERS:
  *		none
+ *
  * RETURNS:
  *		(string) Web viewer html
+ *
  * DEPENDENCIES:
- *		none
+ *		CustomList()
+ *
  * NOTES:
- *		none
+ *		You can optionally use this function directly within a web viewer
+ *
+ * HISTORY:
+ *		MODIFIED on 2011-9-6 by matt@filemakermagazine.com - released
  * =====================================================
  * 
  */
@@ -43,10 +50,13 @@ Let ( [
 	div {
 	}
 	.title {
-		background-color: blue;
+		background-color: #3f3f3f;
 		color: white;
 		padding: 4px;
 		margin: 5px 0;
+		-webkit-box-shadow: 0 3px 5px #888;
+		box-shadow: 0 3px 5px #888;
+		border-bottom: 1px solid #1a1a1a;
 	}
 	.data {
 		margin-left: 15px;
@@ -91,9 +101,10 @@ Let ( [
 
 			);
 			$~objects = Substitute ( LayoutObjectNames ( Get ( FileName ) ; Get ( LayoutName ) ) ; ["<¶" ; ""] ; ["¶>" ; ""] );
+			$~menubar = 15; //@todo - need to account for windows vs. mac
 			~swap = CustomList ( 1; ValueCount ( $~objects );
 				"Let ( ~value = GetValue ( $~objects ; [n] );
-					\"[\" & Quote (~value & \"<\") & \";\" & Quote ( ~value & \" <span>(\" & GetLayoutObjectAttribute ( ~value ; \"ObjectType\" ) & \" @ \" & GetLayoutObjectAttribute ( ~value ; \"Left\" ) & \" x \" &  GetLayoutObjectAttribute ( ~value ; \"Top\" ) & \")</span><\" ) & \"]\"
+					\"[\" & Quote (~value & \"<\") & \";\" & Quote ( ~value & \" <span>(\" & GetLayoutObjectAttribute ( ~value ; \"ObjectType\" ) & \" @ \" & GetLayoutObjectAttribute ( ~value ; \"Left\" ) - Get ( WindowLeft ) & \" x \" &  GetLayoutObjectAttribute ( ~value ; \"Top\" ) - Get ( WindowTop ) - ( Get ( WindowHeight ) - Get ( WindowContentHeight ) ) + $~menubar & \")</span><\" ) & \"]\"
 				)"
 			);
 			~apply = "Substitute (" & Quote ( $~html ) & ";" & Substitute ( ~swap ; "¶" ; ";¶" ) & ")"
