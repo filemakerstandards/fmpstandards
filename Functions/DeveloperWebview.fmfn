@@ -32,7 +32,7 @@ Let ( [
 		margin: 0;
 	}
 	html, body {
-		font: 11px \"DejaVu Sans Mono\", \"Courier New\", Courier, mono;
+		font: 11px \"DejaVu Sans Mono\", \"Anadale Mono\", \"Courier New\", Courier, mono;
 		background-color:#eee;
 	}
 	ul {
