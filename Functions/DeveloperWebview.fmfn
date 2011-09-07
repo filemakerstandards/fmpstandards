@@ -36,6 +36,10 @@ Let ( [
 	    content: \"» \";
 	    color: gray;
 	}
+	li span {
+		float: right;
+		color: gray;
+	}
 	div {
 	}
 	.title {
@@ -70,27 +74,45 @@ Let ( [
 		// Layout objects
 		"<div " & @title & ">LAYOUT OBJECTS</div>";
 		"<div style=\"margin: 0;\"" & @data & ">";
-		Let ( ~html = "<ul><li>" & Substitute (
-			LayoutObjectNames ( Get ( FileName ) ; Get ( LayoutName ) );
-			[ "<¶<¶>¶>" ; "" ];	// remove embedded empty containers
-			[ "<¶>" ; "" ];		// remove empty containers
-			[ "¶¶¶" ; "¶" ];	// clean up
-			[ "¶¶" ; "¶" ];		// more clean up
-			[ ¶ ; "¶<li>" ];	// prefix lines
-			[ "¶<li><¶" ; "¶<ul>" ];
-			[ "¶<li>>¶" ; "</li></ul>" ];
-			[ ¶ ; "</li>¶" ]
-		);
+		Let ( [
+			$~html = Let ( ~html = "<ul><li>" & Substitute (
+				LayoutObjectNames ( Get ( FileName ) ; Get ( LayoutName ) );
+				[ "<¶<¶>¶>" ; "" ];	// remove embedded empty containers
+				[ "<¶>" ; "" ];		// remove empty containers
+				[ "¶¶¶" ; "¶" ];	// clean up
+				[ "¶¶" ; "¶" ];		// more clean up
+				[ ¶ ; "¶<li>" ];	// prefix lines
+				[ "¶<li><¶" ; "¶<ul>" ];
+				[ "¶<li>>¶" ; "</li></ul>" ];
+				[ ¶ ; "</li>¶" ]
+			);
 
-		Replace ( ~html ; Length ( ~html ) - 3 ; 4 ; "</ul>" )
+			Replace ( ~html ; Length ( ~html ) - 3 ; 4 ; "</ul>" )
 
+			);
+			$~objects = Substitute ( LayoutObjectNames ( Get ( FileName ) ; Get ( LayoutName ) ) ; ["<¶" ; ""] ; ["¶>" ; ""] );
+			~swap = CustomList ( 1; ValueCount ( $~objects );
+				"Let ( ~value = GetValue ( $~objects ; [n] );
+					\"[\" & Quote (~value & \"<\") & \";\" & Quote ( ~value & \" <span>(\" & GetLayoutObjectAttribute ( ~value ; \"ObjectType\" ) & \" @ \" & GetLayoutObjectAttribute ( ~value ; \"Left\" ) & \" x \" &  GetLayoutObjectAttribute ( ~value ; \"Top\" ) & \")</span><\" ) & \"]\"
+				)"
+			);
+			~apply = "Substitute (" & Quote ( $~html ) & ";" & Substitute ( ~swap ; "¶" ; ";¶" ) & ")"
+		];
+			Let ( [
+				~result = Evaluate ( ~apply )
+			];
+				If ( ~result = "?"; // the CustomList was not evaluated properly
+					$~html;
+					~result
+				)
+			)
 		);
 		"</div>";
 		// Layout fields
 		"<div " & @title & ">LAYOUT FIELDS</div>";
 		"<div " & @data & ">";
 			"<p>" & Substitute (
-				FieldNames ( get ( fileName ) ; get ( layoutName ) );
+				FieldNames ( Get ( FileName ) ; Get ( LayoutName ) );
 				[ ¶ ; "</p>¶<p>" ]
 			) & "</p>";
 		"</div>";
