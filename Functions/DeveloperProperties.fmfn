@@ -3,22 +3,22 @@
  * DeveloperProperties ( hide )
  * 
  * PURPOSE:
- *                Set reserved namespace variables of
- *                $$ CURRENT.WHATEVER to contain useful
- *                developer information for the purpose
- *                of viewing within the Data Viewer.
- *                Typically used within conditional
- *                formatting on layout text label.
+ *		Set reserved namespace variables of
+ *		$$ CURRENT.WHATEVER to contain useful
+ *		developer information for the purpose
+ *		of viewing within the Data Viewer.
+ *		Typically used within conditional
+ *		formatting on layout text label.
  * PARAMETERS:
- *                @hide = (boolean) True or False
+ *		@hide = (boolean) True or False
  * RETURNS:
- *                (boolean) True or False
+ *		(boolean) True or False
  * DEPENDENCIES:
- *                Developer(), ObjectID(), LayoutObjectHierarchy()
+ *		Developer(), ObjectID(), LayoutObjectHierarchy()
  * NOTES:
- *                Note the use of the space after the $$
- *                this causes these global variables to
- *                be sorted at the top of the Data Viewer
+ *		Note the use of the space after the $$
+ *		this causes these global variables to
+ *		be sorted at the top of the Data Viewer
  * =====================================================
  * 
  */
