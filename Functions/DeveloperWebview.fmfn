@@ -102,7 +102,7 @@ Let ( [
 			);
 			$~objects = Substitute ( LayoutObjectNames ( Get ( FileName ) ; Get ( LayoutName ) ) ; ["<¶" ; ""] ; ["¶>" ; ""] );
 			$~menubar = 15; //@todo - need to account for windows vs. mac
-			~swap = CustomList ( 1; ValueCount ( $~objects );
+			~swap = CustomList ( 1; ValueCount ( $~objects ); // creating internal Substitution() block
 				"Let ( ~value = GetValue ( $~objects ; [n] );
 					\"[\" & Quote (~value & \"<\") & \";\" & Quote ( ~value & \" <span>(\" & GetLayoutObjectAttribute ( ~value ; \"ObjectType\" ) & \" @ \" & GetLayoutObjectAttribute ( ~value ; \"Left\" ) - Get ( WindowLeft ) & \" x \" &  GetLayoutObjectAttribute ( ~value ; \"Top\" ) - Get ( WindowTop ) - ( Get ( WindowHeight ) - Get ( WindowContentHeight ) ) + $~menubar & \")</span><\" ) & \"]\"
 				)"
@@ -113,8 +113,8 @@ Let ( [
 				~result = Evaluate ( ~apply )
 			];
 				If ( ~result = "?"; // the CustomList was not evaluated properly
-					$~html;
-					~result
+					$~html; // default html without the position values
+					~result // super helpful list of objects with position values
 				)
 			)
 		);
