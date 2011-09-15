@@ -34,7 +34,7 @@
 
 Let( [
 	~seconds = Choose (
-		int ( Position ( "minutes.hours...days....months..years..."; unit; 1; 1 ) / 8 );
+		Int ( Position ( "minutes.hours...days....months..years..."; unit; 1; 1 ) / 8 );
 		60 ; 3600 ; 86400 ; 2629743.83 ; 31556926 ) // minutes, hours, days, months, years (in seconds)
 ];
 	~seconds * amount
