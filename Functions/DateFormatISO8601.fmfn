@@ -1,0 +1,21 @@
+Let ( [
+	~today = Get ( CurrentDate )
+];
+	Year ( ~today )
+	& "-"
+	& Right ( "00" & Month ( ~today ) ; 2 )
+	& "-"
+	& Right (  "00" & Day ( ~today ) ; 2 )
+)
+
+& " " &
+
+Let ( [
+	~time = Get ( CurrentTime )
+];
+	Right ( "00" & Hour ( ~time ) ; 2 )
+	& ":"
+	& Right ( "00" & Minute ( ~time ) ; 2 )
+	& ":"
+	& Right ( "00" & Seconds ( ~time ) ; 2 )
+)
