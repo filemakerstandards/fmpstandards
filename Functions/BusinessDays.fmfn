@@ -7,45 +7,47 @@
  *		inclusive, omitting any days in holidayList that fall on weekdays.
  *
  * PARAMETERS:
- *		startDate
- *		endDate
+ *		startDate: A date
+ *		endDate: A date, endDate ≥ startDate
  *
  * DEPENDENCIES:
  *		BusinessHolidays ( calendarYear )
  *
- * RELEASE:	2011-10-18
+ * RELEASE:	2011-10-19
  * =====================================
  */
 
 Let ( [
-	~startDay = DayOfWeek ( startDate );
-	~endDay = DayOfWeek ( endDate );
-
-	~startSaturday = startDate - ~startDay + 7;
-	~endSaturday = endDate - ~endDay;
-	~fullWeeks = Div ( ~endSaturday - ~startSaturday + 1 ; 7 );
-
-	~leadingWeekDays = Choose ( ~startDay - 1 ; 5 ; 5 ; 4 ; 3 ; 2 ; 1 ; 0 );
-	~trailingWeekDays = Choose ( ~endDay - 1 ; 0 ; 1 ; 2 ; 3 ; 4 ; 5 ; 5 );
-
+	// compare calendar years, in case range spans years and needs to be split
 	~startYear = Year ( startDate );
 	~endYear = Year ( endDate );
-	~holidayList =
-		List (
-			BusinessHolidays ( ~startyear );
-			If ( ~endYear ≠ ~startYear ; BusinessHolidays ( ~endYear ) )
-		);
+	~splitDate = Date ( 1 ; 1 ; ~startYear + 1 ); // first 1 Jan after startDate
+	~endDate = If ( ~endYear > ~startYear ; ~splitDate - 1 ; endDate );
+
+	~startDay = DayOfWeek ( startDate );
+	~endDay = DayOfWeek ( ~endDate );
+
+	~startSaturday = startDate - ~startDay + 7;
+	~endSaturday = ~endDate - ~endDay;
+	~fullWeeks = Div ( ~endSaturday - ~startSaturday + 1 ; 7 );
+
+	~leadingWeekDays =
+		Choose ( ~startDay - 1 ; 5 ; 5 ; 4 ; 3 ; 2 ; 1 ; 0 );
+	~trailingWeekDays =
+		Choose ( ~endDay - 1 ; 0 ; 1 ; 2 ; 3 ; 4 ; 5 ; 5 );
+
 	~holidayCalculation =
 		"Let ( [ ~d = \""
-		& ~holidayList
+		& BusinessHolidays ( ~startYear )
 		& "\" ; ~n = DayOfWeek ( ~d ) ] ; ~d ≥ startDate and ~d ≤ endDate and ~n > 1 and ~n < 7 )";
-	~holidayCalculation =	// Add 1 for each weekday holiday within date range
+	~holidayCalculation = // Add 1 for each weekday holiday within range
 		Substitute ( ~holidayCalculation;
 			[ "¶" ; "\" ; ~n = DayOfWeek ( ~d ) ] ; ~d ≥ startDate and ~d ≤ endDate and ~n > 1 and ~n < 7 ) + Let ( [ ~d = \"" ];
 			[ "startDate" ; Quote ( startDate ) ];
-			[ "endDate" ; Quote ( endDate ) ]
+			[ "endDate" ; Quote ( ~endDate ) ]
 		);
 	~holidays = Evaluate ( ~holidayCalculation )
 ];
 	5 * ~fullWeeks + ~leadingWeekDays + ~trailingWeekDays - ~holidays
+	+ If ( ~endYear > ~startYear ; BusinessDays ( ~splitDate ; endDate ) ; 0 )
 )
