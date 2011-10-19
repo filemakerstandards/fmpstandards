@@ -1,0 +1,51 @@
+/**
+ * =====================================
+ * BusinessDays ( startDate ; endDate )
+ *
+ * RETURNS:
+ *		The number of business days falling between startDate and endDate,
+ *		inclusive, omitting any days in holidayList that fall on weekdays.
+ *
+ * PARAMETERS:
+ *		startDate
+ *		endDate
+ *
+ * DEPENDENCIES:
+ *		BusinessHolidays ( calendarYear )
+ *
+ * RELEASE:	2011-10-18
+ * =====================================
+ */
+
+Let ( [
+	~startDay = DayOfWeek ( startDate );
+	~endDay = DayOfWeek ( endDate );
+
+	~startSaturday = startDate - ~startDay + 7;
+	~endSaturday = endDate - ~endDay;
+	~fullWeeks = Div ( ~endSaturday - ~startSaturday + 1 ; 7 );
+
+	~leadingWeekDays = Choose ( ~startDay - 1 ; 5 ; 5 ; 4 ; 3 ; 2 ; 1 ; 0 );
+	~trailingWeekDays = Choose ( ~endDay - 1 ; 0 ; 1 ; 2 ; 3 ; 4 ; 5 ; 5 );
+
+	~startYear = Year ( startDate );
+	~endYear = Year ( endDate );
+	~holidayList =
+		List (
+			BusinessHolidays ( ~startyear );
+			If ( ~endYear ≠ ~startYear ; BusinessHolidays ( ~endYear ) )
+		);
+	~holidayCalculation =
+		"Let ( [ ~d = \""
+		& ~holidayList
+		& "\" ; ~n = DayOfWeek ( ~d ) ] ; ~d ≥ startDate and ~d ≤ endDate and ~n > 1 and ~n < 7 )";
+	~holidayCalculation =	// Add 1 for each weekday holiday within date range
+		Substitute ( ~holidayCalculation;
+			[ "¶" ; "\" ; ~n = DayOfWeek ( ~d ) ] ; ~d ≥ startDate and ~d ≤ endDate and ~n > 1 and ~n < 7 ) + Let ( [ ~d = \"" ];
+			[ "startDate" ; Quote ( startDate ) ];
+			[ "endDate" ; Quote ( endDate ) ]
+		);
+	~holidays = Evaluate ( ~holidayCalculation )
+];
+	5 * ~fullWeeks + ~leadingWeekDays + ~trailingWeekDays - ~holidays
+)
