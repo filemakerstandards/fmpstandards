@@ -1,0 +1,100 @@
+/**
+ * =====================================
+ * GetBaseNAsNumber ( numberText ; base )
+ *
+ * PURPOSE:
+ *		Converts numberText from the specified base to a FileMaker (decimal)
+ *		number. Results from converting fractional portions of numbers may be
+ *		approximate rather than exact.
+ *
+ * RETURNS:
+ *		The numeric (base 10) value of numberText
+ *
+ * PARAMETERS:
+ *		numberText: A text string representing a number in the specified base.
+ *		base: The radix of numberText. 2 ≤ base ≤ 36.
+ *
+ * RELEASE:	2011-11-30
+ * =====================================
+ */
+
+Case (
+	/* Step 0, set-up */
+	not $~radix.step;
+		Let ( [
+			~base = Int ( base );
+			~numberText =
+				Filter (
+					Lower ( numberText );
+					Left ( ".0123456789abcdefghijklmnopqrstuvwxyz" ; ~base + 1 )
+				);
+
+			$~radix.isNegative = Left ( numberText ; 1 ) = "-";	// PRE filter value
+			~length = Length ( ~numberText );	// POST filter value
+			~dotPosition = Position ( ~numberText ; "." ; 1 ; 1 );
+			$~radix.power = // initialize to highest power of numberText
+				If ( ~dotPosition;
+					~dotPosition - 2;
+					/* Else */ ~length - 1
+				);
+			$~radix.powerMin =
+				If ( ~dotPosition ; $~radix.power - ~length + 2 ; /* Else */ 0 );
+			$~radix.round =	// constrain result to analogous significant digits
+				Ceiling ( Ln ( ~base ^ Abs ( $~radix.powerMin ) ) / Ln ( 10 ) );
+
+			$~radix.step =
+				If ( IsEmpty ( ~numberText ) or ~base < 2 or ~base > 36;
+					-1;	// error, skip to end
+					/* Else */ 1
+				)
+		];
+			GetBaseNAsNumber ( ~numberText ; ~base )
+		);
+
+	/* Step 1, convert digits */
+	$~radix.step = 1;
+		Let ( [
+			~digit = Left ( numberText ; 1 );
+			~digit =
+				Position (
+					"0123456789abcdefghijklmnopqrstuvwxyz";
+					~digit;
+					1;
+					1
+				)
+				- 1;
+			~isDot = ~digit = -1;
+			~numberText = Right ( numberText ; Length ( numberText ) - 1 );
+
+			$~radix.decimal =
+				$~radix.decimal +
+				If ( not ~isDot ; ~digit * ( base ^ $~radix.power ) );
+			$~radix.power = $~radix.power - ( not ~isDot );	// decrement by 1
+			$~radix.step =
+				If ( $~radix.power ≥ $~radix.powerMin;
+					$~radix.step;
+					/* Else */ $~radix.step + 1
+				)
+		];
+			GetBaseNAsNumber ( ~numberText ; base )
+		);
+
+	/* Step 2, clean-up and return result */
+	$~radix.step = 2 or $~radix.step = -1;
+		Let ( [
+			~error = $~radix.step = -1;
+			~result =
+				If ( $~radix.isNegative ; "-" )
+				& Round ( $~radix.decimal ; $~radix.round );
+
+			// Purge variables
+			$~radix.decimal = "";
+			$~radix.isNegative = "";
+			$~radix.power = "";
+			$~radix.powerMin = "";
+			$~radix.round = "";
+			$~radix.step = ""
+		];
+			If ( ~error ; "?" ; /* Else */ ~result )
+		)
+)

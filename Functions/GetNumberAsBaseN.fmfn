@@ -1,0 +1,116 @@
+/**
+ * =====================================
+ * GetNumberAsBaseN ( number ; base )
+ *
+ * PURPOSE:
+ *		Encodes numbers in any base between 2 and 36. Results from converting
+ *		fractional portions of numbers may be approximate rather than exact.
+ *
+ * RETURNS:
+ *		A string representing the number in the specified base.
+ *
+ * PARAMETERS:
+ *		number: The FileMaker (decimal) number to encode
+ *		base: The integer base (radix) of the encoding. 2 ≤ base ≤ 36.
+ *
+ * DEPENDENCIES: none
+ *
+ * RELEASE:	2011-11-30
+ * =====================================
+ */
+
+Case (
+	/* Step 0, set-up */
+	not $~radix.step;
+		Let ( [
+			~number = Abs ( GetAsNumber ( number ) );
+			~base = Int ( base );
+
+			$~radix.isNegative = number < 0;
+			$~radix.integer = Int ( ~number );
+			$~radix.fraction = Mod ( ~number ; 1 );
+
+			// Constrain encoding of fraction to analogous significant digits
+			$~radix.fractionBound =
+				Ceiling (
+					Ln ( 10 ^ ( Length ( $~radix.fraction ) - 1 ) )
+					/ Ln ( ~base )
+				);
+
+			$~radix.step =
+				If ( ~base < 2 or ~base > 36;
+					-1;	// error, skip to end
+					/* Else */ 1
+				)
+		];
+			GetNumberAsBaseN ( "" ; ~base )
+		);
+
+	/* Step 1, encode integer portion of number */
+	$~radix.step = 1;
+		Let ( [
+			~digit = Mod ( $~radix.integer ; base );
+			~digit =
+				Middle (
+					"0123456789abcdefghijklmnopqrstuvwxyz";
+					~digit + 1;
+					1
+				);
+			$~radix.integer = Div ( $~radix.integer ; base );
+			$~radix.integerResult = ~digit & $~radix.integerResult;
+
+			$~radix.step =
+				Case (
+					$~radix.integer ; $~radix.step;	// not done encoding integer
+					$~radix.fraction ; $~radix.step + 1;
+					/* Else */ 3	// skip to end
+				)
+		];
+			GetNumberAsBaseN ( "" ; base )
+		);
+
+	/* Step 2, encode fractional portion of number */
+	$~radix.step = 2;
+		Let ( [
+			$~radix.i = $~radix.i - 1;
+			~digit = Div ( $~radix.fraction ; base ^ $~radix.i );
+			~digit =
+				Middle (
+					"0123456789abcdefghijklmnopqrstuvwxyz";
+					~digit + 1;
+					1
+				);
+			$~radix.fraction = Mod ( $~radix.fraction ; base ^ $~radix.i );
+			$~radix.fractionResult = $~radix.fractionResult & ~digit;
+
+			$~radix.step =
+				If ( $~radix.fraction and -$~radix.i < $~radix.fractionBound;
+					$~radix.step;	// not done encoding fraction
+					/* Else */ $~radix.step + 1
+				)
+		];
+			GetNumberAsBaseN ( "" ; base )
+		);
+
+	/* Step 3, clean-up and return result */
+	$~radix.step = 3 or $~radix.step = -1;
+		Let ( [
+			~error = $~radix.step = -1;
+			~result =
+				If ( $~radix.isNegative ; "-" )
+				& If ( $~radix.integerResult ; $~radix.integerResult )
+				& If ( $~radix.fractionResult ; "." & $~radix.fractionResult );
+
+			// Purge variables
+			$~radix.fraction = "";
+			$~radix.fractionBound = "";
+			$~radix.fractionResult = "";
+			$~radix.i = "";
+			$~radix.integer = "";
+			$~radix.integerResult = "";
+			$~radix.isNegative = "";
+			$~radix.step = ""
+		];
+			If ( ~error ; "?" ; /* Else */ ~result )
+		);
+)
