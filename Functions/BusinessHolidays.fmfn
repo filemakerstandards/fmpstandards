@@ -1,0 +1,113 @@
+/**
+ * =====================================
+ * BusinessHolidays ( calendarYear )
+ *
+ * RETURNS:
+ *		A ¶-delimited list of the dates of observed holidays in calendarYear
+ *
+ * PARAMETERS:
+ *		calendarYear
+ *
+ * DEPENDENCIES: none
+ *
+ * NOTES:
+ *		This version of this function includes observed U.S. federal holidays.
+ *		It should be modified to include any holidays observed by the users of
+ *		each particular system.
+ *
+ * RELEASE:	2011-10-18
+ * =====================================
+ */
+
+List (
+	// New Years Day
+	Let ( [
+		~date = Date ( 1 ; 1 ; calendarYear );
+		~day = DayOfWeek ( ~date )
+	];
+		Case (
+			~day = 1 ; ~date + 1;	// following Monday
+			~day = 7 ; "";	// previous Friday (in previous year)
+			/* Else */ ~date
+		)
+	);
+
+	// Martin Luther King, Jr. Day (3rd Monday in January)
+	Date ( 1 ; 15 ; calendarYear )	// earliest possible date
+	+ Choose ( DayOfWeek ( Date ( 1 ; 1 ; calendarYear ) ) - 1;
+		1 ; 0 ; 6 ; 5 ; 4 ; 3 ; 2	// adjust for day of week of month start
+	);
+
+	// Washington's Birthday (3rd Monday in February)
+	Date ( 2 ; 15 ; calendarYear )	// earliest possible date
+	+ Choose ( DayOfWeek ( Date ( 2 ; 1 ; calendarYear ) ) - 1;
+		1 ; 0 ; 6 ; 5 ; 4 ; 3 ; 2	// adjust for day of week of month start
+	);
+
+	// Memorial Day (last Monday in May)
+	Date ( 5 ; 25 ; calendarYear )	// earliest possible date
+	+ Choose ( DayOfWeek ( Date ( 5 ; 31 ; calendarYear ) ) - 1;
+		0 ; 6 ; 5 ; 4 ; 3 ; 2 ; 1	// adjust for day of week of month end
+	);
+
+	// U.S. Independence Day (4 July)
+	Let ( [
+		~date = Date ( 7 ; 4 ; calendarYear );
+		~day = DayOfWeek ( ~date )
+	];
+		Case (
+			~day = 1 ; ~date + 1;	// following Monday
+			~day = 7 ; ~date - 1;	// previous Friday
+			/* Else */ ~date
+		)
+	);
+
+	// Labor Day (1st Monday in September)
+	Date ( 9 ; 1 ; calendarYear )	// earliest possible date
+	+ Choose ( DayOfWeek ( Date ( 9 ; 1 ; calendarYear ) ) - 1;
+		1 ; 0 ; 6 ; 5 ; 4 ; 3 ; 2	// adjust for day of week of month start
+	);
+
+	// Columbus Day (2nd Monday in October)
+	Date ( 10 ; 8 ; calendarYear )	// earliest possible date
+	+ Choose ( DayOfWeek ( Date ( 10 ; 1 ; calendarYear ) ) - 1;
+		1 ; 0 ; 6 ; 5 ; 4 ; 3 ; 2	// adjust for day of week of month start
+	);
+
+	// Veterans Day (11 November)
+	Let ( [
+		~date = Date ( 11 ; 11 ; calendarYear );
+		~day = DayOfWeek ( ~date )
+	];
+		Case (
+			~day = 1 ; ~date + 1;	// following Monday
+			~day = 7 ; ~date - 1;	// previous Friday
+			/* Else */ ~date
+		)
+	);
+
+	// Thanksgiving Day (4th Thursday in November)
+	Date ( 11 ; 22 ; calendarYear )	// earliest possible date
+	+ Choose ( DayOfWeek ( Date ( 11 ; 1 ; calendarYear ) ) - 1;
+		4 ; 3 ; 2 ; 1 ; 0 ; 6 ; 5	// adjust for day of week of month start
+	);
+
+	// Christmas Day (25 December)
+	Let ( [
+		~date = Date ( 12 ; 25 ; calendarYear );
+		~day = DayOfWeek ( ~date )
+	];
+		Case (
+			~day = 1 ; ~date + 1;	// following Monday
+			~day = 7 ; ~date - 1;	// previous Friday
+			/* Else */ ~date
+		)
+	);
+
+	// New Years Day (observed from next year)
+	Let ( [
+		~date = Date ( 1 ; 1 ; calendarYear + 1 )
+	];
+		If ( DayOfWeek ( ~date ) = 7 ; ~date - 1 /* Else, Null */ )
+	)
+)
