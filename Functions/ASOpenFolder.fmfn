@@ -3,13 +3,13 @@
  * ASOpenFolder ( path ; name  )
  *
  * PURPOSE:
- *		Provide a non field-based result for each row
- *		of a portal to determine it's number within sequential order.
+ *		Create AppleScript code which will open a folder within the
+ *		Finder. If the folder does not exist, it will be created.
  * PARAMETERS:
- *		portalName = object name of target portal
+ *		path = a valid POSIX path
+ *		name = name of the target folder
  * RETURNS:
- * 		(string) Return delimited list of values
- * 		with the value either added or removed.
+ * 		(string) AppleScript code
  * DEPENDENCIES:
  *		none 
  * NOTES:
