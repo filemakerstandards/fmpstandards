@@ -57,7 +57,9 @@ Case (
 					& expression
 					& " )"
 				);
-			$~map.resultList = List ( $~map.resultList ; ~value );
+			$~map.resultList =
+				If ( $~i > 1 ; $~map.resultList & ¶ )
+				& ~value;
 			$~map.step =
 				If ( $~i < $~map.valueCount;
 					$~map.step;
