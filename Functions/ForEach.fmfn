@@ -1,0 +1,85 @@
+/**
+ * =====================================
+ * ForEach ( valueList ; expression )
+ *
+ * PURPOSE:
+ *		ForEach repeatedly applies a calculation to each value in a ¶-delimited
+ *		list. For each value in valueList, evaluates expression, substituting
+ *		the value for each "~n" in expression. Expressions may also reference
+ *		the value index (line number) being evaluated with "$~i". This is
+ *		analogous to Map functionality in functional programming languages.
+ *
+ * NOTE:
+ *		This is the recursive version of this function. It is slower, but
+ *		capable of processing larger lists.
+ *
+ * RETURNS:
+ *		A ¶-delimited list of the results of evaluating expression on valueList.
+ *
+ * EXAMPLE:
+ *		ForEach (
+ *			List ( "1 One" ; "2 Two" ; "3 Three"  );
+ *			"Left ( ~n ; 1 ) + $~i"
+ *		)	// = "2¶4¶6"
+ *
+ * PARAMETERS:
+ *		valueList: A ¶-delimited list of inputs to expression
+ *		expression: A calculation to evaluate
+ *
+ * DEPENDENCIES: none
+ *
+ * RELEASE:	2012-01-06
+ *
+ * REFERENCES:
+ *		http://en.wikipedia.org/wiki/Map_(higher-order_function)
+ * =====================================
+ */
+
+Case (
+	/* Step 0, initialize routine */
+	not $~map.step;
+		Let ( [
+			$~map.valueCount = ValueCount ( valueList );
+			$~map.step = 1
+		];
+			ForEach ( valueList ; expression )
+		);
+
+	/* Step 1, evaluate expression */
+	$~map.step = 1;
+		Let ( [
+			$~i = $~i + 1;
+			~value =
+				Evaluate (
+					"Let ( ~n = "
+					& Quote ( GetValue ( valueList ; $~i ) )
+					& " ; "
+					& expression
+					& " )"
+				);
+			$~map.resultList =
+				If ( $~i > 1 ; $~map.resultList & ¶ )
+				& ~value;
+			$~map.step =
+				If ( $~i < $~map.valueCount;
+					$~map.step;
+					/* Else */ $~map.step + 1
+				)
+		];
+			ForEach ( valueList ; expression )
+		);
+
+	/* Step 2, clean-up and return result */
+	$~map.step = 2;
+		Let ( [
+			~resultList = $~map.resultList;
+
+			// Purge variables
+			$~i = "";
+			$~map.resultList = "";
+			$~map.step = "";
+			$~map.valueCount = ""
+		];
+			~resultList
+		)
+)
