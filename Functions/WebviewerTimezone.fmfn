@@ -1,0 +1,14 @@
+"data:text/html,
+<head>
+<script language='javascript' type='text/javascript'>
+function timeOffset()
+{
+var d = new Date();
+var x = document.getElementById('TO');
+x.innerHTML=d.getTimezoneOffset();
+}
+</script>
+</head>
+<body onload='timeOffset()' >
+<div id='TO'></div>
+</body>"
