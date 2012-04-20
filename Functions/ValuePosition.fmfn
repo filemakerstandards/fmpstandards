@@ -22,7 +22,7 @@
  */
 
 Let ( [
-	~valueReplaced = Substitute ( ¶& valueList &¶ ; ¶& value &¶ ; "¶•¶" );
+	~valueReplaced = Substitute ( ¶& valueList &¶ ; ¶& value &¶ ; "¶•¶" )
 ];
 	Position (
 		Substitute ( Filter ( ~valueReplaced ; "•¶" );
