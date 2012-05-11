@@ -1,0 +1,33 @@
+/**
+ * =====================================
+ * TableName ( fieldRef )
+ *
+ * PURPOSE:
+ *		Convenience function for working with
+ *		abstracted table references within code.
+ *		
+ * RETURNS:
+ *		(string) name of just the table portion from a field reference
+ *		
+ * PARAMETERS:
+ *		fieldRef = Absolute field reference
+ *
+ * EXAMPLES:
+ *		TableName ( FunctionalArea » Tablename::fieldName ) = "FunctionalArea » Tablename"
+ *
+ * DEPENDENCIES:
+ *		none
+ *
+ * NOTES:
+ *		This is simply a helper function to avoid having excessive amounts of
+ *		similar code wtihin a FileMaker solution.
+ *
+ * HISTORY:
+ *		MODIFIED on 2012-05-11 by matt@filemakermagazine.com - added
+ *
+ * REFERENCES:
+ *		(see FieldName custom function)
+ * =====================================
+ */
+
+GetValue ( Substitute ( GetFieldName ( fieldRef ) ; "::" ; ¶ ) ; 1 )
