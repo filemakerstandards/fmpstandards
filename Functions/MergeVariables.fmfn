@@ -15,7 +15,7 @@
  *		variables = Return delimited string of $variable = assignments (see LayoutVariables function)
  *
  * EXAMPLES:
- * 		MergeVariables ( "This contains <<$merge>> data" ; LayoutVariables ( Get ( LayoutName ) ) )
+ *		MergeVariables ( "This contains <<$merge>> data" ; LayoutVariables ( Get ( LayoutName ) ) )
  *		// where a field on the layout is simply named $merge - result: "This contains awesome data"
  *		// where the layout field named $merge contains "awesome"
  *
