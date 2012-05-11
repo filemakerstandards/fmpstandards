@@ -1,0 +1,35 @@
+/**
+ * =====================================
+ * ActiveFQFN ( )
+ *
+ * PURPOSE:
+ *		Convenience function for working with
+ *		absolute field name references.
+ *		
+ * RETURNS:
+ *		(string) fully qualified field name reference
+ *		
+ * PARAMETERS:
+ *		none
+ *
+ * EXAMPLES:
+ *		Set Variable [$field; Value:ActiveFQFN]
+ *		# Do other things here
+ *		Set Field By Name [$field; "Result"]
+ *
+ * DEPENDENCIES:
+ *		none
+ *
+ * NOTES:
+ *		This is a helper function to avoid having excessive amounts of
+ *		similar code wtihin a FileMaker solution.
+ *
+ * HISTORY:
+ *		MODIFIED on 2012-05-11 by matt@filemakermagazine.com - added
+ *
+ * REFERENCES:
+ *		none
+ * =====================================
+ */
+
+Get ( ActiveFieldTableName ) & "::" & Get ( ActiveFieldName )
