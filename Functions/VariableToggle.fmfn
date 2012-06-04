@@ -1,0 +1,31 @@
+/**
+ * =====================================================
+ * VariableToggle ( variable )
+ *
+ * PURPOSE:
+ *		Toggle a Boolean value within a $$GLOBAL.VARIABLE
+ * 
+ * RETURNS:
+ *		(boolean) True or False based on the success of the toggle
+ *
+ * DEPENDENCIES:
+ *		none
+ *
+ * NOTES:
+ *		This is a wrapper function according to
+ *
+ * RELEASE:
+ *		2012-06-04
+ * =====================================================
+ * 
+ */
+
+
+Let ( [
+	~evaluateString = "Let ( " & variable & " = " & not GetAsBoolean ( Evaluate ( variable ) ) & "; True )"
+];
+	If ( IsValidExpression ( ~evaluateString );
+		Evaluate ( ~evaluateString );
+		False
+	)
+)
