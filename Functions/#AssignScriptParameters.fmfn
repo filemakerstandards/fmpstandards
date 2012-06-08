@@ -21,10 +21,12 @@
  * DEPENDENCIES:
  *		none
  *
- * NOTE:
+ * NOTES:
  *		To be accessible outside this function, variable declarations in the script
- *		parameter must use the $- or $$-prefixed notation for FileMaker variables.
- *		This function does not handle that for you.
+ *		parameter must use the $ or $$ prefixed notation for FileMaker variables.
+ *		This function does not handle that for you. If your script name does not use
+ *		parenthesis "()" to indicate required or optional parameters then all
+ *		inbound parameters will be available upon successful evaluation.
  *
  * HISTORY:
  *		MODIFIED on 2010-10-04 by jeremy@kyologic.com to return explicit True or
