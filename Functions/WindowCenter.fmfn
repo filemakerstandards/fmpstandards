@@ -20,16 +20,17 @@
  * 
  */
 
-Let ([
-	
+Let ( [
 	~vertical = PatternCount ( dimension ; "vert" );
 	~horizontal = PatternCount ( dimension ; "horiz" );
-	~parentHeight = If ( IsEmpty ( $parentWindowHeight );
+	~parentIsSet = not IsEmpty ( $parentWindowTop ) and not IsEmpty ( $parentWindowLeft ) and not IsEmpty ( $parentWindowWidth ) and not IsEmpty ( $parentWindowHeight );
+	~parentOnScreen = ~parentIsSet and ( $parentWindowTop + $parentWindowHeight ≤ Get ( WindowDesktopHeight ) and $parentWindowLeft + $parentWindowWidth ≤ Get ( WindowDesktopWidth ) );
+	~parentHeight = If ( not ~parentIsSet or not ~parentOnScreen;
 			Get ( WindowDesktopHeight );
 		/*else*/
 			$parentWindowHeight
 		);
-	~parentWidth = If ( IsEmpty ( $parentWindowWidth );
+	~parentWidth = If ( not ~parentIsSet or not ~parentOnScreen;
 			Get ( WindowDesktopWidth );
 		/*else*/
 			$parentWindowWidth
@@ -48,8 +49,8 @@ Let ([
 
 	Case (
 		~vertical;
-			( ~parentHeight / 2) - ( ~childHeight / 2 ) + $parentWindowTop;
+			( ~parentHeight / 2) - ( ~childHeight / 2 ) + If ( ~parentOnScreen ; $parentWindowTop );
 		~horizontal;
-			( ~parentWidth / 2) - ( ~childWidth / 2 )  + $parentWindowLeft
+			( ~parentWidth / 2) - ( ~childWidth / 2 )  + If ( ~parentOnScreen ; $parentWindowLeft )
 	)
 )
