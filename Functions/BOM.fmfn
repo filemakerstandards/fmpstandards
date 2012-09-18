@@ -1,0 +1,6 @@
+// Returns a number of Byte Order Marks
+// http://en.wikipedia.org/wiki/Byte_order_mark
+// Thanks to Marcelo Piñeyro of Soliant for the discovery
+// Note: set index on field used for sort to Unicode to account for BOM
+
+Case ( number > 0 ; Char(65279) & BOM ( number - 1 ) )
