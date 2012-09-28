@@ -55,4 +55,66 @@ List (
 	"UserName                   " & Get ( UserName );
 	"UseSystemFormatsState      " & Get ( UseSystemFormatsState );
 	"WindowZoomLevel            " & Get ( WindowZoomLevel );
- )
+)
+
+/*
+Use this within a layout
+
+AccountName                {{AccountName}}
+AccountPrivilegeSetName    {{AccountPrivilegeSetName}}
+AccountExtendedPrivileges  {{AccountExtendedPrivileges}}
+AccountPrivilegeSetName    {{AccountPrivilegeSetName}}
+ActiveFieldName            {{ActiveFieldName}}
+ActiveFieldTableName       {{ActiveFieldTableName}}
+ActiveLayoutObjectName     {{ActiveLayoutObjectName}}
+ActivePortalRowNumber      {{ActivePortalRowNumber}}
+ActiveRepetitionNumber     {{ActiveRepetitionNumber}}
+ActiveSelectionSize        {{ActiveSelectionSize}}
+ActiveSelectionStart       {{ActiveSelectionStart}}
+AllowAbortState            {{AllowAbortState}}
+ApplicationLanguage        {{ApplicationLanguage}}
+ApplicationVersion         {{ApplicationVersion}}
+CurrentDate                {{CurrentDate}}
+CurrentExtendedPrivileges  {{CurrentExtendedPrivileges}}
+CurrentPrivilegeSetName    {{CurrentPrivilegeSetName}}
+CustomMenuSetName          {{CustomMenuSetName}}
+DesktopPath                {{DesktopPath}}
+DocumentsPath              {{DocumentsPath}}
+FileMakerPath              {{FileMakerPath}}
+FilePath                   {{FilePath}}
+TemporaryPath              {{TemporaryPath}}
+PreferencesPath            {{PreferencesPath}}
+FileName                   {{FileName}}
+FileSize                   {{FileSize}}
+HostIPAddress              {{HostIPAddress}}
+InstalledFMPlugins         {{InstalledFMPlugins}}
+LastError                  {{LastError}}
+LayoutName                 {{LayoutName}}
+LayoutTableName            {{LayoutTableName}}
+PersistentID               {{PersistentID}}
+QuickFindText              {{QuickFindText}}
+RecordAccess               {{RecordAccess}}
+RecordID                   {{RecordID}}
+RecordModificationCount    {{RecordModificationCount}}
+RecordOpenCount            {{RecordOpenCount}}
+RecordOpenState            {{RecordOpenState}}
+ScreenDepth                {{ScreenDepth}}
+ScreenWidth                {{ScreenWidth}}
+ScreenHeight               {{ScreenHeight}}
+ScriptName                 {{ScriptName}}
+ScriptParameter            {{ScriptParameter}}
+ScriptResult               {{ScriptResult}}
+SortState                  {{SortState}}
+StatusAreaState            {{StatusAreaState}}
+SystemDrive                {{SystemDrive}}
+SystemIPAddress            {{SystemIPAddress}}
+SystemLanguage             {{SystemLanguage}}
+SystemNICAddress           {{SystemNICAddress}}
+SystemPlatform             {{SystemPlatform}}
+SystemVersion              {{SystemVersion}}
+TextRulerVisible           {{TextRulerVisible}}
+UserName                   {{UserName}}
+UseSystemFormatsState      {{UseSystemFormatsState}}
+WindowZoomLevel            {{WindowZoomLevel}}
+
+*/
