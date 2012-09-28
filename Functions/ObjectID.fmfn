@@ -29,7 +29,7 @@
 
 
 Let ( [
-	~file = If ( IsEmpty ( ~file );
+	~file = If ( IsEmpty ( file );
 						Get ( FileName ); // use current file name... otherwise
 						~file
 	);
