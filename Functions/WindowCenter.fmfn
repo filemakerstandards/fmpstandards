@@ -19,13 +19,15 @@
  *		$parentWindowWidth for window width of parent
  *		$parentWindowTop for window top of parent
  *		$parentWindowLeft for window left of parent
+ *		$childWindowWidth MUST BE SET! when centering on parent
+ *		$childWindowHeight MUST BE SET! when centering on parent
  * =====================================================
  * 
  */
 
 Let ( [
-	~vertical = PatternCount ( dimension ; "vert" ) or dimension = "y";
-	~horizontal = PatternCount ( dimension ; "horiz" ) or dimension = "x";
+	~vertical = PatternCount ( dimension ; "vert" ) or dimension = "y" or dimension = "top";
+	~horizontal = PatternCount ( dimension ; "horiz" ) or dimension = "x" or dimension = "left";
 	~parentIsSet = not IsEmpty ( $parentWindowTop )
 					and not IsEmpty ( $parentWindowLeft )
 					and not IsEmpty ( $parentWindowWidth )
@@ -56,10 +58,10 @@ Let ( [
 ];
 	Case (
 		~vertical;
-			( ~parentHeight / 2) - ( ~childHeight / 2 )
-			+ If ( ~parentOnScreen ; $parentWindowTop );
+			Int ( ( ~parentHeight / 2) - ( ~childHeight / 2 )
+			+ If ( ~parentOnScreen ; $parentWindowTop ) );
 		~horizontal;
-			( ~parentWidth / 2) - ( ~childWidth / 2 )
-			+ If ( ~parentOnScreen ; $parentWindowLeft )
+			Int ( ( ~parentWidth / 2) - ( ~childWidth / 2 )
+			+ If ( ~parentOnScreen ; $parentWindowLeft ) )
 	)
 )
