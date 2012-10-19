@@ -20,7 +20,7 @@
  */
 
 Let ( [
-	~keys = List ( "name"; "layout"; "id"; "top";"left";"width";"height");
+	~keys = List ( "name"; "layout"; "id"; "top";"left";"width";"height";"viewas";"mode";"statusarea";"zoomlevel";"textruler");
 	~parent = List (
 		"parentWindowName";
 		"parentWindowLayout";
@@ -29,6 +29,11 @@ Let ( [
 		"parentWindowLeft";
 		"parentWindowWidth";
 		"parentWindowHeight";
+		"parentWindowViewAs";
+		"parentWindowMode";
+		"parentWindowStatusArea";
+		"parentWindowZoomLevel";
+		"parentWindowTextRuler"
 		);
 	~values = List (
 				Get ( WindowName );
@@ -37,7 +42,12 @@ Let ( [
 				Get ( WindowTop );
 				Get ( WindowLeft );
 				Get ( WindowWidth );
-				Get ( WindowHeight )
+				Get ( WindowHeight );
+				Get ( LayoutViewState );
+				Get ( WindowMode );
+				Get ( StatusAreaState );
+				Get ( WindowZoomLevel );
+				Get ( TextRulerVisible )
 	)
 ];
 	// returns
