@@ -1,6 +1,7 @@
 ﻿/**
  * =====================================
  * TriggersEnable
+ * https://github.com/jbante/FileMaker-Techniques/blob/master/CustomFunctions/Triggers/TriggersEnable.fmfn
  *
  * PURPOSE:
  *		TriggersEnable sets global variables to indicate that the current script
@@ -16,6 +17,7 @@
  * PARAMETERS: none
  *
  * REFERENCED VARIABLES:
+ *		$$~DISABLETRIGGERS (deprecated)
  *		$$~TRIGGERS_DISABLE
  *		$$~TRIGGERS_SCRIPTS
  *		$~triggers_disableKey
@@ -31,8 +33,7 @@
  *		This function should *always* be used in pairs with the TriggersDisable
  *		function.
  *
- * RELEASE:
- *		2013-03-25
+ * RELEASE: 2013-04-08
  *
  * REFERENCES:
  *		Supressible Triggered Scripts Best Practice: http://filemakerstandards.org/display/bp/Suppressible+Triggered+Scripts
@@ -61,6 +62,7 @@ If ( not IsEmpty ( $~triggers_disableKey ) ;
 				True ;
 				/* Else */ ""
 			) ;
+		$$~DISABLETRIGGERS = $$~TRIGGERS_DISABLE ;
 		$~triggers_disableKey = ""
 	] ;
 		""
