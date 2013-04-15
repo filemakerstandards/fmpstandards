@@ -1,0 +1,48 @@
+/**
+ * =====================================
+ * VerifyVariablesNotEmpty ( nameList )
+ *
+ * RETURNS:
+ *		True (1) if a locally scoped $variable matching each value in nameList
+ *		is not empty; False (0) otherwise.
+ *
+ * PARAMETERS:
+ *		nameList: A return-limited list of names to check. Names do not need to
+ *		include $ prefixes.
+ *
+ * DEPENDENCIES: none
+ *
+ * NOTES:
+ *		Names containing "$" or "$$" prefixes will be treated as identical to
+ *		names not beginning with those prefixes — this function only checks for
+ *		local $variables.
+ *
+ * HISTORY:
+ *		CREATED on 2012-12-07 by Jeremy Bante <http://scr.im/jbante>.
+ * =====================================
+ */
+
+If ( IsEmpty ( nameList );
+	True;
+/* Else */
+	Let ( [
+		nameList =	// normalize nameList so all values begin with "$"
+			Substitute (
+				"/*start*/¶" & nameList & "/*end*/";
+				[ "¶$$" ; "¶" ];
+				[ "¶$" ; "¶" ];
+				[ "¶" ; "¶$" ];
+				[ "/*start*/¶" ; "" ];
+				[ "/*start*/" ; "" ]
+			);
+		~testExpression =
+			"not IsEmpty ( "
+			& Substitute ( nameList ; ¶ ; " )¶and not IsEmpty ( " )
+			& " ) "
+	];
+		If ( IsValidExpression ( ~testExpression );
+			Evaluate ( ~testExpression );
+			/* Else */ False
+		)
+	)
+)

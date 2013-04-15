@@ -1,0 +1,90 @@
+/**
+ * =====================================
+ * #Remove ( parameters ; removeParameters )
+ *
+ * RETURNS:
+ *		A #-format dictionary based on parameters, but with all values named in
+ *		removeParameters removed.
+ *
+ * PARAMETERS:
+ *		parameters: A string of name-value pairs
+ *		removeParameters: The names of name-value pairs to remove.
+ *
+ * DEPENDENCIES: none
+ *
+ * NOTES:
+ *		This is a recursive function.
+ *
+ * HISTORY:
+ *		MODIFIED on 2013-03-15 by Daniel Smith <http://scr.im/dansmith> to add
+ *		trailing return if it doesn't exist.
+ *		MODIFIED on 2013-01-08 by Jeremy Bante <http://scr.im/jbante> to extend
+ *		the function to remove multiple names from a return-delimited list.
+ *		CREATED on 2012-12-20 by Daniel Smith <http://scr.im/dansmith>
+ * =====================================
+ */
+
+Case (
+	/* Step 0, set-up */
+	not $#Remove.step ;
+		Let ( [
+			~empty = IsEmpty ( parameters ) or IsEmpty ( removeParameters ) ;
+			removeParameters =	// add "$" prefix for matching
+				Substitute ( ¶ & removeParameters ; ¶ ; "¶$" ) ;
+			removeParameters =	// add "$$" prefix for backwards-compatibility
+				removeParameters
+				& Substitute ( removeParameters ; ¶ ; "¶$" )
+				& ¶ ;
+
+			$#Remove.parameterCount = ValueCount ( parameters ) ;
+			$#Remove.step = If ( ~empty ; -1 ; /* Else */ 1 )
+		];
+			#Remove ( parameters ; removeParameters )
+		);
+
+	/* Step 1, check each parameter */
+	$#Remove.step = 1 ;
+		Let ( [
+			$#Remove.i = $#Remove.i + 1 ;
+			~pair = GetValue ( parameters ; $#Remove.i ) ;
+			~name = Left ( ~pair ; Position ( ~pair ; " = " ; 1 ; 1 ) - 1 ) ;
+			$#Remove.result =
+				// only include ~pair if ~name is not in removeParameters
+				List (
+					$#Remove.result ;
+					If ( Position ( removeParameters ; ¶ & ~name & ¶ ; 1 ; 1 ) = 0;
+						~pair
+					)
+				);
+
+			$#Remove.step =
+				If ( $#Remove.i < $#Remove.parameterCount ;
+					$#Remove.step ;
+					/* Else */ $#Remove.step + 1
+				)
+		];
+			#Remove ( parameters ; removeParameters )
+		);
+
+	/* Step 2, clean-up and return result */
+	$#Remove.step = 2 or $#Remove.step = -1 ;
+		Let ( [
+			~error = $#Remove.step = -1 ;
+			~result =
+				$#Remove.result
+				// add trailing return if it doesn't exist
+				& If (
+					not IsEmpty ( $#Remove.result )
+					and Right ( $#Remove.result ; 1 ) ≠ ¶ ;
+					¶
+				) ;
+
+			// purge variables
+			$#Remove.i = "" ;
+			$#Remove.parameterCount = "" ;
+			$#Remove.result = "" ;
+			$#Remove.step = ""
+		];
+			If ( ~error ; parameters ; /* Else */ ~result )
+		)
+)

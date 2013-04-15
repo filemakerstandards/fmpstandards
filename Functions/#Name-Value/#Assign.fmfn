@@ -1,0 +1,46 @@
+/**
+ * =====================================
+ * #Assign ( parameters )
+ *
+ * PURPOSE:
+ *		Parses a Let dictionary of name-value parameters into a series of
+ *		locally scoped $variables.
+ *
+ * RETURNS:
+ *		True (1) when parameters is a valid set of name-value pairs (which
+ *		includes the empty string); False (0) otherwise.
+ *		If False (0), the error code will be saved to: $#Assign.error
+ *
+ * PARAMETERS:
+ *		parameters: A Let format dictionary, such as produced by the
+ *		# ( name ; value ) function.
+ *
+ * DEPENDENCIES: none
+ *
+ * NOTES:
+ *		Notes go here
+ *
+ * HISTORY:
+ *		MODIFIED on 2013-03-15 by Daniel Smith <http://scr.im/dansmith> to
+ *		update documentation to match functions actual return value.
+ *		MODIFIED on 2012-11-28 by Jeremy Bante <http://scr.im/jbante> to support
+ *		"$" prefix values as default.
+ *		CREATED on 2012-11-11 by Jeremy Bante <http://scr.im/jbante>.
+ * =====================================
+ */
+
+Let ( [
+	~error =
+		EvaluationError ( Evaluate (
+			"Let ( [¶"
+			& Substitute (	// convert global variables to local variables
+				¶ & parameters;
+				"¶$$";
+				"¶$"
+			)
+			& "¶~ = \"\" ]; ~ )"
+		) )
+];
+	~error = 0	// indicate success or failure of Evaluate()
+	or Let ( $#Assign.error = ~error ; False )	// only runs on error
+)

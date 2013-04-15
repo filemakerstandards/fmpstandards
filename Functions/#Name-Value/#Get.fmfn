@@ -1,0 +1,49 @@
+/**
+ * =====================================
+ * #Get ( parameters ; name )
+ *
+ * RETURNS:
+ *		A named value from a string of name-value pairs.
+ *
+ * PARAMETERS:
+ *		parameters: A string of name-value pairs
+ *		name: The name to retrieve the value of
+ *
+ * DEPENDENCIES: none
+ *
+ * NOTES:
+ *		When a name is defined more than once in parameters, the last value is
+ *		returned.
+ *
+ * HISTORY:
+ *		MODIFIED on 2013-01-08 by Jeremy Bante <http://scr.im/jbante> to handle
+ *		leading $$ and $ in the name parameter the same as the
+ *		# ( name ; value ) function, based on a comment by Dan Smith.
+ *		CREATED on 2012-12-05 by Jeremy Bante <http://scr.im/jbante>.
+ * =====================================
+ */
+
+Let ( [
+	parameters = ¶ & parameters & ¶;
+	name =	// strip any leading $$ or $ for backwards compatibility
+		Substitute ( ¶ & name ; [ "¶$$" ; "" ] ; [ "¶$" ; "" ] ; [ ¶ ; "" ] ) ;
+
+	~length = Length ( parameters );
+	~namePosition =	// position of last occurrence of name
+		Position ( parameters ; "¶$" & name & " = " ; ~length ; -1 );
+	~namePosition =	// check for $$global name for backwards compatibility
+		If ( ~namePosition > 0;
+			~namePosition;
+		/* Else */
+			Position ( parameters ; "¶$$" & name & " = " ; ~length ; -1 )
+		);
+
+	~valueStart = Position ( parameters ; " = " ; ~namePosition ; 1 ) + 3;
+	~valueEnd = Position ( parameters ; ";¶" ; ~namePosition ; 1 );
+	~value = Middle ( parameters ; ~valueStart ; ~valueEnd - ~valueStart )
+];
+	// check that ~value exists and is valid
+	If ( ~namePosition > 0 and IsValidExpression ( ~value );
+		Evaluate ( ~value )
+	)
+)

@@ -1,0 +1,86 @@
+/**
+ * =====================================
+ * #Filter ( parameters ; filterParameters )
+ *
+ * RETURNS:
+ *		A list of Let notation name-value pairs from parameters with names in
+ *		filterParameters. Any pairs with names not in filterParameters will not
+ *		be included.
+ *
+ * PARAMETERS:
+ *		parameters: A string of serialized name-value pair data in Let notation.
+ *		filterParameters: A return-delimited list of parameter names to include
+ *		in the result.
+ *
+ * EXAMPLE:
+ *		#Assign ( #Filter (
+ *			# ( "name" ; "value" )
+ *			& # ( "foo" ; "bar" );
+ *			List ( "name" ; "otherName" )
+ *		) )
+ *		// variable $name assigned "value"; $foo and $otherName are unaffected
+ *
+ * DEPENDENCIES: none
+ *
+ * HISTORY:
+ *		CREATED on 2012-11-28 by Jeremy Bante <http://scr.im/jbante>.
+ * =====================================
+ */
+
+Case (
+	/* Step 0, set-up */
+	not $#Filter.step ;
+		Let ( [
+			~empty = IsEmpty ( parameters ) or IsEmpty ( filterParameters ) ;
+			filterParameters =	// add "$" prefix for matching
+				Substitute ( ¶ & filterParameters ; ¶ ; "¶$" ) ;
+			filterParameters =	// add "$$" prefix for backwards-compatibility
+				filterParameters
+				& Substitute ( filterParameters ; ¶ ; "¶$" )
+				& ¶ ;
+
+			$#Filter.parameterCount = ValueCount ( parameters ) ;
+			$#Filter.step = If ( ~empty ; -1 ; /* Else */ 1 )
+		];
+			#Filter ( parameters ; filterParameters )
+		);
+
+	/* Step 1, check each parameter */
+	$#Filter.step = 1 ;
+		Let ( [
+			$#Filter.i = $#Filter.i + 1 ;
+			~pair = GetValue ( parameters ; $#Filter.i ) ;
+			~name = Left ( ~pair ; Position ( ~pair ; " = " ; 1 ; 1 ) - 1 ) ;
+			$#Filter.result =
+				// only include ~pair if ~name is in filterParameters
+				List (
+					$#Filter.result ;
+					If ( Position ( filterParameters ; ¶ & ~name & ¶ ; 1 ; 1 ) > 0;
+						~pair
+					)
+				);
+
+			$#Filter.step =
+				If ( $#Filter.i < $#Filter.parameterCount ;
+					$#Filter.step ;
+					/* Else */ $#Filter.step + 1
+				)
+		];
+			#Filter ( parameters ; filterParameters )
+		);
+
+	/* Step 2, clean-up and return result */
+	$#Filter.step = 2 or $#Filter.step = -1 ;
+		Let ( [
+			~error = $#Filter.step = -1 ;
+			~result = $#Filter.result ;
+
+			// purge variables
+			$#Filter.i = "" ;
+			$#Filter.parameterCount = "" ;
+			$#Filter.result = "" ;
+			$#Filter.step = ""
+		];
+			If ( ~error ; "" ; /* Else */ ~result )
+		)
+)
