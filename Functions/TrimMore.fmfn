@@ -1,0 +1,35 @@
+/**
+ * =====================================
+ * TrimMore ( content )
+ *
+ * PURPOSE:
+ *		Remove leading and trailing carriage returns,
+ *		line feeds, vertical tabs, and spaces.
+ *
+ * RETURNS:
+ *		The supplied content less the above mentioned chars.
+ *
+ * PARAMETERS:
+ *		content: the supplied content to be trimmed
+ *
+ * EXAMPLES:
+ *		TrimMore ( Char ( 9 ) & Char ( 10 ) & Char ( 11 ) & "¶ Line 1¶Line 2¶¶¶¶¶¶¶ " ) //= Line 1¶Line 2
+ *		TrimMore ( LeftValues ( List ( "One" ; "Two" ; "Three" ) ; 2 ) ) // removes the trailing return
+ *
+ * DEPENDENCIES: none
+ *
+ * RELEASE:
+ *		2013-05-20
+ *
+ * REFERENCES:
+ *		http://fmfunctions.com/fid/355
+ *		Fabrice Nordman (http://www.fmfunctions.com/mid/37)
+ *
+ * Notes:
+ *		Char ( 9 ) = Tab, Char ( 10 ) = new line (line feed)
+ *		Char ( 11 ) = vertical tab, Char ( 13 ) = ¶ carriage return
+ *		Char ( 32 ) = space
+ * =====================================
+ */
+
+MiddleWords ( content ; 1 ; Length ( content ))
