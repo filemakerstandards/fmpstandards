@@ -3,7 +3,7 @@
  * WindowCenter ( dimension )
  * 
  * PARAMETERS:
- *		@dimension (enumeration) Vertical, Horizontal
+ *		dimension: (enumeration) Vertical, Horizontal
  *
  * RETURNS:
  *		(int) Screen position value based on dimension
