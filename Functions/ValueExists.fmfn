@@ -7,13 +7,15 @@
  * 
  * RETURNS:
  *		(boolean) True if it exists, False if not
+ *
  * DEPENDENCIES:
- *		none 
+ *		none
+ *
  * NOTES:
  *		none
  *
  * HISTORY:
- *		2/24/11 - Petrowsky - Added to custom functions
+ *		2011-01-13 - Petrowsky - Added to custom functions
  * =====================================================
  * 
  */
