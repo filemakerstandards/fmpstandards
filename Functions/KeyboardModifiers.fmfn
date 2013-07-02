@@ -3,59 +3,79 @@
  * KeyboardModifiers ( keysList ; ignoreCaps )
  *
  * PURPOSE:
- *                Trap for human readable list of
- *                modifier keys being held down.
+ *		Trap for human readable list of
+ *		modifier keys being held down.
+ *
  * PARAMETERS:
- *                @keysList (enumeration) List() of "keys" or string
- *                      (e.g List("Command"; "Alt") or "command-alt")
- *                @ignoreCaps (boolean) True or False to ignore caps key
+ *		keysList (enumeration) List() of "keys" or string
+ *			(e.g. List("Command"; "Alt") or "command-alt")
+ *		ignoreCaps (boolean) True or False to ignore caps key
+ *
  * RETURNS:
- *                (boolean) based on modifier keys being held down
+ *		(boolean) based on modifier keys being held down
+ *
  * DEPENDENCIES:
- *                none
+ *		none
+ *
+ * EXAMPLE:
+ *		If [KeyboardModifiers ( "command-shift" ; True )]
+ *			# Perform steps here
+ *		End If
+ *
+ * RELEASE: 2010-10-14
+ *		2013-07-02 Updated to proper filemakerstandards.org style guide
+ *
  * NOTES:
- *                Adapted from http://www.briandunning.com/cf/473
- *                by Peter Wagemans, SHpartners
+ *		Adapted from http://www.briandunning.com/cf/473
+ *		by Peter Wagemans, SHpartners
  * =====================================================
  * 
  */
 
 Let ( [
-	// Define
-	var.keys = Get ( ActiveModifierKeys );
+	// Get the modifier keys
+	
+	~keys = Get ( ActiveModifierKeys );
+
 	// Convert keys to their bit values (see note at bottom)
-	var.command = Mod ( Int ( var.keys / 16 ) ; 2 );
-	var.alt = Mod ( Int ( var.keys / 8 ) ; 2 );
-	var.control = Mod ( Int ( var.keys / 4 ) ; 2 );
-	var.capslock = Mod ( Int ( var.keys / 2 ) ; 2 );
-	var.shift = Mod ( var.keys ; 2 )
+	
+	~command  = Mod ( Int ( ~keys / 16 ) ; 2 );
+	~alt      = Mod ( Int ( ~keys / 8 ) ; 2 );
+	~control  = Mod ( Int ( ~keys / 4 ) ; 2 );
+	~capslock = Mod ( Int ( ~keys / 2 ) ; 2 );
+	~shift    = Mod ( ~keys ; 2 )
+
 ];
 	// Result (boolean)
-	( var.command xor not PatternCount ( keysList ; "command" ) )
+	
+	( ~command xor not PatternCount ( keysList ; "command" ) )
 	and
-		( var.alt xor not ( PatternCount ( keysList ; "alt" ) or PatternCount ( keysList ; "option" ) ) )
+	( ~alt xor not ( PatternCount ( keysList ; "alt" ) or PatternCount ( keysList ; "option" ) ) )
 	and
-		( var.control xor not ( PatternCount ( keysList ; "ctrl" ) or PatternCount ( keysList ; "control") ) )
+	( ~control xor not ( PatternCount ( keysList ; "ctrl" ) or PatternCount ( keysList ; "control") ) )
 	and
-		If ( not ignoreCaps ; ( var.capslock xor not PatternCount ( keysList ; "capslock" ) ) ; True )
+	If ( not ignoreCaps ;
+		( ~capslock xor not PatternCount ( keysList ; "capslock" ) ) ;
+		True
+	)
 	and
-		( var.shift xor not PatternCount ( keysList ; "shift" ) )
+	( ~shift xor not PatternCount ( keysList ; "shift" ) )
 	and
-		( ( var.keys = 0 ) xor ( keysList ≠ "" ) )
+	( ( ~keys = 0 ) xor ( keysList ≠ "" ) )
 )
 
 /*
-The Mod() function is used to determine
-if the key is within the result of
-Get ( ActiveModifierKeys )
+	The Mod() function is used to determine
+	if the key is within the result of
+	Get ( ActiveModifierKeys )
 
-16  8  4  2  1
---------------
-0   0  1  0  1
-|   |  |  |  |
-|   |  |  |  Shift
-|   |  |  Caps Lock
-|   |  Ctrl
-|   Alt/Option
-Apple Command Key
+	16  8  4  2  1
+	--------------
+	0   0  1  0  1
+	|   |  |  |  |
+	|   |  |  |  Shift
+	|   |  |  Caps Lock
+	|   |  Ctrl
+	|   Alt/Option
+	Apple Command Key
 */
