@@ -1,4 +1,4 @@
-# Welcome to Custom Funtions via Version Control
+# Welcome to Custom Functions via Version Control
 
 ## Master repository for FileMakerStandards.org Custom Functions
 
@@ -10,4 +10,4 @@ If you need more information about using this resource
 (beyond simple copy/pasting - which is certainly doable)
 then see the following link.
 
-[Github information on filemakerstandards.org](http://filemakerstandards.org/pages/viewpage.action?pageId=1179667)
+[GitHub information on filemakerstandards.org](http://filemakerstandards.org/pages/viewpage.action?pageId=1179667)
