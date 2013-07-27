@@ -16,6 +16,8 @@
  * DEPENDENCIES: none
  *
  * HISTORY:
+ *		MODIFIED on 2013-07-27 by Jeremy Bante <http://scr.im/jbante> to fix a
+ *		type misidentification bug.
  *		MODIFIED on 2013-04-15 by Jeremy Bante <http://scr.im/jbante> to not
  *		wrap numbers in GetAsNumber.
  *		MODIFIED on 2013-01-14 by Daniel Smith dansmith65@gmail.com to include
@@ -32,61 +34,38 @@
  */
 
 Let ( [
-	// characters used as separators in a date field
-	~DATECHARS = "\/-" ;
-	// characters used as separators in a time field
-	~TIMECHARS = ":" ;
-
 	~name =	// strip leading "$$" and "$"
 		Substitute (
-			"/*start*/" & name;
-			[ "/*start*/$$" ; "" ];
-			[ "/*start*/$" ; "" ];
+			"/*start*/" & name ;
+			[ "/*start*/$$" ; "" ] ;
+			[ "/*start*/$" ; "" ] ;
 			[ "/*start*/" ; "" ]
-		);
+		) ;
+	~text = GetAsText ( value ) ;
+	~number = GetAsNumber ( value ) ;
+	~validDate = IsValid ( GetAsDate ( ~text ) ) ;
+	~validTime =
+		IsValid ( GetAsTime ( ~text ) )
+		and Position ( ~text ; ":" ; 1 ; 1 ) > 0 ;
 	~value =
 		Case (
-			// test for specific values that will be treated as a number in the next section
 			value = "" or value = "?" ;
 				Quote ( value ) ;
 
-			value ≠ GetAsNumber ( value ) ;
-				Quote ( value ) ;
-
-			// at this point, value is a number, timestamp, date, or time
-			// negative time value
-			value < 0 and not IsEmpty ( Filter ( value ; ~TIMECHARS ) ) ;
-				"GetAsTime ( " & Quote ( value ) & " )" ;
-
-			not IsEmpty ( Filter ( value ; ~DATECHARS ) )
-			and not IsEmpty ( Filter ( value ; ~TIMECHARS ) ) ;
+			~validTime and ~validDate ;
 				"GetAsTimestamp ( " & Quote ( value ) & " )" ;
 
-			not IsEmpty ( Filter ( value ; ~TIMECHARS ) ) ;
+			~validTime ;
 				"GetAsTime ( " & Quote ( value ) & " )" ;
 
-			/**
-			 * At this point, if value is less than 1, it must be either
-			 * a negative number or a decimal exponent.
-			 * This section must be after test for time because time can
-			 * contain a negative number.
-			 * This section should be before test for date, because a date
-			 * can contain a -, which is also used for a negative number.
-			 */
-			value < 1 ;
-				GetAsNumber ( value ) ;
-
-			not IsEmpty ( Filter ( value ; ~DATECHARS ) ) ;
+			~validDate ;
 				"GetAsDate ( " & Quote ( value ) & " )" ;
 
-			/**
-			 * either a number, or:
-			 * if the ~DATECHARS and ~TIMECHARS variables do not contain the
-			 * separator chars in use on the current computer, store the
-			 * date/time/timestamp as a number
-			 */
+			~text ≠ GetAsText ( ~number ) ;
+				Quote ( value ) ;
+
 			/* Else */
-				GetAsNumber ( value )
+				~number
 		) ;
 	~result =
 		"$"
