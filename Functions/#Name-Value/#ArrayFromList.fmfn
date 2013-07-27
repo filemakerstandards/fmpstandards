@@ -15,6 +15,7 @@
  *
  * DEPENDENCIES:
  *		# ( name ; value )
+ *		#Array ( name ; index ; value )
  *
  * HISTORY:
  *		CREATED on 2013-07-26 by Jeremy Bante <http://scr.im/jbante>.
@@ -26,10 +27,7 @@ If ( IsEmpty ( $~#Array.valueCount ) ;
 )
 & Let ( $~#Array.i = $~#Array.i + 1 ; "" )
 & If ( $~#Array.i ≤ $~#Array.valueCount ;
-	# (
-		name & "[" & $~#Array.i & "]" ;
-		GetValue ( valueList ; $~#Array.i )
-	)
+	#Array ( name ; $~#Array.i ; GetValue ( valueList ; $~#Array.i ) )
 )
 & If ( $~#Array.i < $~#Array.valueCount ;
 	#ArrayFromList ( name ; valueList ) ;
