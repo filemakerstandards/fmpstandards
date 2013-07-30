@@ -1,0 +1,28 @@
+/**
+ *******************************************************************************
+ * #Array ( name ; index ; value )
+ *
+ * PURPOSE:
+ *		Serves as syntactic sugar for creating array values in Let notation.
+ *
+ * RETURNS:
+ *		A name-value pair in Let notation.
+ *
+ * PARAMETERS:
+ *		name: The name for the returned name-value pair. name can be any value
+ *		that would be a valid Let() variable name.
+ *		index: A numeric index for a repeating variable.
+ *		value: The value for the returned name-value pair.
+ *
+ * DEPENDENCIES:
+ *		# ( name ; value )
+ *
+ * HISTORY:
+ *		CREATED on 2013-07-26 by Jeremy Bante <http://scr.im/jbante>.
+ *******************************************************************************
+ */
+
+# (
+	name & If ( index ≠ 1 or IsEmpty ( name ) ; "[" & index & "]" ) ;
+	value
+)

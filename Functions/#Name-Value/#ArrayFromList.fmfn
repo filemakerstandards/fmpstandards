@@ -1,0 +1,35 @@
+/**
+ *******************************************************************************
+ * #ArrayFromList ( name ; valueList )
+ *
+ * PURPOSE:
+ *		Converts a return-delimited list to a Let notation array.
+ *
+ * RETURNS:
+ *		A series of name-value pairs in Let notation.
+ *
+ * PARAMETERS:
+ *		name: The name for the returned name-value pair. name can be any value
+ *		that would be a valid Let() variable name.
+ *		valueList: A return-delimited list of values
+ *
+ * DEPENDENCIES:
+ *		# ( name ; value )
+ *		#Array ( name ; index ; value )
+ *
+ * HISTORY:
+ *		CREATED on 2013-07-26 by Jeremy Bante <http://scr.im/jbante>.
+ *******************************************************************************
+ */
+
+If ( IsEmpty ( $~#Array.valueCount ) ;
+	Let ( $~#Array.valueCount = ValueCount ( valueList ) ; "" )
+)
+& Let ( $~#Array.i = $~#Array.i + 1 ; "" )
+& If ( $~#Array.i ≤ $~#Array.valueCount ;
+	#Array ( name ; $~#Array.i ; GetValue ( valueList ; $~#Array.i ) )
+)
+& If ( $~#Array.i < $~#Array.valueCount ;
+	#ArrayFromList ( name ; valueList ) ;
+	/* Else */ Let ( [ $~#Array.valueCount = "" ; $~#Array.i = "" ] ; "" )
+)
