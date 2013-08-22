@@ -1,0 +1,54 @@
+/**
+ * =====================================================
+ * FileOSPath ( path ; escaped )
+ *
+ * PURPOSE:
+ *		Provide an OS specific wrapper around FileMaker's
+ *		own path functions.
+ *
+ * RETURNS:
+ *		(string) OS valid path
+ *
+ * EXAMPLES:
+ *		FileOSPath ( Get ( FilePath ) ; True ) = "/Volumes/HardDriveName/Users/someone/Folder\ with\ spaces/FileName.fmp12"
+ *
+ * DEPENDENCIES:
+ *		none
+ *
+ * NOTES:
+ *		This is useful when used with plugins or scripting
+ *		languages which need a valid OS path.
+ *		@todo add in windows escaping
+ *
+ * HISTORY:
+ *		RELEASED: 2013-08-21 by matt@filemakermagazine.com
+ * 
+ * REFERENCES:
+ *		https://github.com/filemakerstandards/fmpstandards/blob/master/Functions/FileOSPath.fmfn
+ * =====================================================
+ *
+ */
+
+Let( [
+	~newPath = If ( Left( path; 5) = "file:";
+		Substitute (
+			Middle( path; 6; 1000000 );
+			[ "¶file:" ; ¶ ]
+		);
+		// default
+		path
+	);
+	~macPath = "/Volumes" & Substitute( ~newPath; ¶; "¶/Volumes");
+	~winPath = Substitute( Middle( Substitute ( ~newPath ; "/" ; "\\" ); 2; 1000000 ); "¶\\"; "¶")
+];
+	Choose ( Abs ( Get( SystemPlatform ) ) - 1 ;
+		// Macintosh
+		If ( escaped; Substitute( ~macPath; [" "; "\ "]; [","; "\,"] ); ~macPath );
+
+		// Windows
+		~winPath;
+
+		// iOS
+		"undefined"
+	)
+)
