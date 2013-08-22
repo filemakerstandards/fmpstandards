@@ -1,0 +1,56 @@
+/**
+ * =====================================
+ * UISortListIndicator ( field ; tabs )
+ *
+ * PURPOSE:
+ *		Return a boolean value if the specified field
+ *		is the same field being used by UISortToggle and
+ *		the sort status is sorted. $$SORT.LAYOUT.[id].INDICATOR
+ *		is set to contain a directional toggle arrow for use
+ *		within a global merge variable.
+ *		(see UISortToggle and UISortDirection)
+ *
+ * RETURNS:
+ *		(boolean) true or false based on the contents $$SORT.LAYOUT.[id].FIELD
+ *
+ * PARAMETERS:
+ *		field: A field reference
+ *		tabs: A numerical value of how many tab to prefix
+ *
+ * EXAMPLES:
+ *		When used on conditional formatting for a button attached to a sort script
+ *		UISortListIndicator ( FunctionalArea » Tablename::fieldName ; 2 ) // = True if the same field
+ *
+ * DEPENDENCIES:
+ *		none
+ *
+ * RELEASE:
+ *		2011-04-20
+ *
+ * REFERENCES:
+ *		none
+ * =====================================
+ */
+
+Let ( [
+	~layoutID = GetValue ( LayoutIDs ( Get ( FileName ) ) ; Get ( LayoutNumber ) );
+	~fieldName = GetFieldName ( field );
+	~sortVarPrefix = "$$SORT.LAYOUT." & ~layoutID;
+	~sortVarField = ~sortVarPrefix & ".LIST.FIELD";
+	~sortVarDirection = ~sortVarPrefix & ".LIST.DIRECTION";
+	~sortVarIndicator = ~sortVarPrefix & ".LIST.INDICATOR";
+	~sortCurrentField = GetAsText ( Evaluate ( ~sortVarField ) );
+	~isSameSortField = ~sortCurrentField = ~fieldName;
+	~sortDirection = Evaluate ( ~sortVarDirection );
+	~sortArrow = TextFont ( Choose ( ~sortDirection; char ( 9660 ); char ( 9650 ) ) ; If ( Get( SystemPlatform ) = -2 ; "Arial" ; "Apple Symbol Regular" ) );
+	~sortIndicator = Left ( "																						" ; tabs ) & ~sortArrow
+];
+	Case (
+		Get ( SortState ) = 0
+		or Get ( SortState ) = 2;
+			Evaluate ( "Let ( " & ~sortVarIndicator & " = " & Quote ( "" ) & "; False )");
+
+		~isSameSortField and Get ( SortState );
+			Evaluate ( "Let ( " & ~sortVarIndicator & " = " & Quote ( ~sortIndicator ) & "; True )");
+	)
+)

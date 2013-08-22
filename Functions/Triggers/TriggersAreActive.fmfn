@@ -1,0 +1,38 @@
+﻿/**
+ * =====================================
+ * TriggersAreActive
+ * https://github.com/jbante/FileMaker-Techniques/blob/master/CustomFunctions/Triggers/TriggersAreActive.fmfn
+ *
+ * PURPOSE:
+ *		TriggersAreActive checks a global variable to identify whether or not
+ *		script triggers should be allowed to run. This function is best used in
+ *		concert with the TriggersDisable, TriggersEnable, and TriggersReset
+ *		functions.
+ *
+ * RETURNS:
+ *		False (0) if triggers should be suppressed; True (1) otherwise.
+ *
+ * PARAMETERS: none
+ *
+ * REFERENCED VARIABLES:
+ *		$$~DISABLETRIGGERS (deprecated)
+ *		$$~TRIGGERS_DISABLE
+ *
+ * DEPENDENCIES: none
+ *
+ * EXAMPLE (triggered script):
+ *		If [not TriggersAreActive]
+ *			Exit Script [True	// allow triggering event to proceed]
+ *		End If
+ *
+ * RELEASE: 2013-04-08
+ *
+ * REFERENCES:
+ *		Supressible Triggered Scripts Best Practice: http://filemakerstandards.org/display/bp/Suppressible+Triggered+Scripts
+ * =====================================
+ */
+
+not (
+	$$~TRIGGERS_DISABLE
+	or $$~DISABLETRIGGERS
+)

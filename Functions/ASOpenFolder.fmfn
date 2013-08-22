@@ -1,0 +1,35 @@
+/**
+ * =====================================================
+ * ASOpenFolder ( path ; name  )
+ *
+ * PURPOSE:
+ *		Create AppleScript code which will open a folder within the
+ *		Finder. If the folder does not exist, it will be created.
+ * PARAMETERS:
+ *		path = a valid POSIX path
+ *		name = name of the target folder
+ * RETURNS:
+ * 		(string) AppleScript code
+ * DEPENDENCIES:
+ *		none 
+ * NOTES:
+ *		This calculation contains the shell code needed to make a folder on OS X
+ *		"if [ ! -d $path ];then mkdir $path; open $path; else open $path; fi"
+ * HISTORY:
+ *		12/29/11 - Matt Petrowsky - updated
+ * =====================================================
+ * 
+ */
+
+Let( [
+    // name = "folder";
+    // path = "/Users/matt/Desktop/";
+    ~mypath = path & name;
+    ~qpath = Quote ( "$path" ); // quoted shell variable
+    ~sh = "if [ ! -d " & ~qpath & " ];then mkdir " & ~qpath & "; open " & ~qpath & "; else open " & ~qpath & "; fi";
+    ~cmd = "path=" & Quote ( ~mypath ) & "; " & ~sh  // raw shell script command
+];
+	// this is applescript code - it should be called via the Perform AppleScript step
+	"do shell script " & "\"" &  Substitute ( ~cmd ; "\"" ; "\\\"" )  & "\""
+
+)

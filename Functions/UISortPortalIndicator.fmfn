@@ -1,0 +1,52 @@
+/**
+ * =====================================
+ * UISortPortalIndicator ( field ; object ; tabs )
+ *
+ * PURPOSE:
+ *		Return a an arrow character if the specified field
+ *		is the same field being used by UISortPortalToggle.
+ *		A directional toggle arrow is returned in order to
+ *		use conditional formatting on column headers.
+ *		(see UISortPortalToggle and UISortPortalDirection)
+ *
+ * RETURNS:
+ *		(string) Up or down arrow based on the contents $$SORT.PORTAL.[object].FIELD
+ *
+ * PARAMETERS:
+ *		field: A field reference
+ *		object: Name of the object or id unique to store values
+ *		tabs: A numerical value of how many tabs to prefix
+ *
+ * EXAMPLES:
+ *		When used on conditional formatting for a button attached to a sort script
+ *		UISortPortalIndicator ( FunctionalArea » Tablename::fieldName ; "portal.name" ; 2 ) // = True if the same field
+ *
+ * DEPENDENCIES:
+ *		none
+ *
+ * RELEASE:
+ *		2011-04-20
+ *
+ * REFERENCES:
+ *		none
+ * =====================================
+ */
+
+Let ( [
+	~fieldName = GetFieldName ( field );
+	~sortVarPrefix = "$$SORT.PORTAL." & Upper ( object );
+	~sortVarField = ~sortVarPrefix & ".FIELD";
+	~sortVarDirection = ~sortVarPrefix & ".DIRECTION";
+	~sortCurrentField = GetAsText ( Evaluate ( ~sortVarField ) );
+	~isSameSortField = ~sortCurrentField = ~fieldName;
+	~sortDirection = Evaluate ( ~sortVarDirection );
+	~sortArrow = TextFont ( Choose ( ~sortDirection; char ( 9660 ); char ( 9650 ) ) ; If ( Get( SystemPlatform ) = -2 ; "Arial" ; "Apple Symbol Regular" ) );
+	~sortIndicator = Left ( "																						" ; tabs ) & ~sortArrow
+];
+	Case (
+		~isSameSortField;
+			~sortIndicator;
+			
+		""
+	)
+)

@@ -1,0 +1,54 @@
+/**
+ * =====================================================
+ * HTMLDocument ( type ; head ; css ; body )
+ *
+ * PURPOSE:
+ *		Create valid HTML output which can be either exported or
+ *		used within a web viewer for data display.
+ * 
+ * RETURNS:
+ *		(string) valid HTML output
+ *
+ * PARAMETERS:
+ *		type = (enumeration) any of the valid html document types or none
+ *		head = (string) any content which may be used within the <head></head> section
+ *		css = (string) valid css (see the HTMLCSS function)
+ *		body = (string) HTML body content
+ *
+ * DEPENDENCIES:
+ *		none
+ *
+ * NOTES:
+ *		Passing in a null value for type will force quirks mode or browser default.
+ *		This is useful to know because using a "border = 0" on the <body> will force
+ *		IE on Windows to not show its view port border. Apply this via a css tag.
+ *
+ * HISTORY:
+ *		2011-04-04
+ *
+ * REFERENCES:
+ *		none
+ * =====================================================
+ * 
+ */
+
+List(
+	Case(
+	type = "html4t";
+		"<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\">";
+
+	type = "xhtmlt";
+		"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\">";
+
+	"" // default is no document type (see notes above)
+	);
+	"<html>";
+	"<head>";
+	head;
+	css;
+	"</head>";
+	"<body>";
+	body;
+	"</body>";
+	"</html>"
+)

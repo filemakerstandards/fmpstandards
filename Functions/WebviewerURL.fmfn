@@ -1,0 +1,2 @@
+// need to turn it into a function
+"fmp://localhost/" & get ( filename ) & "?script=scriptname"

@@ -1,0 +1,70 @@
+﻿/**
+ * =====================================
+ * TriggersEnable
+ * https://github.com/jbante/FileMaker-Techniques/blob/master/CustomFunctions/Triggers/TriggersEnable.fmfn
+ *
+ * PURPOSE:
+ *		TriggersEnable sets global variables to indicate that the current script
+ *		is no longer suppressing triggers. This function will also turn off
+ *		trigger suppression altogether if there are no other scripts suppressing
+ *		triggers. In order to be suppressed, a script called via trigger should
+ *		use the TriggersAreActive function to decide whether or not to run.
+ *
+ * RETURNS:
+ *		True (1) if TriggersEnable successfully removed the current script from
+ *		the list of scripts suppressing triggers; False (0) otherwise.
+ *
+ * PARAMETERS: none
+ *
+ * REFERENCED VARIABLES:
+ *		$$~DISABLETRIGGERS (deprecated)
+ *		$$~TRIGGERS_DISABLE
+ *		$$~TRIGGERS_SCRIPTS
+ *		$~triggers_disableKey
+ *
+ * DEPENDENCIES: none
+ *
+ * EXAMPLE (script):
+ *		Set Variable [$!; Value:TriggersDisable]
+ *		# Do something
+ *		Set Variable [$!; Value:TriggersEnable]
+ *
+ * NOTES:
+ *		This function should *always* be used in pairs with the TriggersDisable
+ *		function.
+ *
+ * RELEASE: 2013-04-08
+ *
+ * REFERENCES:
+ *		Supressible Triggered Scripts Best Practice: http://filemakerstandards.org/display/bp/Suppressible+Triggered+Scripts
+ * =====================================
+ */
+
+If ( not IsEmpty ( $~triggers_disableKey ) ;
+	Let ( [
+		~scriptsLength = Length ( $$~TRIGGERS_SCRIPTS ) ;
+		~scriptPosition =
+			Position (
+				$$~TRIGGERS_SCRIPTS ;
+				Char ( 9 ) /* tab */ & $~triggers_disableKey & ¶ ;
+				~scriptsLength ;
+				-1
+			) ;
+		~breakPosition =
+			If ( ~scriptPosition > 0 ;
+				Position ( $$~TRIGGERS_SCRIPTS ; ¶ ; ~scriptPosition ; 1 ) ;
+				/* Else */ 0
+			) ;
+		$$~TRIGGERS_SCRIPTS =
+			Right ( $$~TRIGGERS_SCRIPTS ; ~scriptsLength - ~breakPosition ) ;
+		$$~TRIGGERS_DISABLE =
+			If ( not IsEmpty ( $$~TRIGGERS_SCRIPTS ) and $$~TRIGGERS_DISABLE ;
+				True ;
+				/* Else */ ""
+			) ;
+		$$~DISABLETRIGGERS = $$~TRIGGERS_DISABLE ;
+		$~triggers_disableKey = ""
+	] ;
+		""
+	)
+)

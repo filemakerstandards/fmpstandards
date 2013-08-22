@@ -1,0 +1,52 @@
+/**
+ * =====================================
+ * UISortListDirection ( field )
+ *
+ * PURPOSE:
+ *		Return the human readable value of "Ascending" or "Descending"
+ *		based on the value stored within a reserved global variable
+ *		(see UISortToggle and UISortIndicator)
+ *
+ * RETURNS:
+ *		(string) either "Ascending" or "Descending"
+ *
+ * PARAMETERS:
+ *		field: A field reference
+ *
+ * EXAMPLES:
+ *		When used within a script If[] step
+ *		If [ UISortListdirection ( FunctionalArea » Tablename::fieldName ) = "Ascending" ] // = True if the same field
+ *
+ * DEPENDENCIES:
+ *		none
+ *
+ * RELEASE:
+ *		2011-04-20
+ *
+ * REFERENCES:
+ *		none
+ * =====================================
+ */
+
+Let ( [
+	~layoutID = GetValue ( LayoutIDs ( Get ( FileName ) ) ; Get ( LayoutNumber ) );
+	~fieldName = GetFieldName ( field );
+	~sortVarPrefix = "$$SORT.LAYOUT." & ~layoutID;
+	~sortVarField = ~sortVarPrefix & ".LIST.FIELD";
+	~sortVarDirection = ~sortVarPrefix & ".LIST.DIRECTION";
+	~sortCurrentField = GetAsText ( Evaluate ( ~sortVarField ) );
+	~isSameSortField = ~sortCurrentField = ~fieldName;
+	~sortDirection = Evaluate ( ~sortVarDirection )
+];
+	Case (
+		~isSameSortField
+		and ~sortDirection;
+			"Ascending";
+
+		~isSameSortField
+		and not ~sortDirection;
+			"Descending";
+
+		""
+	)
+)

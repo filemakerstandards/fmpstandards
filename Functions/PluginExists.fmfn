@@ -1,0 +1,43 @@
+/**
+ * =====================================================
+ * PluginExists ( name )
+ *
+ * PURPOSE:
+ *		Return a return delimited list of the values returned by
+ *		Get ( InstalledFMPlugins ) for one specific plugin name.
+ *
+ * RETURNS:
+ *		(string) Return delimted list of name, version & status
+ *		or False if the plugin does not exist
+ *
+ * EXAMPLES:
+ *		PluginExists ( "SomePlugin" ) = "SomePlugin¶1.12¶Enabled"
+ *		PluginExists ( "MissingPlugin" ) = False
+ *
+ * DEPENDENCIES:
+ *		none
+ *
+ * NOTES:
+ *		This is convenience function for extracting the values from
+ *		the internal Get ( InstalledFMPlugins ) function
+ *
+ * HISTORY:
+ *		MODIFIED: 2013-08-21 added reference to repo.
+ *		RELEASED: 2012-06-19 by matt@filemakermagazine.com
+ * 
+ * REFERENCES:
+ *		https://github.com/filemakerstandards/fmpstandards/blob/working/Functions/PluginExists.fmfn
+ * =====================================================
+ *
+ */
+
+Let ( [
+	~pluginList = Get ( InstalledFMPlugins );
+	~pluginExists = PatternCount ( ~pluginList ; name & ";" );
+	~pluginStringStart = Position ( ~pluginList ; name ; 1 ; 1 );
+	~pluginStringEnd = Position ( ~pluginList ; ¶ ; ~pluginStringStart ; 1 );
+	~pluginString = Middle ( ~pluginList ; ~pluginStringStart ; ~pluginStringEnd - ~pluginStringStart );
+	~pluginParts = Substitute ( ~pluginString ; ";" ; ¶ )
+];
+	If ( ~pluginExists ; ~pluginParts ; False )
+)

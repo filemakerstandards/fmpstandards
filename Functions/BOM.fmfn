@@ -1,0 +1,34 @@
+/**
+ * =====================================
+ * BOM ( number )
+ *
+ * PURPOSE:
+ * 		Return the specified number of BOM (Byte Order Mark) characters
+ *
+ * RETURNS:
+ * 		String of the (number) of BOM chars
+ *
+ * PARAMETERS:
+ * 		number: a numerical value of the requested BOM chars
+ *
+ * EXAMPLES:
+ * 		BOM ( 10 ) & $value // = 10 BOM chars preceeding the $value
+ *
+ * DEPENDENCIES: none
+ *
+ * NOTE:
+ * 		This function can be used to force a sorting order by
+ *		prepending a number of BOM chars to a given value. You MUST
+ *		set the indexing language to UNICODE for the field being sorted
+ *		on. Also note that equality operations will fail if you forget
+ *		about prepended BOM chars. Use Substitute ( text ; Char(65279) ; "")
+ *
+ * HISTORY:
+ * 		CREATED on 2012-09-18 by Matt Petrowsky (matt@filemakermagazine.com)
+ * 		INSPIRED by Marcelo Piñeyro of Soliant consulting.
+ *
+ * REFERENCES:
+ * 		http://en.wikipedia.org/wiki/Byte_order_mark
+ * =====================================
+ */
+If ( number > 0 ; Char(65279) & BOM ( number - 1 ) )

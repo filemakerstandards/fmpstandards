@@ -1,59 +1,44 @@
 /*
  * =====================================================
- * WindowProperties ( method )
+ * WindowProperties ( )
  * 
- * PARAMETERS:
- *                @method (enum) default, piped, let, variables
  * RETURNS:
- *                (list) window properties according to specified method
+ * 		Let () formatted list of global variables with prefix of 'window'
+ *
+ * PARAMETERS:
+ *		none
+ *
+ * EXAMPLES:
+ * 		Substitute ( WindowProperties ; "$$" ; "$" ) //= locally scoped $window[Value] variables
+ * 		Substitute ( WindowProperties ; "$$" ; "$parent" ) //= locally scoped $parentwindow[Value] variables
+ *
+ * RETURNS:
+ *		formatted global let variables
+ *
  * DEPENDENCIES:
- *                ObjectID(),VariableList()
+ *		none
+ *
  * NOTES:
- *                Provides multiple methods for returning the
- *                properties of the current window
- *                See the WindowCenter companion function
+ *		See WindowCenter companion function. It will center a window within a parent
+ *		window when $parentWindow[Value] variables are set.
  * =====================================================
  * 
  */
 
-Let ( [
-	var.keys = List ( "name"; "layout"; "id"; "top";"left";"width";"height");
-	var.parent = List (
-		"parentWindowName";
-		"parentWindowLayout";
-		"parentWindowID";
-		"parentWindowTop";
-		"parentWindowLeft";
-		"parentWindowWidth";
-		"parentWindowHeight";
-		);
-	var.values = List (
-						Get ( WindowName );
-						Get ( LayoutName );
-						GetValue ( LayoutIDs ( Get ( FileName ) ) ; Get ( LayoutNumber ) );
-						Get ( WindowTop );
-						Get ( WindowLeft );
-						Get ( WindowWidth );
-						Get ( WindowHeight )
-	)
-];
-	// returns
-	Case(
-		method = "" or
-		method = "default";
-			var.values;
-
-		method = "piped";
-			Substitute ( var.values ; ¶ ; "|" );
-
-		// global variables are returned by VariableList() - use Substitute ( properties ; "$$" ; "$" ) to make local
-		method = "let";
-			VariableList ( var.keys; var.values ; "global" );
-			
-		method = "parentVars";
-			VariableList ( var.parent; var.values ; "local" );
-
-		// default
-		var.values
-	)
+Substitute (
+	List (
+		"$$windowName = " & Quote ( Get ( WindowName ) );
+		"$$windowLayout = " & Quote ( Get ( LayoutName ) );
+		"$$windowLayoutID = " & GetValue ( LayoutIDs ( Get ( FileName ) ) ; Get ( LayoutNumber ) );
+		"$$windowTop = " & Get ( WindowTop );
+		"$$windowLeft = " & Get ( WindowLeft );
+		"$$windowWidth = " & Get ( WindowWidth );
+		"$$windowHeight = " & Get ( WindowHeight );
+		"$$windowViewAs = " & Get ( LayoutViewState );
+		"$$windowMode = " & Get ( WindowMode );
+		"$$windowStatusArea = " & Get ( StatusAreaState );
+		"$$windowZoomLevel = " & Get ( WindowZoomLevel );
+		"$$windowTextRuler = " & Get ( TextRulerVisible );
+	);
+	[ ¶ ; ";¶" ] // adding semi colons to each line
 )

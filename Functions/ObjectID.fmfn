@@ -3,37 +3,35 @@
  * ObjectID ( object; type; file; layout )
  * 
  * PARAMETERS:
- *                  @object supply either the name or internal id of an object
- *                          (see type variable for supported objects)
- *                  @type (enum) One of the following
- *                          "Table", "Layout", "Field", "Script", or "ValueList" or (T,L,F,S,V) for shorthand
- *                  @file [optional] specify the name of the file (if using multiple files) - empty implies current file
- *                  @layout [optional] required only if @type contains "Field".
- *                  Empty implies current layout (or the field table occurrence, read the note below).
- *                  The layout should be tied to the table occurrence of the field
- * 
+ *		@object supply either the name or internal id of an object
+ *		        (see type variable for supported objects)
+ *		@type (enum) One of the following
+ *		        "Table", "Layout", "Field", "Script", or "ValueList" or (T,L,F,S,V) for shorthand
+ *		@file [optional] specify the name of the file (if using multiple files) - empty implies current file
+ *		@layout [optional] required only if @type contains "Field".
+ *		Empty implies current layout (or the field table occurrence, read the note below).
+ *		The layout should be tied to the table occurrence of the field
  * RETURNS:
- *                  (mixed) Internal FileMaker ID if name of object is supplied
- *                  and inverse if ID of object is supplied
- * 
+ *		(mixed) Internal FileMaker ID if name of object is supplied
+ *		and inverse if ID of object is supplied
  * DEPENDENCIES:
- *                  None
+ *		None
  * AUTHOR:
- *                  Fabrice Nordman
+ *		Fabrice Nordman
  * NOTES:
- *                  for fields (_TLFSV = "F"), if you use the full field name
- *                  (table::fieldname) AND an empty var.layout parameter, the
- *                  function will assume you are referring not to current layout but
- *                  to the table occurrence found in the _TLFSV
+ *		for fields (_TLFSV = "F"), if you use the full field name
+ *		(table::fieldname) AND an empty var.layout parameter, the
+ *		function will assume you are referring not to current layout but
+ *		to the table occurrence found in the _TLFSV
  * 
  * =====================================================================
  */
 
 
 Let ( [
-	file = If ( IsEmpty ( file );
+	~file = If ( IsEmpty ( file );
 						Get ( FileName ); // use current file name... otherwise
-						file
+						~file
 	);
 	layout = Case (
 							IsEmpty ( layout );
@@ -46,7 +44,7 @@ Let ( [
 						);
 	layout = Case (
 						Int ( layout ) = layout and Length ( layout ) = 7;
-							ObjectID ( layout; "T"; file; "" );
+							ObjectID ( layout; "T"; ~file; "" );
 						layout
 						);
 	var.object = object;

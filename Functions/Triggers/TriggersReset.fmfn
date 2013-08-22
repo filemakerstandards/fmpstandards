@@ -1,0 +1,40 @@
+﻿/**
+ * =====================================
+ * TriggersReset
+ * https://github.com/jbante/FileMaker-Techniques/blob/master/CustomFunctions/Triggers/TriggersReset.fmfn
+ *
+ * PURPOSE:
+ *		TriggersReset sets global variables to indicate that script triggers
+ *		should be allowed to run, regardless of any persisting instructions to
+ *		the contrary from any script. This may be useful to recover from a
+ *		situation where a script forgot to call TriggersEnable at the end of
+ *		operation. In order to be suppressed, a script called via trigger should
+ *		use the TriggersAreActive function to decide whether or not to run.
+ *
+ * RETURNS: "" (null)
+ *
+ * PARAMETERS: none
+ *
+ * REFERENCED VARIABLES:
+ *		$$~DISABLETRIGGERS (deprecated)
+ *		$$~TRIGGERS_DISABLE
+ *		$$~TRIGGERS_SCRIPTS
+ *		$~triggers_disableKey
+ *
+ * DEPENDENCIES: none
+ *
+ * RELEASE: 2013-04-08
+ *
+ * REFERENCES:
+ *		Supressible Triggered Scripts Best Practice: http://filemakerstandards.org/display/bp/Suppressible+Triggered+Scripts
+ * =====================================
+ */
+
+Let ( [
+	$$~TRIGGERS_SCRIPTS		= "" ;
+	$$~TRIGGERS_DISABLE		= "" ;
+	$$~DISABLETRIGGERS		= "" ;
+	$~triggers_disableKey	= ""
+] ;
+	""
+)

@@ -1,0 +1,190 @@
+/**
+ * =====================================
+ * KeyboardKey ( name )
+ *
+ * PURPOSE:
+ *		Capture the current Get ( TriggerKeystroke )
+ *		and match against a human readable name of the
+ *		the keystroke or if within a keystroke group.
+ *		Primarily used to match against keyboard groups
+ *		such as Arrows, Uppercase, Lowercase, Editing, etc.
+ *
+ * RETURNS:
+ *		False (0) if no match; True (1) otherwise.
+ *
+ * PARAMETERS:
+ *		name = a human readable name of a given key or keyboard group
+ *
+ * DEPENDENCIES:
+ *		none
+ *
+ * EXAMPLE:
+ *		// When used within OnObjectKeystroke or OnLayoutKeystroke script triggers
+ *		If [KeyboardKey ( "arrows" )]
+ *			# Perform steps here if an arrow key was used
+ *		End If
+ *
+ * RELEASE: 2011-09-06
+ *		2013-07-02 Updated to proper filemakerstandards.org style guide
+ *
+ * REFERENCES:
+ *		
+ * =====================================
+ */
+
+Let ( [
+	// Capture the keystroke for use
+
+	~keystroke = Code ( Get ( TriggerKeystroke ) );
+
+	// Possible keystokes & combinations
+
+	~arrows = ~keystroke ≥ 28 and ~keystroke ≤ 31;
+	~uppercase = ~keystroke ≥ 65 and ~keystroke ≤ 90;
+	~lowercase = ~keystroke ≥ 97 and ~keystroke ≤ 122;
+	~letter = ~uppercase or ~lowercase;
+	~number = ~keystroke ≥ 48 and ~keystroke ≤ 57;
+
+	// Common editing keystrokes
+
+	~home       = ~keystroke = 1;
+	~pageup     = ~keystroke = 2;
+	~pagedown   = ~keystroke = 3;
+	~end        = ~keystroke = 4;
+	~backspace  = ~keystroke = 8;
+	~tab        = ~keystroke = 9;
+	~enter      = ~keystroke = 10;
+	~return     = ~keystroke = 13;
+	~escape     = ~keystroke = 27;
+	~leftarrow  = ~keystroke = 28;
+	~uparrow    = ~keystroke = 29;
+	~rightarrow = ~keystroke = 30;
+	~downarrow  = ~keystroke = 31;
+	~space      = ~keystroke = 32;
+	~delete     = ~keystroke = 127;
+
+	// Punctiation & Math
+
+	~exclamation  = ~keystroke = 33;
+	~doublequote  = ~keystroke = 34;
+	~numbersign   = ~keystroke = 35;
+	~dollar       = ~keystroke = 36;
+	~percent      = ~keystroke = 37;
+	~ampersand    = ~keystroke = 38;
+	~singlequote  = ~keystroke = 39;
+	~openparen    = ~keystroke = 40;
+	~closeparen   = ~keystroke = 41;
+	~asterisk     = ~keystroke = 42;
+	~plus         = ~keystroke = 43;
+	~comma        = ~keystroke = 44;
+	~minus        = ~keystroke = 45;
+	~period       = ~keystroke = 46;
+	~slash        = ~keystroke = 47;
+	~colon        = ~keystroke = 58;
+	~semicolon    = ~keystroke = 59;
+	~lessthan     = ~keystroke = 60;
+	~equals       = ~keystroke = 61;
+	~greaterthan  = ~keystroke = 62;
+	~questionmark = ~keystroke = 63;
+	~openbracket  = ~keystroke = 91;
+	~backslash    = ~keystroke = 92;
+	~closebracket = ~keystroke = 93;
+	~caret        = ~keystroke = 94;
+	~underscore   = ~keystroke = 95;
+	~openbrace    = ~keystroke = 123;
+	~pipe         = ~keystroke = 124;
+	~closebrace   = ~keystroke = 125;
+	~tilde        = ~keystroke = 126;
+
+	// Special combinations and groupings
+
+	~editing = ~home
+		or ~pageup
+		or ~pagedown
+		or ~end
+		or ~backspace
+		or ~tab
+		or ~enter
+		or ~return
+		or ~escape
+		or ~space
+		or ~delete;
+
+	~punctuation = ~period
+		or ~exclamation
+		or ~questionmark
+		or ~comma
+		or ~semicolon
+		or ~colon
+		or ~space
+		or ~singlequote
+		or ~doublequote
+		or ~openparen
+		or ~closeparen
+		or ~openbrace
+		or ~closebrace
+		or ~openbracket
+		or ~closebracket
+
+];
+	// English named versions of keystrokes
+
+	If (
+		name = "arrows" and ~arrows or
+		name = "uppercase" and ~uppercase or
+		name = "lowercase" and ~lowercase or
+		name = "letter" and ~letter or
+		name = "number" and ~number or
+		name = "home" and ~home or
+		name = "pageup" and ~pageup or
+		name = "pagedown" and ~pagedown or
+		name = "end" and ~end or
+		name = "backspace" and ~backspace or
+		name = "tab" and ~tab or
+		name = "enter" and ~enter or
+		name = "return" and ~return or
+		name = "escape" and ~escape or
+		(name = "leftarrow" or name = "left arrow") and ~leftarrow or
+		(name = "uparrow" or name = "up arrow") and ~uparrow  or
+		(name = "rightarrow" or name = "right arrow") and ~rightarrow or
+		(name = "downarrow" or name = "down arrow") and ~downarrow or
+		name = "space" and ~space or
+		name = "delete" and ~delete or
+		name = "exclamation" and ~exclamation or
+		name = "doublequote" and ~doublequote or
+		name = "number sign" and ~numbersign or
+		name = "dollar" and ~dollar or
+		name = "percent" and ~percent or
+		name = "ampersand" and ~ampersand or
+		name = "singlequote" and ~singlequote or
+		name = "openparen" and ~openparen or
+		name = "closeparen" and ~closeparen or
+		name = "asterisk" and ~asterisk or
+		name = "plus" and ~plus or
+		name = "comma" and ~comma or
+		name = "minus" and ~minus or
+		name = "period" and ~period or
+		name = "slash" and ~slash or
+		name = "colon" and ~colon or
+		name = "semicolon" and ~semicolon or
+		name = "lessthan" and ~lessthan or
+		name = "equals" and ~equals or
+		name = "greaterthan" and ~greaterthan or
+		name = "questionmark" and ~questionmark or
+		name = "openbracket" and ~openbracket or
+		name = "backslash" and ~backslash or
+		name = "closebracket" and ~closebracket or
+		name = "caret" and ~caret or
+		name = "underscore" and ~underscore or
+		name = "openbrace" and ~openbrace or
+		name = "pipe" and ~pipe or
+		name = "closebrace" and ~closebrace or
+		name = "tilde" and ~tilde or
+		name = "editing" and ~editing or
+		name = "punctuation" and ~punctuation;
+			True;
+			
+			// Default
+			False
+	)
+)

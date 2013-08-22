@@ -1,0 +1,65 @@
+/**
+ * =====================================
+ * ISO639–1
+ *
+ * PURPOSE:
+ * 		Return the ISO639–1 equivalent of FileMaker's Get ( ApplicationLanguage )
+ *
+ * RETURNS:
+ * 		A two character string according to ISO639–1
+ *
+ * PARAMETERS:
+ * 		none
+ *
+ * EXAMPLES:
+ * 		ISO639–1 // = "en" when Get ( ApplicationLanguage ) is "English"
+ *
+ * DEPENDENCIES: none
+ *
+ * NOTE:
+ * 		This function can be used for localization
+ *
+ * HISTORY:
+ * 		CREATED on 2012-09-18 by Matt Petrowsky (matt@filemakermagazine.com)
+ *
+ * REFERENCES:
+ * 		http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+ * =====================================
+ */
+Let ( [
+	~lang = Get ( ApplicationLanguage )
+];
+	Case (
+		~lang = "Dutch";
+			"nl";
+
+		~lang = "English";
+			"en";
+
+		~lang = "French";
+			"fr";
+
+		~lang = "German";
+			"de";
+
+		~lang = "Italian";
+			"it";
+
+		~lang = "Japanese";
+			"ja";
+
+		~lang = "Simplified Chinese";
+			"zh";
+
+		~lang = "Spanish";
+			"es";
+
+		~lang = "Swedish";
+			"sv";
+
+		~lang = "Traditional Chinese";
+			"zh";
+
+		"en" // default language for solution
+	)
+)

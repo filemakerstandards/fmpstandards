@@ -1,0 +1,53 @@
+/**
+ * =====================================
+ * VerifyVariablesNotEmpty ( nameList )
+ *
+ * RETURNS:
+ *		True (1) if a locally scoped $variable matching each value in nameList
+ *		is not empty; False (0) otherwise.
+ *
+ * PARAMETERS:
+ *		nameList: A return-limited list of names to check. Names do not need to
+ *		include $ prefixes.
+ *
+ * DEPENDENCIES: none
+ *
+ * NOTES:
+ *		Names containing "$" or "$$" prefixes will be treated as identical to
+ *		names not beginning with those prefixes — this function only checks for
+ *		local $variables.
+ *
+ * HISTORY:
+ *		MODIFIED on 2013-07-10 by Jeremy Bante <http://scr.im/jbante> to correct
+ *		a bug with support for trailing returns.
+ *		MODIFIED on 2013-07-05 by Jeremy Bante <http://scr.im/jbante> to support
+ *		one trailing return in the nameList parameter.
+ *		CREATED on 2012-12-07 by Jeremy Bante <http://scr.im/jbante>.
+ * =====================================
+ */
+
+If ( IsEmpty ( nameList ) ;
+	True ;
+/* Else */
+	Let ( [
+		~start = Get ( UUID ) ;
+		~end = Get ( UUID ) ;
+		nameList =	// normalize nameList so all values begin with "$"
+			Substitute (
+				~start & ¶ & nameList & ~end ;
+				[ ¶ & ~end ; "" ] ;
+				[ ~end ; "" ] ;
+				[ "¶$$" ; "¶" ] ;
+				[ "¶$" ; "¶" ] ;
+				[ "¶" ; "¶$" ] ;
+				[ ~start & ¶ ; "" ]
+			) ;
+		~testExpression =
+			"not IsEmpty ( "
+			& Substitute ( nameList ; ¶ ; " )¶and not IsEmpty ( " )
+			& " ) "
+	] ;
+		IsValidExpression ( ~testExpression )
+		and Evaluate ( ~testExpression )
+	)
+)

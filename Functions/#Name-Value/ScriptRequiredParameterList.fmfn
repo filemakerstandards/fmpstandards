@@ -1,0 +1,90 @@
+/**
+ * =====================================
+ * ScriptRequiredParameterList ( scriptNameToParse )
+ *
+ * RETURNS:
+ *		A return-delimited list of required script parameters according to the
+ *		script name and the FileMakerStandards.org convention for listing
+ *		parameters in script names.
+ *
+ * PARAMETERS:
+ *		scriptNameToParse: A script name. Defaults to Get ( ScriptName ) when
+ *		left empty.
+ *
+ * DEPENDENCIES: none
+ *
+ * HISTORY:
+ *		MODIFIED on 2013-06-29 by Jeremy Bante <http://scr.im/jbante> to append
+ *		a trailing return to non-empty results to support direct concatenation
+ *		with other lists.
+ *		CREATED on 2012-12-07 by Jeremy Bante <http://scr.im/jbante>.
+ *
+ * REFERENCES:
+ *		http://filemakerstandards.org/display/cs/Script+naming
+ * =====================================
+ */
+
+Case (
+	/* Step 0, set-up */
+	not $~parse.step ;
+		Let ( [
+			scriptNameToParse =
+				If ( IsEmpty ( scriptNameToParse ) ;
+					Get ( ScriptName ) ;
+					/* Else */ scriptNameToParse
+				) ;
+			~length = Length ( scriptNameToParse ) ;
+			~start = Position ( scriptNameToParse ; "(" ; ~length ; -1 ) + 1 ;
+			~endOptional = Position ( scriptNameToParse ; "{" ; ~start ; 1 ) ;
+			~endOptional =
+				If ( ~endOptional = 0 ; ~length ; /* Else */ ~endOptional ) ;
+			~endRequired = Position ( scriptNameToParse ; ")" ; ~start ; 1 ) ;
+			~endRequired =
+				If ( ~endRequired = 0 ; ~length ; /* Else */ ~endRequired ) ;
+			~end = Min ( ~endOptional ; ~endRequired ) ;
+			parameters =
+				If ( ~start = 1 ;	// opening "(" not found
+					"" ;
+				/* Else */
+					Middle ( scriptNameToParse ; ~start ; ~end - ~start )
+				) ;
+			parameters = Substitute ( parameters ; ";" ; ¶ ) ;
+			$~parse.parameterCount = ValueCount ( parameters ) ;
+
+			$~parse.step = If ( IsEmpty ( parameters ) ; 2 ; /* Else */ 1 )
+		];
+			ScriptRequiredParameterList ( parameters )
+		) ;
+
+	/* Step 1, trim whitespace */
+	$~parse.step = 1 ;
+		Let ( [
+			$~parse.i = $~parse.i + 1 ;
+			parameter = Trim ( GetValue ( scriptNameToParse ; $~parse.i ) ) ;
+			$~parse.result = List ( $~parse.result ; parameter ) ;
+			$~parse.step =
+				If ( $~parse.i < $~parse.parameterCount ;
+					$~parse.step ;
+					/* Else */ $~parse.step + 1
+				)
+		] ;
+			ScriptRequiredParameterList ( scriptNameToParse )
+		) ;
+
+	/* Step 2, clean-up and return result */
+	$~parse.step = 2 ;
+		Let ( [
+			~result =
+				If ( not IsEmpty ( $~parse.result ) ;
+					$~parse.result & ¶
+				) ;
+
+			// purge variables
+			$~parse.i = "" ;
+			$~parse.parameterCount = "" ;
+			$~parse.result = "" ;
+			$~parse.step = ""
+		] ;
+			~result
+		)
+)

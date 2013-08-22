@@ -1,0 +1,47 @@
+/**
+ * =====================================
+ * UISortListToggle ( field )
+ *
+ * PURPOSE:
+ *		Assign a reserved set of global variables to values used
+ *		by a sorting script (see UISortDirection and UISortIndicator)
+ *		Reserved global variables are classed to $$SORT.LAYOUT.[id].* where
+ *		[id] is the internal ID of the current layout.
+ *
+ * RETURNS:
+ *		(boolean) The result of a successful assignment of variables
+ *
+ * PARAMETERS:
+ *		field: A field reference
+ *
+ * EXAMPLES:
+ *		When used as a script parameter on a button defined to run a sort script
+ *		UISortToggle ( FunctionalArea » Tablename::fieldName ) // = Assignment of $$SORT.LAYOUT.[ID].* variables
+ *
+ * DEPENDENCIES:
+ *		#Assign()
+ *
+ * RELEASE:
+ *		2011-04-20
+ *
+ * REFERENCES:
+ *		none
+ * =====================================
+ */
+
+Let ( [
+	~layoutID = GetValue ( LayoutIDs ( Get ( FileName ) ) ; Get ( LayoutNumber ) );
+	~fieldName = GetFieldName ( field );
+	~sortVarPrefix = "$$SORT.LAYOUT." & ~layoutID;
+	~sortVarField = ~sortVarPrefix & ".LIST.FIELD";
+	~sortVarDirection = ~sortVarPrefix & ".LIST.DIRECTION";
+	~sortCurrentField = GetAsText ( Evaluate ( ~sortVarField ) );
+	~isNewFieldSelection = ~sortCurrentField ≠ ~fieldName;
+	~sortNewDirection = If ( ~isNewFieldSelection or not Get ( SortState ) ; 1 ; Evaluate ( ~sortVarDirection ) xor True );
+	~variables = List (
+					~sortVarField & " = " & Quote ( ~fieldName ) & ";";
+					~sortVarDirection & " = " & ~sortNewDirection;
+				)
+];
+	#Assign ( ~variables )
+)

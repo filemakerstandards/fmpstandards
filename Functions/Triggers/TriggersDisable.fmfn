@@ -1,0 +1,68 @@
+﻿/**
+ * =====================================
+ * TriggersDisable
+ * https://github.com/jbante/FileMaker-Techniques/blob/master/CustomFunctions/Triggers/TriggersDisable.fmfn
+ *
+ * PURPOSE:
+ *		TriggersDisable sets global variables to indicate that the current
+ *		script is suppressing triggers. This script must be called from the
+ *		context of a script; otherwise, it will not suppress triggers, and it
+ *		will return False. In order to be suppressed, a script called via
+ *		trigger should use the TriggersAreActive function to decide whether or
+ *		not to run.
+ *
+ * RETURNS:
+ *		True (1) if called from the context of a script, and therefore triggers
+ *		have been suppressed; False (0) otherwise.
+ *
+ * PARAMETERS: none
+ *
+ * REFERENCED VARIABLES:
+ *		$$~DISABLETRIGGERS (deprecated)
+ *		$$~TRIGGERS_DISABLE
+ *		$$~TRIGGERS_SCRIPTS
+ *		$~triggers_disableKey
+ *
+ * DEPENDENCIES: none
+ *
+ * EXAMPLE (script):
+ *		Set Variable [$!; Value:TriggersDisable]
+ *			# Do something
+ *		Set Variable [$!; Value:TriggersEnable]
+ *
+ * NOTES:
+ *		This function should *always* be used in pairs with the TriggersEnable
+ *		function.
+ *
+ * RELEASE: 2013-04-08
+ *
+ * REFERENCES:
+ *		Supressible Triggered Scripts Best Practice: http://filemakerstandards.org/display/bp/Suppressible+Triggered+Scripts
+ * =====================================
+ */
+
+Let ( [
+	~scriptName			= Get ( ScriptName ) ;
+	~scriptIsRunning	= not IsEmpty ( Get ( ScriptName ) ) ;
+	~disableIsRunning	= not IsEmpty ( $~triggers_disableKey ) ;
+	$~triggers_disableKey =
+		Case (
+			~disableIsRunning	; $~triggers_disableKey ;
+			~scriptIsRunning	; Get ( UUID )
+		) ;
+	$$~TRIGGERS_SCRIPTS =
+		If ( ~scriptIsRunning and not ~disableIsRunning ;
+			~scriptName
+			& Char ( 9 )	// tab
+			& $~triggers_disableKey
+			& ¶
+			& $$~TRIGGERS_SCRIPTS ;
+		/* Else */
+			$$~TRIGGERS_SCRIPTS
+		) ;
+	$$~TRIGGERS_DISABLE =
+		If ( ~scriptIsRunning ; True ; /* Else */ $$~TRIGGERS_DISABLE ) ;
+	$$~DISABLETRIGGERS = $$~TRIGGERS_DISABLE
+] ;
+	~scriptIsRunning
+)

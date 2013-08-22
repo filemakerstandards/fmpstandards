@@ -3,55 +3,121 @@
  * Debug ( )
  * 
  * PARAMETERS:
- *						none
+ *		none
+ *
  * RETURNS:
- *						(string) A list of informative values
- *						about the current FMP environment.
+ *		string) A list of informative values
+ * 		about the current FMP environment.
+ *
  * DEPENDENCIES:
- *						Developer () 
+ * 		Developer ()
+ *
  * NOTES:
  *
- * RELEASE:			101009
+ * RELEASE:
+ * 		101009 - Initial by Matt Petrowsky
+ * 		2013-01-25 - Updated to be recursive and use better output. Included more functions
  * =====================================================
  * 
  */
 
 If ( Developer;
 	Let ( [
-		// Variables
-		$$DEBUG = List (
-			"App Version = " & Abs ( Get ( ApplicationVersion ) );
-			"App Current Time = " & GetAsText ( Get ( CurrentTimeStamp ) );
-			"Host Name = " & Get ( HostName );
-			"Host IP = " & Get ( HostIPAddress );
-			"File Location = " & Get ( FilePath );
-			"Account = " & Get ( AccountName );
-			"-----------------------------------";
-			"Script Param = " & Get ( ScriptParameter );
-			"Script Result = " & Get ( ScriptResult );
-			"-----------------------------------";
-			"Last Error = " & Get ( LastError );
-			"Last ODBC = " & Get ( LastODBCError );
-			"-----------------------------------";
-			"Layout = " & Get ( LayoutName );
-			"Layout Table = " & Get ( LayoutTableName );
-			"-----------------------------------";
-			"Open Records = " & Get ( RecordOpenCount );
-			"Record Modified = " & Get ( RecordModificationCount );
-			"-----------------------------------";
-			"Active Field = " & Get ( ActiveFieldName );
-			"Active Field Table = " & Get ( ActiveFieldTableName );
-			"Active Layout Object = " & Get ( ActiveLayoutObjectName );
-			"Active Layout Table = " & Get ( LayoutTableName );
-			"-----------------------------------";
-			"Local time = " & Get ( CurrentTimeStamp );
-			"Host time = " & Get ( CurrentHostTimeStamp );
-			"-----------------------------------";
-		)
-  ];
+		~input = List (
+			"Environment";
+			"	ApplicationVersion";
+			"	SystemPlatform";
+			"	SystemVersion";
+			"	ApplicationLanguage";
+			"	SystemLanguage";
+			"	HostName";
+			"	HostApplicationVersion";
+			"	SystemIPAddress";
+			"	HostIPAddress";
+			"	CurrentTimeStamp";
+			"	CurrentHostTimeStamp";
+			"	InstalledFMPlugins";
+			"	AllowAbortState";
+			"	ConnectionState";
+			"	CustomMenuSetName";
+			"	FileName";
+			"	FileSize";
+			"	FoundCount";
+			"	SystemNICAddress";
+			"	PersistentID";
+			"	RecordOpenCount";
+			"Errors";
+			"	LastError";
+			"	LastODBCError";
+			"User";
+			"	AccountName";
+			"	AccountPrivilegeSetName";
+			"	CurrentPrivilegeSetName";
+			"	AccountExtendedPrivileges";
+			"	CurrentExtendedPrivileges";
+			"Layout";
+			"	LayoutName";
+			"	LayoutNumber";
+			"	LayoutTableName";
+			"	LayoutViewState";
+			"	LayoutAccess";
+			"	LayoutTableName";
+			"	ActiveLayoutObjectName";
+			"	ActivePortalRowNumber";
+			"Records";
+			"	RecordID";
+			"	RecordNumber";
+			"	RecordAccess";
+			"	RecordModificationCount";
+			"	RecordOpenState";
+			"	SortState";
+			"	TotalRecordCount";
+			"Field";
+			"	ActiveFieldName";
+			"	ActiveFieldTableName";
+			"	ActiveFieldContents";
+			"	ActiveRepetitionNumber";
+			"	ActiveSelectionStart";
+			"	ActiveSelectionSize";
+			"	CalculationRepetitionNumber";
+			"Script";
+			"	ScriptName";
+			"	ScriptParameter";
+			"	ScriptResult";
+			"Paths";
+			"	TemporaryPath";
+			"	DesktopPath";
+			"	DocumentsPath";
+			"	FileMakerPath";
+			"	FilePath";
+			"	PreferencesPath";
+			"	SystemDrive";
+		);
+		~tab = "	";
+		~line = GetValue ( ~input ; $~debugCounter );
+		~eval = If ( Left ( ~line ; 1 ) = ~tab ; // evaluate lines prefixed with tabs
+			Let ( [
+				~function = Trim ( ~line );
+				~padding = "                              "; // 30 chars is longest function name
+				~result = Evaluate ( "Get(" & ~function & ")" )
+			];
+				~function
+				& Left ( ~padding ; Length ( ~padding ) - Length ( ~function ) ) // spacing out result
+				& If ( valuecount ( ~result ) > 1; // some functions return multiple lines
+					Substitute ( ~result ; ¶ ; ¶ & ~tab & Left ( ~padding ; Length ( ~padding ) - 1 ) );
+					~result
+				)
+			);
 
-		// Return value
-		$$DEBUG
-
-  )
+			~line
+		);
+		~lastValue = RightWords ( ~input ; 1 );
+		~itemCount = ValueCount ( ~input );
+		$~debugOutput = List ( $~debugOutput ; ~eval )
+	];
+		If ( $~debugCounter = ~itemCount;
+			// don't want the result to continously build and length will vary based on function results with multiple lines
+			Left ( $~debugOutput ; Position ( $~debugOutput ; ¶ ; Position ( $~debugOutput ; ~lastValue ; 1 ; 1 ) ; 1 ) - 1 ); // better way to do this?
+			Let ( $~debugCounter = $~debugCounter + 1 ; Debug ) )
+	)
 )

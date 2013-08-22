@@ -1,0 +1,39 @@
+/**
+ * =====================================
+ * #ListGet ( listOfValues ; valueNumber )
+ *
+ * PURPOSE:
+ *		Retrieve a value from a list created with the #List ( value ) function.
+ *		Preserve the data type and all special characters of the original value.
+ *
+ * RETURNS:
+ *		Original value before encoding with the original data type preserved.
+ *
+ * PARAMETERS:
+ *		listOfValues: Return delimeted and encoded values
+ *		valueNumber: The position of the value to retrieve
+ *			(1 being the first value)
+ *
+ * EXAMPLE:
+ *		#ListGet ( #List ( "value1" ) & #List ( "value2" ) ; 1 ) = "value1"
+ *		#ListGet ( #List ( "" ) & #List ( "value2" ) ; 2 ) = "value2"
+ *		#ListGet ( #List ( "value1" ) & #List ( "value2" ) ; 3 ) = ""
+ *		#ListGet ( "This is not a valid #List string" ; 1 ) = ""
+ *
+ * DEPENDENCIES: none
+ *
+ * HISTORY:
+ *		CREATED on 2012-NOV-26 by Daniel Smith dansmith65@gmail.com
+ * =====================================
+ */
+
+Let ( [
+	~value = GetValue ( listOfValues ; valueNumber )
+] ;
+
+	If (
+		IsValidExpression ( ~value ) ;
+		Evaluate ( ~value )
+	)
+
+)

@@ -1,0 +1,36 @@
+/**
+ * =====================================
+ * VariableCheckbox ( globalVariable )
+ *
+ * PURPOSE:
+ *		Toggle a global variable on and off to show a checkmark character
+ *		
+ * RETURNS:
+ *		(boolean) True or False based on the globalVariable existing or not
+ *		
+ * PARAMETERS:
+ *		globalVariable = (string) the name of the global variable
+ *
+ * EXAMPLES:
+ * 		When used as a script parameter pointing to a script named Refresh[]
+ *		VariableCheckbox ( "$$FILTER.PORTAL.ON" )
+ *
+ * DEPENDENCIES:
+ *		none
+ *
+ * NOTES:
+ *		This is used as a technique to avoid creating global fields
+ *
+ * HISTORY:
+ *		MODIFIED on 2011-05-12 by matt@filemakermagazine.com - created
+ *
+ * REFERENCES:
+ *		none
+ * =====================================
+ */
+
+
+If ( IsEmpty ( Evaluate ( globalVariable ) );
+	Evaluate ( "Let ( " & globalVariable & " = \"√\" ; True )" );
+	Evaluate ( "Let ( " & globalVariable & " = \"\" ; False )" )
+)

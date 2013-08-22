@@ -1,0 +1,36 @@
+﻿/**
+ * =====================================
+ * #GetScriptParameter ( name )
+ *
+ * WARNING:
+ *		This function is deprecated in favor of the more transparent equivalent:
+ *		#Get ( Get ( ScriptParameter ) ; name ). This function is still
+ *		supported for backwards compatibility.
+ *
+ * PURPOSE:
+ *		Retrieves values from a name-value pair list created with the
+ *		# ( name ; value ) function in the script parameter. This function does
+ *		not set any variables, making it non-destructive, in contrast with the
+ *		#AssignScriptParameters function, which can over-write variables. This
+ *		function is equivalent to #Get ( Get ( ScriptParameter ) ; name ).
+ *
+ * RETURNS:
+ *		The value from the name-value pair specified by the name parameter. If
+ *		such a value is not in the script parameter, the function returns Null.
+ *
+ * PARAMETERS:
+ *		name: The name of the name-value pair from which to retrieve the value.
+ *
+ * DEPENDENCIES:
+ *		#Get ( parameters ; name )
+ *
+ * RELEASE:
+ *		MODIFIED on 2012-12-07 by Jeremy Bante <http://scr.im/jbante> to use
+ *		newer supported functions.
+ *
+ * REFERENCES:
+ *		Script Parameter Interface Best Practice: http://filemakerstandards.org/pages/viewpage.action?pageId=557462
+ * =====================================
+ */
+
+#Get ( Get ( ScriptParameter ) ; name )

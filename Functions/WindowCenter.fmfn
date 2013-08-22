@@ -3,36 +3,65 @@
  * WindowCenter ( dimension )
  * 
  * PARAMETERS:
- *                @dimension (enumeration) Vertical, Horizontal
+ *		dimension: (enumeration) Vertical, Horizontal
+ *
  * RETURNS:
- *                (int) Screen position value based on dimension
- *                supplied
+ *		(int) Screen position value based on dimension
+ *		supplied
+
  * DEPENDENCIES:
- *                none
+ *		none
+
  * NOTES:
- *                Using a locally scoped variable within your
- *                script will alter what this function returns
- *                $parentWindowHeight for window height of parent
- *                $parentWindowWidth for window width of parent
- *                $parentWindowTop for window top of parent
- *                $parentWindowLeft for window left of parent
+ *		Using a locally scoped variable within your
+ *		script will alter what this function returns
+ *		$parentWindowHeight for window height of parent
+ *		$parentWindowWidth for window width of parent
+ *		$parentWindowTop for window top of parent
+ *		$parentWindowLeft for window left of parent
+ *		$childWindowWidth MUST BE SET! when centering on parent
+ *		$childWindowHeight MUST BE SET! when centering on parent
  * =====================================================
  * 
  */
 
-Let ([
-	
-	var.vertical = PatternCount ( dimension ; "vert" );
-	var.horizontal = PatternCount ( dimension ; "horiz" );
-	var.parentHeight = If ( IsEmpty ( $parentWindowHeight ) ; Get ( WindowDesktopHeight ) ; $parentWindowHeight );
-	var.parentWidth = If ( IsEmpty ( $parentWindowWidth ) ; Get ( WindowDesktopWidth ) ; $parentWindowWidth )
-
+Let ( [
+	~vertical = PatternCount ( dimension ; "vert" ) or dimension = "y" or dimension = "top";
+	~horizontal = PatternCount ( dimension ; "horiz" ) or dimension = "x" or dimension = "left";
+	~parentIsSet = not IsEmpty ( $parentWindowTop )
+					and not IsEmpty ( $parentWindowLeft )
+					and not IsEmpty ( $parentWindowWidth )
+					and not IsEmpty ( $parentWindowHeight );
+	~parentOnScreen = ~parentIsSet
+					and ( $parentWindowTop + $parentWindowHeight ≤ Get ( WindowDesktopHeight )
+					and $parentWindowLeft + $parentWindowWidth ≤ Get ( WindowDesktopWidth ) );
+	~parentHeight = If ( not ~parentIsSet or not ~parentOnScreen;
+			Get ( WindowDesktopHeight );
+		/*else*/
+			$parentWindowHeight
+		);
+	~parentWidth = If ( not ~parentIsSet or not ~parentOnScreen;
+			Get ( WindowDesktopWidth );
+		/*else*/
+			$parentWindowWidth
+		);
+	~childHeight = If ( IsEmpty ( $childWindowHeight );
+			Get ( WindowHeight );
+		/*else*/
+			$childWindowHeight
+		);
+	~childWidth = If ( IsEmpty ( $childWindowWidth );
+			Get ( WindowWidth );
+		/*else*/
+			$childWindowWidth
+		)
 ];
-
 	Case (
-		var.vertical;
-			( var.parentHeight / 2) - ( Get ( WindowHeight ) / 2 ) + $parentWindowTop;
-		var.horizontal;
-			( var.parentWidth / 2) - ( Get ( WindowWidth ) / 2 )  + $parentWindowLeft
+		~vertical;
+			Int ( ( ~parentHeight / 2) - ( ~childHeight / 2 )
+			+ If ( ~parentOnScreen ; $parentWindowTop ) );
+		~horizontal;
+			Int ( ( ~parentWidth / 2) - ( ~childWidth / 2 )
+			+ If ( ~parentOnScreen ; $parentWindowLeft ) )
 	)
 )

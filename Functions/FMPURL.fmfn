@@ -1,0 +1,51 @@
+/**
+ * =====================================
+ * FMPURL ( IPAddress )
+ *
+ * PURPOSE:
+ * 		Generate a solution specific fmp:// url
+ *
+ * RETURNS:
+ * 		(string) fmp://THE.SERVER.IP.ADDRESS/FileName?script=
+ *
+ * PARAMETERS:
+ * 		IPAddress: The target IP address of the FileMaker server
+ *
+ * EXAMPLES:
+ * 		FMPURL ( "192.168.1.2" ) // = fmp://192.168.1.2/FileName?script=
+ *
+ * DEPENDENCIES: none
+ *
+ * NOTE:
+ * 		Inbound IPAddress is not validated for correctness
+ *		* ~serverIPAddress defaults to first listed if IPAddress is blank
+ *
+ * HISTORY:
+ * 		CREATED on 2012-10-04 by Matt Petrowsky (matt@filemakermagazine.com).
+ *
+ * REFERENCES:
+ * 		none
+ * =====================================
+ */
+
+Let ( [
+	~currentHost = Get ( HostIPAddress ); // returned by client - server returns localhost
+	~serverIPAddress = If ( IsEmpty ( IPAddress ) ; GetValue ( Get ( SystemIPAddress ) ; 1 ) ; IPAddress ); // *
+	~isMobile = Get ( SystemPlatform ) = 3;
+	~isServer = ~currentHost = "127.0.0.1";
+	~isLocal = IsEmpty ( ~currentHost )
+];
+	"fmp://" & Case (
+		~isMobile and ~isLocal; // when the db is local to a mobile device
+			"~";
+
+		~isServer;
+			~serverIPAddress; // server side scripts would use "127.0.0.1" - which isn't good
+
+		~isLocal;
+			GetValue ( Get ( SystemIPAddress ) ; 1 ); // assume first ip for local dev
+		
+		~currentHost
+	)
+	& "/" & GetAsURLEncoded ( Get ( FileName ) ) & "?script="
+)

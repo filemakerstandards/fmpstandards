@@ -1,0 +1,42 @@
+/**
+ * =====================================================
+ * HTMLWrapTag ( values ; tag ; attributes )
+ *
+ * PURPOSE:
+ *		Wrap a HTML/XML tag around the supplied values
+ *		or singular value.
+ * 
+ * RETURNS:
+ *		(string) <tag>data</tag>
+ *
+ * PARAMETERS:
+ *		values = (string) either a list or singular value
+ *		tag = (string) name of the tagg to wrap
+ *
+ * DEPENDENCIES:
+ *		none
+ *
+ * NOTES:
+ *		none
+ *
+ * HISTORY:
+ *		2011-04-04
+ *
+ * REFERENCES:
+ *		none
+ * =====================================================
+ * 
+ */
+
+Let ([
+
+	~isList = ValueCount( values ) > 1;
+	~opentag = "<" & tag & " " & attributes & ">";
+	~closetag = Replace( Substitute ( ~opentag ; " " & attributes ; "" ); 1; 1; "</");
+	~between = ~closetag & ~opentag
+
+];
+
+	~opentag & If ( ~isList; Substitute( values; ¶; ~between ); values ) & ~closetag
+
+)

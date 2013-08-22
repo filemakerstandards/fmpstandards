@@ -24,6 +24,7 @@
  *		numerical values within reserved ranges.
  *
  * HISTORY:
+ *		MODIFIED on 2012-07-02 by matt@filemakermagazine.com - fmp 12v1
  *		MODIFIED on 2011-03-20 by matt@filemakermagazine.com - reformatted
  *
  * REFERENCES:
@@ -71,9 +72,10 @@ Case (
 			num = 112; "Window is missing";
 			num = 113; "Function is missing";
 			num = 114; "File reference is missing";
-			num = 115; "Specified menu set is not present";
-			num = 116; "Specified layout object is not present";
-			num = 117; "Specified data source is not present";
+			num = 115; "Menu set is missing";
+			num = 116; "Layout object is missing";
+			num = 117; "Data source is missing";
+			num = 118; "Theme is missing";
 			num = 130; "Files are damaged or missing and must be reinstalled";
 			num = 131; "Language pack files are missing (such as template files)";
 			num = 200; "Record access is denied";
@@ -94,16 +96,19 @@ Case (
 			num = 215; "Administrator privileges cannot be duplicated";
 			num = 216; "Guest account cannot be duplicated";
 			num = 217; "User does not have sufficient privileges to modify administrator account";
+			num = 218; "Password and verify password do not match";
 			num = 300; "File is locked or in use";
 			num = 301; "Record is in use by another user";
 			num = 302; "Table is in use by another user";
 			num = 303; "Database schema is in use by another user";
 			num = 304; "Layout is in use by another user";
 			num = 306; "Record modification ID does not match";
+			num = 307; "Transaction could not be locked because of a communication error with the host";
+			num = 308; "Theme is in use by another user";
 			num = 400; "Find criteria are empty";
 			num = 401; "No records match the request";
 			num = 402; "Selected field is not a match field for a lookup";
-			num = 403; "Exceeding maximum record limit for trial version of FileMaker Pro";
+			num = 403; "Exceeding maximum record limit for trial version of FileMaker Pro";
 			num = 404; "Sort order is invalid";
 			num = 405; "Number of records specified exceeds number of records that can be omitted";
 			num = 406; "Replace/Reserialize criteria are invalid";
@@ -111,12 +116,12 @@ Case (
 			num = 408; "Specified field has inappropriate data type for this operation";
 			num = 409; "Import order is invalid";
 			num = 410; "Export order is invalid";
-			num = 412; "Wrong version of FileMaker Pro used to recover file";
+			num = 412; "Wrong version of FileMaker Pro used to recover file";
 			num = 413; "Specified field has inappropriate field type";
 			num = 414; "Layout cannot display the result";
 			num = 415; "One or more required related records are not available";
 			num = 416; "Primary key required from data source table";
-			num = 417; "Database is not supported for ODBC operations";
+			num = 417; "Database is not a supported data source";
 			num = 500; "Date value does not meet validation entry options";
 			num = 501; "Time value does not meet validation entry options";
 			num = 502; "Number value does not meet validation entry options";
@@ -128,9 +133,8 @@ Case (
 			num = 508; "Invalid value entered in Find mode";
 			num = 509; "Field requires a valid value";
 			num = 510; "Related value is empty or unavailable";
-			num = 511; "Value in field exceeds maximum number of allowed characters";
+			num = 511; "Value in field exceeds maximum field size";
 			num = 512; "Record was already modified by another user";
-			num = 513; "Record must have a value in some field to be created";
 			num = 600; "Print error has occurred";
 			num = 601; "Combined header and footer exceed one page";
 			num = 602; "Body doesn't fit on a page for current column setup";
@@ -157,26 +161,26 @@ Case (
 			num = 726; "There are more records in the import file than in the target table; not all records were imported";
 			num = 727; "There are more records in the target table than in the import file; not all records were updated";
 			num = 729; "Errors occurred during import; records could not be imported";
-			num = 730; "Unsupported Excel version (convert file to Excel 7.0 (Excel 95), 97, 2000, XP, or 2007 format and try again)";
-			num = 731; "The file you are importing from contains no data";
+			num = 730; "Unsupported Excel version (convert file to Excel 2000 format or a later supported version and try again)";
+			num = 731; "File you are importing from contains no data";
 			num = 732; "This file cannot be inserted because it contains other files";
 			num = 733; "A table cannot be imported into itself";
 			num = 734; "This file type cannot be displayed as a picture";
 			num = 735; "This file type cannot be displayed as a picture; it will be inserted and displayed as a file";
 			num = 736; "Too much data to export to this format; it will be truncated";
-			num = 737; "Bento collection or library is missing; data cannot be imported";
+			num = 737; "Bento table you are importing is missing";
 			num = 800; "Unable to create file on disk";
 			num = 801; "Unable to create temporary file on System disk";
-			num = 802; "Unable to open file";
+			num = 802; "Unable to open file.¶This error can be caused by one or more of the following:¶ • Invalid database name¶ • File is closed in FileMaker Server¶ • Invalid permission";
 			num = 803; "File is single user or host cannot be found";
 			num = 804; "File cannot be opened as read-only in its current state";
 			num = 805; "File is damaged; use Recover command";
-			num = 806; "File cannot be opened with this version of FileMaker Pro";
-			num = 807; "File is not a FileMaker Pro file or is severely damaged";
+			num = 806; "File cannot be opened with this version of FileMaker Pro";
+			num = 807; "File is not a FileMaker Pro file or is severely damaged";
 			num = 808; "Cannot open file because access privileges are damaged";
 			num = 809; "Disk/volume is full";
 			num = 810; "Disk/volume is locked";
-			num = 811; "Temporary file cannot be opened as FileMaker Pro file";
+			num = 811; "Temporary file cannot be opened as FileMaker Pro file";
 			num = 813; "Record Synchronization error on network";
 			num = 814; "File(s) cannot be opened because maximum number is open";
 			num = 815; "Couldn't open lookup file";
@@ -188,12 +192,17 @@ Case (
 			num = 822; "FMI files not found; reinstall missing files";
 			num = 823; "Cannot set file to single-user, guests are connected";
 			num = 824; "File is damaged or not a FileMaker file";
+			num = 825; "File is not authorized to reference the protected file";
+			num = 826; "File path specified is not a valid file path";
+			num = 850; "Path is not valid for the operating system";
+			num = 851; "Cannot delete an external file from disk";
+			num = 852; "Cannot write a file to the external storage";
 			num = 900; "General spelling engine error";
 			num = 901; "Main spelling dictionary not installed";
 			num = 902; "Could not launch the Help system";
 			num = 903; "Command cannot be used in a shared file";
 			num = 905; "No active field selected; command can only be used if there is an active field";
-			num = 906; "Current file must be shared in order to use this command";
+			num = 906; "Current file is not shared; command can be used only if the file is shared";
 			num = 920; "Can’t initialize the spelling engine";
 			num = 921; "User dictionary cannot be loaded for editing";
 			num = 922; "User dictionary cannot be found";
@@ -204,6 +213,8 @@ Case (
 			num = 956; "Maximum number of database sessions exceeded (*)";
 			num = 957; "Conflicting commands (*)";
 			num = 958; "Parameter missing (*)";
+			num = 959; "Custom Web Publishing technology disabled";
+			num = 960; "Parameter is invalid";
 			num = 1200; "Generic calculation error";
 			num = 1201; "Too few parameters in the function";
 			num = 1202; "Too many parameters in the function";
@@ -227,11 +238,11 @@ Case (
 			num = 1220; "Field type must be normal or calculated";
 			num = 1221; "Data type must be number, date, time, or timestamp";
 			num = 1222; "Calculation cannot be stored";
-			num = 1223; "The function is not implemented";
-			num = 1224; "The function is not defined";
-			num = 1225; "The function is not supported in this context";
+			num = 1223; "Function referred to is not yet implemented";
+			num = 1224; "Function referred to does not exist";
+			num = 1225; "Function referred to is not supported in this context";
 			num = 1300; "The specified name can’t be used";
-			num = 1400; "ODBC driver initialization failed; make sure the ODBC drivers are properly installed";
+			num = 1400; "ODBC client driver initialization failed; make sure the ODBC client drivers are properly installed";
 			num = 1401; "Failed to allocate environment (ODBC)";
 			num = 1402; "Failed to free environment (ODBC)";
 			num = 1403; "Failed to disconnect (ODBC)";
@@ -242,6 +253,7 @@ Case (
 			num = 1408; "Extended error (ODBC)";
 			num = 1409; "Error (ODBC)";
 			num = 1413; "Failed communication link (ODBC)";
+			num = 1414; "SQL statement is too long";
 			num = 1450; "Action requires PHP privilege extension (*)";
 			num = 1451; "Action requires that current file be remote";
 			num = 1501; "SMTP authentication failed";
@@ -250,7 +262,16 @@ Case (
 			num = 1504; "SMTP server requires the connection to be encrypted";
 			num = 1505; "Specified authentication is not supported by SMTP server";
 			num = 1506; "Email(s) could not be sent successfully";
-			num = 1507; "Unable to log in to the SMTP server"
+			num = 1507; "Unable to log in to the SMTP server";
+			num = 1550; "Cannot load the plug-in or the plug-in is not a valid plug-in";
+			num = 1551; "Cannot install the plug-in. Cannot delete an existing plug-in or cannot write to the folder or disk";
+			num = 1626; "Protocol is not supported";
+			num = 1627; "Authentication failed";
+			num = 1628; "There was an error with SSL";
+			num = 1629; "Connection timed out; the timeout value is 60 seconds";
+			num = 1630; "URL format is incorrect";
+			num = 1631; "Connection failed";
+			"Unknown error"
 		);
 
 	type = "app"; // you can use your own ~ErrorApplication (private function) for app errors

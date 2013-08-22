@@ -1,0 +1,35 @@
+/**
+ * =====================================================
+ * HTMLCSS ( css )
+ *
+ * PURPOSE:
+ *		Simply wrap the <style> tag around the inbound
+ *		css selectors.
+ * 
+ * RETURNS:
+ *		(string) css style tag
+ *
+ * PARAMETERS:
+ *		css = (string) valid css selectors
+ *
+ * DEPENDENCIES:
+ *		none
+ *
+ * NOTES:
+ *		Used this function to pass in CSS to the HTMLDocument
+ *		function
+ *
+ * HISTORY:
+ *		2011-04-04
+ *
+ * REFERENCES:
+ *		none
+ * =====================================================
+ * 
+ */
+
+List(
+	"<style type=\"text/css\">";
+	css;
+	"</style>";
+)

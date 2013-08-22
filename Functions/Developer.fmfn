@@ -24,25 +24,24 @@
  */
 
 Let ( [ 
-
 	~developers = List ( "" ; "" );  // Add names of the accounts which are valid developer accounts
 	~version = Get ( ApplicationVersion );
 	~isGo = PatternCount ( ~version; "Go" ) = True;
 	~versionNumber = GetAsNumber ( Substitute ( ~version ; "," ; "." ) ); // account for foreign versions using comma
-	~extendedPrivileges = // Add "developer" extended privilege to groups which are valid developer groups
-		If (  ~isGo or ~versionNumber ≥ 11;
-			Evaluate ( "Get ( AccountExtendedPrivileges )" );
-			/*else*/ Evaluate ( "Get ( ExtendedPrivileges )" )
+	// Add "developer" extended privilege to groups which are valid developer groups
+	~extendedPrivileges = 
+		If ( ~isGo or ~versionNumber ≥ 11 ;
+			Evaluate ( "Get ( AccountExtendedPrivileges )" ) ;
+			/*else*/
+			Evaluate ( "Get ( ExtendedPrivileges )" )
 		)
-
 ];
-
 	PatternCount ( ¶& ~developers &¶ ; ¶& Get ( AccountName ) &¶ ) ≥ 1
 	or PatternCount ( ¶& ~extendedPrivileges &¶ ; ¶& "developer" &¶ ) ≥ 1
 	or
-	If ( ~isGo or ~versionNumber ≥ 11;
-		Evaluate ( "Get ( AccountPrivilegeSetName )" ) = "[Full Access]";
-		/*else*/ Evaluate ( "Get ( PrivilegeSetName )" ) = "[Full Access]"
+	If ( ~isGo or ~versionNumber ≥ 11 ;
+		Evaluate ( "Get ( AccountPrivilegeSetName )" ) = "[Full Access]" ;
+		/*else*/
+		Evaluate ( "Get ( PrivilegeSetName )" ) = "[Full Access]"
 	)
-
 )

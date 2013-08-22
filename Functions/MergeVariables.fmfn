@@ -1,0 +1,50 @@
+/**
+ * =====================================
+ * MergeVariables ( content ; variables )
+ *
+ * PURPOSE:
+ *		Replace all merge <<$variables>> with
+ *		data found in those layout objects named
+ *		as valid $variables.
+ *		
+ * RETURNS:
+ *		(string) Merged content
+ *		
+ * PARAMETERS:
+ *		content = A string of text containing <<$variables>>
+ *		variables = Return delimited string of $variable = assignments (see LayoutVariables function)
+ *
+ * EXAMPLES:
+ *		MergeVariables ( "This contains <<$merge>> data" ; LayoutVariables ( Get ( LayoutName ) ) )
+ *		// where a field on the layout is simply named $merge - result: "This contains awesome data"
+ *		// where the layout field named $merge contains "awesome"
+ *
+ * DEPENDENCIES:
+ *		#Assign()
+ *
+ * NOTES:
+ *		This function is designed to be used with the LayoutVariables() function.
+ *		The exposed nature of the Evaluate() could be a security consideration.
+ *		Historical credit given to Mike Duncan http://www.briandunning.com/cf/438
+ *
+ * HISTORY:
+ *		MODIFIED on 2011-07-08 by matt@filemakermagazine.com - added
+ *
+ * REFERENCES:
+ *		none
+ * =====================================
+ */
+
+If ( #Assign ( variables );
+
+	Let ( [
+		~mergeString = Substitute ( Quote ( content ) ; ["<<" ; "\" & "] ; [">>" ; " & \""] )
+	];
+		If ( IsValidExpression ( ~mergeString );
+			Evaluate ( ~mergeString );
+			False // merge content could not be evaluated
+		)
+	);
+	
+	False // variables could not be created
+)

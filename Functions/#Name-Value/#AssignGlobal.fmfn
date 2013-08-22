@@ -1,0 +1,40 @@
+/**
+ * =====================================
+ * #AssignGlobal ( parameters )
+ *
+ * PURPOSE:
+ *		Parses a Let dictionary of name-value parameters into a series of
+ *		globally scoped $$VARIABLES.
+ *
+ * RETURNS:
+ *		FileMaker's error code from any errors encountered during evaluation.
+ *
+ * PARAMETERS:
+ *		parameters: A Let format dictionary, such as produced by the
+ *		# ( name ; value ) function.
+ *
+ * DEPENDENCIES: none
+ *
+ * NOTES:
+ *		Notes go here
+ *
+ * HISTORY:
+ *		CREATED on 2012-12-04 by Jeremy Bante <http://scr.im/jbante>.
+ * =====================================
+ */
+
+Let ( [
+	~error =
+		EvaluationError ( Evaluate (
+			"Let ( ["
+			& Substitute (	// convert $local to $$GLOBAL variables
+				¶ & parameters;
+				[ "¶$$" ; "¶$" ];	// ... without renaming existing $$GLOBALS
+				[ "¶$" ; "¶$$" ]
+			)
+			& "¶~ = \"\" ]; ~ )"
+		) )
+];
+	~error = 0	// indicate success or failure of Evaluate()
+	or Let ( $#AssignGlobal.error = ~error ; False )	// only runs on error
+)

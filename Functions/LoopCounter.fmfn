@@ -1,0 +1,37 @@
+/**
+ * =====================================================
+ * LoopCounter ( iterator )
+ *
+ * PURPOSE:
+ *		Provide a human-readable loop iterator within
+ *		scripted Loop[] steps.
+ *
+ * PARAMETERS:
+ *		iterator = (string) name of the iterator variable
+ *
+ * EXAMPLES:
+ * 		Loop
+ *			Exit Loop If [LoopCounter ( "i" ) > $itemCount]
+ *			# Do loop steps here
+ *		End Loop
+ *
+ * RETURNS:
+ * 		(variable) Incremented variable
+ *
+ * DEPENDENCIES:
+ *		none 
+ *
+ * NOTES:
+ *		A local variable is created, don't use the same name for
+ *		a script variable.
+ *		Adapted from http://www.fmfunctions.com/fid/278
+ *
+ * HISTORY:
+ *		9/28/11 - Matt Petrowsky
+ * =====================================================
+ * 
+ */
+
+Let ( ~variable = "$" & Substitute ( iterator ; "$" ; "" );
+	Evaluate ( "Let ( " & ~variable & " = " & ~variable & " +1 ; " & ~variable & " )" )
+)

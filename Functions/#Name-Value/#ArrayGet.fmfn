@@ -1,0 +1,27 @@
+/**
+ *******************************************************************************
+ * #ArrayGet ( parameters ; name ; index )
+ *
+ * PURPOSE:
+ *		Serves as syntactic sugar for retrieving array values from Let notation.
+ *
+ * RETURNS:
+ *		A named value from a string of name-value pairs in Let notation.
+ *
+ * PARAMETERS:
+ *		parameters: A string of name-value pairs in Let notation.
+ *		name: The name to retrieve the value of.
+ *		index: A numeric index for a repeating variable.
+ *
+ * DEPENDENCIES:
+ *		#Get ( parameters ; name )
+ *
+ * HISTORY:
+ *		CREATED on 2013-07-27 by Jeremy Bante <http://scr.im/jbante>.
+ *******************************************************************************
+ */
+
+#Get (
+	parameters ;
+	name & If ( index ≠ 1 or IsEmpty ( name ) ; "[" & index & "]" )
+)

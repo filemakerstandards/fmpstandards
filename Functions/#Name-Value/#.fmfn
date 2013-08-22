@@ -1,0 +1,113 @@
+/**
+ * =====================================
+ * # ( name ; value )
+ *
+ * RETURNS:
+ *		An name-value pair in Let notation.
+ *
+ * PARAMETERS:
+ *		name: The name for the returned name-value pair. name can be any value
+ *		that would be a valid Let() variable name.
+ *		value: The value for the returned name-value pair.
+ *
+ * EXAMPLE:
+ *		# ( "name"; $value ) & # ( "foo" ; "bar" )
+ *
+ * DEPENDENCIES: none
+ *
+ * HISTORY:
+ *		MODIFIED on 2013-07-27 by Jeremy Bante <http://scr.im/jbante> to fix a
+ *		type misidentification bug.
+ *		MODIFIED on 2013-04-15 by Jeremy Bante <http://scr.im/jbante> to not
+ *		wrap numbers in GetAsNumber.
+ *		MODIFIED on 2013-01-14 by Daniel Smith dansmith65@gmail.com to include
+ *		trailing return on error result and accept a value of "?"
+ *		MODIFIED on 2012-12-12 by Daniel Smith dansmith65@gmail.com to preserve
+ *		data type of value
+ *		MODIFIED on 2012-12-07 by Jeremy Bante <http://scr.im/jbante> where an
+ *		error result could create invalid sytax for values containing a comment
+ *		close sequence.
+ *		MODIFIED on 2012-11-28 by Jeremy Bante <http://scr.im/jbante> to return
+ *		error feedback, and to prefix names with "$".
+ *		CREATED on 2012-11-10 by Jeremy Bante <http://scr.im/jbante>.
+ * =====================================
+ */
+
+Let ( [
+	~name =	// strip leading "$$" and "$"
+		Substitute (
+			"/*start*/" & name ;
+			[ "/*start*/$$" ; "" ] ;
+			[ "/*start*/$" ; "" ] ;
+			[ "/*start*/" ; "" ]
+		) ;
+	~text = GetAsText ( value ) ;
+	~number = GetAsNumber ( value ) ;
+	~validDate = IsValid ( GetAsDate ( ~text ) ) ;
+	~validTime =
+		IsValid ( GetAsTime ( ~text ) )
+		and Position ( ~text ; ":" ; 1 ; 1 ) > 0 ;
+	~value =
+		Case (
+			value = "" or value = "?" ;
+				Quote ( value ) ;
+
+			~validTime and ~validDate ;
+				"GetAsTimestamp ( " & Quote ( value ) & " )" ;
+
+			~validTime ;
+				"GetAsTime ( " & Quote ( value ) & " )" ;
+
+			~validDate ;
+				"GetAsDate ( " & Quote ( value ) & " )" ;
+
+			~text ≠ GetAsText ( ~number ) ;
+				Quote ( value ) ;
+
+			/* Else */
+				~number
+		) ;
+	~result =
+		"$"
+		& ~name
+		& " = "
+		& ~value
+		& " ;¶" ;
+	~testExpression =
+		"Let ( [ "
+		& ~result
+		& " ~ = \"\" ]; \"\" )" ;
+	~error =
+		Case (
+			IsEmpty ( ~name ) ;
+				11 ;	// Name is not valid
+
+			not IsValidExpression ( ~testExpression ) ;
+				1200	// Generic calculation error
+		)
+];
+	If ( ~error ;	// prevent bad pairs from affecting evaluation by commenting
+		"/* Error "
+		& ~error
+		& " name: "
+		& Quote (
+			Substitute (	// escape comment character sequences
+				name ;
+				[ "*/" ; "\*\/" ] ;
+				[ "/*" ; "\/\*" ]
+			)
+		)
+		& " value: "
+		& Quote (
+			Substitute (	// escape comment character sequences
+				value ;
+				[ "*/" ; "\*\/" ] ;
+				[ "/*" ; "\/\*" ]
+			)
+		)
+		& " */"
+		& ¶ ;
+	/* Else */
+		~result
+	)
+)

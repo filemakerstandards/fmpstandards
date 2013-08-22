@@ -1,0 +1,165 @@
+/**
+ * =====================================================
+ * DeveloperWebview ( )
+ * 
+ * PURPOSE:
+ *		Use a web viewer to display developer specific information
+ *		about the current layout.
+ *
+ * PARAMETERS:
+ *		none
+ *
+ * RETURNS:
+ *		(string) Web viewer html
+ *
+ * DEPENDENCIES:
+ *		CustomList()
+ *
+ * NOTES:
+ *		You can optionally use this function directly within a web viewer
+ *
+ * HISTORY:
+ *		MODIFIED on 2011-9-6 by matt@filemakermagazine.com - released
+ * =====================================================
+ * 
+ */
+
+Let ( [
+	@title = "class=" & Quote ( "title" );
+	@data = "class=" & Quote ( "data" );
+	~css = "
+	* {
+		margin: 0;
+	}
+	html, body {
+		font: 11px \"DejaVu Sans Mono\", \"Anadale Mono\", \"Courier New\", Courier, mono;
+		background-color:#eee;
+	}
+	ul {
+	    list-style: none;
+		-webkit-padding-start: 15px
+	}
+	li:before {
+	    content: \"» \";
+	    color: gray;
+	}
+	li span {
+		float: right;
+		color: gray;
+	}
+	div {
+	}
+	#header{
+		background-color: blue;
+		color: white;
+		padding: 6px;
+		font-size: 22px;
+		margin-bottom: 5px;
+	}
+	.title {
+		background-color: #3f3f3f;
+		color: white;
+		padding: 4px;
+		margin: 5px 0;
+		-webkit-box-shadow: 0 3px 5px #888;
+		box-shadow: 0 3px 5px #888;
+		border-bottom: 1px solid #1a1a1a;
+	}
+	.data {
+		margin-left: 15px;
+	}
+	"
+];
+	List (
+		"data:text/html,";
+		"<html>";
+		"<head>";
+		"<title>Developer Details</title>";
+		"<style type=\"text/css\">" & ~css & "</style>";
+		"</head>";
+		"<body>";
+		// Header
+		"<div id=\"header\">Developer Details</div>";
+		"<div " & @data & ">"; // an anchor link to FileMaker Help @todo need to account for windows
+			Let ( [
+				~pathPrefix = Substitute ( MiddleValues ( Substitute ( Get ( FileMakerPath ) ; "/" ; ¶ ) ; 3 ; 10000 ) ; ¶ ; "/" );
+				~appName = Case (
+					PatternCount ( Get ( ApplicationVersion ) ; "ProAdvanced" );
+						"FileMaker Pro Advanced.app";
+
+					"FileMaker Pro.app"
+				);
+				~pathSuffix = "/Contents/Resources/English.lproj/FileMaker Pro Help/"
+			];
+				"<a href=" & Quote ( "file:///" & ~pathPrefix & ~appName & ~pathSuffix ) & " target=\"_blank\">FileMaker Help</a>"
+			);
+		"</div>";
+		// Table
+		"<div " & @title & ">TABLE OCCURRENCE NAME</div>";
+		"<div " & @data & ">";
+			Get ( LayoutTableName );
+		"</div>";
+		// Layout name & id
+		"<div " & @title & ">LAYOUT NAME &amp; ID</div>";
+		"<div " & @data & ">";
+			Get ( LayoutName ) & "(" & GetValue ( LayoutIDs ( Get ( FileName ) ) ; Get ( LayoutNumber ) ) & ")";
+		"</div>";
+		// Layout objects
+		"<div " & @title & ">LAYOUT OBJECTS</div>";
+		"<div style=\"margin: 0;\"" & @data & ">";
+		Let ( [
+			$~html = "<ul>¶" & Let ( [
+				$~objects = LayoutObjectNames ( Get ( FileName ) ; Get ( LayoutName ) );
+				$~level = 0;
+				$~indent = "<";
+				$~outdent = ">";
+				~function = "Let ( ~value = GetValue ( $~objects ; [n] ) ;
+								Case (
+									~value = $~indent ;
+										Let ( $~level = $~level + 1 ; \"<ul>\" );
+
+									~value = $~outdent;
+										Let ( $~level = $~level - 1 ; \"</ul>\" );
+
+									\"<li>\" & ~value & \"</li>\"
+								)
+							)"
+			];
+				CustomList ( 1 ; ValueCount ( $~objects ) ; ~function )
+			) & "¶</ul>";
+			$~objects = Substitute ( LayoutObjectNames ( Get ( FileName ) ; Get ( LayoutName ) ) ; ["<¶" ; ""] ; ["¶>" ; ""] );
+			$~menubar = 15; //@todo - need to account for windows vs. mac
+			~swap = CustomList ( 1; ValueCount ( $~objects ); // creating internal Substitution() block
+				"Let ( ~value = GetValue ( $~objects ; [n] );
+					\"[\" & Quote (~value & \"<\") & \";\" & Quote ( ~value & \" <span>(\" & GetLayoutObjectAttribute ( ~value ; \"ObjectType\" ) & \" @ \" & GetLayoutObjectAttribute ( ~value ; \"Left\" ) - Get ( WindowLeft ) & \" x \" &  GetLayoutObjectAttribute ( ~value ; \"Top\" ) - Get ( WindowTop ) - ( Get ( WindowHeight ) - Get ( WindowContentHeight ) ) + $~menubar & \")</span><\" ) & \"]\"
+				)"
+			);
+			~apply = "Substitute (" & Quote ( $~html ) & ";" & Substitute ( ~swap ; "¶" ; ";¶" ) & ")"
+		];
+			Let ( [
+				~result = Evaluate ( ~apply )
+			];
+				If ( ~result = "?"; // the CustomList was not evaluated properly
+					"CustomList function is needed for this area"; 
+					~result // super helpful list of objects with position values
+				)
+			)
+		);
+		"</div>";
+		// Layout fields
+		"<div " & @title & ">LAYOUT FIELDS</div>";
+		"<div " & @data & ">";
+			"<p>" & Substitute (
+				FieldNames ( Get ( FileName ) ; Get ( LayoutName ) );
+				[ ¶ ; "</p>¶<p>" ]
+			) & "</p>";
+		"</div>";
+		// File path
+		"<div " & @title & ">FILE PATH</div>";
+		"<div " & @data & ">";
+			Get ( FilePath );
+		"</div>";
+		"</body>";
+		"</html>"
+	)
+)

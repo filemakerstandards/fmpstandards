@@ -1,0 +1,44 @@
+/**
+ * =====================================================
+ * ValuePosition ( value ; valueList )
+ *
+ * PURPOSE:
+ *		Return the numerical position of a value within a list
+ * 
+ * RETURNS:
+ *		(number) position of value
+ *
+ * DEPENDENCIES:
+ *		none
+ *
+ * NOTES:
+ *		This function assumes valueList contains unique values
+ *		otherwise the first position will be returned
+ *
+ * HISTORY:
+ *		4/5/11 - Petrowsky - Added to custom functions
+ * =====================================================
+ * 
+ */
+
+Let ( [
+	~valueReplaced = Substitute ( ¶& valueList &¶ ; ¶& value &¶ ; "¶•¶" )
+];
+	Position (
+		Substitute ( Filter ( ~valueReplaced ; "•¶" );
+		[ ¶ ; "|" ] );
+	"•" ; 1 ; 1 ) - 1
+)
+
+// Alternatives: @todo performance testing
+// PatternCount ( Left ( ¶ & valueList ; Position ( ¶ & valueList ; ¶ & value & ¶; 1; 1 ) ) ; ¶)
+// ValueCount ( Left ( ¶ & valueList & ¶ ; Position ( ¶ & valueList & ¶ ; ¶ & value ; 1; 1 ) ) )
+/*
+Let ( [
+v = ¶ & _listOfValues & ¶ ;
+p = Position ( v ; ¶ & _value & ¶ ; 1 ; 1 )
+] ;
+
+ValueCount ( Left ( v ; p ) )
+)
+*/

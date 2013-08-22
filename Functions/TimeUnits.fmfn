@@ -1,0 +1,41 @@
+/**
+ * =====================================
+ * TimeUnits ( amount ; unit )
+ *
+ * PURPOSE:
+ *		Return a numerical amount of seconds based on the
+ *		supplied amount in the units specified
+ *		
+ * RETURNS:
+ *		(number) seconds
+ *		
+ * PARAMETERS:
+ *		amount = (number)
+ *		unit = (enum) minutes, hours, days, months, years
+ *
+ * EXAMPLES:
+ *		TimeUnits ( 5 ; "days" ) = 432000
+ *
+ * DEPENDENCIES:
+ *		none
+ *
+ * NOTES:
+ *		Because of variations in months and years, these return values
+ *		are approximate. If you need exact differences between date values
+ *		you'll need to use FileMaker's date functions.
+ *
+ * HISTORY:
+ *		MODIFIED on 2011-09-15 by matt@filemakermagazine.com - added
+ *
+ * REFERENCES:
+ *		none
+ * =====================================
+ */
+
+Let( [
+	~seconds = Choose (
+		Int ( Position ( "minutes.hours...days....months..years..."; unit; 1; 1 ) / 8 );
+		60 ; 3600 ; 86400 ; 2629743.83 ; 31556926 ) // minutes, hours, days, months, years (in seconds)
+];
+	~seconds * amount
+)

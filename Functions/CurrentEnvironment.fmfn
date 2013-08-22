@@ -1,0 +1,120 @@
+List ( 
+	"AccountName                " & Get ( AccountName );
+	"AccountPrivilegeSetName    " & Get ( AccountPrivilegeSetName );
+	"AccountExtendedPrivileges  " & Get ( AccountExtendedPrivileges );
+	"AccountPrivilegeSetName    " & Get ( AccountPrivilegeSetName );
+	"ActiveFieldName            " & Get ( ActiveFieldName );
+	"ActiveFieldTableName       " & Get ( ActiveFieldTableName );
+	"ActiveLayoutObjectName     " & Get ( ActiveLayoutObjectName );
+	"ActivePortalRowNumber      " & Get ( ActivePortalRowNumber );
+	"ActiveRepetitionNumber     " & Get ( ActiveRepetitionNumber );
+	"ActiveSelectionSize        " & Get ( ActiveSelectionSize );
+	"ActiveSelectionStart       " & Get ( ActiveSelectionStart );
+	"AllowAbortState            " & Get ( AllowAbortState );
+	"ApplicationLanguage        " & Get ( ApplicationLanguage );
+	"ApplicationVersion         " & Get ( ApplicationVersion );
+	"CurrentDate                " & Get ( CurrentDate );
+	"CurrentExtendedPrivileges  " & Get ( CurrentExtendedPrivileges );
+	"CurrentPrivilegeSetName    " & Get ( CurrentPrivilegeSetName );
+	"CustomMenuSetName          " & Get ( CustomMenuSetName );
+	"DesktopPath                " & Get ( DesktopPath );
+	"DocumentsPath              " & Get ( DocumentsPath );
+	"FileMakerPath              " & Get ( FileMakerPath );
+	"FilePath                   " & Get ( FilePath );
+	"TemporaryPath              " & Get ( TemporaryPath );
+	"PreferencesPath            " & Get ( PreferencesPath );
+	"FileName                   " & Get ( FileName );
+	"FileSize                   " & Get ( FileSize );
+	"HostIPAddress              " & Get ( HostIPAddress );
+	"InstalledFMPlugins         " & Substitute ( Get ( InstalledFMPlugins ) ; ¶ ; "," );
+	"LastError                  " & Get ( LastError );
+	"LayoutName                 " & Get ( LayoutName );
+	"LayoutTableName            " & Get ( LayoutTableName );
+	"PersistentID               " & Get ( PersistentID );
+	"QuickFindText              " & Get ( QuickFindText );
+	"RecordAccess               " & Get ( RecordAccess );
+	"RecordID                   " & Get ( RecordID );
+	"RecordModificationCount    " & Get ( RecordModificationCount );
+	"RecordOpenCount            " & Get ( RecordOpenCount );
+	"RecordOpenState            " & Get ( RecordOpenState );
+	"ScreenDepth                " & Get ( ScreenDepth );
+	"ScreenWidth                " & Get ( ScreenWidth );
+	"ScreenHeight               " & Get ( ScreenHeight );
+	"ScriptName                 " & Get ( ScriptName );
+	"ScriptParameter            " & Get ( ScriptParameter );
+	"ScriptResult               " & Get ( ScriptResult );
+	"SortState                  " & Get ( SortState );
+	"StatusAreaState            " & Get ( StatusAreaState );
+	"SystemDrive                " & Get ( SystemDrive );
+	"SystemIPAddress            " & Get ( SystemIPAddress );
+	"SystemLanguage             " & Get ( SystemLanguage );
+	"SystemNICAddress           " & Substitute ( Get ( SystemNICAddress ) ; ¶ ; "," );
+	"SystemPlatform             " & Get ( SystemPlatform );
+	"SystemVersion              " & Get ( SystemVersion );
+	"TextRulerVisible           " & Get ( TextRulerVisible );
+	"UserName                   " & Get ( UserName );
+	"UseSystemFormatsState      " & Get ( UseSystemFormatsState );
+	"WindowZoomLevel            " & Get ( WindowZoomLevel );
+)
+
+/*
+Use this within a layout
+
+AccountName                {{AccountName}}
+AccountPrivilegeSetName    {{AccountPrivilegeSetName}}
+AccountExtendedPrivileges  {{AccountExtendedPrivileges}}
+AccountPrivilegeSetName    {{AccountPrivilegeSetName}}
+ActiveFieldName            {{ActiveFieldName}}
+ActiveFieldTableName       {{ActiveFieldTableName}}
+ActiveLayoutObjectName     {{ActiveLayoutObjectName}}
+ActivePortalRowNumber      {{ActivePortalRowNumber}}
+ActiveRepetitionNumber     {{ActiveRepetitionNumber}}
+ActiveSelectionSize        {{ActiveSelectionSize}}
+ActiveSelectionStart       {{ActiveSelectionStart}}
+AllowAbortState            {{AllowAbortState}}
+ApplicationLanguage        {{ApplicationLanguage}}
+ApplicationVersion         {{ApplicationVersion}}
+CurrentDate                {{CurrentDate}}
+CurrentExtendedPrivileges  {{CurrentExtendedPrivileges}}
+CurrentPrivilegeSetName    {{CurrentPrivilegeSetName}}
+CustomMenuSetName          {{CustomMenuSetName}}
+DesktopPath                {{DesktopPath}}
+DocumentsPath              {{DocumentsPath}}
+FileMakerPath              {{FileMakerPath}}
+FilePath                   {{FilePath}}
+TemporaryPath              {{TemporaryPath}}
+PreferencesPath            {{PreferencesPath}}
+FileName                   {{FileName}}
+FileSize                   {{FileSize}}
+HostIPAddress              {{HostIPAddress}}
+InstalledFMPlugins         {{InstalledFMPlugins}}
+LastError                  {{LastError}}
+LayoutName                 {{LayoutName}}
+LayoutTableName            {{LayoutTableName}}
+PersistentID               {{PersistentID}}
+QuickFindText              {{QuickFindText}}
+RecordAccess               {{RecordAccess}}
+RecordID                   {{RecordID}}
+RecordModificationCount    {{RecordModificationCount}}
+RecordOpenCount            {{RecordOpenCount}}
+RecordOpenState            {{RecordOpenState}}
+ScreenDepth                {{ScreenDepth}}
+ScreenWidth                {{ScreenWidth}}
+ScreenHeight               {{ScreenHeight}}
+ScriptName                 {{ScriptName}}
+ScriptParameter            {{ScriptParameter}}
+ScriptResult               {{ScriptResult}}
+SortState                  {{SortState}}
+StatusAreaState            {{StatusAreaState}}
+SystemDrive                {{SystemDrive}}
+SystemIPAddress            {{SystemIPAddress}}
+SystemLanguage             {{SystemLanguage}}
+SystemNICAddress           {{SystemNICAddress}}
+SystemPlatform             {{SystemPlatform}}
+SystemVersion              {{SystemVersion}}
+TextRulerVisible           {{TextRulerVisible}}
+UserName                   {{UserName}}
+UseSystemFormatsState      {{UseSystemFormatsState}}
+WindowZoomLevel            {{WindowZoomLevel}}
+
+*/
