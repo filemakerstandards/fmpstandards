@@ -15,6 +15,9 @@
  *		MODIFIED on 2012-01-26 by Jeremy Bante to accept the file parameter.
  *		CREATED on 2011-06-01 by Jeremy Bante <http://scr.im/jbante>.
  *		INSPIRED by custom functions by Fabrice Nordman.
+ * 
+ * REFERENCES:
+ *		https://github.com/filemakerstandards/fmpstandards/blob/master/Functions/Objects/ObjectTableID.fmfn
  * =====================================
  */
 

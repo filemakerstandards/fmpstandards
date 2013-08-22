@@ -14,6 +14,9 @@
  * HISTORY:
  *		CREATED on 2012-01-26 by Jeremy Bante <http://scr.im/jbante>.
  *		INSPIRED by custom functions by Fabrice Nordman.
+ * 
+ * REFERENCES:
+ *		https://github.com/filemakerstandards/fmpstandards/blob/master/Functions/Objects/ObjectLayoutName.fmfn
  * =====================================
  */
 
