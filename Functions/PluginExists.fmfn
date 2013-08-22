@@ -5,7 +5,7 @@
  * PURPOSE:
  *		Return a return delimited list of the values returned by
  *		Get ( InstalledFMPlugins ) for one specific plugin name.
- * 
+ *
  * RETURNS:
  *		(string) Return delimted list of name, version & status
  *		or False if the plugin does not exist
@@ -22,9 +22,13 @@
  *		the internal Get ( InstalledFMPlugins ) function
  *
  * HISTORY:
- * 		RELEASED 2012-06-19 by matt@filemakermagazine.com
- * =====================================================
+ *		MODIFIED: 2013-08-21 added reference to repo.
+ *		RELEASED: 2012-06-19 by matt@filemakermagazine.com
  * 
+ * REFERENCES:
+ *		https://github.com/filemakerstandards/fmpstandards/blob/working/Functions/PluginExists.fmfn
+ * =====================================================
+ *
  */
 
 Let ( [
