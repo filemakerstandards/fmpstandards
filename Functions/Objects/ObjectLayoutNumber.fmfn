@@ -1,0 +1,27 @@
+/**
+ * =====================================
+ * ObjectLayoutNumber ( file ; id )
+ *
+ * RETURNS:
+ *		The current number of a FileMaker layout, based on its ID.
+ *
+ * PARAMETERS:
+ *		id: FileMaker's internal ID for the layout.
+ *		file: The name of the FileMaker file containing the layout.
+ *
+ * DEPENDENCIES: none
+ *
+ * HISTORY:
+ *		CREATED on 2012-09-05 by Jeremy Bante <http://scr.im/jbante>.
+ *		INSPIRED by custom functions by Fabrice Nordman.
+ * =====================================
+ */
+
+Let ( [
+	~idList = ¶ & LayoutIDs ( file ) & ¶;
+	~value =
+		Position ( ~idList ; ¶ & id & ¶ ; 1 ; 1 );
+	~value = PatternCount ( Left ( ~idList ; ~value ) ; ¶ )
+];
+	~value
+)

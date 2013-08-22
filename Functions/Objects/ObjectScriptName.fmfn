@@ -1,0 +1,30 @@
+/**
+ * =====================================
+ * ObjectScriptName ( id ; file )
+ *
+ * RETURNS:
+ *		The current name of a FileMaker script, based on its ID.
+ *
+ * PARAMETERS:
+ *		id: FileMaker's internal ID for the script.
+ *		file: The name of the FileMaker file containing the script.
+ *
+ * DEPENDENCIES: none
+ *
+ * HISTORY:
+ *		MODIFIED on 2012-02-20 by Jeremy Bante <http://scr.im/jbante> to return
+ *		descriptive text for bad IDs.
+ *		CREATED on 2012-01-26 by Jeremy Bante <http://scr.im/jbante>.
+ *		INSPIRED by custom functions by Fabrice Nordman.
+ * =====================================
+ */
+
+Let ( [
+	~idList = ¶ & ScriptIDs ( file ) & ¶;
+	~value =
+		Position ( ~idList ; ¶ & id & ¶ ; 1 ; 1 );
+	~value = PatternCount ( Left ( ~idList ; ~value ) ; ¶ );
+	~name = GetValue ( ScriptNames ( file ) ; ~value )
+];
+	If ( IsEmpty ( ~name ) ; "?" ; /* Else */ ~name )
+)

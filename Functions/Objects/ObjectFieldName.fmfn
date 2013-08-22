@@ -1,0 +1,31 @@
+/**
+ * =====================================
+ * ObjectFieldName ( id ; table ; file )
+ *
+ * RETURNS:
+ *		The current name of a FileMaker field, based on its ID.
+ *
+ * PARAMETERS:
+ *		file: The name of the FileMaker file containing the field.
+ *		theFieldID: FileMaker's internal ID for the field.
+ *
+ * DEPENDENCIES: none
+ *
+ * NOTE:
+ *		If there is a layout in the file with the same name as the field's
+ *		table, the field must be on that layout for this function to work.
+ *
+ * HISTORY:
+ *		CREATED on 2012-01-26 by Jeremy Bante <http://scr.im/jbante>.
+ *		INSPIRED by custom functions by Fabrice Nordman.
+ * =====================================
+ */
+
+Let ( [
+	~idList = ¶ & FieldIDs ( file ; table ) & ¶;
+	~value =
+		Position ( ~idList ; ¶ & id & ¶ ; 1 ; 1 );
+	~value = PatternCount ( Left ( ~idList ; ~value ) ; "¶" )
+];
+	GetValue ( FieldNames ( file ; table ) ; ~value )
+)

@@ -1,0 +1,28 @@
+/**
+ * =====================================
+ * ObjectTableID ( table ; file )
+ *
+ * RETURNS:
+ *		FileMaker's internal ID for a table.
+ *
+ * PARAMETERS:
+ *		table: Table Occurrence name
+ *		file: The name of the FileMaker file containing the table.
+ *
+ * DEPENDENCIES: none
+ *
+ * HISTORY:
+ *		MODIFIED on 2012-01-26 by Jeremy Bante to accept the file parameter.
+ *		CREATED on 2011-06-01 by Jeremy Bante <http://scr.im/jbante>.
+ *		INSPIRED by custom functions by Fabrice Nordman.
+ * =====================================
+ */
+
+Let ( [
+	~nameList = ¶ & TableNames ( file ) & ¶;
+	~value =
+		Position ( ~nameList ; ¶ & table & ¶ ; 1 ; 1 );
+	~value = PatternCount ( Left ( ~nameList ; ~value ) ; ¶ )
+];
+	GetValue ( TableIDs ( file ) ; ~value )
+)

@@ -1,0 +1,30 @@
+/**
+ * =====================================
+ * ObjectScriptID ( name ; file )
+ *
+ * RETURNS:
+ *		FileMaker's internal ID for a script.
+ *
+ * PARAMETERS:
+ *		name: The name of the script
+ *		file: The name of the FileMaker file containing the script.
+ *
+ * DEPENDENCIES: none
+ *
+ * HISTORY:
+ *		MODIFIED on 2012-02-20 by Jeremy Bante <http://scr.im/jbante> to return
+ *		an error value (-1) for unknown scripts.
+ *		CREATED on 2012-01-26 by Jeremy Bante <http://scr.im/jbante>.
+ *		INSPIRED by custom functions by Fabrice Nordman.
+ * =====================================
+ */
+
+Let ( [
+	~nameList = ¶ & ScriptNames ( file ) & ¶;
+	~value =
+		Position ( ~nameList ; ¶ & name & ¶ ; 1 ; 1 );
+	~value = PatternCount ( Left ( ~nameList ; ~value ) ; ¶ );
+	~id = GetValue ( ScriptIDs ( file ) ; ~value )
+];
+	If ( IsEmpty ( ~id ) ; -1 ; /* Else */ ~id )
+)

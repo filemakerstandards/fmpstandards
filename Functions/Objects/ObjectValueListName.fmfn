@@ -1,0 +1,28 @@
+/**
+ * =====================================
+ * ObjectValueListName ( id ; file )
+ *
+ * RETURNS:
+ *		The current name of a FileMaker value list, based on its ID.
+ *
+ * PARAMETERS:
+ *		id: FileMaker's internal ID for the value list.
+ *		file: The name of the FileMaker file containing the value list.
+ *
+ * DEPENDENCIES: none
+ *
+ * HISTORY:
+ *		CREATED on 2012-04-13 by Jeremy Bante <http://scr.im/jbante>.
+ *		INSPIRED by custom functions by Fabrice Nordman.
+ * =====================================
+ */
+
+Let ( [
+	~idList = ¶ & ValueListIDs ( file ) & ¶;
+	~value =
+		Position ( ~idList ; ¶ & id & ¶ ; 1 ; 1 );
+	~value = PatternCount ( Left ( ~idList ; ~value ) ; ¶ );
+	~name = GetValue ( ValueListNames ( file ) ; ~value )
+];
+	If ( IsEmpty ( ~name ) ; "?" ; /* Else */ ~name )
+)
