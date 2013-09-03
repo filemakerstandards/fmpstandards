@@ -16,6 +16,8 @@
  * DEPENDENCIES: none
  *
  * HISTORY:
+ *		MODIFIED on 2013-09-02 by Daniel Smith dansmith65@gmail.com to fix a
+ *		type misidentification bug.
  *		MODIFIED on 2013-07-27 by Jeremy Bante <http://scr.im/jbante> to fix a
  *		type misidentification bug.
  *		MODIFIED on 2013-04-15 by Jeremy Bante <http://scr.im/jbante> to not
@@ -43,10 +45,13 @@ Let ( [
 		) ;
 	~text = GetAsText ( value ) ;
 	~number = GetAsNumber ( value ) ;
-	~validDate = IsValid ( GetAsDate ( ~text ) ) ;
+	~validDate =
+		IsValid ( GetAsDate ( ~text ) )
+		and not IsEmpty ( ~number ) ;
 	~validTime =
 		IsValid ( GetAsTime ( ~text ) )
-		and Position ( ~text ; ":" ; 1 ; 1 ) > 0 ;
+		and Position ( ~text ; ":" ; 1 ; 1 ) > 0
+		and not IsEmpty ( ~number ) ;
 	~value =
 		Case (
 			value = "" or value = "?" ;
