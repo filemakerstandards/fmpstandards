@@ -16,6 +16,8 @@
  * DEPENDENCIES: none
  *
  * HISTORY:
+ *		MODIFIED on 2013-12-12 by John Jones <john.christopher@alumni.virginia.edu>
+ *		to explicitly encode line feed characters in text values.
  *		MODIFIED on 2013-09-02 by Daniel Smith dansmith65@gmail.com to fix a
  *		type misidentification bug.
  *		MODIFIED on 2013-07-27 by Jeremy Bante <http://scr.im/jbante> to fix a
@@ -32,6 +34,9 @@
  *		MODIFIED on 2012-11-28 by Jeremy Bante <http://scr.im/jbante> to return
  *		error feedback, and to prefix names with "$".
  *		CREATED on 2012-11-10 by Jeremy Bante <http://scr.im/jbante>.
+ *
+ * REFERENCES:
+ *		https://github.com/filemakerstandards/fmpstandards/blob/working/Functions/%23Name-Value/%23.fmfn
  * =====================================
  */
 
@@ -67,7 +72,7 @@ Let ( [
 				"GetAsDate ( " & Quote ( value ) & " )" ;
 
 			~text ≠ GetAsText ( ~number ) ;
-				Quote ( value ) ;
+				Substitute ( Quote ( value ) ; Char ( 10 ) ; Quote ( " & Char ( 10 ) & " ) ) ;
 
 			/* Else */
 				~number
