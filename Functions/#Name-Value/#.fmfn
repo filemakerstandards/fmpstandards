@@ -36,7 +36,7 @@
  *		CREATED on 2012-11-10 by Jeremy Bante <http://scr.im/jbante>.
  *
  * REFERENCES:
- *		https://github.com/filemakerstandards/fmpstandards/blob/working/Functions/%23Name-Value/%23.fmfn
+ *		https://github.com/filemakerstandards/fmpstandards/blob/master/Functions/%23Name-Value/%23.fmfn
  * =====================================
  */
 
@@ -72,7 +72,7 @@ Let ( [
 				"GetAsDate ( " & Quote ( value ) & " )" ;
 
 			~text ≠ GetAsText ( ~number ) ;
-				Substitute ( Quote ( value ) ; Char ( 10 ) ; Quote ( " & Char ( 10 ) & " ) ) ;
+				Substitute ( Quote ( value ) ; Char ( 10 ) ; "\" & Char ( 10 ) & \"" ) ;
 
 			/* Else */
 				~number
