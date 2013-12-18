@@ -1,3 +1,9 @@
+/*
+ * THIS FUNCTION IS DEPRECATED. AS OF iOS 7, FILEMAKER GO DOES NOT SUPPORT
+ * Get ( SystemNICAddress ), WHICH IS USED BY THIS FUNCTION.
+ * USE UUIDTimeDevice INSTEAD.
+ */
+
 /**
  * =====================================
  * UUIDTimeNIC
