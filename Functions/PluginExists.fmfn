@@ -22,6 +22,7 @@
  *		the internal Get ( InstalledFMPlugins ) function
  *
  * HISTORY:
+ *		MODIFIED: 2013-12-19 added trailing return to list for plugins listed last.
  *		MODIFIED: 2013-08-21 added reference to repo.
  *		RELEASED: 2012-06-19 by matt@filemakermagazine.com
  * 
@@ -32,7 +33,7 @@
  */
 
 Let ( [
-	~pluginList = Get ( InstalledFMPlugins );
+	~pluginList = Get ( InstalledFMPlugins ) & ¶;
 	~pluginExists = PatternCount ( ~pluginList ; name & ";" );
 	~pluginStringStart = Position ( ~pluginList ; name ; 1 ; 1 );
 	~pluginStringEnd = Position ( ~pluginList ; ¶ ; ~pluginStringStart ; 1 );
