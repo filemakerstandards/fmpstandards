@@ -50,10 +50,11 @@ Case (
 	$#Remove.step = 1 ;
 		Let ( [
 			$#Remove.i = $#Remove.i + 1 ;
-			~start = Position ( parameters ; Char ( 13 ) ; 1 ; $#Remove.i - 1 ) ;
-			~start = If ( ~start > 0 ; ~start + 1 ; 1 ) ;
-			~end = Position ( parameters ; Char ( 13 ) ; 1 ; $#Remove.i ) ;
-			~end = If ( ~end > 0 ; ~end ; $#Remove.parameterLength ) ;
+			~start = Position ( parameters ; Char ( 13 ) ; 1 ; $#Remove.i - 1 ) + 1 ;
+			~end = Min ( 
+				Position ( parameters ; Char ( 13 ) ; 1 ; $#Remove.i ) ; 
+				$#Remove.parameterLength 
+			);
 			~pair = Middle ( parameters ; ~start ; ~end - ~start ) ;
 			~name = Left ( ~pair ; Position ( ~pair ; " = " ; 1 ; 1 ) - 1 ) ;
 			$#Remove.result =
@@ -89,6 +90,7 @@ Case (
 
 			// purge variables
 			$#Remove.i = "" ;
+			$#Remove.parameterLength = "" ;
 			$#Remove.parameterCount = "" ;
 			$#Remove.result = "" ;
 			$#Remove.step = ""
