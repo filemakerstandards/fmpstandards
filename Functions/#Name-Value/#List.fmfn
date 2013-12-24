@@ -18,6 +18,8 @@
  * DEPENDENCIES: none
  *
  * HISTORY:
+ *		MODIFIED on 2013-12-24 by Jeremy Bante <http://scr.im/jbante> to
+ *		specially encode newline characters in values.
  *		MODIFIED on 2013-MAY-09 by Daniel Smith dansmith65@gmail.com to encode
  *		a value like the current version of # ( name ; value ) custom function
  *		CREATED on 2012-NOV-26 by Daniel Smith dansmith65@gmail.com
@@ -29,7 +31,7 @@ Let ( [
 	~DATECHARS = "\/-" ;
 	// characters used as separators in a time field
 	~TIMECHARS = ":" ;
-	
+
 	~value =
 		Case (
 			// test for specific values that will be treated as a number in the next section
@@ -37,7 +39,11 @@ Let ( [
 				Quote ( value ) ;
 
 			value ≠ GetAsNumber ( value ) ;
-				Quote ( value ) ;
+				Substitute ( Quote ( value ) ;
+					[ Char ( 10 ) ; "\" & Char ( 10 ) & \"" ] ;
+					[ Char ( 8232 ) ; "\" & Char ( 8232 ) & \"" ] ;
+					[ Char ( 8233 ) ; "\" & Char ( 8233 ) & \"" ]
+				) ;
 
 			// at this point, value is a number, timestamp, date, or time
 			// negative time value
