@@ -16,6 +16,9 @@
  * DEPENDENCIES: none
  *
  * HISTORY:
+ *		MODIFIED on 2013-12-24 by Jeremy Bante <http://scr.im/jbante> to return
+ *		an error if name contains a carriage return (Char ( 13 )), and removing
+ *		explicit encoding for line feeds.
  *		MODIFIED on 2013-12-12 by John Jones <john.christopher@alumni.virginia.edu>
  *		to explicitly encode line feed characters in text values.
  *		MODIFIED on 2013-09-02 by Daniel Smith dansmith65@gmail.com to fix a
@@ -72,7 +75,7 @@ Let ( [
 				"GetAsDate ( " & Quote ( value ) & " )" ;
 
 			~text ≠ GetAsText ( ~number ) ;
-				Substitute ( Quote ( value ) ; Char ( 10 ) ; "\" & Char ( 10 ) & \"" ) ;
+				Quote ( value ) ;
 
 			/* Else */
 				~number
@@ -89,7 +92,7 @@ Let ( [
 		& " ~ = \"\" ]; \"\" )" ;
 	~error =
 		Case (
-			IsEmpty ( ~name ) ;
+			IsEmpty ( ~name ) or Position ( ~name ; ¶ ; 1 ; 1 ) ≠ 0 ;
 				11 ;	// Name is not valid
 
 			not IsValidExpression ( ~testExpression ) ;
