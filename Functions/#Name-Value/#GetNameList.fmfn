@@ -17,6 +17,8 @@
  * DEPENDENCIES: none
  *
  * HISTORY:
+ *		MODIFIED on 2013-12-23 by John Jones john.christopher@alumni.virginia.edu
+ *		to use Position/Middle.
  *		CREATED on 2013-01-24 by Daniel Smith dansmith65@gmail.com
  * =====================================
  */
@@ -34,7 +36,8 @@ Case (
 					[ "¶¶" ; ¶ ]		// remove empty values
 				) ;
 
-			$#GetNameList.parameterCount = ValueCount ( parameters ) ;
+			$#GetNameList.parameterCount = PatternCount ( parameters ; Char ( 13 ) ) ;
+			$#GetNameList.parameterLength = Length ( parameters ) ;
 			$#GetNameList.step = If ( ~empty ; -1 ; /* Else */ 1 )
 		];
 			#GetNameList ( parameters )
@@ -44,7 +47,12 @@ Case (
 	$#GetNameList.step = 1 ;
 		Let ( [
 			$#GetNameList.i = $#GetNameList.i + 1 ;
-			~pair = GetValue ( parameters ; $#GetNameList.i ) ;
+			~start = Position ( parameters ; Char ( 13 ) ; 1 ; $#GetNameList.i - 1 ) + 1 ;
+			~end = Min ( 
+				Position ( parameters ; Char ( 13 ) ; 1 ; $#GetNameList.i ) ; 
+				$#GetNameList.parameterLength 
+			);
+			~pair = Middle ( parameters ; ~start ; ~end - ~start ) ;
 			~name = Left ( ~pair ; Position ( ~pair ; " = " ; 1 ; 1 ) - 1 ) ;
 			$#GetNameList.result =
 				// only include ~name if it isn't already in the result
@@ -72,6 +80,7 @@ Case (
 
 			// purge variables
 			$#GetNameList.i = "" ;
+			$#GetNameList.parameterLength = "" ;
 			$#GetNameList.parameterCount = "" ;
 			$#GetNameList.result = "" ;
 			$#GetNameList.step = ""
