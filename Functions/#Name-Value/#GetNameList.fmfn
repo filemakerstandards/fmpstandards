@@ -57,17 +57,20 @@ Case (
 			~pair = Middle ( parameters ; ~start ; ~length ) ;
 			~name = Left ( ~pair ; Position ( ~pair ; " = " ; 1 ; 1 ) - 1 ) ;
 			~include =	// only include ~name if it isn't already in the result
-				Position (
+				not IsEmpty ( ~name )
+				and Position (
 					¶ & $#GetNameList.result & ¶ ;
 					¶ & ~name & ¶ ;
 					1 ;
 					1
 				) = 0 ;
 			$#GetNameList.result =
-				List (
-					$#GetNameList.result ;
-					If ( ~include ; ~name )
-				) ;
+				If ( $#GetNameList.firstNameExists ; $#GetNameList.result )
+				& If ( $#GetNameList.firstNameExists and ~include ; ¶ )
+				& If ( ~include ; ~name ) ;
+			$#GetNameList.firstNameExists =
+				$#GetNameList.firstNameExists
+				or ~include ;
 
 			$#GetNameList.step =
 				If ( ~endOfList ;
@@ -85,6 +88,7 @@ Case (
 
 			// purge variables
 			$#GetNameList.end = "" ;
+			$#GetNameList.firstNameExists = "" ;
 			$#GetNameList.result = "" ;
 			$#GetNameList.step = ""
 		] ;
