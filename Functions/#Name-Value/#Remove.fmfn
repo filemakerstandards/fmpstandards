@@ -40,6 +40,7 @@ Case (
 				removeParameters
 				& Substitute ( removeParameters ; ¶ ; "¶$" )
 				& ¶ ;
+			$#Remove.length = Length ( parameters ) ;
 			$#Remove.step = If ( ~empty ; -1 ; /* Else */ 1 )
 		] ;
 			#Remove ( parameters ; removeParameters )
@@ -53,7 +54,7 @@ Case (
 			~endOfList = $#Remove.end = 0 ;
 			~length =
 				If ( ~endOfList ;
-					Length ( parameters ) + 1 ;
+					$#Remove.length + 1 ;
 					/* Else */ $#Remove.end
 				)
 				- ~start ;
@@ -66,6 +67,7 @@ Case (
 				$#Remove.result
 				& If ( ~include ; ~pair & ¶ ) ;
 
+			~endOfList = ~endOfList or $#Remove.end ≥ $#Remove.length ;
 			$#Remove.step =
 				If ( ~endOfList ; $#Remove.step + 1 ; /* Else */ $#Remove.step )
 		] ;
@@ -80,6 +82,7 @@ Case (
 
 			// purge variables
 			$#Remove.end = "" ;
+			$#Remove.length = "" ;
 			$#Remove.result = "" ;
 			$#Remove.step = ""
 		] ;

@@ -37,6 +37,7 @@ Case (
 					[ "¶$" ; ¶ ] ;		// remove "$$" prefix
 					[ "¶¶" ; ¶ ]		// remove empty values
 				) ;
+			$#GetNameList.length = Length ( parameters ) ;
 			$#GetNameList.step = If ( ~empty ; 2 ; /* Else */ 1 )
 		] ;
 			#GetNameList ( parameters )
@@ -50,28 +51,28 @@ Case (
 			~endOfList = $#GetNameList.end = 0 ;
 			~length =
 				If ( ~endOfList ;
-					Length ( parameters ) + 1 ;
+					$#GetNameList.length + 1 ;
 					/* Else */ $#GetNameList.end
 				)
 				- ~start ;
 			~pair = Middle ( parameters ; ~start ; ~length ) ;
 			~name = Left ( ~pair ; Position ( ~pair ; " = " ; 1 ; 1 ) - 1 ) ;
 			~include =	// only include ~name if it isn't already in the result
-				not IsEmpty ( ~name )
-				and Position (
+				Position (
 					¶ & $#GetNameList.result & ¶ ;
 					¶ & ~name & ¶ ;
 					1 ;
 					1
 				) = 0 ;
 			$#GetNameList.result =
-				If ( $#GetNameList.firstNameExists ; $#GetNameList.result )
-				& If ( $#GetNameList.firstNameExists and ~include ; ¶ )
-				& If ( ~include ; ~name ) ;
-			$#GetNameList.firstNameExists =
-				$#GetNameList.firstNameExists
-				or ~include ;
+				List (
+					$#GetNameList.result ;
+					If ( ~include ; ~name )
+				) ;
 
+			~endOfList =
+				~endOfList
+				or $#GetNameList.end ≥ $#GetNameList.length ;
 			$#GetNameList.step =
 				If ( ~endOfList ;
 					$#GetNameList.step + 1 ;
@@ -88,7 +89,7 @@ Case (
 
 			// purge variables
 			$#GetNameList.end = "" ;
-			$#GetNameList.firstNameExists = "" ;
+			$#GetNameList.length = "" ;
 			$#GetNameList.result = "" ;
 			$#GetNameList.step = ""
 		] ;
