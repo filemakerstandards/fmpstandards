@@ -16,8 +16,10 @@
  *		This is a recursive function.
  *
  * HISTORY:
- *		MODIFIED on 2013-12-23 by John Jones 
- *		<john.christopher@alumn.virginia.edu> to use Middle/Position instead of 
+ *		MODIFIED on 2013-12-24 by Jeremy Bante <http://scr.im/jbante> to improve
+ *		efficiency.
+ *		MODIFIED on 2013-12-23 by John Jones
+ *		<john.christopher@alumn.virginia.edu> to use Middle/Position instead of
  *		GetValue.
  *		MODIFIED on 2013-03-15 by Daniel Smith <http://scr.im/dansmith> to add
  *		trailing return if it doesn't exist.
@@ -38,63 +40,49 @@ Case (
 				removeParameters
 				& Substitute ( removeParameters ; ¶ ; "¶$" )
 				& ¶ ;
-
-			$#Remove.parameterCount = PatternCount ( parameters ; Char ( 13 ) ) ;
-			$#Remove.parameterLength = Length ( parameters ) ;
 			$#Remove.step = If ( ~empty ; -1 ; /* Else */ 1 )
-		];
+		] ;
 			#Remove ( parameters ; removeParameters )
-		);
+		) ;
 
 	/* Step 1, check each parameter */
 	$#Remove.step = 1 ;
 		Let ( [
-			$#Remove.i = $#Remove.i + 1 ;
-			~start = Position ( parameters ; Char ( 13 ) ; 1 ; $#Remove.i - 1 ) + 1 ;
-			~end = Min ( 
-				Position ( parameters ; Char ( 13 ) ; 1 ; $#Remove.i ) ; 
-				$#Remove.parameterLength 
-			);
-			~pair = Middle ( parameters ; ~start ; ~end - ~start ) ;
+			~start = $#Remove.end + 1 ;
+			$#Remove.end = Position ( parameters ; ¶ ; ~start ; 1 ) ;
+			~endOfList = $#Remove.end = 0 ;
+			~length =
+				If ( ~endOfList ;
+					Length ( parameters ) + 1 ;
+					/* Else */ $#Remove.end
+				)
+				- ~start ;
+			~pair = Middle ( parameters ; ~start ; ~length ) ;
 			~name = Left ( ~pair ; Position ( ~pair ; " = " ; 1 ; 1 ) - 1 ) ;
+			~include =	// only include if ~name is not in removeParameters
+				not IsEmpty ( ~name )
+				and Position ( removeParameters ; ¶ & ~name & ¶ ; 1 ; 1 ) = 0 ;
 			$#Remove.result =
-				// only include ~pair if ~name is not in removeParameters
-				List (
-					$#Remove.result ;
-					If ( Position ( removeParameters ; ¶ & ~name & ¶ ; 1 ; 1 ) = 0;
-						~pair
-					)
-				);
+				$#Remove.result
+				& If ( ~include ; ~pair & ¶ ) ;
 
 			$#Remove.step =
-				If ( $#Remove.i < $#Remove.parameterCount ;
-					$#Remove.step ;
-					/* Else */ $#Remove.step + 1
-				)
-		];
+				If ( ~endOfList ; $#Remove.step + 1 ; /* Else */ $#Remove.step )
+		] ;
 			#Remove ( parameters ; removeParameters )
-		);
+		) ;
 
 	/* Step 2, clean-up and return result */
 	$#Remove.step = 2 or $#Remove.step = -1 ;
 		Let ( [
-			~error = $#Remove.step = -1 ;
-			~result =
-				$#Remove.result
-				// add trailing return if it doesn't exist
-				& If (
-					not IsEmpty ( $#Remove.result )
-					and Right ( $#Remove.result ; 1 ) ≠ ¶ ;
-					¶
-				) ;
+			~empty = $#Remove.step = -1 ;
+			~result = If ( ~empty ; parameters ; /* Else */ $#Remove.result ) ;
 
 			// purge variables
-			$#Remove.i = "" ;
-			$#Remove.parameterLength = "" ;
-			$#Remove.parameterCount = "" ;
+			$#Remove.end = "" ;
 			$#Remove.result = "" ;
 			$#Remove.step = ""
-		];
-			If ( ~error ; parameters ; /* Else */ ~result )
+		] ;
+			~result
 		)
 )

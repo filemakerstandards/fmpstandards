@@ -23,7 +23,9 @@
  * DEPENDENCIES: none
  *
  * HISTORY:
- *		MODIFIED on 2013-12-23 by John Jones john.christopher@alumni.virginia.edu
+ *		MODIFIED on 2013-12-24 by Jeremy Bante <http://scr.im/jbante> to improve
+ *		efficiency.
+ *		MODIFIED on 2013-12-23 by John Jones <john.christopher@alumni.virginia.edu>
  *		to use Position/Middle.  Modified to add trailing return if it doesn't
  *		exist.
  *		CREATED on 2012-11-28 by Jeremy Bante <http://scr.im/jbante>.
@@ -41,62 +43,50 @@ Case (
 				filterParameters
 				& Substitute ( filterParameters ; ¶ ; "¶$" )
 				& ¶ ;
-
-			$#Filter.parameterCount = PatternCount ( parameters ; Char ( 13 ) ) ;
-			$#Filter.parameterLength = Length ( parameters ) ;
-			$#Filter.step = If ( ~empty ; -1 ; /* Else */ 1 )
-		];
+			$#Filter.step = If ( ~empty ; 2 ; /* Else */ 1 )
+		] ;
 			#Filter ( parameters ; filterParameters )
-		);
+		) ;
 
 	/* Step 1, check each parameter */
 	$#Filter.step = 1 ;
 		Let ( [
-			$#Filter.i = $#Filter.i + 1 ;
-			~start = Position ( parameters ; Char ( 13 ) ; 1 ; $#Filter.i - 1 ) + 1 ;
-			~end = Min ( 
-				Position ( parameters ; Char ( 13 ) ; 1 ; $#Filter.i ) ; 
-				$#Filter.parameterLength 
-			);
-			~pair = Middle ( parameters ; ~start ; ~end - ~start ) ;
+			~start = $#Filter.end + 1 ;
+			$#Filter.end = Position ( parameters ; ¶ ; ~start ; 1 ) ;
+			~endOfList = $#Filter.end = 0 ;
+			~length =
+				If ( ~endOfList ;
+					Length ( parameters ) + 1 ;
+					/* Else */ $#Filter.end
+				)
+				- ~start ;
+			~pair = Middle ( parameters ; ~start ; ~length ) ;
 			~name = Left ( ~pair ; Position ( ~pair ; " = " ; 1 ; 1 ) - 1 ) ;
+			~include =	// only include ~pair if ~name is in filterParameters
+				Position ( filterParameters ; ¶ & ~name & ¶ ; 1 ; 1 ) > 0 ;
 			$#Filter.result =
-				// only include ~pair if ~name is in filterParameters
-				List (
-					$#Filter.result ;
-					If ( Position ( filterParameters ; ¶ & ~name & ¶ ; 1 ; 1 ) > 0;
-						~pair
-					)
-				);
+				$#Filter.result
+				& If ( ~include ; ~pair & ¶ ) ;
 
 			$#Filter.step =
-				If ( $#Filter.i < $#Filter.parameterCount ;
-					$#Filter.step ;
-					/* Else */ $#Filter.step + 1
+				If ( ~endOfList ;
+					$#Filter.step + 1 ;
+					/* Else */ $#Filter.step
 				)
-		];
+		] ;
 			#Filter ( parameters ; filterParameters )
-		);
+		) ;
 
 	/* Step 2, clean-up and return result */
-	$#Filter.step = 2 or $#Filter.step = -1 ;
+	$#Filter.step = 2 ;
 		Let ( [
-			~error = $#Filter.step = -1 ;
-			~result = $#Filter.result
-				// add trailing return if it doesn't exist
-				& If (
-					not IsEmpty ( $#Filter.result )
-					and Right ( $#Filter.result ; 1 ) ≠ ¶ ;
-					¶
-				) ;
+			~result = $#Filter.result ;
 
 			// purge variables
-			$#Filter.i = "" ;
-			$#Filter.parameterCount = "" ;
-			$#Filter.parameterLength = "" ;
+			$#Filter.end = "" ;
 			$#Filter.result = "" ;
 			$#Filter.step = ""
-		];
-			If ( ~error ; "" ; /* Else */ ~result )
+		] ;
+			~result
 		)
 )
