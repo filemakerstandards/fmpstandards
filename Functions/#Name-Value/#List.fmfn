@@ -18,6 +18,9 @@
  * DEPENDENCIES: none
  *
  * HISTORY:
+ *		MODIFIED on 2013-12-24 by Jeremy Bante <http://scr.im/jbante> to
+ *		specially encode newline characters in values, and to update type
+ *		detection to match the # function.
  *		MODIFIED on 2013-MAY-09 by Daniel Smith dansmith65@gmail.com to encode
  *		a value like the current version of # ( name ; value ) custom function
  *		CREATED on 2012-NOV-26 by Daniel Smith dansmith65@gmail.com
@@ -25,54 +28,38 @@
  */
 
 Let ( [
-	// characters used as separators in a date field
-	~DATECHARS = "\/-" ;
-	// characters used as separators in a time field
-	~TIMECHARS = ":" ;
-	
+	~text = GetAsText ( value ) ;
+	~number = GetAsNumber ( value ) ;
+	~validDate =
+		IsValid ( GetAsDate ( ~text ) )
+		and not IsEmpty ( ~number ) ;
+	~validTime =
+		IsValid ( GetAsTime ( ~text ) )
+		and Position ( ~text ; ":" ; 1 ; 1 ) > 0
+		and not IsEmpty ( ~number ) ;
 	~value =
 		Case (
-			// test for specific values that will be treated as a number in the next section
 			value = "" or value = "?" ;
 				Quote ( value ) ;
 
-			value ≠ GetAsNumber ( value ) ;
-				Quote ( value ) ;
-
-			// at this point, value is a number, timestamp, date, or time
-			// negative time value
-			value < 0 and not IsEmpty ( Filter ( value ; ~TIMECHARS ) ) ;
-				"GetAsTime ( " & Quote ( value ) & " )" ;
-
-			not IsEmpty ( Filter ( value ; ~DATECHARS ) )
-			and not IsEmpty ( Filter ( value ; ~TIMECHARS ) ) ;
+			~validTime and ~validDate ;
 				"GetAsTimestamp ( " & Quote ( value ) & " )" ;
 
-			not IsEmpty ( Filter ( value ; ~TIMECHARS ) ) ;
+			~validTime ;
 				"GetAsTime ( " & Quote ( value ) & " )" ;
 
-			/**
-			 * At this point, if value is less than 1, it must be either
-			 * a negative number or a decimal exponent.
-			 * This section must be after test for time because time can
-			 * contain a negative number.
-			 * This section should be before test for date, because a date
-			 * can contain a -, which is also used for a negative number.
-			 */
-			value < 1 ;
-				GetAsNumber ( value ) ;
-
-			not IsEmpty ( Filter ( value ; ~DATECHARS ) ) ;
+			~validDate ;
 				"GetAsDate ( " & Quote ( value ) & " )" ;
 
-			/**
-			 * either a number, or:
-			 * if the ~DATECHARS and ~TIMECHARS variables do not contain the
-			 * separator chars in use on the current computer, store the
-			 * date/time/timestamp as a number
-			 */
+			~text ≠ GetAsText ( ~number ) ;
+				Substitute ( Quote ( value ) ;
+					[ Char ( 10 ) ; "\" & Char ( 10 ) & \"" ] ;
+					[ Char ( 8232 ) ; "\" & Char ( 8232 ) & \"" ] ;
+					[ Char ( 8233 ) ; "\" & Char ( 8233 ) & \"" ]
+				) ;
+
 			/* Else */
-				GetAsNumber ( value )
+				~number
 		)
 ] ;
 	Case (
