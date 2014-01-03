@@ -33,4 +33,4 @@ Let ( [
 If ( ~compare = ~selected ; "1" ; "0" )
 )
 
-// 1 = two lists match 0 = they are different
+// 1 = two lists differ 0 = they are the same
