@@ -22,10 +22,15 @@
  *
  */
  
+// compare two lists together to see if the values in the ~selected are available in the ~allowed. Example use is for checking that the stores selected for magento are an allowed combination for the websites which are selected.
+
+
 Let ( [
 ~allowed = allowedList ;
 ~selected =selectedList ;
 ~compare = Filter ( ~selected ; ~allowed ) 
 ] ;
-If ( ~compare = ~selected ; "match" ; "notmatch" )
+If ( ~compare = ~selected ; "1" ; "0" )
 )
+
+// 1 = two lists match 0 = they are different
