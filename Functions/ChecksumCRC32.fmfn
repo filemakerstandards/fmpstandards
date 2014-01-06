@@ -1,5 +1,5 @@
 /*******************************************************************************
- * CRC32 ( asciiText )
+ * ChecksumCRC32 ( asciiText )
  * Computes a cyclic redundancy check (32 bit) for a string of text.
  *
  * @parameter asciiText: A string a text with character codes between 0 and 255.
@@ -26,7 +26,7 @@ Case (
 					/* Else */ 1
 				)
 		] ;
-			CRC32 ( asciiText )
+			ChecksumCRC32 ( asciiText )
 		) ;
 
 	/* Step 1, accumulate CRC */
@@ -255,7 +255,7 @@ Case (
 					/* Else */ $~crc.step
 				)
 		] ;
-			CRC32 ( asciiText )
+			ChecksumCRC32 ( asciiText )
 		) ;
 
 	/* Step 2, clean-up and return result */
