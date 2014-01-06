@@ -272,7 +272,7 @@ Case (
 						& ")" ;
 
 					/* Else, take one's complement of result so far */
-						4294967296 - $~crc.crc - 1
+						4294967295 - $~crc.crc
 				) ;
 
 			// purge variables
