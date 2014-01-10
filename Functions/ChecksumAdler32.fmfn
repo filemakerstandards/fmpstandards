@@ -1,0 +1,74 @@
+/*******************************************************************************
+ * ChecksumAdler32 ( asciiText )
+ * Computes a 32 bit checksum for a string of text using the Adler-32 algorithm.
+ *
+ * @parameter asciiText: Text with character codes between 0 and 255.
+ *
+ * @return A number representing a 32-bit checksum
+ *
+ * @history 2014-01-05 - Jeremy Bante <http://scr.im/jbante> - Created
+ *
+ * @see http://en.wikipedia.org/wiki/Adler-32
+ * @see http://www.ietf.org/rfc/rfc1950.txt
+ ******************************************************************************/
+
+Case (
+	/* Step 0, set-up */
+	not $~adler.step ;
+		Let ( [
+			// initialize checksum values
+			$~adler.a = 1 ;
+			$~adler.b = 0 ;
+			$~adler.i = 1 ;
+			$~adler.byte = Code ( Middle ( asciiText ; $~adler.i ; 1 ) ) ;
+			$~adler.step =
+				Case (
+					IsEmpty ( $~adler.byte ) ; 2 ;	// end
+					$~adler.byte > 255 ; -1 ;	// out of range
+					/* Else */ 1
+				)
+		] ;
+			ChecksumAdler32 ( asciiText )
+		) ;
+
+	/* Step 1, accumulate checksum */
+	$~adler.step = 1 ;
+		Let ( [
+			$~adler.a = Mod ( $~adler.a + $~adler.byte ; 65521 ) ;
+			$~adler.b = Mod ( $~adler.b + $~adler.a ; 65521 ) ;
+			$~adler.i = $~adler.i + 1 ;
+			$~adler.byte = Code ( Middle ( asciiText ; $~adler.i ; 1 ) ) ;
+			$~adler.step =
+				Case (
+					IsEmpty ( $~adler.byte ) ; 2 ;	// end
+					$~adler.byte > 255 ; -1 ;	// out of range
+					/* Else */ 1
+				)
+		] ;
+			ChecksumAdler32 ( asciiText )
+		) ;
+
+	/* Step 2, clean-up and return result */
+	$~adler.step = 2 or $~adler.step = -1 ;
+		Let ( [
+			~result =
+				Case (
+					$~adler.step = -1 ;
+						"ERROR: Character out of range ("
+						& $~adler.byte
+						& ")" ;
+
+					/* Else */
+						$~adler.b * 65536 + $~adler.a
+				) ;
+
+			// purge variables
+			$~adler.a = "" ;
+			$~adler.b = "" ;
+			$~adler.byte = "" ;
+			$~adler.i = "" ;
+			$~adler.step = ""
+		] ;
+			~result
+		)
+)
