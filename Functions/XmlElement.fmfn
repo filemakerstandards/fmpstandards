@@ -1,0 +1,63 @@
+/**
+ * =====================================
+ * XmlElement ( name ; attributes ; value )
+ *
+ * RETURNS:
+ *		An XML element.
+ *
+ * PARAMETERS:
+ *		name: element name, must be a valid name: http://www.w3schools.com/xml/xml_elements.asp
+ *		attributes: attributes to add to the name tag. Must be formatted as xml attributes - the XmlAttribute()
+ *			custom function can be used to generate this string.
+ *		value: value to be wrapped by the specified name tag. Special characters are not escaped. 
+ *			If value is anything other than xml elements, it should be wrapped in XmlEscape() custom function.
+ *
+ * EXAMPLE:
+ *		XmlElement ( "name" ; "" ; "Daniel Smith" ; "" ) = "<name>Daniel Smith</name>"
+ *		XmlElement ( "name" ; "" ; "" ) = "<name />"
+ *		XmlElement ( "name" ; "id='123'" ; "" ) = "<name id='123'/>"
+ *
+ * DEPENDENCIES: none
+ *		XmlEscape and XmlAttribute are meant to be used in combination with this function, but they are not
+ *		directly referenced by this function.
+ *
+ * HISTORY:
+ *		CREATED on 2013-AUG-07 by Daniel Smith dansmith65@gmail.com
+ * =====================================
+ */
+
+Let ( [
+	// validate name parameter
+	~error = 
+		Case (
+			IsEmpty ( Filter (
+				Lower ( Left ( name ; 1 ) ) ;
+				"abcdefghijklmnopqrstuvwxyz"
+			) ) ;
+			"<error name='" & name & "'>name does not start with a letter</error>" ;
+			
+			Left ( name ; 3 )  = "xml" ;
+			"<error name='" & name & "'>name cannot start with the letters xml</error>" ;
+			
+			PatternCount ( name ; " " ) ;
+			"<error name='" & name & "'>name cannot contain spaces</error>"
+		)
+	;
+	~result = 
+	If ( not IsEmpty ( ~error ) ;
+		~error ;
+		
+		"<"
+		& name
+		& If ( not IsEmpty ( attributes ) ;
+			" " & Trim ( attributes )
+		)
+		& If ( IsEmpty ( value ) ;
+			" />" ;
+			">" & value & "</" & name & ">"
+		)
+		& "¶"
+	)
+] ;
+	~result
+)

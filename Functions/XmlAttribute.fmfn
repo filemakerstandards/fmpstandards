@@ -1,0 +1,32 @@
+/**
+ * =====================================
+ * XmlAttribute ( name ; value )
+ *
+ * RETURNS:
+ *		A name/value pair formated as a string suitable for use as an xml attribute, with a trailing space.
+ *
+ * PARAMETERS:
+ *		name: the attributes name.
+ *		value: the attributes value.
+ *
+ * EXAMPLE:
+ *		XmlAttribute ( "name" ; "George \"Shotgun\" Ziegler" ) = "name='George \"Shotgun\" Ziegler' "
+ *
+ * DEPENDENCIES: none
+ *
+ * HISTORY:
+ *		CREATED on 2013-AUG-07 by Daniel Smith dansmith65@gmail.com
+ * =====================================
+ */
+
+name
+& "='"
+& Substitute (
+	value ;
+	[ "&" ; "&amp;" ] ;
+	[ "'" ; "&apos;" ] ;
+	[ "<" ; "&lt;" ] ;
+	[ ">" ; "&gt;" ]
+)
+& "'"
+& " "

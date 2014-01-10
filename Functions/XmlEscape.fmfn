@@ -1,0 +1,28 @@
+/**
+ * =====================================
+ * XmlEscape ( value )
+ *
+ * RETURNS:
+ *		Value with xml special characters escaped.
+ *
+ * PARAMETERS:
+ *		value: the value to escape.
+ *
+ * EXAMPLE:
+ *		XmlEscape ( "\"&'<>" ) = "&quot;&amp;&apos;&lt;&gt;"
+ *
+ * DEPENDENCIES: none
+ *
+ * HISTORY:
+ *		CREATED on 2013-AUG-07 by Daniel Smith dansmith65@gmail.com
+ * =====================================
+ */
+
+Substitute (
+	value ;
+	[ "&" ; "&amp;" ] ;
+	[ "\"" ; "&quot;" ] ;
+	[ "'" ; "&apos;" ] ;
+	[ "<" ; "&lt;" ] ;
+	[ ">" ; "&gt;" ]
+)
