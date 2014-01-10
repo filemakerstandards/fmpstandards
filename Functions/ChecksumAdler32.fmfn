@@ -2,7 +2,7 @@
  * ChecksumAdler32 ( asciiText )
  * Computes a 32 bit checksum for a string of text using the Adler-32 algorithm.
  *
- * @parameter asciiText: A string a text with character codes between 0 and 255.
+ * @parameter asciiText: Text with character codes between 0 and 255.
  *
  * @return A number representing a 32-bit checksum
  *
