@@ -1,21 +1,34 @@
 /**
  * =====================================
- * LogData ( logLevel_info_warn_error )
+ * LogData ( logLevel )
  *
  * RETURNS:
- *		(string) Let format dictionary that describes the current environment
+ *		(string) Let format dictionary which describes the current environment.
  *
  * PARAMETERS:
- *		logLevel_info_warn_error = (enumeration) info, warn, error
+ *		logLevel = (numeric) 0 thru [n]
+ *
+ * EXAMPLE:
+ *		LogData ( LogWarning )
+ *		LogData ( $logLevelDebug )
+ *		// Where your own custom function LogWarning
+ *		// returns the constant of 1 or a variable
+ *		// named $logLevelDebug returns a value of 3.
  *
  * DEPENDENCIES:
  *		Custom Functions: #
  *
  * NOTES:
  *		This function should be modified to capture any relevant values for
- *		your solution.
+ *		your solution. This includes any plugin or solution specific data desired.
+ *		The level/amount of data returned increases numerically. You can add
+ *		as much data as needed. You can also define the log levels by using
+ *		separate custom functions with the prefix of Log* - such as LogWarning,
+ *		LogError, LogCritical, LogDebug, etc.
+ *		See: http://en.wikipedia.org/wiki/Syslog for logging references.
  *
  * HISTORY:
+ *		MODIFIED on 2014-JAN-11 matt@filemakermagazine.com to use numeric logLevel
  *		MODIFIED on 2012-NOV-21 by Daniel Smith dansmith65@gmail.com
  *			- don't access $error variable directly
  *		CREATED on 2012-NOV-21 Daniel Smith dansmith65@gmail.com
@@ -24,76 +37,46 @@
  * =====================================
  */
 
-Let ( [
-	~validLogLevels = List ( "info" ; "warn" ; "error" ) ;
-	~defaultLogLevel = "error" ;
-	~logLevel =
-		If (
-			isempty ( FilterValues ( logLevel_info_warn_error ; ~validLogLevels  ) ) ;
-			~defaultLogLevel ;
-			logLevel_info_warn_error
-		)
-] ;
+// ALL LOG LEVELS
+# ( "AccountName" ; Get ( AccountName ) )
+& # ( "ApplicationVersion" ; Get ( ApplicationVersion ) )
+& # ( "CurrentHostTimestamp" ; Get ( CurrentHostTimestamp ) )
+& # ( "FileName" ; Get ( FileName ) )
+& # ( "ScriptName" ; Get ( ScriptName ) )
+& # ( "ScriptParameter" ; Get ( ScriptParameter ) )
+& # ( "ScriptResult" ; Get ( ScriptResult ) )
+& # ( "SystemPlatform" ; Get ( SystemPlatform ) )
+& # ( "WindowName" ; Get ( WindowName ) )
 
-	# ( "logLevel" ; ~logLevel )
-	& If (
-		~logLevel ≠ logLevel_info_warn_error ;
-		# ( "logDataError" ; "parameter was invalid, used default log level. parameter: " & logLevel_info_warn_error )
+// LEVEL 1
+& If ( logLevel = 1 ;
+	# ( "AllowAbortState" ; Get ( AllowAbortState ) )
+	& # ( "ErrorCaptureState" ; Get ( ErrorCaptureState ) )
+	& # ( "FilePath" ; Get ( FilePath ) )
+	& # ( "LayoutAccess" ; Get ( LayoutAccess ) )
+	& # ( "LayoutName" ; Get ( LayoutName ) )
+	& # ( "LayoutTableName" ; Get ( LayoutTableName ) )
+	& # ( "LayoutViewState" ; Get ( LayoutViewState ) )
+	& # ( "MultiUserState" ; Get ( MultiUserState ) )
+	& # ( "RecordAccess" ; Get ( RecordAccess ) )
+	& # ( "RecordID" ; Get ( RecordID ) )
+	& # ( "RecordOpenCount" ; Get ( RecordOpenCount ) )
+	& # ( "RecordOpenState" ; Get ( RecordOpenState ) )
+	& # ( "SortState" ; Get ( SortState ) )
+	& # ( "StatusAreaState" ; Get ( StatusAreaState ) )
+	& # ( "SystemVersion" ; Get ( SystemVersion ) )
+	& # ( "UserCount" ; Get ( UserCount ) )
+	& # ( "UserName" ; Get ( UserName ) )
+	& # ( "WindowMode" ; Get ( WindowMode ) )
+	& # ( "WindowStyle" ; Get ( WindowStyle ) )
+	& # ( "WindowVisible" ; Get ( WindowVisible ) )
+	& If (not isempty( Get ( ActiveFieldName ) );
+		# ( "ActiveFieldName" ; Get ( ActiveFieldName ) )
+			& # ( "ActiveFieldTableName" ; Get ( ActiveFieldTableName ) )
 	)
-
-	// add info about the current environment, these values should be adjusted
-	// as needed for the solution
-
-	// ALL LOG LEVELS
-	& # ( "AccountName" ; Get ( AccountName ) )
-		& # ( "ApplicationVersion" ; Get ( ApplicationVersion ) )
-		& # ( "CurrentHostTimestamp" ; Get ( CurrentHostTimestamp ) )
-		& # ( "FileName" ; Get ( FileName ) )
-		& # ( "ScriptName" ; Get ( ScriptName ) )
-		& # ( "ScriptParameter" ; Get ( ScriptParameter ) )
-		& # ( "ScriptResult" ; Get ( ScriptResult ) )
-		& # ( "SystemPlatform" ; Get ( SystemPlatform ) )
-		& # ( "WindowName" ; Get ( WindowName ) )
-
-	// WARN or ERROR
-	& If (
-		~logLevel = "warn" or ~logLevel = "error" ;
-		""
-			& # ( "AllowAbortState" ; Get ( AllowAbortState ) )
-			& # ( "ErrorCaptureState" ; Get ( ErrorCaptureState ) )
-			& # ( "FilePath" ; Get ( FilePath ) )
-			& # ( "LayoutAccess" ; Get ( LayoutAccess ) )
-			& # ( "LayoutName" ; Get ( LayoutName ) )
-			& # ( "LayoutTableName" ; Get ( LayoutTableName ) )
-			& # ( "LayoutViewState" ; Get ( LayoutViewState ) )
-			& # ( "MultiUserState" ; Get ( MultiUserState ) )
-			& # ( "RecordAccess" ; Get ( RecordAccess ) )
-			& # ( "RecordID" ; Get ( RecordID ) )
-			& # ( "RecordOpenCount" ; Get ( RecordOpenCount ) )
-			& # ( "RecordOpenState" ; Get ( RecordOpenState ) )
-			& # ( "SortState" ; Get ( SortState ) )
-			& # ( "StatusAreaState" ; Get ( StatusAreaState ) )
-			& # ( "SystemVersion" ; Get ( SystemVersion ) )
-			& # ( "UserCount" ; Get ( UserCount ) )
-			& # ( "UserName" ; Get ( UserName ) )
-			& # ( "WindowMode" ; Get ( WindowMode ) )
-			& # ( "WindowStyle" ; Get ( WindowStyle ) )
-			& # ( "WindowVisible" ; Get ( WindowVisible ) )
+	& If ( not isempty( Get ( ActiveLayoutObjectName ) );
+		# ( "ActiveLayoutObjectName" ; Get ( ActiveLayoutObjectName ) )
 	)
+)
 
-	// ERROR only
-	& If (
-		~logLevel = "error" ;
-		""
-			& If (
-				not isempty( Get ( ActiveFieldName ) );
-				# ( "ActiveFieldName" ; Get ( ActiveFieldName ) )
-					& # ( "ActiveFieldTableName" ; Get ( ActiveFieldTableName ) )
-			)
-			& If (
-				not isempty( Get ( ActiveLayoutObjectName ) );
-				# ( "ActiveLayoutObjectName" ; Get ( ActiveLayoutObjectName ) )
-			)
-	)
 
-) // end of Let
