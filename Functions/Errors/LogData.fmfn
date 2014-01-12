@@ -1,0 +1,99 @@
+/**
+ * =====================================
+ * LogData ( logLevel_info_warn_error )
+ *
+ * RETURNS:
+ *		(string) Let format dictionary that describes the current environment
+ *
+ * PARAMETERS:
+ *		logLevel_info_warn_error = (enumeration) info, warn, error
+ *
+ * DEPENDENCIES:
+ *		Custom Functions: #
+ *
+ * NOTES:
+ *		This function should be modified to capture any relevant values for
+ *		your solution.
+ *
+ * HISTORY:
+ *		MODIFIED on 2012-NOV-21 by Daniel Smith dansmith65@gmail.com
+ *			- don't access $error variable directly
+ *		CREATED on 2012-NOV-21 Daniel Smith dansmith65@gmail.com
+ *		INSPIRED by ErrorData by matt@filemakermagazine.com
+ *			https://github.com/filemakerstandards/fmpstandards/tree/master/Functions
+ * =====================================
+ */
+
+Let ( [
+	~validLogLevels = List ( "info" ; "warn" ; "error" ) ;
+	~defaultLogLevel = "error" ;
+	~logLevel =
+		If (
+			isempty ( FilterValues ( logLevel_info_warn_error ; ~validLogLevels  ) ) ;
+			~defaultLogLevel ;
+			logLevel_info_warn_error
+		)
+] ;
+
+	# ( "logLevel" ; ~logLevel )
+	& If (
+		~logLevel ≠ logLevel_info_warn_error ;
+		# ( "logDataError" ; "parameter was invalid, used default log level. parameter: " & logLevel_info_warn_error )
+	)
+
+	// add info about the current environment, these values should be adjusted
+	// as needed for the solution
+
+	// ALL LOG LEVELS
+	& # ( "AccountName" ; Get ( AccountName ) )
+		& # ( "ApplicationVersion" ; Get ( ApplicationVersion ) )
+		& # ( "CurrentHostTimestamp" ; Get ( CurrentHostTimestamp ) )
+		& # ( "FileName" ; Get ( FileName ) )
+		& # ( "ScriptName" ; Get ( ScriptName ) )
+		& # ( "ScriptParameter" ; Get ( ScriptParameter ) )
+		& # ( "ScriptResult" ; Get ( ScriptResult ) )
+		& # ( "SystemPlatform" ; Get ( SystemPlatform ) )
+		& # ( "WindowName" ; Get ( WindowName ) )
+
+	// WARN or ERROR
+	& If (
+		~logLevel = "warn" or ~logLevel = "error" ;
+		""
+			& # ( "AllowAbortState" ; Get ( AllowAbortState ) )
+			& # ( "ErrorCaptureState" ; Get ( ErrorCaptureState ) )
+			& # ( "FilePath" ; Get ( FilePath ) )
+			& # ( "LayoutAccess" ; Get ( LayoutAccess ) )
+			& # ( "LayoutName" ; Get ( LayoutName ) )
+			& # ( "LayoutTableName" ; Get ( LayoutTableName ) )
+			& # ( "LayoutViewState" ; Get ( LayoutViewState ) )
+			& # ( "MultiUserState" ; Get ( MultiUserState ) )
+			& # ( "RecordAccess" ; Get ( RecordAccess ) )
+			& # ( "RecordID" ; Get ( RecordID ) )
+			& # ( "RecordOpenCount" ; Get ( RecordOpenCount ) )
+			& # ( "RecordOpenState" ; Get ( RecordOpenState ) )
+			& # ( "SortState" ; Get ( SortState ) )
+			& # ( "StatusAreaState" ; Get ( StatusAreaState ) )
+			& # ( "SystemVersion" ; Get ( SystemVersion ) )
+			& # ( "UserCount" ; Get ( UserCount ) )
+			& # ( "UserName" ; Get ( UserName ) )
+			& # ( "WindowMode" ; Get ( WindowMode ) )
+			& # ( "WindowStyle" ; Get ( WindowStyle ) )
+			& # ( "WindowVisible" ; Get ( WindowVisible ) )
+	)
+
+	// ERROR only
+	& If (
+		~logLevel = "error" ;
+		""
+			& If (
+				not isempty( Get ( ActiveFieldName ) );
+				# ( "ActiveFieldName" ; Get ( ActiveFieldName ) )
+					& # ( "ActiveFieldTableName" ; Get ( ActiveFieldTableName ) )
+			)
+			& If (
+				not isempty( Get ( ActiveLayoutObjectName ) );
+				# ( "ActiveLayoutObjectName" ; Get ( ActiveLayoutObjectName ) )
+			)
+	)
+
+) // end of Let

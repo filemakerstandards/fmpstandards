@@ -1,0 +1,63 @@
+/**
+ * =====================================
+ * ErrorApp ( theErrorCode ; theErrorInfo )
+ *
+ * RETURNS:
+ *		Let Notation containing information about the specified
+ *		solution-specific error and the environment it occurred in.
+ *
+ * PARAMETERS:
+ *		theErrorCode = (number) code for an Application error
+ *		theErrorInfo = (text, optional) some text describing the particular
+ *			instance of this error. This should help a developer locate where
+ *			in a script the error occured.
+ *			(e.g., "create new invoice record")
+ *
+ * DEPENDENCIES:
+ *		Custom Functions: #, Error
+ *
+ * NOTE:
+ *		This function should be modified by each developer/solution to map your
+ *		own error codes to error descriptions. Sections that should be modified
+ *		are marked with a comment starting with "TODO".
+ *
+ * HISTORY:
+ *		MODIFIED on 2013-NOV-22 by Daniel Smith dansmith65@gmail.com
+ *			- renamed to ErrorApp, update documentation
+ *		MODIFIED on 2013-OCT-11 by Daniel Smith dansmith65@gmail.com
+ *			- change from ErrorDataApp ( theErrorCode )
+ *			  to #AppError ( theErrorCode ; theErrorInfo )
+ *			- add dependency on custom function: #Error
+ *		MODIFIED on 2012-NOV-22 by Daniel Smith dansmith65@gmail.com
+ *			- rename to: ErrorDataApp
+ *		MODIFIED on 2012-NOV-21 by Daniel Smith dansmith65@gmail.com
+ *			- don't access $error variable directly
+ *		CREATED on 2012-NOV-20 Daniel Smith dansmith65@gmail.com
+ *		INSPIRED by ErrorString and ErrorData by matt@filemakermagazine.com
+ *			https://github.com/filemakerstandards/fmpstandards/tree/master/Functions
+ *
+ * REFERENCES:
+ *		http://filemakerstandards.org/x/AoA-/
+ * =====================================
+ */
+
+Let ( [
+	// Get human-readable error string associated with the error code
+	~errorDescription =
+		Case (
+			// TODO: the next four lines are an example only, they should be modified before this function is used
+			theErrorCode = -1 ; "Unknown error" ;
+			theErrorCode = 0 ; "No error" ;
+			theErrorCode = 1 ; "User canceled action" ;
+			"Unknown error code"
+		)
+] ;
+	Error ( "App" ; theErrorCode ; ~errorDescription ; theErrorInfo )
+	// add additional info useful for debugging specific errors
+	// TODO: the following Case an example only, it should be modified before this function is used
+	& Case (
+		theErrorCode = 3 ;
+		# ( "WindowMode" ; Get ( WindowMode ) ) ;
+		/* else */ ""
+	)
+)
