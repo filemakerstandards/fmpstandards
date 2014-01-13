@@ -1,0 +1,44 @@
+/*
+ListValues ( Field )
+2011.06.28, Koji Takeuchi <takeuchi@nemoux.com>
+
+
+description:
+	Return return separated value of Field data in current found set.
+ex.
+	nameLast = "Shin" on record 1, "Koji" on record 2, "Kazuhiko" on record 3, "" on Record 4, "Satsuki" on record 5, "Kaori" on record 6
+
+	ListValues ( nameFirst )
+	 -> "Shin¶Koji¶Kazuhiko¶¶Satsuki¶Kaori"
+	 http://www.briandunning.com/cf/1323
+*/
+
+Let (
+[
+$$ListValues_total_count =
+	Case ( IsEmpty ( $$ListValues_total_count ) ; Get ( FoundCount ) ; $$ListValues_total_count ) ;
+$$ListValues_current_count =
+	Case ( IsEmpty ( $$ListValues_current_count ) ; 1 ; $$ListValues_current_count + 1 ) ;
+$$ListValues_value =
+	Case ( $$ListValues_current_count > 1 ; $$ListValues_value & "¶" ) & 
+	GetNthRecord ( Field ; $$ListValues_current_count )
+] ;
+
+Case (
+// If $$ListValues_current_count is not reach to $$ListValues_total_count, call this function recursively.
+$$ListValues_current_count < $$ListValues_total_count ;
+ListValues ( Field ) ;
+
+// Otherwise, clean up $$variable and return result.
+Let (
+[
+result = $$ListValues_value ;
+$$ListValues_total_count = "" ;
+$$ListValues_current_count = "" ;
+$$ListValues_value = ""
+] ;
+result
+) // Let
+) // Case
+
+) // Let
