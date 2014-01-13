@@ -1,0 +1,36 @@
+/*
+ * compareLists ( allowedList ; selectedList )
+ *
+ * PURPOSE:
+ *		Compare the contents of a list against a second list of accepted values (example listA contains 1 2 4 which are allowed values , listB contains 2 3 4 - this will result in nomatch as 3 is not allowed as per listA)
+ *		
+ *
+ * PARAMETERS:
+ *		allowedList - a list of values
+ *		selectedList - a list of values 
+ *
+ * RETURNS:
+ *		match = values in selectedList are permissible
+ *		nomatch = value(s) in selectedList are not permissible
+ *
+ * NOTES:
+ *
+ *		designed to compare magento Store ID's for products - ie , is the product in listA allowed by the possible store views
+ *
+ * RELEASE: 2013-09-03 
+ * alex(AT)absolutemusic.co.uk
+ *
+ */
+ 
+// compare two lists together to see if the values in the ~selected are available in the ~allowed. Example use is for checking that the stores selected for magento are an allowed combination for the websites which are selected.
+
+
+Let ( [
+~allowed = allowedList ;
+~selected =selectedList ;
+~compare = Filter ( ~selected ; ~allowed ) 
+] ;
+If ( ~compare = ~selected ; "1" ; "0" )
+)
+
+// 1 = two lists differ 0 = they are the same
