@@ -38,7 +38,8 @@
  */
 
 // ALL LOG LEVELS
-# ( "AccountName" ; Get ( AccountName ) )
+# ( "LogLevel" ; logLevel )
+& # ( "AccountName" ; Get ( AccountName ) )
 & # ( "ApplicationVersion" ; Get ( ApplicationVersion ) )
 & # ( "CurrentHostTimestamp" ; Get ( CurrentHostTimestamp ) )
 & # ( "FileName" ; Get ( FileName ) )
@@ -49,7 +50,7 @@
 & # ( "WindowName" ; Get ( WindowName ) )
 
 // LEVEL 1
-& If ( logLevel = 1 ;
+& If ( logLevel ≤ 1 ;
 	# ( "AllowAbortState" ; Get ( AllowAbortState ) )
 	& # ( "ErrorCaptureState" ; Get ( ErrorCaptureState ) )
 	& # ( "FilePath" ; Get ( FilePath ) )
