@@ -1,0 +1,323 @@
+/**
+ * =====================================
+ * ErrorFmp ( theErrorCode ; theErrorInfo )
+ *
+ * RETURNS:
+ *		Let Notation containing information about a FileMaker error
+ *		and the environment it occurred in.
+ *
+ * PARAMETERS:
+ *		theErrorCode = (number) code for a FileMaker error
+ *		theErrorInfo = (text, optional) some text describing the particular
+ *			instance of this error. This should help a developer locate where
+ *			in a script the error occured.
+ *			(e.g., "create new invoice record")
+ *
+ * DEPENDENCIES:
+ *		Custom Functions: #, Error
+ *
+ * HISTORY:
+ *		MODIFIED on 2013-NOV-22 by Daniel Smith dansmith65@gmail.com
+ *			- rename to ErrorFmp, update documentation
+ *		CREATED on 2013-OCT-11 Daniel Smith dansmith65@gmail.com
+ *
+ * REFERENCES:
+ *		http://www.filemaker.com/help/html/error_codes.html
+ *		http://filemakerstandards.org/x/AoA-/
+ * =====================================
+ */
+
+Let ( [
+	~errorCode = theErrorCode ;
+
+	// Get human-readable error string associated with the error
+	// Also add additional information about the environment that is uniqe to the
+	//   error code
+	~errorDescription =
+		Case (
+			~errorCode = 0 ; "No error" ;
+
+			~errorCode < 100 ;
+			Case (
+				~errorCode = -1 ; "Unknown error" ;
+				~errorCode = 1 ; "User canceled action" ;
+				~errorCode = 2 ; "Memory error" ;
+				~errorCode = 3 ; "Command is unavailable (for example, wrong operating system, wrong mode, etc.)" ;
+				~errorCode = 4 ; "Command is unknown" ;
+				~errorCode = 5 ; "Command is invalid (for example, a Set Field script step does not have a calculation specified)" ;
+				~errorCode = 6 ; "File is read-only" ;
+				~errorCode = 7 ; "Running out of memory" ;
+				~errorCode = 8 ; "Empty result" ;
+				~errorCode = 9 ; "Insufficient privileges" ;
+				~errorCode = 10 ; "Requested data is missing" ;
+				~errorCode = 11 ; "Name is not valid" ;
+				~errorCode = 12 ; "Name already exists" ;
+				~errorCode = 13 ; "File or object is in use" ;
+				~errorCode = 14 ; "Out of range" ;
+				~errorCode = 15 ; "Can't divide by zero" ;
+				~errorCode = 16 ; "Operation failed, request retry (for example, a user query)" ;
+				~errorCode = 17 ; "Attempt to convert foreign character set to UTF-16 failed" ;
+				~errorCode = 18 ; "Client must provide account information to proceed" ;
+				~errorCode = 19 ; "String contains characters other than A-Z, a-z, 0-9 (ASCII)" ;
+				~errorCode = 20 ; "Command/operation canceled by triggered script" ;
+				"Unknown error code"
+			) ;
+
+			~errorCode < 200 ;
+			Case (
+				~errorCode = 100 ; "File is missing" ;
+				~errorCode = 101 ; "Record is missing" ;
+				~errorCode = 102 ; "Field is missing" ;
+				~errorCode = 103 ; "Relationship is missing" ;
+				~errorCode = 104 ; "Script is missing" ;
+				~errorCode = 105 ; "Layout is missing" ;
+				~errorCode = 106 ; "Table is missing" ;
+				~errorCode = 107 ; "Index is missing" ;
+				~errorCode = 108 ; "Value list is missing" ;
+				~errorCode = 109 ; "Privilege set is missing" ;
+				~errorCode = 110 ; "Related tables are missing" ;
+				~errorCode = 111 ; "Field repetition is invalid" ;
+				~errorCode = 112 ; "Window is missing" ;
+				~errorCode = 113 ; "Function is missing" ;
+				~errorCode = 114 ; "File reference is missing" ;
+				~errorCode = 115 ; "Specified menu set is not present" ;
+				~errorCode = 116 ; "Specified layout object is not present" ;
+				~errorCode = 117 ; "Specified data source is not present" ;
+				~errorCode = 130 ; "Files are damaged or missing and must be reinstalled" ;
+				~errorCode = 131 ; "Language pack files are missing (such as template files)" ;
+				"Unknown error code"
+			) ;
+
+			~errorCode < 300 ;
+			Case (
+				~errorCode = 200 ; "Record access is denied" ;
+				~errorCode = 201 ; "Field cannot be modified" ;
+				~errorCode = 202 ; "Field access is denied" ;
+				~errorCode = 203 ; "No records in file to print, or password doesn't allow print access" ;
+				~errorCode = 204 ; "No access to field(s) in sort order" ;
+				~errorCode = 205 ; "User does not have access privileges to create new records; import will overwrite existing data" ;
+				~errorCode = 206 ; "User does not have password change privileges, or file is not modifiable" ;
+				~errorCode = 207 ; "User does not have sufficient privileges to change database schema, or file is not modifiable" ;
+				~errorCode = 208 ; "Password does not contain enough characters" ;
+				~errorCode = 209 ; "New password must be different from existing one" ;
+				~errorCode = 210 ; "User account is inactive" ;
+				~errorCode = 211 ; "Password has expired" ;
+				~errorCode = 212 ; "Invalid user account and/or password; please try again" ;
+				~errorCode = 213 ; "User account and/or password does not exist" ;
+				~errorCode = 214 ; "Too many login attempts" ;
+				~errorCode = 215 ; "Administrator privileges cannot be duplicated" ;
+				~errorCode = 216 ; "Guest account cannot be duplicated" ;
+				~errorCode = 217 ; "User does not have sufficient privileges to modify administrator account" ;
+				"Unknown error code"
+			) ;
+
+			~errorCode < 500 ;
+			Case (
+				~errorCode = 300 ; "File is locked or in use" ;
+				~errorCode = 301 ; "Record is in use by another user" ;
+				~errorCode = 302 ; "Table is in use by another user" ;
+				~errorCode = 303 ; "Database schema is in use by another user" ;
+				~errorCode = 304 ; "Layout is in use by another user" ;
+				~errorCode = 306 ; "Record modification ID does not match" ;
+				~errorCode = 400 ; "Find criteria are empty" ;
+				~errorCode = 401 ; "No records match the request" ;
+				~errorCode = 402 ; "Selected field is not a match field for a lookup" ;
+				~errorCode = 403 ; "Exceeding maximum record limit for trial version of FileMaker Pro" ;
+				~errorCode = 404 ; "Sort order is invalid" ;
+				~errorCode = 405 ; "Number of records specified exceeds number of records that can be omitted" ;
+				~errorCode = 406 ; "Replace/Reserialize criteria are invalid" ;
+				~errorCode = 407 ; "One or both match fields are missing (invalid relationship)" ;
+				~errorCode = 408 ; "Specified field has inappropriate data type for this operation" ;
+				~errorCode = 409 ; "Import order is invalid" ;
+				~errorCode = 410 ; "Export order is invalid" ;
+				~errorCode = 412 ; "Wrong version of FileMaker Pro used to recover file" ;
+				~errorCode = 413 ; "Specified field has inappropriate field type" ;
+				~errorCode = 414 ; "Layout cannot display the result" ;
+				~errorCode = 415 ; "One or more required related records are not available" ;
+				~errorCode = 416 ; "Primary key required from data source table" ;
+				~errorCode = 417 ; "Database is not supported for ODBC operations" ;
+				"Unknown error code"
+			) ;
+
+			~errorCode < 700 ;
+			Case (
+				~errorCode = 500 ; "Date value does not meet validation entry options" ;
+				~errorCode = 501 ; "Time value does not meet validation entry options" ;
+				~errorCode = 502 ; "Number value does not meet validation entry options" ;
+				~errorCode = 503 ; "Value in field is not within the range specified in validation entry options" ;
+				~errorCode = 504 ; "Value in field is not unique as required in validation entry options" ;
+				~errorCode = 505 ; "Value in field is not an existing value in the database file as required in validation entry options" ;
+				~errorCode = 506 ; "Value in field is not listed on the value list specified in validation entry option" ;
+				~errorCode = 507 ; "Value in field failed calculation test of validation entry option" ;
+				~errorCode = 508 ; "Invalid value entered in Find mode" ;
+				~errorCode = 509 ; "Field requires a valid value" ;
+				~errorCode = 510 ; "Related value is empty or unavailable" ;
+				~errorCode = 511 ; "Value in field exceeds maximum number of allowed characters" ;
+				~errorCode = 512 ; "Record was already modified by another user" ;
+				~errorCode = 513 ; "Record must have a value in some field to be created" ;
+				~errorCode = 600 ; "Print error has occurred" ;
+				~errorCode = 601 ; "Combined header and footer exceed one page" ;
+				~errorCode = 602 ; "Body doesn't fit on a page for current column setup" ;
+				~errorCode = 603 ; "Print connection lost" ;
+				"Unknown error code"
+			) ;
+
+			~errorCode < 800 ;
+			Case (
+				~errorCode = 700 ; "File is of the wrong file type for import" ;
+				~errorCode = 706 ; "EPSF file has no preview image" ;
+				~errorCode = 707 ; "Graphic translator cannot be found" ;
+				~errorCode = 708 ; "Can't import the file or need color monitor support to import file" ;
+				~errorCode = 709 ; "QuickTime movie import failed" ;
+				~errorCode = 710 ; "Unable to update QuickTime reference because the database file is read-only" ;
+				~errorCode = 711 ; "Import translator cannot be found" ;
+				~errorCode = 714 ; "Password privileges do not allow the operation" ;
+				~errorCode = 715 ; "Specified Excel worksheet or named range is missing" ;
+				~errorCode = 716 ; "A SQL query using DELETE, INSERT, or UPDATE is not allowed for ODBC import" ;
+				~errorCode = 717 ; "There is not enough XML/XSL information to proceed with the import or export" ;
+				~errorCode = 718 ; "Error in parsing XML file (from Xerces)" ;
+				~errorCode = 719 ; "Error in transforming XML using XSL (from Xalan)" ;
+				~errorCode = 720 ; "Error when exporting; intended format does not support repeating fields" ;
+				~errorCode = 721 ; "Unknown error occurred in the parser or the transformer" ;
+				~errorCode = 722 ; "Cannot import data into a file that has no fields" ;
+				~errorCode = 723 ; "You do not have permission to add records to or modify records in the target table" ;
+				~errorCode = 724 ; "You do not have permission to add records to the target table" ;
+				~errorCode = 725 ; "You do not have permission to modify records in the target table" ;
+				~errorCode = 726 ; "There are more records in the import file than in the target table; not all records were imported" ;
+				~errorCode = 727 ; "There are more records in the target table than in the import file; not all records were updated" ;
+				~errorCode = 729 ; "Errors occurred during import; records could not be imported" ;
+				~errorCode = 730 ; "Unsupported Excel version (convert file to Excel 7.0 (Excel 95), 97, 2000, XP, or 2007 format and try again)" ;
+				~errorCode = 731 ; "The file you are importing from contains no data" ;
+				~errorCode = 732 ; "This file cannot be inserted because it contains other files" ;
+				~errorCode = 733 ; "A table cannot be imported into itself" ;
+				~errorCode = 734 ; "This file type cannot be displayed as a picture" ;
+				~errorCode = 735 ; "This file type cannot be displayed as a picture; it will be inserted and displayed as a file" ;
+				~errorCode = 736 ; "Too much data to export to this format; it will be truncated" ;
+				~errorCode = 737 ; "Bento collection or library is missing; data cannot be imported" ;
+				"Unknown error code"
+			) ;
+
+			~errorCode < 900 ;
+			Case (
+				~errorCode = 800 ; "Unable to create file on disk" ;
+				~errorCode = 801 ; "Unable to create temporary file on System disk" ;
+				~errorCode = 802 ; "Unable to open file" ;
+				~errorCode = 803 ; "File is single user or host cannot be found" ;
+				~errorCode = 804 ; "File cannot be opened as read-only in its current state" ;
+				~errorCode = 805 ; "File is damaged; use Recover command" ;
+				~errorCode = 806 ; "File cannot be opened with this version of FileMaker Pro" ;
+				~errorCode = 807 ; "File is not a FileMaker Pro file or is severely damaged" ;
+				~errorCode = 808 ; "Cannot open file because access privileges are damaged" ;
+				~errorCode = 809 ; "Disk/volume is full" ;
+				~errorCode = 810 ; "Disk/volume is locked" ;
+				~errorCode = 811 ; "Temporary file cannot be opened as FileMaker Pro file" ;
+				~errorCode = 813 ; "Record Synchronization error on network" ;
+				~errorCode = 814 ; "File(s) cannot be opened because maximum number is open" ;
+				~errorCode = 815 ; "Couldn't open lookup file" ;
+				~errorCode = 816 ; "Unable to convert file" ;
+				~errorCode = 817 ; "Unable to open file because it does not belong to this solution" ;
+				~errorCode = 819 ; "Cannot save a local copy of a remote file" ;
+				~errorCode = 820 ; "File is in the process of being closed" ;
+				~errorCode = 821 ; "Host forced a disconnect" ;
+				~errorCode = 822 ; "FMI files not found; reinstall missing files" ;
+				~errorCode = 823 ; "Cannot set file to single-user, guests are connected" ;
+				~errorCode = 824 ; "File is damaged or not a FileMaker file" ;
+				"Unknown error code"
+			) ;
+
+			~errorCode < 1200 ;
+			Case (
+				~errorCode = 900 ; "General spelling engine error" ;
+				~errorCode = 901 ; "Main spelling dictionary not installed" ;
+				~errorCode = 902 ; "Could not launch the Help system" ;
+				~errorCode = 903 ; "Command cannot be used in a shared file" ;
+				~errorCode = 905 ; "No active field selected; command can only be used if there is an active field" ;
+				~errorCode = 906 ; "Current file must be shared in order to use this command" ;
+				~errorCode = 920 ; "Can’t initialize the spelling engine" ;
+				~errorCode = 921 ; "User dictionary cannot be loaded for editing" ;
+				~errorCode = 922 ; "User dictionary cannot be found" ;
+				~errorCode = 923 ; "User dictionary is read-only" ;
+				~errorCode = 951 ; "An unexpected error occurred (*)" ;
+				~errorCode = 954 ; "Unsupported XML grammar (*)" ;
+				~errorCode = 955 ; "No database name (*)" ;
+				~errorCode = 956 ; "Maximum number of database sessions exceeded (*)" ;
+				~errorCode = 957 ; "Conflicting commands (*)" ;
+				~errorCode = 958 ; "Parameter missing (*)" ;
+				"Unknown error code"
+			) ;
+
+			~errorCode < 1300 ;
+			Case (
+				~errorCode = 1200 ; "Generic calculation error" ;
+				~errorCode = 1201 ; "Too few parameters in the function" ;
+				~errorCode = 1202 ; "Too many parameters in the function" ;
+				~errorCode = 1203 ; "Unexpected end of calculation" ;
+				~errorCode = 1204 ; "Number, text constant, field name or \"(\" expected" ;
+				~errorCode = 1205 ; "Comment is not terminated with \"*/\"" ;
+				~errorCode = 1206 ; "Text constant must end with a quotation mark" ;
+				~errorCode = 1207 ; "Unbalanced parenthesis" ;
+				~errorCode = 1208 ; "Operator missing, function not found or \"(\" not expected" ;
+				~errorCode = 1209 ; "Name (such as field name or layout name) is missing" ;
+				~errorCode = 1210 ; "Plug-in function has already been registered" ;
+				~errorCode = 1211 ; "List usage is not allowed in this function" ;
+				~errorCode = 1212 ; "An operator (for example, +, -, *) is expected here" ;
+				~errorCode = 1213 ; "This variable has already been defined in the Let function" ;
+				~errorCode = 1214 ; "AVERAGE, COUNT, EXTEND, GETREPETITION, MAX, MIN, NPV, STDEV, SUM and GETSUMMARY: expression found where a field alone is needed" ;
+				~errorCode = 1215 ; "This parameter is an invalid Get function parameter" ;
+				~errorCode = 1216 ; "Only Summary fields allowed as first argument in GETSUMMARY" ;
+				~errorCode = 1217 ; "Break field is invalid" ;
+				~errorCode = 1218 ; "Cannot evaluate the number" ;
+				~errorCode = 1219 ; "A field cannot be used in its own formula" ;
+				~errorCode = 1220 ; "Field type must be normal or calculated" ;
+				~errorCode = 1221 ; "Data type must be number, date, time, or timestamp" ;
+				~errorCode = 1222 ; "Calculation cannot be stored" ;
+				~errorCode = 1223 ; "The function is not implemented" ;
+				~errorCode = 1224 ; "The function is not defined" ;
+				~errorCode = 1225 ; "The function is not supported in this context" ;
+				"Unknown error code"
+			) ;
+
+		// else
+			Case (
+				~errorCode = 1300 ; "The specified name can’t be used" ;
+				~errorCode = 1400 ; "ODBC driver initialization failed; make sure the ODBC drivers are properly installed" ;
+				~errorCode = 1401 ; "Failed to allocate environment (ODBC)" ;
+				~errorCode = 1402 ; "Failed to free environment (ODBC)" ;
+				~errorCode = 1403 ; "Failed to disconnect (ODBC)" ;
+				~errorCode = 1404 ; "Failed to allocate connection (ODBC)" ;
+				~errorCode = 1405 ; "Failed to free connection (ODBC)" ;
+				~errorCode = 1406 ; "Failed check for SQL API (ODBC)" ;
+				~errorCode = 1407 ; "Failed to allocate statement (ODBC)" ;
+				~errorCode = 1408 ; "Extended error (ODBC)" ;
+				~errorCode = 1409 ; "Error (ODBC)" ;
+				~errorCode = 1413 ; "Failed communication link (ODBC)" ;
+				~errorCode = 1450 ; "Action requires PHP privilege extension (*)" ;
+				~errorCode = 1451 ; "Action requires that current file be remote" ;
+				~errorCode = 1501 ; "SMTP authentication failed" ;
+				~errorCode = 1502 ; "Connection refused by SMTP server" ;
+				~errorCode = 1503 ; "Error with SSL" ;
+				~errorCode = 1504 ; "SMTP server requires the connection to be encrypted" ;
+				~errorCode = 1505 ; "Specified authentication is not supported by SMTP server" ;
+				~errorCode = 1506 ; "Email(s) could not be sent successfully" ;
+				~errorCode = 1507 ; "Unable to log in to the SMTP server" ;
+				"Unknown error code"
+			)
+		)
+] ;
+	Error ( "Fmp" ; ~errorCode ; ~errorDescription ; theErrorInfo )
+	// add additional info useful for debugging specific errors
+	& Case (
+		~errorCode = 0 ;
+		"" ;
+
+		~errorCode = 3 ;
+		# ( "WindowMode" ; Get ( WindowMode ) )
+			& # ( "SystemPlatform" ; Get ( SystemPlatform ) )
+		;
+
+		~errorCode = 9 ;
+		# ( "AccountPrivilegeSetName" ; Get ( AccountPrivilegeSetName ) ) ;
+
+		/* else */ ""
+	)
+)
