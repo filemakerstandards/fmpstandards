@@ -1,0 +1,50 @@
+/**
+ * =====================================
+ * LogDataSession
+ *
+ * RETURNS:
+ *		(string) Let format dictionary containing environmental data
+ *			pertaining to the current session.
+ *
+ * DEPENDENCIES:
+ *		$$SESSIONID global variable
+ *
+ * NOTES:
+ *		This function should be modified to capture the relevant session
+ *		values for your solution.
+ *		Add the data returned by this function to every log entry created.
+ *
+ * HISTORY:
+ *		CREATED on 2014-FEB-05 Daniel Smith dansmith65@gmail.com
+ * =====================================
+ */
+
+If ( IsEmpty ( $$SESSIONID ) ;
+	// session has not started yet, create a session id and return session data
+	Let ( $$SESSIONID = Get ( UUID ) ;
+		""
+		& "$ApplicationLanguage = " & Quote ( Get ( ApplicationLanguage ) ) & " ;¶"
+		& "$ApplicationVersion = " & Quote ( Get ( ApplicationVersion ) ) & " ;¶"
+		& "$ConnectionState = " & Get ( ConnectionState ) & " ;¶"
+		& "$CurrentTimestamp = GetAsTimeStamp ( " & Quote ( Get ( CurrentTimestamp ) ) & " ) ;¶"
+			// CurrentTimestamp: use for determining time zone offset from server
+		& "$Device = " & Get ( Device ) & " ;¶"
+		& "$EncryptionState = " & Quote ( Get ( EncryptionState ) ) & " ;¶"
+		& "$FileMakerPath = " & Quote ( Get ( FileMakerPath ) ) & " ;¶"
+		& "$HighContrastColor = " & Quote ( Get ( HighContrastColor ) ) & " ;¶"
+		& "$HighContrastState = " & Get ( HighContrastState ) & " ;¶"
+		& "$HostIPAddress = " & Quote ( Get ( HostIPAddress ) ) & " ;¶"
+		& "$HostName = " & Quote ( Get ( HostName ) ) & " ;¶"
+		& "$InstalledFMPlugins = " & Quote ( Get ( InstalledFMPlugins ) ) & " ;¶"
+		& "$ScreenDepth = " & Get ( ScreenDepth ) & " ;¶"
+		& "$ScreenHeight = " & Get ( ScreenHeight ) & " ;¶"
+		& "$ScreenWidth = " & Get ( ScreenWidth ) & " ;¶"
+		& "$SystemIPAddress = " & Quote ( Get ( SystemIPAddress ) ) & " ;¶"
+		& "$SystemLanguage = " & Quote ( Get ( SystemLanguage ) ) & " ;¶"
+		& "$SystemNICAddress = " & Quote ( Get ( SystemNICAddress ) ) & " ;¶"
+		& "$SystemPlatform = " & Get ( SystemPlatform ) & " ;¶"
+		& "$SystemVersion = " & Quote ( Get ( SystemVersion ) ) & " ;¶"
+		& "$UseSystemFormatsState = " & Get ( UseSystemFormatsState ) & " ;¶"
+	)
+)
+& "$SESSIONID = " & Quote ( $$SESSIONID ) & " ;¶"

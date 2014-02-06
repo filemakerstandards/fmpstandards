@@ -1,0 +1,41 @@
+/**
+ * =====================================
+ * LogWriteEnabled ( theLogLevel )
+ *
+ * RETURNS:
+ *		(boolean) True if logs of the specified level should be saved
+ *
+ * PARAMETERS:
+ *		theLogLevel = (numeric) 0 thru [n]
+ *
+ * NOTES:
+ *		Any necessary filtering logic can be used in this script. The most
+ *		efficient method is to hard-code a number into this calculation.
+ *
+ *		$logLevelToWriteOffset and $$LOGLEVELTOWRITEOFFSET allow a developer
+ *		to increase the ~logLevelToWrite by setting one or both of these
+ *		values. This is useful when debugging on a production file as it
+ *		allows you to keep the default ~logLevelToWrite value for most
+ *		users/scripts and only increase the verbosity of logging when
+ *		necessary.
+ *		Local and global variables are included to help manage scope. A
+ *		local variable would not be very effective at increasing verbosity
+ *		for an entire session; on the other hand, a local variable is
+ *		ideal for increasing verbosity for a single script (without
+ *		increasing for sub-scripts).
+ *		If using the LogData custom function, it is recommended to modify
+ *		it to add these two variables to the log, if they are not empty.
+ *
+ * HISTORY:
+ *		CREATED on 2014-FEB-05 Daniel Smith dansmith65@gmail.com
+ * =====================================
+ */
+
+Let ( [
+	// if the log level is less than or equal to this value, writing is enabled
+	~logLevelToWrite = 3
+		+ $logLevelToWriteOffset
+		+ $$LOGLEVELTOWRITEOFFSET
+] ;
+	theLogLevel ≤ ~logLevelToWrite
+)

@@ -1,12 +1,13 @@
 /**
  * =====================================
- * LogData ( logLevel )
+ * LogData ( theLogLevel ; theMessage )
  *
  * RETURNS:
  *		(string) Let format dictionary which describes the current environment.
  *
  * PARAMETERS:
- *		logLevel = (numeric) 0 thru [n]
+ *		theLogLevel = (numeric) 0 thru [n]
+ *		theErrorInfo = (text, optional) some text describing the log entry
  *
  * EXAMPLE:
  *		LogData ( LogWarning )
@@ -14,9 +15,6 @@
  *		// Where your own custom function LogWarning
  *		// returns the constant of 1 or a variable
  *		// named $logLevelDebug returns a value of 3.
- *
- * DEPENDENCIES:
- *		Custom Functions: #
  *
  * NOTES:
  *		This function should be modified to capture any relevant values for
@@ -28,56 +26,70 @@
  *		See: http://en.wikipedia.org/wiki/Syslog for logging references.
  *
  * HISTORY:
+ *		MODIFIED on 2014-FEB-05 by Daniel Smith dansmith65@gmail.com
+ *			- prepend parameter with "the" to prevent collision
+ *			- add theMessage parameter
+ *			- remove session-specific values (see LogDataSession function)
+ *			- manually encode name/value pairs, remove dependency on #
+ *			- add values added in FileMaker 13
+ *			- disable UserCount
  *		MODIFIED on 2014-JAN-11 matt@filemakermagazine.com to use numeric logLevel
  *		MODIFIED on 2012-NOV-21 by Daniel Smith dansmith65@gmail.com
  *			- don't access $error variable directly
  *		CREATED on 2012-NOV-21 Daniel Smith dansmith65@gmail.com
  *		INSPIRED by ErrorData by matt@filemakermagazine.com
  *			https://github.com/filemakerstandards/fmpstandards/tree/master/Functions
+ *
+ * REFERENCE:
+ *		http://filemakerstandards.org/x/LACm
  * =====================================
  */
 
 // ALL LOG LEVELS
-# ( "LogLevel" ; logLevel )
-& # ( "AccountName" ; Get ( AccountName ) )
-& # ( "ApplicationVersion" ; Get ( ApplicationVersion ) )
-& # ( "CurrentHostTimestamp" ; Get ( CurrentHostTimestamp ) )
-& # ( "FileName" ; Get ( FileName ) )
-& # ( "ScriptName" ; Get ( ScriptName ) )
-& # ( "ScriptParameter" ; Get ( ScriptParameter ) )
-& # ( "ScriptResult" ; Get ( ScriptResult ) )
-& # ( "SystemPlatform" ; Get ( SystemPlatform ) )
-& # ( "WindowName" ; Get ( WindowName ) )
+"$LogLevel = " & theLogLevel & " ;¶"
+& If ( not IsEmpty ( theMessage ) ;
+	"$message = " & Quote ( theMessage ) & " ;¶"
+)
+& "$AccountName = " & Quote ( Get ( AccountName ) ) & " ;¶"
+& "$CurrentHostTimestamp = GetAsTimeStamp ( " & Quote ( Get ( CurrentHostTimestamp ) ) & " ) ;¶"
+// possibly use UTC in addition to/instead of CurrentHostTimeStamp, may want to only store this once per session
+//    FM12: Get ( UTCmSecs )
+//    FM13: Get ( CurrentTimeUTCMilliseconds )
+& "$FileName = " & Quote ( Get ( FileName ) ) & " ;¶"
+& "$ScriptName = " & Quote ( Get ( ScriptName ) ) & " ;¶"
+& "$ScriptParameter = " & Quote ( Get ( ScriptParameter ) ) & " ;¶"
+& "$ScriptResult = " & Quote ( Get ( ScriptResult ) ) & " ;¶"
 
 // LEVEL 1
 & If ( logLevel ≤ 1 ;
-	# ( "AllowAbortState" ; Get ( AllowAbortState ) )
-	& # ( "ErrorCaptureState" ; Get ( ErrorCaptureState ) )
-	& # ( "FilePath" ; Get ( FilePath ) )
-	& # ( "LayoutAccess" ; Get ( LayoutAccess ) )
-	& # ( "LayoutName" ; Get ( LayoutName ) )
-	& # ( "LayoutTableName" ; Get ( LayoutTableName ) )
-	& # ( "LayoutViewState" ; Get ( LayoutViewState ) )
-	& # ( "MultiUserState" ; Get ( MultiUserState ) )
-	& # ( "RecordAccess" ; Get ( RecordAccess ) )
-	& # ( "RecordID" ; Get ( RecordID ) )
-	& # ( "RecordOpenCount" ; Get ( RecordOpenCount ) )
-	& # ( "RecordOpenState" ; Get ( RecordOpenState ) )
-	& # ( "SortState" ; Get ( SortState ) )
-	& # ( "StatusAreaState" ; Get ( StatusAreaState ) )
-	& # ( "SystemVersion" ; Get ( SystemVersion ) )
-	& # ( "UserCount" ; Get ( UserCount ) )
-	& # ( "UserName" ; Get ( UserName ) )
-	& # ( "WindowMode" ; Get ( WindowMode ) )
-	& # ( "WindowStyle" ; Get ( WindowStyle ) )
-	& # ( "WindowVisible" ; Get ( WindowVisible ) )
-	& If (not isempty( Get ( ActiveFieldName ) );
-		# ( "ActiveFieldName" ; Get ( ActiveFieldName ) )
-			& # ( "ActiveFieldTableName" ; Get ( ActiveFieldTableName ) )
+	""
+	& "$AllowAbortState = " & Get ( AllowAbortState ) & " ;¶"
+	& "$ErrorCaptureState = " & Get ( ErrorCaptureState ) & " ;¶"
+	& "$FilePath = " & Quote ( Get ( FilePath ) ) & " ;¶"
+	& "$LayoutAccess = " & Get ( LayoutAccess ) & " ;¶"
+	& "$LayoutName = " & Quote ( Get ( LayoutName ) ) & " ;¶"
+	& "$LayoutTableName = " & Quote ( Get ( LayoutTableName ) ) & " ;¶"
+	& "$LayoutViewState = " & Get ( LayoutViewState ) & " ;¶"
+	& "$MultiUserState = " & Get ( MultiUserState ) & " ;¶"
+	& "$RecordAccess = " & Get ( RecordAccess ) & " ;¶"
+	& "$RecordID = " & Get ( RecordID ) & " ;¶"
+	& "$RecordOpenCount = " & Get ( RecordOpenCount ) & " ;¶"
+	& "$RecordOpenState = " &  Get ( RecordOpenState ) & " ;¶"
+	& "$SortState = " & Get ( SortState ) & " ;¶"
+	& "$StatusAreaState = " & Get ( StatusAreaState ) & " ;¶"
+	// UserCount is disabled by default because it is slow to calculate (~1000 times slower than Get ( UserName ) )
+	// & "$UserCount = " & Get ( UserCount ) & " ;¶"
+	& "$UserName = " & Quote ( Get ( UserName ) ) & " ;¶"
+	& "$WindowMode = " & Get ( WindowMode ) & " ;¶"
+	& "$WindowName = " & Quote ( Get ( WindowName ) ) & " ;¶"
+	& "$WindowOrientation = " & Quote ( Get ( WindowOrientation ) ) & " ;¶"
+	& "$WindowStyle = " & Get ( WindowStyle ) & " ;¶"
+	& "$WindowVisible = " & Get ( WindowVisible ) & " ;¶"
+	& If ( not IsEmpty ( Get ( ActiveFieldName ) ) ;
+		"$ActiveFieldName = " & Quote ( Get ( ActiveFieldName ) ) & " ;¶"
+		& "$ActiveFieldTableName = " & Quote ( Get ( ActiveFieldTableName ) ) & " ;¶"
 	)
-	& If ( not isempty( Get ( ActiveLayoutObjectName ) );
-		# ( "ActiveLayoutObjectName" ; Get ( ActiveLayoutObjectName ) )
+	& If ( not IsEmpty ( Get ( ActiveLayoutObjectName ) ) ;
+		"$ActiveLayoutObjectName = " & Quote ( Get ( ActiveLayoutObjectName ) ) & " ;¶"
 	)
 )
-
-
