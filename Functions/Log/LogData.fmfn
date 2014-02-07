@@ -61,7 +61,7 @@
 & "$ScriptResult = " & Quote ( Get ( ScriptResult ) ) & " ;¶"
 
 // LEVEL 1
-& If ( logLevel ≤ 1 ;
+& If ( theLogLevel ≤ 1 ;
 	""
 	& "$AllowAbortState = " & Get ( AllowAbortState ) & " ;¶"
 	& "$ErrorCaptureState = " & Get ( ErrorCaptureState ) & " ;¶"
