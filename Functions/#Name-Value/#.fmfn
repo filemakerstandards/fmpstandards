@@ -16,6 +16,8 @@
  * DEPENDENCIES: none
  *
  * HISTORY:
+ *		MODIFIED on 2014-05-25 by Jeremy Bante <http://scr.im/jbante> to detect
+ *		type using a different method suggested by Arnold Kegebein.
  *		MODIFIED on 2013-12-24 by Jeremy Bante <http://scr.im/jbante> to return
  *		an error if name contains a carriage return (Char ( 13 )), and removing
  *		explicit encoding for line feeds.
@@ -51,30 +53,23 @@ Let ( [
 			[ "/*start*/$" ; "" ] ;
 			[ "/*start*/" ; "" ]
 		) ;
-	~text = GetAsText ( value ) ;
+	~plusOneText = GetAsText ( value + 1 ) ;
 	~number = GetAsNumber ( value ) ;
-	~validDate =
-		IsValid ( GetAsDate ( ~text ) )
-		and not IsEmpty ( ~number ) ;
-	~validTime =
-		IsValid ( GetAsTime ( ~text ) )
-		and Position ( ~text ; ":" ; 1 ; 1 ) > 0
-		and not IsEmpty ( ~number ) ;
 	~value =
 		Case (
 			value = "" or value = "?" ;
 				Quote ( value ) ;
 
-			~validTime and ~validDate ;
+			GetAsText ( GetAsTimestamp ( value ) + 1 ) = ~plusOneText ;
 				"GetAsTimestamp ( " & Quote ( value ) & " )" ;
 
-			~validTime ;
+			GetAsText ( GetAsTime ( value ) + 1 ) = ~plusOneText ;
 				"GetAsTime ( " & Quote ( value ) & " )" ;
 
-			~validDate ;
+			GetAsText ( GetAsDate ( value ) + 1 ) = ~plusOneText ;
 				"GetAsDate ( " & Quote ( value ) & " )" ;
 
-			~text ≠ GetAsText ( ~number ) ;
+			value ≠ ~number ;
 				Quote ( value ) ;
 
 			/* Else */
