@@ -1,0 +1,67 @@
+/**
+ * =====================================
+ * Error ( theErrorType ; theErrorCode ; theErrorDescription ; theErrorInfo )
+ *
+ * RETURNS:
+ *		Let Notation containing information about the error and the environment
+ *		it occurred in.
+ *
+ * PARAMETERS:
+ *		theErrorType = (text) origin of the error
+ *			(e.g., "Fmp", "App", "Plugin: ScriptMaster", "mFM: JSON", etc.)
+ *		theErrorCode = (number) code for the error
+ *		theErrorDescription = (text) description of the error, preferably human
+ *			readable and decipherable
+ *		theErrorInfo = (text, optional) some text describing the particular
+ *			instance of this error. This should help a developer locate where
+ *			in a script the error occured.
+ *			(e.g., "create new invoice record")
+ *
+ * DEPENDENCIES:
+ *		Custom Functions: #
+ *
+ * NOTE:
+ *		This function contains a recommended set of environmental data, but you
+ *		may choose to add or remove name/value pairs from this function as you
+ *		see fit for your solution. All error generating custom functions
+ *		call this function, so it is the central place to define default
+ *		environmental data collected when an error occurs.
+ *
+ *		Environmental data that is likely to change from the time the error occurs
+ *		to the time log data is collected should be included in this function.
+ *
+ *
+ * HISTORY:
+ *		MODIFIED on 2013-NOV-22 by Daniel Smith dansmith65@gmail.com
+ *			- change name to Error, update documentation
+ *		CREATED on 2013-OCT-11 by Daniel Smith dansmith65@gmail.com
+ *
+ * REFERENCES:
+ *		http://filemakerstandards.org/x/AoA-/
+ * =====================================
+ */
+
+// information about the error
+// these should NOT be modified, they should be consistent from one database to the next
+# ( "errorType" ; theErrorType )
+& # ( "errorCode" ; theErrorCode )
+& # ( "errorDescription" ; theErrorDescription )
+& If ( not IsEmpty ( theErrorInfo ) and GetAsBoolean ( theErrorCode ) ;
+	# ( "errorInfo" ; theErrorInfo )
+)
+
+
+// information about the environment
+// these values should be adjusted as needed for the database
+& If (
+	GetAsBoolean ( theErrorCode ) ;
+	""
+		& # ( "AllowAbortState" ; Get ( AllowAbortState ) )
+		& # ( "CurrentHostTimestamp" ; Get ( CurrentHostTimeStamp ) )
+		& # ( "ErrorCaptureState" ; Get ( ErrorCaptureState ) )
+		& # ( "LastODBCError" ; Get ( LastODBCError ) )
+		& # ( "ScriptName" ; Get ( ScriptName ) )
+		& # ( "ScriptParameter" ; Get ( ScriptParameter ) )
+		& # ( "ScriptResult" ; Get ( ScriptResult ) )
+		& # ( "UserCount" ; Get ( UserCount ) )
+)

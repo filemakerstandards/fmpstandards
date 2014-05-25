@@ -1,0 +1,33 @@
+/**
+ * =====================================
+ * ErrorFound ( theErrorData )
+ *
+ * RETURNS:
+ *		ErrorCode contained in theErrorData as a Boolean. In other words,
+ *		if any error occurred at all, return True (1), otherwise return
+ *		False (0).
+ *
+ * PARAMETERS:
+ *		theErrorData = (let notation) output of Error custom function
+ *
+ * DEPENDENCIES:
+ *		Custom Functions: #Get
+ *
+ * HISTORY:
+ *		MODIFIED on 2013-NOV-22 by Daniel Smith dansmith65@gmail.com
+ *			- renamed to ErrorFound, update documentation
+ *		MODIFIED on 2013-OCT-11 by Daniel Smith dansmith65@gmail.com
+ *			- renamed from IsError to #IsError
+ *			- update documentation in script header
+ *		MODIFIED on 2012-NOV-21 by Daniel Smith dansmith65@gmail.com
+ *			- don't access $error variable directly
+ *		CREATED on 2012-NOV-20 Daniel Smith dansmith65@gmail.com
+ *
+ * REFERENCES:
+ *		http://filemakerstandards.org/x/AoA-/
+ * =====================================
+ */
+
+GetAsBoolean (
+	#Get ( theErrorData ; "errorCode" )
+)
