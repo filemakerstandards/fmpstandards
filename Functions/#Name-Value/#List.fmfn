@@ -18,6 +18,8 @@
  * DEPENDENCIES: none
  *
  * HISTORY:
+ *		MODIFIED on 2014-05-26 by Jeremy Bante <http://scr.im/jbante> to detect
+ *		type using a different method suggested by Arnold Kegebein.
  *		MODIFIED on 2013-12-24 by Jeremy Bante <http://scr.im/jbante> to
  *		specially encode newline characters in values, and to update type
  *		detection to match the # function.
@@ -28,30 +30,23 @@
  */
 
 Let ( [
-	~text = GetAsText ( value ) ;
+	~plusOneText = GetAsText ( value + 1 ) ;
 	~number = GetAsNumber ( value ) ;
-	~validDate =
-		IsValid ( GetAsDate ( ~text ) )
-		and not IsEmpty ( ~number ) ;
-	~validTime =
-		IsValid ( GetAsTime ( ~text ) )
-		and Position ( ~text ; ":" ; 1 ; 1 ) > 0
-		and not IsEmpty ( ~number ) ;
 	~value =
 		Case (
 			value = "" or value = "?" ;
 				Quote ( value ) ;
 
-			~validTime and ~validDate ;
+			GetAsText ( GetAsTimestamp ( value ) + 1 ) = ~plusOneText ;
 				"GetAsTimestamp ( " & Quote ( value ) & " )" ;
 
-			~validTime ;
+			GetAsText ( GetAsTime ( value ) + 1 ) = ~plusOneText ;
 				"GetAsTime ( " & Quote ( value ) & " )" ;
 
-			~validDate ;
+			GetAsText ( GetAsDate ( value ) + 1 ) = ~plusOneText ;
 				"GetAsDate ( " & Quote ( value ) & " )" ;
 
-			~text ≠ GetAsText ( ~number ) ;
+			value ≠ ~number ;
 				Substitute ( Quote ( value ) ;
 					[ Char ( 10 ) ; "\" & Char ( 10 ) & \"" ] ;
 					[ Char ( 8232 ) ; "\" & Char ( 8232 ) & \"" ] ;
