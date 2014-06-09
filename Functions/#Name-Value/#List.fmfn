@@ -18,6 +18,8 @@
  * DEPENDENCIES: none
  *
  * HISTORY:
+ *		MODIFIED on 2014-06-06 by Jeremy Bante <http://scr.im/jbante> to fix an
+ *		issue where long sequences of digits could be interpreted as timestamps.
  *		MODIFIED on 2014-05-26 by Jeremy Bante <http://scr.im/jbante> to detect
  *		type using a different method suggested by Arnold Kegebein.
  *		MODIFIED on 2013-12-24 by Jeremy Bante <http://scr.im/jbante> to
@@ -34,7 +36,7 @@ Let ( [
 	~number = GetAsNumber ( value ) ;
 	~value =
 		Case (
-			value = "" or value = "?" ;
+			value = "" or value = "?" or ~number = "?" ;
 				Quote ( value ) ;
 
 			GetAsText ( GetAsTimestamp ( value ) + 1 ) = ~plusOneText ;
