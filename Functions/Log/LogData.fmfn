@@ -1,31 +1,33 @@
 /**
  * =====================================
- * LogData ( theLogLevel ; theMessage )
+ * LogData ( theLogLevel ; theLogMessage )
  *
  * RETURNS:
  *		(string) Let format dictionary which describes the current environment.
  *
  * PARAMETERS:
  *		theLogLevel = (numeric) 0 thru [n]
- *		theErrorInfo = (text, optional) some text describing the log entry
+ *		theLogMessage = (text, optional) some text describing the log entry
  *
  * EXAMPLE:
- *		LogData ( LogWarning )
- *		LogData ( $logLevelDebug )
- *		// Where your own custom function LogWarning
- *		// returns the constant of 1 or a variable
- *		// named $logLevelDebug returns a value of 3.
+ *		LogData ( LogLevel2Warn ; "error when going to layout: 'Customer: Detail'" )
+ *			// where LogLevel2Warn is a custom function which returns a number
+ *		LogData ( $logLevelDebug ; "start section: create related records" )
+ *			// where $logLevelDebug contains the numeric representation of a debug level log entry
+ *		LogData ( 3 ; "script runtime: 0.3 seconds" )
  *
  * NOTES:
  *		This function should be modified to capture any relevant values for
- *		your solution. This includes any plugin or solution specific data desired.
- *		The level/amount of data returned increases numerically. You can add
- *		as much data as needed. You can also define the log levels by using
- *		separate custom functions with the prefix of Log* - such as LogWarning,
- *		LogError, LogCritical, LogDebug, etc.
- *		See: http://en.wikipedia.org/wiki/Syslog for logging references.
+ *		your solution.
  *
  * HISTORY:
+ *		MODIFIED on 2014-OCT-02 by Daniel Smith dansmith65@gmail.com
+ *			- add: AccountPrivilegeSetName, CurrentPrivilegeSetName, logLevelToWriteOffset, LOGLEVELTOWRITEOFFSETglobal
+ *			- move UserName to the ALL LOG LEVELS section (helps to differentiate two users logged on with the same account)
+ *			- include additional detail when log level is ≤ 2 rather than ≤ 1
+ *			- change theMessage parameter to theLogMessage
+ *			- encode theLogMessage parameter as logMessage instead of message
+ *			- modify documentation/notes
  *		MODIFIED on 2014-FEB-05 by Daniel Smith dansmith65@gmail.com
  *			- prepend parameter with "the" to prevent collision
  *			- add theMessage parameter
@@ -46,11 +48,13 @@
  */
 
 // ALL LOG LEVELS
+// ============================================================================
 "$LogLevel = " & theLogLevel & " ;¶"
-& If ( not IsEmpty ( theMessage ) ;
-	"$message = " & Quote ( theMessage ) & " ;¶"
+& If ( not IsEmpty ( theLogMessage ) ;
+	"$logMessage = " & Quote ( theLogMessage ) & " ;¶"
 )
 & "$AccountName = " & Quote ( Get ( AccountName ) ) & " ;¶"
+& "$UserName = " & Quote ( Get ( UserName ) ) & " ;¶"
 & "$CurrentHostTimestamp = GetAsTimeStamp ( " & Quote ( Get ( CurrentHostTimestamp ) ) & " ) ;¶"
 // possibly use UTC in addition to/instead of CurrentHostTimeStamp, may want to only store this once per session
 //    FM12: Get ( UTCmSecs )
@@ -60,8 +64,24 @@
 & "$ScriptParameter = " & Quote ( Get ( ScriptParameter ) ) & " ;¶"
 & "$ScriptResult = " & Quote ( Get ( ScriptResult ) ) & " ;¶"
 
-// LEVEL 1
-& If ( theLogLevel ≤ 1 ;
+// if account priv. set and current priv. set are different, there are two reasons I know of that can cause this:
+//	1. script was run with Full Access privileges
+//	2. account was changed while user was logged in and they have not logged out/in again
+& "$AccountPrivilegeSetName = " & Quote ( Get ( AccountPrivilegeSetName ) ) & " ;¶"
+& "$CurrentPrivilegeSetName = " & Quote ( Get ( CurrentPrivilegeSetName ) ) & " ;¶"
+
+// used by LogWriteEnabled custom function:
+& If ( not IsEmpty ( $logLevelToWriteOffset ) ;
+	"$logLevelToWriteOffset = " & $logLevelToWriteOffset & " ;¶"
+)
+& If ( not IsEmpty ( $$LOGLEVELTOWRITEOFFSET ) ;
+	"$LOGLEVELTOWRITEOFFSETglobal = " & $$LOGLEVELTOWRITEOFFSET & " ;¶"
+)
+
+
+// LOG LEVELS ≤ 2
+// ============================================================================
+& If ( theLogLevel ≤ 2 ;
 	""
 	& "$AllowAbortState = " & Get ( AllowAbortState ) & " ;¶"
 	& "$ErrorCaptureState = " & Get ( ErrorCaptureState ) & " ;¶"
@@ -79,7 +99,6 @@
 	& "$StatusAreaState = " & Get ( StatusAreaState ) & " ;¶"
 	// UserCount is disabled by default because it is slow to calculate (~1000 times slower than Get ( UserName ) )
 	// & "$UserCount = " & Get ( UserCount ) & " ;¶"
-	& "$UserName = " & Quote ( Get ( UserName ) ) & " ;¶"
 	& "$WindowMode = " & Get ( WindowMode ) & " ;¶"
 	& "$WindowName = " & Quote ( Get ( WindowName ) ) & " ;¶"
 	& "$WindowOrientation = " & Quote ( Get ( WindowOrientation ) ) & " ;¶"

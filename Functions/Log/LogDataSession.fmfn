@@ -13,21 +13,35 @@
  *		This function should be modified to capture the relevant session
  *		values for your solution.
  *		Add the data returned by this function to every log entry created.
+ *		In a multi-file solution, consider these options:
+ *
+ *		1.	Calling this function from the file that writes the logs will
+ *			cause a session to include any file that was used the entire
+ *			time the log writing file was open.
+ *
+ *		2.	Calling this function from every file will allow each file
+ *			to maintain their own session, but will not easily allow you to
+ *			see which files were opened during a single session.
  *
  * HISTORY:
+ *		MODIFIED on 2014-OCT-02 Daniel Smith dansmith65@gmail.com
+ *			- update documentation
  *		CREATED on 2014-FEB-05 Daniel Smith dansmith65@gmail.com
  * =====================================
  */
 
 If ( IsEmpty ( $$SESSIONID ) ;
-	// session has not started yet, create a session id and return session data
+	// session has not started yet, so create a session id and return session data
 	Let ( $$SESSIONID = Get ( UUID ) ;
 		""
 		& "$ApplicationLanguage = " & Quote ( Get ( ApplicationLanguage ) ) & " ;¶"
 		& "$ApplicationVersion = " & Quote ( Get ( ApplicationVersion ) ) & " ;¶"
 		& "$ConnectionState = " & Get ( ConnectionState ) & " ;¶"
 		& "$CurrentTimestamp = GetAsTimeStamp ( " & Quote ( Get ( CurrentTimestamp ) ) & " ) ;¶"
-			// CurrentTimestamp: use for determining time zone offset from server
+			/**
+			 * CurrentTimestamp: use for determining time zone offset from server
+			 * by comparing the different with Get ( CurrentHostTimestamp )
+			 */
 		& "$Device = " & Get ( Device ) & " ;¶"
 		& "$EncryptionState = " & Quote ( Get ( EncryptionState ) ) & " ;¶"
 		& "$FileMakerPath = " & Quote ( Get ( FileMakerPath ) ) & " ;¶"
