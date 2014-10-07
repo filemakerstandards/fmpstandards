@@ -16,6 +16,8 @@
  * DEPENDENCIES: none
  *
  * HISTORY:
+ *		MODIFIED on 2014-10-07 by Daniel Smith dansmith65@gmail.com to prevent
+ *		from returning an EvaluationError.
  *		MODIFIED on 2014-06-06 by Jeremy Bante <http://scr.im/jbante> to fix an
  *		issue where long sequences of digits could be interpreted as timestamps.
  *		MODIFIED on 2014-05-25 by Jeremy Bante <http://scr.im/jbante> to detect
@@ -56,19 +58,25 @@ Let ( [
 			[ "/*start*/" ; "" ]
 		) ;
 	~plusOneText = GetAsText ( value + 1 ) ;
+	~isValidDate = not EvaluationError ( GetAsDate ( value ) ) ;
+	~isValidTime = not EvaluationError ( GetAsTime ( value ) ) ;
 	~number = GetAsNumber ( value ) ;
 	~value =
 		Case (
 			value = "" or value = "?" or ~number = "?" ;
 				Quote ( value ) ;
 
-			GetAsText ( GetAsTimestamp ( value ) + 1 ) = ~plusOneText ;
+			~isValidDate
+			and ~isValidTime
+			and GetAsText ( GetAsTimestamp ( value ) + 1 ) = ~plusOneText ;
 				"GetAsTimestamp ( " & Quote ( value ) & " )" ;
 
-			GetAsText ( GetAsTime ( value ) + 1 ) = ~plusOneText ;
+			~isValidTime
+			and GetAsText ( GetAsTime ( value ) + 1 ) = ~plusOneText ;
 				"GetAsTime ( " & Quote ( value ) & " )" ;
 
-			GetAsText ( GetAsDate ( value ) + 1 ) = ~plusOneText ;
+			~isValidDate
+			and GetAsText ( GetAsDate ( value ) + 1 ) = ~plusOneText ;
 				"GetAsDate ( " & Quote ( value ) & " )" ;
 
 			value ≠ ~number ;

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-16"?>
-<FMPReport link="Summary.xml" creationTime="1:28:25 PM" creationDate="10/7/2014" type="Report" version="13.0v3">
+<FMPReport link="Summary.xml" creationTime="3:30:02 PM" creationDate="10/7/2014" type="Report" version="13.0v3">
 <File name="FM-Parameters.fmp12" path="E:\Dan\GitHub\fmpstandards\Functions\#Name-Value\">
 <BaseTableCatalog>
 	<BaseTable id="130" records="0" name="NullTable">
@@ -12606,8 +12606,8 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<Text> HISTORY: (open comment to view full history)</Text>
 				</Step>
 				<Step enable="True" id="89" name="Comment">
-					<StepText># Modified on 2014-06-06 by Jeremy Bante &lt;http://scr.im/jbante&gt;	- Adding test for type detection in long digit sequencesModified on 2014-05-25 by Jeremy Bante &lt;http://scr.im/jbante&gt;	- Checking that strings of digits with invalid date separators are not interpreted as dates Modified on 2013-12-23 by Jeremy Bante &lt;http://scr.im/jbante&gt;.	- Guarantee that sample names do not contain carriage returns.	- Expanding character space for names to include spaces (Char ( 32 )).	- Randomly insert newline characters (except carriage returns) in names.	- Delegate generation of names to a subscript.	- Simplifying whitespace character test Modified on 2013-12-17 by John Jones &lt;john.christopher@alumni.virginia.edu&gt; to test for escaping LF in the value. Modified on 2013-09-03 by Daniel Smith dansmith65@gmail.com to test for whitespace as the valueModified on 2013-07-26 by Jeremy Bante &lt;http://scr.im/jbante&gt; to test for certain type detection bugs confusing dates and times with numbers.Modified on 2013-04-15 by Jeremy Bante &lt;http://scr.im/jbante&gt; to not wrap numbers in GetAsNumber.Modified on 2013-01-14 by Daniel Smith dansmith65@gmail.com	- rename tests	- expect a trailing return when an error occurs	- add tests: &quot;Valid value: ?&quot;, &quot;Valid name: numbers only&quot;	- modify test to not loop: &quot;Valid value: empty&quot;Modified on 2012-12-17 by Jeremy Bante &lt;http://scr.im/jbante&gt; to exclude characters below 33 from test names.Modified on 2012-12-13 by Jeremy Bante &lt;http://scr.im/jbante&gt; to return the passRatio result.Modified on 2012-12-12 by Jeremy Bante &lt;http://scr.im/jbante&gt;.	- Modified tests to include larger ranges of possible values.	- Modified looping tests to run to a maximum time rather than number of iterations.Modified on 2012-12-12 by Daniel Smith dansmith65@gmail.com	- added tests for a version of the function that will preserve data type	- add $minCharCode and $maxCharCode variables to limit the character set used for generating test dataCreated on 2012-11-10 by Jeremy Bante &lt;http://scr.im/jbante&gt;.</StepText>
-					<Text> Modified on 2014-06-06 by Jeremy Bante &lt;http://scr.im/jbante&gt;	- Adding test for type detection in long digit sequencesModified on 2014-05-25 by Jeremy Bante &lt;http://scr.im/jbante&gt;	- Checking that strings of digits with invalid date separators are not interpreted as dates Modified on 2013-12-23 by Jeremy Bante &lt;http://scr.im/jbante&gt;.	- Guarantee that sample names do not contain carriage returns.	- Expanding character space for names to include spaces (Char ( 32 )).	- Randomly insert newline characters (except carriage returns) in names.	- Delegate generation of names to a subscript.	- Simplifying whitespace character test Modified on 2013-12-17 by John Jones &lt;john.christopher@alumni.virginia.edu&gt; to test for escaping LF in the value. Modified on 2013-09-03 by Daniel Smith dansmith65@gmail.com to test for whitespace as the valueModified on 2013-07-26 by Jeremy Bante &lt;http://scr.im/jbante&gt; to test for certain type detection bugs confusing dates and times with numbers.Modified on 2013-04-15 by Jeremy Bante &lt;http://scr.im/jbante&gt; to not wrap numbers in GetAsNumber.Modified on 2013-01-14 by Daniel Smith dansmith65@gmail.com	- rename tests	- expect a trailing return when an error occurs	- add tests: &quot;Valid value: ?&quot;, &quot;Valid name: numbers only&quot;	- modify test to not loop: &quot;Valid value: empty&quot;Modified on 2012-12-17 by Jeremy Bante &lt;http://scr.im/jbante&gt; to exclude characters below 33 from test names.Modified on 2012-12-13 by Jeremy Bante &lt;http://scr.im/jbante&gt; to return the passRatio result.Modified on 2012-12-12 by Jeremy Bante &lt;http://scr.im/jbante&gt;.	- Modified tests to include larger ranges of possible values.	- Modified looping tests to run to a maximum time rather than number of iterations.Modified on 2012-12-12 by Daniel Smith dansmith65@gmail.com	- added tests for a version of the function that will preserve data type	- add $minCharCode and $maxCharCode variables to limit the character set used for generating test dataCreated on 2012-11-10 by Jeremy Bante &lt;http://scr.im/jbante&gt;.</Text>
+					<StepText># Modified on 2014-10-07 by Daniel Smith dansmith65@gmail.com	- for all tests: evaluate in a Let statement and test for EvaluationError = 0	- for all tests: add evaluateErrorActual	- don&apos;t use # function to encode parameter sent to Generate Sample Name scriptModified on 2014-06-06 by Jeremy Bante &lt;http://scr.im/jbante&gt;	- Adding test for type detection in long digit sequencesModified on 2014-05-25 by Jeremy Bante &lt;http://scr.im/jbante&gt;	- Checking that strings of digits with invalid date separators are not interpreted as dates Modified on 2013-12-23 by Jeremy Bante &lt;http://scr.im/jbante&gt;.	- Guarantee that sample names do not contain carriage returns.	- Expanding character space for names to include spaces (Char ( 32 )).	- Randomly insert newline characters (except carriage returns) in names.	- Delegate generation of names to a subscript.	- Simplifying whitespace character test Modified on 2013-12-17 by John Jones &lt;john.christopher@alumni.virginia.edu&gt; to test for escaping LF in the value. Modified on 2013-09-03 by Daniel Smith dansmith65@gmail.com to test for whitespace as the valueModified on 2013-07-26 by Jeremy Bante &lt;http://scr.im/jbante&gt; to test for certain type detection bugs confusing dates and times with numbers.Modified on 2013-04-15 by Jeremy Bante &lt;http://scr.im/jbante&gt; to not wrap numbers in GetAsNumber.Modified on 2013-01-14 by Daniel Smith dansmith65@gmail.com	- rename tests	- expect a trailing return when an error occurs	- add tests: &quot;Valid value: ?&quot;, &quot;Valid name: numbers only&quot;	- modify test to not loop: &quot;Valid value: empty&quot;Modified on 2012-12-17 by Jeremy Bante &lt;http://scr.im/jbante&gt; to exclude characters below 33 from test names.Modified on 2012-12-13 by Jeremy Bante &lt;http://scr.im/jbante&gt; to return the passRatio result.Modified on 2012-12-12 by Jeremy Bante &lt;http://scr.im/jbante&gt;.	- Modified tests to include larger ranges of possible values.	- Modified looping tests to run to a maximum time rather than number of iterations.Modified on 2012-12-12 by Daniel Smith dansmith65@gmail.com	- added tests for a version of the function that will preserve data type	- add $minCharCode and $maxCharCode variables to limit the character set used for generating test dataCreated on 2012-11-10 by Jeremy Bante &lt;http://scr.im/jbante&gt;.</StepText>
+					<Text> Modified on 2014-10-07 by Daniel Smith dansmith65@gmail.com	- for all tests: evaluate in a Let statement and test for EvaluationError = 0	- for all tests: add evaluateErrorActual	- don&apos;t use # function to encode parameter sent to Generate Sample Name scriptModified on 2014-06-06 by Jeremy Bante &lt;http://scr.im/jbante&gt;	- Adding test for type detection in long digit sequencesModified on 2014-05-25 by Jeremy Bante &lt;http://scr.im/jbante&gt;	- Checking that strings of digits with invalid date separators are not interpreted as dates Modified on 2013-12-23 by Jeremy Bante &lt;http://scr.im/jbante&gt;.	- Guarantee that sample names do not contain carriage returns.	- Expanding character space for names to include spaces (Char ( 32 )).	- Randomly insert newline characters (except carriage returns) in names.	- Delegate generation of names to a subscript.	- Simplifying whitespace character test Modified on 2013-12-17 by John Jones &lt;john.christopher@alumni.virginia.edu&gt; to test for escaping LF in the value. Modified on 2013-09-03 by Daniel Smith dansmith65@gmail.com to test for whitespace as the valueModified on 2013-07-26 by Jeremy Bante &lt;http://scr.im/jbante&gt; to test for certain type detection bugs confusing dates and times with numbers.Modified on 2013-04-15 by Jeremy Bante &lt;http://scr.im/jbante&gt; to not wrap numbers in GetAsNumber.Modified on 2013-01-14 by Daniel Smith dansmith65@gmail.com	- rename tests	- expect a trailing return when an error occurs	- add tests: &quot;Valid value: ?&quot;, &quot;Valid name: numbers only&quot;	- modify test to not loop: &quot;Valid value: empty&quot;Modified on 2012-12-17 by Jeremy Bante &lt;http://scr.im/jbante&gt; to exclude characters below 33 from test names.Modified on 2012-12-13 by Jeremy Bante &lt;http://scr.im/jbante&gt; to return the passRatio result.Modified on 2012-12-12 by Jeremy Bante &lt;http://scr.im/jbante&gt;.	- Modified tests to include larger ranges of possible values.	- Modified looping tests to run to a maximum time rather than number of iterations.Modified on 2012-12-12 by Daniel Smith dansmith65@gmail.com	- added tests for a version of the function that will preserve data type	- add $minCharCode and $maxCharCode variables to limit the character set used for generating test dataCreated on 2012-11-10 by Jeremy Bante &lt;http://scr.im/jbante&gt;.</Text>
 				</Step>
 				<Step enable="True" id="89" name="Comment">
 					<StepText>#########################################</StepText>
@@ -13200,11 +13200,10 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					</DisplayCalculation>
 				</Step>
 				<Step enable="True" id="1" name="Perform Script">
-					<StepText>Perform Script [ “Generate Sample Name ( maxNameLength )”; Parameter: # ( &quot;maxNameLength&quot; ; $maxNameLength ) ]</StepText>
-					<Calculation><![CDATA[# ( "maxNameLength" ; $maxNameLength )]]></Calculation>
+					<StepText>Perform Script [ “Generate Sample Name ( maxNameLength )”; Parameter: &quot;$maxNameLength = &quot; &amp; $maxNameLength &amp; &quot; ;¶&quot; ]</StepText>
+					<Calculation><![CDATA["$maxNameLength = " & $maxNameLength & " ;¶"]]></Calculation>
 					<DisplayCalculation>
-						<Chunk type="CustomFunctionRef">#</Chunk>
-						<Chunk type="NoRef"> ( &quot;maxNameLength&quot; ; $maxNameLength )</Chunk>
+						<Chunk type="NoRef">&quot;$maxNameLength = &quot; &amp; $maxNameLength &amp; &quot; ;¶&quot;</Chunk>
 					</DisplayCalculation>
 					<Script id="122" name="Generate Sample Name ( maxNameLength )"/>
 				</Step>
@@ -13785,11 +13784,10 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					</DisplayCalculation>
 				</Step>
 				<Step enable="True" id="1" name="Perform Script">
-					<StepText>Perform Script [ “Generate Sample Name ( maxNameLength )”; Parameter: # ( &quot;maxNameLength&quot; ; $maxNameLength ) ]</StepText>
-					<Calculation><![CDATA[# ( "maxNameLength" ; $maxNameLength )]]></Calculation>
+					<StepText>Perform Script [ “Generate Sample Name ( maxNameLength )”; Parameter: &quot;$maxNameLength = &quot; &amp; $maxNameLength &amp; &quot; ;¶&quot; ]</StepText>
+					<Calculation><![CDATA["$maxNameLength = " & $maxNameLength & " ;¶"]]></Calculation>
 					<DisplayCalculation>
-						<Chunk type="CustomFunctionRef">#</Chunk>
-						<Chunk type="NoRef"> ( &quot;maxNameLength&quot; ; $maxNameLength )</Chunk>
+						<Chunk type="NoRef">&quot;$maxNameLength = &quot; &amp; $maxNameLength &amp; &quot; ;¶&quot;</Chunk>
 					</DisplayCalculation>
 					<Script id="122" name="Generate Sample Name ( maxNameLength )"/>
 				</Step>
@@ -14199,11 +14197,10 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					</DisplayCalculation>
 				</Step>
 				<Step enable="True" id="1" name="Perform Script">
-					<StepText>Perform Script [ “Generate Sample Name ( maxNameLength )”; Parameter: # ( &quot;maxNameLength&quot; ; $maxNameLength ) ]</StepText>
-					<Calculation><![CDATA[# ( "maxNameLength" ; $maxNameLength )]]></Calculation>
+					<StepText>Perform Script [ “Generate Sample Name ( maxNameLength )”; Parameter: &quot;$maxNameLength = &quot; &amp; $maxNameLength &amp; &quot; ;¶&quot; ]</StepText>
+					<Calculation><![CDATA["$maxNameLength = " & $maxNameLength & " ;¶"]]></Calculation>
 					<DisplayCalculation>
-						<Chunk type="CustomFunctionRef">#</Chunk>
-						<Chunk type="NoRef"> ( &quot;maxNameLength&quot; ; $maxNameLength )</Chunk>
+						<Chunk type="NoRef">&quot;$maxNameLength = &quot; &amp; $maxNameLength &amp; &quot; ;¶&quot;</Chunk>
 					</DisplayCalculation>
 					<Script id="122" name="Generate Sample Name ( maxNameLength )"/>
 				</Step>
@@ -14560,11 +14557,10 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					</DisplayCalculation>
 				</Step>
 				<Step enable="True" id="1" name="Perform Script">
-					<StepText>Perform Script [ “Generate Sample Name ( maxNameLength )”; Parameter: # ( &quot;maxNameLength&quot; ; $maxNameLength ) ]</StepText>
-					<Calculation><![CDATA[# ( "maxNameLength" ; $maxNameLength )]]></Calculation>
+					<StepText>Perform Script [ “Generate Sample Name ( maxNameLength )”; Parameter: &quot;$maxNameLength = &quot; &amp; $maxNameLength &amp; &quot; ;¶&quot; ]</StepText>
+					<Calculation><![CDATA["$maxNameLength = " & $maxNameLength & " ;¶"]]></Calculation>
 					<DisplayCalculation>
-						<Chunk type="CustomFunctionRef">#</Chunk>
-						<Chunk type="NoRef"> ( &quot;maxNameLength&quot; ; $maxNameLength )</Chunk>
+						<Chunk type="NoRef">&quot;$maxNameLength = &quot; &amp; $maxNameLength &amp; &quot; ;¶&quot;</Chunk>
 					</DisplayCalculation>
 					<Script id="122" name="Generate Sample Name ( maxNameLength )"/>
 				</Step>
@@ -14921,11 +14917,10 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					</DisplayCalculation>
 				</Step>
 				<Step enable="True" id="1" name="Perform Script">
-					<StepText>Perform Script [ “Generate Sample Name ( maxNameLength )”; Parameter: # ( &quot;maxNameLength&quot; ; $maxNameLength ) ]</StepText>
-					<Calculation><![CDATA[# ( "maxNameLength" ; $maxNameLength )]]></Calculation>
+					<StepText>Perform Script [ “Generate Sample Name ( maxNameLength )”; Parameter: &quot;$maxNameLength = &quot; &amp; $maxNameLength &amp; &quot; ;¶&quot; ]</StepText>
+					<Calculation><![CDATA["$maxNameLength = " & $maxNameLength & " ;¶"]]></Calculation>
 					<DisplayCalculation>
-						<Chunk type="CustomFunctionRef">#</Chunk>
-						<Chunk type="NoRef"> ( &quot;maxNameLength&quot; ; $maxNameLength )</Chunk>
+						<Chunk type="NoRef">&quot;$maxNameLength = &quot; &amp; $maxNameLength &amp; &quot; ;¶&quot;</Chunk>
 					</DisplayCalculation>
 					<Script id="122" name="Generate Sample Name ( maxNameLength )"/>
 				</Step>
@@ -15650,11 +15645,10 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					</DisplayCalculation>
 				</Step>
 				<Step enable="True" id="1" name="Perform Script">
-					<StepText>Perform Script [ “Generate Sample Name ( maxNameLength )”; Parameter: # ( &quot;maxNameLength&quot; ; $maxNameLength ) ]</StepText>
-					<Calculation><![CDATA[# ( "maxNameLength" ; $maxNameLength )]]></Calculation>
+					<StepText>Perform Script [ “Generate Sample Name ( maxNameLength )”; Parameter: &quot;$maxNameLength = &quot; &amp; $maxNameLength &amp; &quot; ;¶&quot; ]</StepText>
+					<Calculation><![CDATA["$maxNameLength = " & $maxNameLength & " ;¶"]]></Calculation>
 					<DisplayCalculation>
-						<Chunk type="CustomFunctionRef">#</Chunk>
-						<Chunk type="NoRef"> ( &quot;maxNameLength&quot; ; $maxNameLength )</Chunk>
+						<Chunk type="NoRef">&quot;$maxNameLength = &quot; &amp; $maxNameLength &amp; &quot; ;¶&quot;</Chunk>
 					</DisplayCalculation>
 					<Script id="122" name="Generate Sample Name ( maxNameLength )"/>
 				</Step>
@@ -15998,11 +15992,10 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					</DisplayCalculation>
 				</Step>
 				<Step enable="True" id="1" name="Perform Script">
-					<StepText>Perform Script [ “Generate Sample Name ( maxNameLength )”; Parameter: # ( &quot;maxNameLength&quot; ; $maxNameLength ) ]</StepText>
-					<Calculation><![CDATA[# ( "maxNameLength" ; $maxNameLength )]]></Calculation>
+					<StepText>Perform Script [ “Generate Sample Name ( maxNameLength )”; Parameter: &quot;$maxNameLength = &quot; &amp; $maxNameLength &amp; &quot; ;¶&quot; ]</StepText>
+					<Calculation><![CDATA["$maxNameLength = " & $maxNameLength & " ;¶"]]></Calculation>
 					<DisplayCalculation>
-						<Chunk type="CustomFunctionRef">#</Chunk>
-						<Chunk type="NoRef"> ( &quot;maxNameLength&quot; ; $maxNameLength )</Chunk>
+						<Chunk type="NoRef">&quot;$maxNameLength = &quot; &amp; $maxNameLength &amp; &quot; ;¶&quot;</Chunk>
 					</DisplayCalculation>
 					<Script id="122" name="Generate Sample Name ( maxNameLength )"/>
 				</Step>
@@ -16365,11 +16358,10 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					</DisplayCalculation>
 				</Step>
 				<Step enable="True" id="1" name="Perform Script">
-					<StepText>Perform Script [ “Generate Sample Name ( maxNameLength )”; Parameter: # ( &quot;maxNameLength&quot; ; $maxNameLength ) ]</StepText>
-					<Calculation><![CDATA[# ( "maxNameLength" ; $maxNameLength )]]></Calculation>
+					<StepText>Perform Script [ “Generate Sample Name ( maxNameLength )”; Parameter: &quot;$maxNameLength = &quot; &amp; $maxNameLength &amp; &quot; ;¶&quot; ]</StepText>
+					<Calculation><![CDATA["$maxNameLength = " & $maxNameLength & " ;¶"]]></Calculation>
 					<DisplayCalculation>
-						<Chunk type="CustomFunctionRef">#</Chunk>
-						<Chunk type="NoRef"> ( &quot;maxNameLength&quot; ; $maxNameLength )</Chunk>
+						<Chunk type="NoRef">&quot;$maxNameLength = &quot; &amp; $maxNameLength &amp; &quot; ;¶&quot;</Chunk>
 					</DisplayCalculation>
 					<Script id="122" name="Generate Sample Name ( maxNameLength )"/>
 				</Step>
@@ -16730,11 +16722,10 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					</DisplayCalculation>
 				</Step>
 				<Step enable="True" id="1" name="Perform Script">
-					<StepText>Perform Script [ “Generate Sample Name ( maxNameLength )”; Parameter: # ( &quot;maxNameLength&quot; ; $maxNameLength ) ]</StepText>
-					<Calculation><![CDATA[# ( "maxNameLength" ; $maxNameLength )]]></Calculation>
+					<StepText>Perform Script [ “Generate Sample Name ( maxNameLength )”; Parameter: &quot;$maxNameLength = &quot; &amp; $maxNameLength &amp; &quot; ;¶&quot; ]</StepText>
+					<Calculation><![CDATA["$maxNameLength = " & $maxNameLength & " ;¶"]]></Calculation>
 					<DisplayCalculation>
-						<Chunk type="CustomFunctionRef">#</Chunk>
-						<Chunk type="NoRef"> ( &quot;maxNameLength&quot; ; $maxNameLength )</Chunk>
+						<Chunk type="NoRef">&quot;$maxNameLength = &quot; &amp; $maxNameLength &amp; &quot; ;¶&quot;</Chunk>
 					</DisplayCalculation>
 					<Script id="122" name="Generate Sample Name ( maxNameLength )"/>
 				</Step>
@@ -17117,11 +17108,10 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					</DisplayCalculation>
 				</Step>
 				<Step enable="True" id="1" name="Perform Script">
-					<StepText>Perform Script [ “Generate Sample Name ( maxNameLength )”; Parameter: # ( &quot;maxNameLength&quot; ; $maxNameLength ) ]</StepText>
-					<Calculation><![CDATA[# ( "maxNameLength" ; $maxNameLength )]]></Calculation>
+					<StepText>Perform Script [ “Generate Sample Name ( maxNameLength )”; Parameter: &quot;$maxNameLength = &quot; &amp; $maxNameLength &amp; &quot; ;¶&quot; ]</StepText>
+					<Calculation><![CDATA["$maxNameLength = " & $maxNameLength & " ;¶"]]></Calculation>
 					<DisplayCalculation>
-						<Chunk type="CustomFunctionRef">#</Chunk>
-						<Chunk type="NoRef"> ( &quot;maxNameLength&quot; ; $maxNameLength )</Chunk>
+						<Chunk type="NoRef">&quot;$maxNameLength = &quot; &amp; $maxNameLength &amp; &quot; ;¶&quot;</Chunk>
 					</DisplayCalculation>
 					<Script id="122" name="Generate Sample Name ( maxNameLength )"/>
 				</Step>
@@ -17504,11 +17494,10 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					</DisplayCalculation>
 				</Step>
 				<Step enable="True" id="1" name="Perform Script">
-					<StepText>Perform Script [ “Generate Sample Name ( maxNameLength )”; Parameter: # ( &quot;maxNameLength&quot; ; $maxNameLength ) ]</StepText>
-					<Calculation><![CDATA[# ( "maxNameLength" ; $maxNameLength )]]></Calculation>
+					<StepText>Perform Script [ “Generate Sample Name ( maxNameLength )”; Parameter: &quot;$maxNameLength = &quot; &amp; $maxNameLength &amp; &quot; ;¶&quot; ]</StepText>
+					<Calculation><![CDATA["$maxNameLength = " & $maxNameLength & " ;¶"]]></Calculation>
 					<DisplayCalculation>
-						<Chunk type="CustomFunctionRef">#</Chunk>
-						<Chunk type="NoRef"> ( &quot;maxNameLength&quot; ; $maxNameLength )</Chunk>
+						<Chunk type="NoRef">&quot;$maxNameLength = &quot; &amp; $maxNameLength &amp; &quot; ;¶&quot;</Chunk>
 					</DisplayCalculation>
 					<Script id="122" name="Generate Sample Name ( maxNameLength )"/>
 				</Step>
@@ -18233,11 +18222,10 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					</DisplayCalculation>
 				</Step>
 				<Step enable="True" id="1" name="Perform Script">
-					<StepText>Perform Script [ “Generate Sample Name ( maxNameLength )”; Parameter: # ( &quot;maxNameLength&quot; ; $maxNameLength ) ]</StepText>
-					<Calculation><![CDATA[# ( "maxNameLength" ; $maxNameLength )]]></Calculation>
+					<StepText>Perform Script [ “Generate Sample Name ( maxNameLength )”; Parameter: &quot;$maxNameLength = &quot; &amp; $maxNameLength &amp; &quot; ;¶&quot; ]</StepText>
+					<Calculation><![CDATA["$maxNameLength = " & $maxNameLength & " ;¶"]]></Calculation>
 					<DisplayCalculation>
-						<Chunk type="CustomFunctionRef">#</Chunk>
-						<Chunk type="NoRef"> ( &quot;maxNameLength&quot; ; $maxNameLength )</Chunk>
+						<Chunk type="NoRef">&quot;$maxNameLength = &quot; &amp; $maxNameLength &amp; &quot; ;¶&quot;</Chunk>
 					</DisplayCalculation>
 					<Script id="122" name="Generate Sample Name ( maxNameLength )"/>
 				</Step>
@@ -18621,11 +18609,10 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					</DisplayCalculation>
 				</Step>
 				<Step enable="True" id="1" name="Perform Script">
-					<StepText>Perform Script [ “Generate Sample Name ( maxNameLength )”; Parameter: # ( &quot;maxNameLength&quot; ; $maxNameLength ) ]</StepText>
-					<Calculation><![CDATA[# ( "maxNameLength" ; $maxNameLength )]]></Calculation>
+					<StepText>Perform Script [ “Generate Sample Name ( maxNameLength )”; Parameter: &quot;$maxNameLength = &quot; &amp; $maxNameLength &amp; &quot; ;¶&quot; ]</StepText>
+					<Calculation><![CDATA["$maxNameLength = " & $maxNameLength & " ;¶"]]></Calculation>
 					<DisplayCalculation>
-						<Chunk type="CustomFunctionRef">#</Chunk>
-						<Chunk type="NoRef"> ( &quot;maxNameLength&quot; ; $maxNameLength )</Chunk>
+						<Chunk type="NoRef">&quot;$maxNameLength = &quot; &amp; $maxNameLength &amp; &quot; ;¶&quot;</Chunk>
 					</DisplayCalculation>
 					<Script id="122" name="Generate Sample Name ( maxNameLength )"/>
 				</Step>
@@ -18998,11 +18985,10 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					</DisplayCalculation>
 				</Step>
 				<Step enable="True" id="1" name="Perform Script">
-					<StepText>Perform Script [ “Generate Sample Name ( maxNameLength )”; Parameter: # ( &quot;maxNameLength&quot; ; $maxNameLength ) ]</StepText>
-					<Calculation><![CDATA[# ( "maxNameLength" ; $maxNameLength )]]></Calculation>
+					<StepText>Perform Script [ “Generate Sample Name ( maxNameLength )”; Parameter: &quot;$maxNameLength = &quot; &amp; $maxNameLength &amp; &quot; ;¶&quot; ]</StepText>
+					<Calculation><![CDATA["$maxNameLength = " & $maxNameLength & " ;¶"]]></Calculation>
 					<DisplayCalculation>
-						<Chunk type="CustomFunctionRef">#</Chunk>
-						<Chunk type="NoRef"> ( &quot;maxNameLength&quot; ; $maxNameLength )</Chunk>
+						<Chunk type="NoRef">&quot;$maxNameLength = &quot; &amp; $maxNameLength &amp; &quot; ;¶&quot;</Chunk>
 					</DisplayCalculation>
 					<Script id="122" name="Generate Sample Name ( maxNameLength )"/>
 				</Step>
@@ -19286,11 +19272,10 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<StepText>#</StepText>
 				</Step>
 				<Step enable="True" id="1" name="Perform Script">
-					<StepText>Perform Script [ “Generate Sample Name ( maxNameLength )”; Parameter: # ( &quot;maxNameLength&quot; ; $maxNameLength ) ]</StepText>
-					<Calculation><![CDATA[# ( "maxNameLength" ; $maxNameLength )]]></Calculation>
+					<StepText>Perform Script [ “Generate Sample Name ( maxNameLength )”; Parameter: &quot;$maxNameLength = &quot; &amp; $maxNameLength &amp; &quot; ;¶&quot; ]</StepText>
+					<Calculation><![CDATA["$maxNameLength = " & $maxNameLength & " ;¶"]]></Calculation>
 					<DisplayCalculation>
-						<Chunk type="CustomFunctionRef">#</Chunk>
-						<Chunk type="NoRef"> ( &quot;maxNameLength&quot; ; $maxNameLength )</Chunk>
+						<Chunk type="NoRef">&quot;$maxNameLength = &quot; &amp; $maxNameLength &amp; &quot; ;¶&quot;</Chunk>
 					</DisplayCalculation>
 					<Script id="122" name="Generate Sample Name ( maxNameLength )"/>
 				</Step>
@@ -19523,11 +19508,10 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<Text> &quot;?&quot; has special meaning within FileMaker, therefore a test is written specifically for it</Text>
 				</Step>
 				<Step enable="True" id="1" name="Perform Script">
-					<StepText>Perform Script [ “Generate Sample Name ( maxNameLength )”; Parameter: # ( &quot;maxNameLength&quot; ; $maxNameLength ) ]</StepText>
-					<Calculation><![CDATA[# ( "maxNameLength" ; $maxNameLength )]]></Calculation>
+					<StepText>Perform Script [ “Generate Sample Name ( maxNameLength )”; Parameter: &quot;$maxNameLength = &quot; &amp; $maxNameLength &amp; &quot; ;¶&quot; ]</StepText>
+					<Calculation><![CDATA["$maxNameLength = " & $maxNameLength & " ;¶"]]></Calculation>
 					<DisplayCalculation>
-						<Chunk type="CustomFunctionRef">#</Chunk>
-						<Chunk type="NoRef"> ( &quot;maxNameLength&quot; ; $maxNameLength )</Chunk>
+						<Chunk type="NoRef">&quot;$maxNameLength = &quot; &amp; $maxNameLength &amp; &quot; ;¶&quot;</Chunk>
 					</DisplayCalculation>
 					<Script id="122" name="Generate Sample Name ( maxNameLength )"/>
 				</Step>
@@ -57595,9 +57579,9 @@ Created on 2012-08-17 by Jeremy Bante &lt;http://scr.im/jbante&gt;.</Text>
 		</DisplayCalculation>
 	</CustomFunction>
 	<CustomFunction id="53" functionArity="2" visible="True" parameters="name;value" name="#">
-		<Calculation><![CDATA[/** * ===================================== * # ( name ; value ) * * RETURNS: *		An name-value pair in Let notation. * * PARAMETERS: *		name: The name for the returned name-value pair. name can be any value *		that would be a valid Let() variable name. *		value: The value for the returned name-value pair. * * EXAMPLE: *		# ( "name"; $value ) & # ( "foo" ; "bar" ) * * DEPENDENCIES: none * * HISTORY: *		MODIFIED on 2014-06-06 by Jeremy Bante <http://scr.im/jbante> to fix an *		issue where long sequences of digits could be interpreted as timestamps. *		MODIFIED on 2014-05-25 by Jeremy Bante <http://scr.im/jbante> to detect *		type using a different method suggested by Arnold Kegebein. *		MODIFIED on 2013-12-24 by Jeremy Bante <http://scr.im/jbante> to return *		an error if name contains a carriage return (Char ( 13 )), and removing *		explicit encoding for line feeds. *		MODIFIED on 2013-12-12 by John Jones <john.christopher@alumni.virginia.edu> *		to explicitly encode line feed characters in text values. *		MODIFIED on 2013-09-02 by Daniel Smith dansmith65@gmail.com to fix a *		type misidentification bug. *		MODIFIED on 2013-07-27 by Jeremy Bante <http://scr.im/jbante> to fix a *		type misidentification bug. *		MODIFIED on 2013-04-15 by Jeremy Bante <http://scr.im/jbante> to not *		wrap numbers in GetAsNumber. *		MODIFIED on 2013-01-14 by Daniel Smith dansmith65@gmail.com to include *		trailing return on error result and accept a value of "?" *		MODIFIED on 2012-12-12 by Daniel Smith dansmith65@gmail.com to preserve *		data type of value *		MODIFIED on 2012-12-07 by Jeremy Bante <http://scr.im/jbante> where an *		error result could create invalid sytax for values containing a comment *		close sequence. *		MODIFIED on 2012-11-28 by Jeremy Bante <http://scr.im/jbante> to return *		error feedback, and to prefix names with "$". *		CREATED on 2012-11-10 by Jeremy Bante <http://scr.im/jbante>. * * REFERENCES: *		https://github.com/filemakerstandards/fmpstandards/blob/master/Functions/%23Name-Value/%23.fmfn * ===================================== */Let ( [	~name =	// strip leading "$$" and "$"		Substitute (			"/*start*/" & name ;			[ "/*start*/$$" ; "" ] ;			[ "/*start*/$" ; "" ] ;			[ "/*start*/" ; "" ]		) ;	~plusOneText = GetAsText ( value + 1 ) ;	~number = GetAsNumber ( value ) ;	~value =		Case (			value = "" or value = "?" or ~number = "?" ;				Quote ( value ) ;			GetAsText ( GetAsTimestamp ( value ) + 1 ) = ~plusOneText ;				"GetAsTimestamp ( " & Quote ( value ) & " )" ;			GetAsText ( GetAsTime ( value ) + 1 ) = ~plusOneText ;				"GetAsTime ( " & Quote ( value ) & " )" ;			GetAsText ( GetAsDate ( value ) + 1 ) = ~plusOneText ;				"GetAsDate ( " & Quote ( value ) & " )" ;			value ≠ ~number ;				Quote ( value ) ;			/* Else */				~number		) ;	~result =		"$"		& ~name		& " = "		& ~value		& " ;¶" ;	~testExpression =		"Let ( [ "		& ~result		& " ~ = \"\" ]; \"\" )" ;	~error =		Case (			IsEmpty ( ~name ) or Position ( ~name ; ¶ ; 1 ; 1 ) ≠ 0 ;				11 ;	// Name is not valid			not IsValidExpression ( ~testExpression ) ;				1200	// Generic calculation error		)];	If ( ~error ;	// prevent bad pairs from affecting evaluation by commenting		"/* Error "		& ~error		& " name: "		& Quote (			Substitute (	// escape comment character sequences				name ;				[ "*/" ; "\*\/" ] ;				[ "/*" ; "\/\*" ]			)		)		& " value: "		& Quote (			Substitute (	// escape comment character sequences				value ;				[ "*/" ; "\*\/" ] ;				[ "/*" ; "\/\*" ]			)		)		& " */"		& ¶ ;	/* Else */		~result	))]]></Calculation>
+		<Calculation><![CDATA[/** * ===================================== * # ( name ; value ) * * RETURNS: *		An name-value pair in Let notation. * * PARAMETERS: *		name: The name for the returned name-value pair. name can be any value *		that would be a valid Let() variable name. *		value: The value for the returned name-value pair. * * EXAMPLE: *		# ( "name"; $value ) & # ( "foo" ; "bar" ) * * DEPENDENCIES: none * * HISTORY: *		MODIFIED on 2014-10-07 by Daniel Smith dansmith65@gmail.com to prevent *		from returning an EvaluationError. *		MODIFIED on 2014-06-06 by Jeremy Bante <http://scr.im/jbante> to fix an *		issue where long sequences of digits could be interpreted as timestamps. *		MODIFIED on 2014-05-25 by Jeremy Bante <http://scr.im/jbante> to detect *		type using a different method suggested by Arnold Kegebein. *		MODIFIED on 2013-12-24 by Jeremy Bante <http://scr.im/jbante> to return *		an error if name contains a carriage return (Char ( 13 )), and removing *		explicit encoding for line feeds. *		MODIFIED on 2013-12-12 by John Jones <john.christopher@alumni.virginia.edu> *		to explicitly encode line feed characters in text values. *		MODIFIED on 2013-09-02 by Daniel Smith dansmith65@gmail.com to fix a *		type misidentification bug. *		MODIFIED on 2013-07-27 by Jeremy Bante <http://scr.im/jbante> to fix a *		type misidentification bug. *		MODIFIED on 2013-04-15 by Jeremy Bante <http://scr.im/jbante> to not *		wrap numbers in GetAsNumber. *		MODIFIED on 2013-01-14 by Daniel Smith dansmith65@gmail.com to include *		trailing return on error result and accept a value of "?" *		MODIFIED on 2012-12-12 by Daniel Smith dansmith65@gmail.com to preserve *		data type of value *		MODIFIED on 2012-12-07 by Jeremy Bante <http://scr.im/jbante> where an *		error result could create invalid sytax for values containing a comment *		close sequence. *		MODIFIED on 2012-11-28 by Jeremy Bante <http://scr.im/jbante> to return *		error feedback, and to prefix names with "$". *		CREATED on 2012-11-10 by Jeremy Bante <http://scr.im/jbante>. * * REFERENCES: *		https://github.com/filemakerstandards/fmpstandards/blob/master/Functions/%23Name-Value/%23.fmfn * ===================================== */Let ( [	~name =	// strip leading "$$" and "$"		Substitute (			"/*start*/" & name ;			[ "/*start*/$$" ; "" ] ;			[ "/*start*/$" ; "" ] ;			[ "/*start*/" ; "" ]		) ;	~plusOneText = GetAsText ( value + 1 ) ;	~isValidDate = not EvaluationError ( GetAsDate ( value ) ) ;	~isValidTime = not EvaluationError ( GetAsTime ( value ) ) ;	~number = GetAsNumber ( value ) ;	~value =		Case (			value = "" or value = "?" or ~number = "?" ;				Quote ( value ) ;			~isValidDate			and ~isValidTime			and GetAsText ( GetAsTimestamp ( value ) + 1 ) = ~plusOneText ;				"GetAsTimestamp ( " & Quote ( value ) & " )" ;			~isValidTime			and GetAsText ( GetAsTime ( value ) + 1 ) = ~plusOneText ;				"GetAsTime ( " & Quote ( value ) & " )" ;			~isValidDate			and GetAsText ( GetAsDate ( value ) + 1 ) = ~plusOneText ;				"GetAsDate ( " & Quote ( value ) & " )" ;			value ≠ ~number ;				Quote ( value ) ;			/* Else */				~number		) ;	~result =		"$"		& ~name		& " = "		& ~value		& " ;¶" ;	~testExpression =		"Let ( [ "		& ~result		& " ~ = \"\" ]; \"\" )" ;	~error =		Case (			IsEmpty ( ~name ) or Position ( ~name ; ¶ ; 1 ; 1 ) ≠ 0 ;				11 ;	// Name is not valid			not IsValidExpression ( ~testExpression ) ;				1200	// Generic calculation error		)];	If ( ~error ;	// prevent bad pairs from affecting evaluation by commenting		"/* Error "		& ~error		& " name: "		& Quote (			Substitute (	// escape comment character sequences				name ;				[ "*/" ; "\*\/" ] ;				[ "/*" ; "\/\*" ]			)		)		& " value: "		& Quote (			Substitute (	// escape comment character sequences				value ;				[ "*/" ; "\*\/" ] ;				[ "/*" ; "\/\*" ]			)		)		& " */"		& ¶ ;	/* Else */		~result	))]]></Calculation>
 		<DisplayCalculation>
-			<Chunk type="NoRef">/** * ===================================== * # ( name ; value ) * * RETURNS: *		An name-value pair in Let notation. * * PARAMETERS: *		name: The name for the returned name-value pair. name can be any value *		that would be a valid Let() variable name. *		value: The value for the returned name-value pair. * * EXAMPLE: *		# ( &quot;name&quot;; $value ) &amp; # ( &quot;foo&quot; ; &quot;bar&quot; ) * * DEPENDENCIES: none * * HISTORY: *		MODIFIED on 2014-06-06 by Jeremy Bante &lt;http://scr.im/jbante&gt; to fix an *		issue where long sequences of digits could be interpreted as timestamps. *		MODIFIED on 2014-05-25 by Jeremy Bante &lt;http://scr.im/jbante&gt; to detect *		type using a different method suggested by Arnold Kegebein. *		MODIFIED on 2013-12-24 by Jeremy Bante &lt;http://scr.im/jbante&gt; to return *		an error if name contains a carriage return (Char ( 13 )), and removing *		explicit encoding for line feeds. *		MODIFIED on 2013-12-12 by John Jones &lt;john.christopher@alumni.virginia.edu&gt; *		to explicitly encode line feed characters in text values. *		MODIFIED on 2013-09-02 by Daniel Smith dansmith65@gmail.com to fix a *		type misidentification bug. *		MODIFIED on 2013-07-27 by Jeremy Bante &lt;http://scr.im/jbante&gt; to fix a *		type misidentification bug. *		MODIFIED on 2013-04-15 by Jeremy Bante &lt;http://scr.im/jbante&gt; to not *		wrap numbers in GetAsNumber. *		MODIFIED on 2013-01-14 by Daniel Smith dansmith65@gmail.com to include *		trailing return on error result and accept a value of &quot;?&quot; *		MODIFIED on 2012-12-12 by Daniel Smith dansmith65@gmail.com to preserve *		data type of value *		MODIFIED on 2012-12-07 by Jeremy Bante &lt;http://scr.im/jbante&gt; where an *		error result could create invalid sytax for values containing a comment *		close sequence. *		MODIFIED on 2012-11-28 by Jeremy Bante &lt;http://scr.im/jbante&gt; to return *		error feedback, and to prefix names with &quot;$&quot;. *		CREATED on 2012-11-10 by Jeremy Bante &lt;http://scr.im/jbante&gt;. * * REFERENCES: *		https://github.com/filemakerstandards/fmpstandards/blob/master/Functions/%23Name-Value/%23.fmfn * ===================================== */</Chunk>
+			<Chunk type="NoRef">/** * ===================================== * # ( name ; value ) * * RETURNS: *		An name-value pair in Let notation. * * PARAMETERS: *		name: The name for the returned name-value pair. name can be any value *		that would be a valid Let() variable name. *		value: The value for the returned name-value pair. * * EXAMPLE: *		# ( &quot;name&quot;; $value ) &amp; # ( &quot;foo&quot; ; &quot;bar&quot; ) * * DEPENDENCIES: none * * HISTORY: *		MODIFIED on 2014-10-07 by Daniel Smith dansmith65@gmail.com to prevent *		from returning an EvaluationError. *		MODIFIED on 2014-06-06 by Jeremy Bante &lt;http://scr.im/jbante&gt; to fix an *		issue where long sequences of digits could be interpreted as timestamps. *		MODIFIED on 2014-05-25 by Jeremy Bante &lt;http://scr.im/jbante&gt; to detect *		type using a different method suggested by Arnold Kegebein. *		MODIFIED on 2013-12-24 by Jeremy Bante &lt;http://scr.im/jbante&gt; to return *		an error if name contains a carriage return (Char ( 13 )), and removing *		explicit encoding for line feeds. *		MODIFIED on 2013-12-12 by John Jones &lt;john.christopher@alumni.virginia.edu&gt; *		to explicitly encode line feed characters in text values. *		MODIFIED on 2013-09-02 by Daniel Smith dansmith65@gmail.com to fix a *		type misidentification bug. *		MODIFIED on 2013-07-27 by Jeremy Bante &lt;http://scr.im/jbante&gt; to fix a *		type misidentification bug. *		MODIFIED on 2013-04-15 by Jeremy Bante &lt;http://scr.im/jbante&gt; to not *		wrap numbers in GetAsNumber. *		MODIFIED on 2013-01-14 by Daniel Smith dansmith65@gmail.com to include *		trailing return on error result and accept a value of &quot;?&quot; *		MODIFIED on 2012-12-12 by Daniel Smith dansmith65@gmail.com to preserve *		data type of value *		MODIFIED on 2012-12-07 by Jeremy Bante &lt;http://scr.im/jbante&gt; where an *		error result could create invalid sytax for values containing a comment *		close sequence. *		MODIFIED on 2012-11-28 by Jeremy Bante &lt;http://scr.im/jbante&gt; to return *		error feedback, and to prefix names with &quot;$&quot;. *		CREATED on 2012-11-10 by Jeremy Bante &lt;http://scr.im/jbante&gt;. * * REFERENCES: *		https://github.com/filemakerstandards/fmpstandards/blob/master/Functions/%23Name-Value/%23.fmfn * ===================================== */</Chunk>
 			<Chunk type="FunctionRef">Let</Chunk>
 			<Chunk type="NoRef"> ( [	~name =	</Chunk>
 			<Chunk type="FunctionRef">// strip leading &quot;$$&quot; and &quot;$&quot;</Chunk>
@@ -57605,7 +57589,19 @@ Created on 2012-08-17 by Jeremy Bante &lt;http://scr.im/jbante&gt;.</Text>
 			<Chunk type="FunctionRef">Substitute</Chunk>
 			<Chunk type="NoRef"> (			&quot;/*start*/&quot; &amp; name ;			[ &quot;/*start*/$$&quot; ; &quot;&quot; ] ;			[ &quot;/*start*/$&quot; ; &quot;&quot; ] ;			[ &quot;/*start*/&quot; ; &quot;&quot; ]		) ;	~plusOneText = </Chunk>
 			<Chunk type="FunctionRef">GetAsText</Chunk>
-			<Chunk type="NoRef"> ( value + 1 ) ;	~number = </Chunk>
+			<Chunk type="NoRef"> ( value + 1 ) ;	~isValidDate = </Chunk>
+			<Chunk type="FunctionRef">not</Chunk>
+			<Chunk type="NoRef"> </Chunk>
+			<Chunk type="FunctionRef">EvaluationError</Chunk>
+			<Chunk type="NoRef"> ( </Chunk>
+			<Chunk type="FunctionRef">GetAsDate</Chunk>
+			<Chunk type="NoRef"> ( value ) ) ;	~isValidTime = </Chunk>
+			<Chunk type="FunctionRef">not</Chunk>
+			<Chunk type="NoRef"> </Chunk>
+			<Chunk type="FunctionRef">EvaluationError</Chunk>
+			<Chunk type="NoRef"> ( </Chunk>
+			<Chunk type="FunctionRef">GetAsTime</Chunk>
+			<Chunk type="NoRef"> ( value ) ) ;	~number = </Chunk>
 			<Chunk type="FunctionRef">GetAsNumber</Chunk>
 			<Chunk type="NoRef"> ( value ) ;	~value =		</Chunk>
 			<Chunk type="FunctionRef">Case</Chunk>
@@ -57615,19 +57611,27 @@ Created on 2012-08-17 by Jeremy Bante &lt;http://scr.im/jbante&gt;.</Text>
 			<Chunk type="FunctionRef">or</Chunk>
 			<Chunk type="NoRef"> ~number = &quot;?&quot; ;				</Chunk>
 			<Chunk type="FunctionRef">Quote</Chunk>
-			<Chunk type="NoRef"> ( value ) ;			</Chunk>
+			<Chunk type="NoRef"> ( value ) ;			~isValidDate			</Chunk>
+			<Chunk type="FunctionRef">and</Chunk>
+			<Chunk type="NoRef"> ~isValidTime			</Chunk>
+			<Chunk type="FunctionRef">and</Chunk>
+			<Chunk type="NoRef"> </Chunk>
 			<Chunk type="FunctionRef">GetAsText</Chunk>
 			<Chunk type="NoRef"> ( </Chunk>
 			<Chunk type="FunctionRef">GetAsTimestamp</Chunk>
 			<Chunk type="NoRef"> ( value ) + 1 ) = ~plusOneText ;				&quot;GetAsTimestamp ( &quot; &amp; </Chunk>
 			<Chunk type="FunctionRef">Quote</Chunk>
-			<Chunk type="NoRef"> ( value ) &amp; &quot; )&quot; ;			</Chunk>
+			<Chunk type="NoRef"> ( value ) &amp; &quot; )&quot; ;			~isValidTime			</Chunk>
+			<Chunk type="FunctionRef">and</Chunk>
+			<Chunk type="NoRef"> </Chunk>
 			<Chunk type="FunctionRef">GetAsText</Chunk>
 			<Chunk type="NoRef"> ( </Chunk>
 			<Chunk type="FunctionRef">GetAsTime</Chunk>
 			<Chunk type="NoRef"> ( value ) + 1 ) = ~plusOneText ;				&quot;GetAsTime ( &quot; &amp; </Chunk>
 			<Chunk type="FunctionRef">Quote</Chunk>
-			<Chunk type="NoRef"> ( value ) &amp; &quot; )&quot; ;			</Chunk>
+			<Chunk type="NoRef"> ( value ) &amp; &quot; )&quot; ;			~isValidDate			</Chunk>
+			<Chunk type="FunctionRef">and</Chunk>
+			<Chunk type="NoRef"> </Chunk>
 			<Chunk type="FunctionRef">GetAsText</Chunk>
 			<Chunk type="NoRef"> ( </Chunk>
 			<Chunk type="FunctionRef">GetAsDate</Chunk>
