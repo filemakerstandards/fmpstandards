@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-16"?>
+<FMPReport creationTime="12:57:32 PM" creationDate="10/7/2014" type="Summary" version="13.0v3">
+	<File link=".//FM-Parameters_fmp12.xml" name="FM-Parameters.fmp12" path="E:\Dan\GitHub\fmpstandards\Functions\#Name-Value\">
+		<BaseTables count="4"/>
+		<Tables count="4"/>
+		<Relationships count="0"/>
+		<Accounts count="2"/>
+		<Privileges count="3"/>
+		<ExtendedPrivileges count="6"/>
+		<FileAccess count="0"/>
+		<Layouts count="24"/>
+		<Scripts count="61"/>
+		<ValueLists count="0"/>
+		<CustomFunctions count="38"/>
+		<FileReferences count="0"/>
+		<CustomMenuSets count="0"/>
+		<CustomMenus count="0"/>
+	</File>
+</FMPReport>
