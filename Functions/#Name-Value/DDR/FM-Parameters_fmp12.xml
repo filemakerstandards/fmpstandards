@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-16"?>
-<FMPReport link="Summary.xml" creationTime="3:30:02 PM" creationDate="10/7/2014" type="Report" version="13.0v3">
+<FMPReport link="Summary.xml" creationTime="3:28:32 PM" creationDate="1/8/2015" type="Report" version="13.0v4">
 <File name="FM-Parameters.fmp12" path="E:\Dan\GitHub\fmpstandards\Functions\#Name-Value\">
 <BaseTableCatalog>
 	<BaseTable id="130" records="0" name="NullTable">
@@ -10260,7 +10260,7 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 			</StepList>
 		</Script>
 	</Group>
-	<Group groupCollapsed="False" includeInMenu="False" id="12" name="Tests">
+	<Group groupCollapsed="True" includeInMenu="False" id="12" name="Tests">
 		<Script includeInMenu="True" runFullAccess="False" id="51" name="Run Custom Function Tests { testFolderPath ; export ; showAll ; showFailures }">
 			<StepList>
 				<Step enable="True" id="89" name="Comment">
@@ -38198,12 +38198,16 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<Name>$value</Name>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
-					<StepText>Set Variable [ $actual; Value:#List ( $value ) ]</StepText>
+					<StepText>Set Variable [ $evaluateErrorActual; Value:EvaluationError (	Let ( $actual = #List ( $value ) ; &quot;&quot; )) ]</StepText>
 					<Value>
-						<Calculation><![CDATA[#List ( $value )]]></Calculation>
+						<Calculation><![CDATA[EvaluationError (	Let ( $actual = #List ( $value ) ; "" ))]]></Calculation>
 						<DisplayCalculation>
+							<Chunk type="FunctionRef">EvaluationError</Chunk>
+							<Chunk type="NoRef"> (	</Chunk>
+							<Chunk type="FunctionRef">Let</Chunk>
+							<Chunk type="NoRef"> ( $actual = </Chunk>
 							<Chunk type="CustomFunctionRef">#List</Chunk>
-							<Chunk type="NoRef"> ( $value )</Chunk>
+							<Chunk type="NoRef"> ( $value ) ; &quot;&quot; ))</Chunk>
 						</DisplayCalculation>
 					</Value>
 					<Repetition>
@@ -38212,7 +38216,7 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 							<Chunk type="NoRef">1</Chunk>
 						</DisplayCalculation>
 					</Repetition>
-					<Name>$actual</Name>
+					<Name>$evaluateErrorActual</Name>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
 					<StepText>Set Variable [ $expected; Value:Quote ( $value )&amp; &quot;¶&quot; ]</StepText>
@@ -38232,11 +38236,20 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<Name>$expected</Name>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
-					<StepText>Set Variable [ $testPass; Value:$actual = $expected ]</StepText>
+					<StepText>Set Variable [ $testPass; Value:Let ( [	$evaluateError = EvaluationError ( Evaluate ( $actual ) )] ;	$actual = $expected	and $evaluateError = 0	and $evaluateErrorActual = 0) ]</StepText>
 					<Value>
-						<Calculation><![CDATA[$actual = $expected]]></Calculation>
+						<Calculation><![CDATA[Let ( [	$evaluateError = EvaluationError ( Evaluate ( $actual ) )] ;	$actual = $expected	and $evaluateError = 0	and $evaluateErrorActual = 0)]]></Calculation>
 						<DisplayCalculation>
-							<Chunk type="NoRef">$actual = $expected</Chunk>
+							<Chunk type="FunctionRef">Let</Chunk>
+							<Chunk type="NoRef"> ( [	$evaluateError = </Chunk>
+							<Chunk type="FunctionRef">EvaluationError</Chunk>
+							<Chunk type="NoRef"> ( </Chunk>
+							<Chunk type="FunctionRef">Evaluate</Chunk>
+							<Chunk type="NoRef"> ( $actual ) )] ;	$actual = $expected	</Chunk>
+							<Chunk type="FunctionRef">and</Chunk>
+							<Chunk type="NoRef"> $evaluateError = 0	</Chunk>
+							<Chunk type="FunctionRef">and</Chunk>
+							<Chunk type="NoRef"> $evaluateErrorActual = 0)</Chunk>
 						</DisplayCalculation>
 					</Value>
 					<Repetition>
@@ -38251,9 +38264,9 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<StepText>End Loop</StepText>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
-					<StepText>Set Variable [ $test; Value:TestDirective ( 1 ; &quot;REPEAT&quot; ; If ( $testPass ; $iterationCount - 1 ; $iterationCount ) )or TestOK ( $testPass ; $testName )or TestDiagnostic (	&quot;actual:	&quot;	&amp; Quote ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; Quote ( $expected )	&amp; &quot;¶value:	&quot;	&amp; Quote ( $value )) ]</StepText>
+					<StepText>Set Variable [ $test; Value:TestDirective ( 1 ; &quot;REPEAT&quot; ; If ( $testPass ; $iterationCount - 1 ; $iterationCount ) )or TestOK ( $testPass ; $testName )or TestDiagnostic (	&quot;actual:	&quot;		&amp; Quote ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; Quote ( $expected )	&amp; &quot;¶value:	&quot;	&amp; Quote ( $value )	&amp; &quot;¶evaluateError:	&quot;	&amp; $evaluateError	&amp; &quot;¶evaluateErrorActual:	&quot;	&amp; $evaluateErrorActual) ]</StepText>
 					<Value>
-						<Calculation><![CDATA[TestDirective ( 1 ; "REPEAT" ; If ( $testPass ; $iterationCount - 1 ; $iterationCount ) )or TestOK ( $testPass ; $testName )or TestDiagnostic (	"actual:	"	& Quote ( $actual )	& "¶expected:	"	& Quote ( $expected )	& "¶value:	"	& Quote ( $value ))]]></Calculation>
+						<Calculation><![CDATA[TestDirective ( 1 ; "REPEAT" ; If ( $testPass ; $iterationCount - 1 ; $iterationCount ) )or TestOK ( $testPass ; $testName )or TestDiagnostic (	"actual:	"		& Quote ( $actual )	& "¶expected:	"	& Quote ( $expected )	& "¶value:	"	& Quote ( $value )	& "¶evaluateError:	"	& $evaluateError	& "¶evaluateErrorActual:	"	& $evaluateErrorActual)]]></Calculation>
 						<DisplayCalculation>
 							<Chunk type="CustomFunctionRef">TestDirective</Chunk>
 							<Chunk type="NoRef"> ( 1 ; &quot;REPEAT&quot; ; </Chunk>
@@ -38266,13 +38279,13 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 							<Chunk type="FunctionRef">or</Chunk>
 							<Chunk type="NoRef"> </Chunk>
 							<Chunk type="CustomFunctionRef">TestDiagnostic</Chunk>
-							<Chunk type="NoRef"> (	&quot;actual:	&quot;	&amp; </Chunk>
+							<Chunk type="NoRef"> (	&quot;actual:	&quot;		&amp; </Chunk>
 							<Chunk type="FunctionRef">Quote</Chunk>
-							<Chunk type="NoRef"> ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; </Chunk>
+							<Chunk type="NoRef"> ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; </Chunk>
 							<Chunk type="FunctionRef">Quote</Chunk>
-							<Chunk type="NoRef"> ( $expected )	&amp; &quot;¶value:	&quot;	&amp; </Chunk>
+							<Chunk type="NoRef"> ( $expected )	&amp; &quot;¶value:	&quot;	&amp; </Chunk>
 							<Chunk type="FunctionRef">Quote</Chunk>
-							<Chunk type="NoRef"> ( $value ))</Chunk>
+							<Chunk type="NoRef"> ( $value )	&amp; &quot;¶evaluateError:	&quot;	&amp; $evaluateError	&amp; &quot;¶evaluateErrorActual:	&quot;	&amp; $evaluateErrorActual)</Chunk>
 						</DisplayCalculation>
 					</Value>
 					<Repetition>
@@ -38308,6 +38321,10 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 						</DisplayCalculation>
 					</Repetition>
 					<Name>$testName</Name>
+				</Step>
+				<Step enable="True" id="89" name="Comment">
+					<StepText>#TODO</StepText>
+					<Text>TODO</Text>
 				</Step>
 				<Step enable="True" id="89" name="Comment">
 					<StepText>#########################################</StepText>
@@ -38616,6 +38633,10 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<Name>$testName</Name>
 				</Step>
 				<Step enable="True" id="89" name="Comment">
+					<StepText>#TODO</StepText>
+					<Text>TODO</Text>
+				</Step>
+				<Step enable="True" id="89" name="Comment">
 					<StepText>#########################################</StepText>
 					<Text>########################################</Text>
 				</Step>
@@ -38920,6 +38941,10 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 						</DisplayCalculation>
 					</Repetition>
 					<Name>$testName</Name>
+				</Step>
+				<Step enable="True" id="89" name="Comment">
+					<StepText>#TODO</StepText>
+					<Text>TODO</Text>
 				</Step>
 				<Step enable="True" id="89" name="Comment">
 					<StepText>#########################################</StepText>
@@ -39359,12 +39384,16 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<StepText>End Loop</StepText>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
-					<StepText>Set Variable [ $actual; Value:#List ( $value ) ]</StepText>
+					<StepText>Set Variable [ $evaluateErrorActual; Value:EvaluationError (	Let ( $actual = #List ( $value ) ; &quot;&quot; )) ]</StepText>
 					<Value>
-						<Calculation><![CDATA[#List ( $value )]]></Calculation>
+						<Calculation><![CDATA[EvaluationError (	Let ( $actual = #List ( $value ) ; "" ))]]></Calculation>
 						<DisplayCalculation>
+							<Chunk type="FunctionRef">EvaluationError</Chunk>
+							<Chunk type="NoRef"> (	</Chunk>
+							<Chunk type="FunctionRef">Let</Chunk>
+							<Chunk type="NoRef"> ( $actual = </Chunk>
 							<Chunk type="CustomFunctionRef">#List</Chunk>
-							<Chunk type="NoRef"> ( $value )</Chunk>
+							<Chunk type="NoRef"> ( $value ) ; &quot;&quot; ))</Chunk>
 						</DisplayCalculation>
 					</Value>
 					<Repetition>
@@ -39373,7 +39402,7 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 							<Chunk type="NoRef">1</Chunk>
 						</DisplayCalculation>
 					</Repetition>
-					<Name>$actual</Name>
+					<Name>$evaluateErrorActual</Name>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
 					<StepText>Set Variable [ $expected; Value:$value&amp; &quot;¶&quot; ]</StepText>
@@ -39392,11 +39421,20 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<Name>$expected</Name>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
-					<StepText>Set Variable [ $testPass; Value:$actual = $expected ]</StepText>
+					<StepText>Set Variable [ $testPass; Value:Let ( [	$evaluateError = EvaluationError ( Evaluate ( $actual ) )] ;	$actual = $expected	and $evaluateError = 0	and $evaluateErrorActual = 0) ]</StepText>
 					<Value>
-						<Calculation><![CDATA[$actual = $expected]]></Calculation>
+						<Calculation><![CDATA[Let ( [	$evaluateError = EvaluationError ( Evaluate ( $actual ) )] ;	$actual = $expected	and $evaluateError = 0	and $evaluateErrorActual = 0)]]></Calculation>
 						<DisplayCalculation>
-							<Chunk type="NoRef">$actual = $expected</Chunk>
+							<Chunk type="FunctionRef">Let</Chunk>
+							<Chunk type="NoRef"> ( [	$evaluateError = </Chunk>
+							<Chunk type="FunctionRef">EvaluationError</Chunk>
+							<Chunk type="NoRef"> ( </Chunk>
+							<Chunk type="FunctionRef">Evaluate</Chunk>
+							<Chunk type="NoRef"> ( $actual ) )] ;	$actual = $expected	</Chunk>
+							<Chunk type="FunctionRef">and</Chunk>
+							<Chunk type="NoRef"> $evaluateError = 0	</Chunk>
+							<Chunk type="FunctionRef">and</Chunk>
+							<Chunk type="NoRef"> $evaluateErrorActual = 0)</Chunk>
 						</DisplayCalculation>
 					</Value>
 					<Repetition>
@@ -39427,9 +39465,9 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<StepText>End Loop</StepText>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
-					<StepText>Set Variable [ $test; Value:TestDirective ( 1 ; &quot;REPEAT&quot; ; $testCount )or TestOK ( $testPass ; $testName )or TestDiagnostic (	&quot;actual:	&quot;	&amp; Quote ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; Quote ( $expected )	&amp; &quot;¶value:	&quot;	&amp; Quote ( $value )) ]</StepText>
+					<StepText>Set Variable [ $test; Value:TestDirective ( 1 ; &quot;REPEAT&quot; ; $testCount )or TestOK ( $testPass ; $testName )or TestDiagnostic (	&quot;actual:	&quot;		&amp; Quote ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; Quote ( $expected )	&amp; &quot;¶value:	&quot;	&amp; Quote ( $value )	&amp; &quot;¶evaluateError:	&quot;	&amp; $evaluateError	&amp; &quot;¶evaluateErrorActual:	&quot;	&amp; $evaluateErrorActual) ]</StepText>
 					<Value>
-						<Calculation><![CDATA[TestDirective ( 1 ; "REPEAT" ; $testCount )or TestOK ( $testPass ; $testName )or TestDiagnostic (	"actual:	"	& Quote ( $actual )	& "¶expected:	"	& Quote ( $expected )	& "¶value:	"	& Quote ( $value ))]]></Calculation>
+						<Calculation><![CDATA[TestDirective ( 1 ; "REPEAT" ; $testCount )or TestOK ( $testPass ; $testName )or TestDiagnostic (	"actual:	"		& Quote ( $actual )	& "¶expected:	"	& Quote ( $expected )	& "¶value:	"	& Quote ( $value )	& "¶evaluateError:	"	& $evaluateError	& "¶evaluateErrorActual:	"	& $evaluateErrorActual)]]></Calculation>
 						<DisplayCalculation>
 							<Chunk type="CustomFunctionRef">TestDirective</Chunk>
 							<Chunk type="NoRef"> ( 1 ; &quot;REPEAT&quot; ; $testCount )</Chunk>
@@ -39440,13 +39478,13 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 							<Chunk type="FunctionRef">or</Chunk>
 							<Chunk type="NoRef"> </Chunk>
 							<Chunk type="CustomFunctionRef">TestDiagnostic</Chunk>
-							<Chunk type="NoRef"> (	&quot;actual:	&quot;	&amp; </Chunk>
+							<Chunk type="NoRef"> (	&quot;actual:	&quot;		&amp; </Chunk>
 							<Chunk type="FunctionRef">Quote</Chunk>
-							<Chunk type="NoRef"> ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; </Chunk>
+							<Chunk type="NoRef"> ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; </Chunk>
 							<Chunk type="FunctionRef">Quote</Chunk>
-							<Chunk type="NoRef"> ( $expected )	&amp; &quot;¶value:	&quot;	&amp; </Chunk>
+							<Chunk type="NoRef"> ( $expected )	&amp; &quot;¶value:	&quot;	&amp; </Chunk>
 							<Chunk type="FunctionRef">Quote</Chunk>
-							<Chunk type="NoRef"> ( $value ))</Chunk>
+							<Chunk type="NoRef"> ( $value )	&amp; &quot;¶evaluateError:	&quot;	&amp; $evaluateError	&amp; &quot;¶evaluateErrorActual:	&quot;	&amp; $evaluateErrorActual)</Chunk>
 						</DisplayCalculation>
 					</Value>
 					<Repetition>
@@ -39608,12 +39646,16 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<Name>$value</Name>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
-					<StepText>Set Variable [ $actual; Value:#List ( $value ) ]</StepText>
+					<StepText>Set Variable [ $evaluateErrorActual; Value:EvaluationError (	Let ( $actual = #List ( $value ) ; &quot;&quot; )) ]</StepText>
 					<Value>
-						<Calculation><![CDATA[#List ( $value )]]></Calculation>
+						<Calculation><![CDATA[EvaluationError (	Let ( $actual = #List ( $value ) ; "" ))]]></Calculation>
 						<DisplayCalculation>
+							<Chunk type="FunctionRef">EvaluationError</Chunk>
+							<Chunk type="NoRef"> (	</Chunk>
+							<Chunk type="FunctionRef">Let</Chunk>
+							<Chunk type="NoRef"> ( $actual = </Chunk>
 							<Chunk type="CustomFunctionRef">#List</Chunk>
-							<Chunk type="NoRef"> ( $value )</Chunk>
+							<Chunk type="NoRef"> ( $value ) ; &quot;&quot; ))</Chunk>
 						</DisplayCalculation>
 					</Value>
 					<Repetition>
@@ -39622,7 +39664,7 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 							<Chunk type="NoRef">1</Chunk>
 						</DisplayCalculation>
 					</Repetition>
-					<Name>$actual</Name>
+					<Name>$evaluateErrorActual</Name>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
 					<StepText>Set Variable [ $expected; Value:$value&amp; &quot;¶&quot; ]</StepText>
@@ -39641,11 +39683,20 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<Name>$expected</Name>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
-					<StepText>Set Variable [ $testPass; Value:$actual = $expected ]</StepText>
+					<StepText>Set Variable [ $testPass; Value:Let ( [	$evaluateError = EvaluationError ( Evaluate ( $actual ) )] ;	$actual = $expected	and $evaluateError = 0	and $evaluateErrorActual = 0) ]</StepText>
 					<Value>
-						<Calculation><![CDATA[$actual = $expected]]></Calculation>
+						<Calculation><![CDATA[Let ( [	$evaluateError = EvaluationError ( Evaluate ( $actual ) )] ;	$actual = $expected	and $evaluateError = 0	and $evaluateErrorActual = 0)]]></Calculation>
 						<DisplayCalculation>
-							<Chunk type="NoRef">$actual = $expected</Chunk>
+							<Chunk type="FunctionRef">Let</Chunk>
+							<Chunk type="NoRef"> ( [	$evaluateError = </Chunk>
+							<Chunk type="FunctionRef">EvaluationError</Chunk>
+							<Chunk type="NoRef"> ( </Chunk>
+							<Chunk type="FunctionRef">Evaluate</Chunk>
+							<Chunk type="NoRef"> ( $actual ) )] ;	$actual = $expected	</Chunk>
+							<Chunk type="FunctionRef">and</Chunk>
+							<Chunk type="NoRef"> $evaluateError = 0	</Chunk>
+							<Chunk type="FunctionRef">and</Chunk>
+							<Chunk type="NoRef"> $evaluateErrorActual = 0)</Chunk>
 						</DisplayCalculation>
 					</Value>
 					<Repetition>
@@ -39676,9 +39727,9 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<StepText>End Loop</StepText>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
-					<StepText>Set Variable [ $test; Value:TestDirective ( 1 ; &quot;REPEAT&quot; ; $testCount )or TestOK ( $testPass ; $testName )or TestDiagnostic (	&quot;actual:	&quot;	&amp; Quote ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; Quote ( $expected )	&amp; &quot;¶value:	&quot;	&amp; Quote ( $value )) ]</StepText>
+					<StepText>Set Variable [ $test; Value:TestDirective ( 1 ; &quot;REPEAT&quot; ; $testCount )or TestOK ( $testPass ; $testName )or TestDiagnostic (	&quot;actual:	&quot;		&amp; Quote ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; Quote ( $expected )	&amp; &quot;¶value:	&quot;	&amp; Quote ( $value )	&amp; &quot;¶evaluateError:	&quot;	&amp; $evaluateError	&amp; &quot;¶evaluateErrorActual:	&quot;	&amp; $evaluateErrorActual) ]</StepText>
 					<Value>
-						<Calculation><![CDATA[TestDirective ( 1 ; "REPEAT" ; $testCount )or TestOK ( $testPass ; $testName )or TestDiagnostic (	"actual:	"	& Quote ( $actual )	& "¶expected:	"	& Quote ( $expected )	& "¶value:	"	& Quote ( $value ))]]></Calculation>
+						<Calculation><![CDATA[TestDirective ( 1 ; "REPEAT" ; $testCount )or TestOK ( $testPass ; $testName )or TestDiagnostic (	"actual:	"		& Quote ( $actual )	& "¶expected:	"	& Quote ( $expected )	& "¶value:	"	& Quote ( $value )	& "¶evaluateError:	"	& $evaluateError	& "¶evaluateErrorActual:	"	& $evaluateErrorActual)]]></Calculation>
 						<DisplayCalculation>
 							<Chunk type="CustomFunctionRef">TestDirective</Chunk>
 							<Chunk type="NoRef"> ( 1 ; &quot;REPEAT&quot; ; $testCount )</Chunk>
@@ -39689,13 +39740,13 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 							<Chunk type="FunctionRef">or</Chunk>
 							<Chunk type="NoRef"> </Chunk>
 							<Chunk type="CustomFunctionRef">TestDiagnostic</Chunk>
-							<Chunk type="NoRef"> (	&quot;actual:	&quot;	&amp; </Chunk>
+							<Chunk type="NoRef"> (	&quot;actual:	&quot;		&amp; </Chunk>
 							<Chunk type="FunctionRef">Quote</Chunk>
-							<Chunk type="NoRef"> ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; </Chunk>
+							<Chunk type="NoRef"> ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; </Chunk>
 							<Chunk type="FunctionRef">Quote</Chunk>
-							<Chunk type="NoRef"> ( $expected )	&amp; &quot;¶value:	&quot;	&amp; </Chunk>
+							<Chunk type="NoRef"> ( $expected )	&amp; &quot;¶value:	&quot;	&amp; </Chunk>
 							<Chunk type="FunctionRef">Quote</Chunk>
-							<Chunk type="NoRef"> ( $value ))</Chunk>
+							<Chunk type="NoRef"> ( $value )	&amp; &quot;¶evaluateError:	&quot;	&amp; $evaluateError	&amp; &quot;¶evaluateErrorActual:	&quot;	&amp; $evaluateErrorActual)</Chunk>
 						</DisplayCalculation>
 					</Value>
 					<Repetition>
@@ -39857,12 +39908,16 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<Name>$value</Name>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
-					<StepText>Set Variable [ $actual; Value:#List ( $value ) ]</StepText>
+					<StepText>Set Variable [ $evaluateErrorActual; Value:EvaluationError (	Let ( $actual = #List ( $value ) ; &quot;&quot; )) ]</StepText>
 					<Value>
-						<Calculation><![CDATA[#List ( $value )]]></Calculation>
+						<Calculation><![CDATA[EvaluationError (	Let ( $actual = #List ( $value ) ; "" ))]]></Calculation>
 						<DisplayCalculation>
+							<Chunk type="FunctionRef">EvaluationError</Chunk>
+							<Chunk type="NoRef"> (	</Chunk>
+							<Chunk type="FunctionRef">Let</Chunk>
+							<Chunk type="NoRef"> ( $actual = </Chunk>
 							<Chunk type="CustomFunctionRef">#List</Chunk>
-							<Chunk type="NoRef"> ( $value )</Chunk>
+							<Chunk type="NoRef"> ( $value ) ; &quot;&quot; ))</Chunk>
 						</DisplayCalculation>
 					</Value>
 					<Repetition>
@@ -39871,7 +39926,7 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 							<Chunk type="NoRef">1</Chunk>
 						</DisplayCalculation>
 					</Repetition>
-					<Name>$actual</Name>
+					<Name>$evaluateErrorActual</Name>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
 					<StepText>Set Variable [ $expected; Value:$value&amp; &quot;¶&quot; ]</StepText>
@@ -39890,11 +39945,20 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<Name>$expected</Name>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
-					<StepText>Set Variable [ $testPass; Value:$actual = $expected ]</StepText>
+					<StepText>Set Variable [ $testPass; Value:Let ( [	$evaluateError = EvaluationError ( Evaluate ( $actual ) )] ;	$actual = $expected	and $evaluateError = 0	and $evaluateErrorActual = 0) ]</StepText>
 					<Value>
-						<Calculation><![CDATA[$actual = $expected]]></Calculation>
+						<Calculation><![CDATA[Let ( [	$evaluateError = EvaluationError ( Evaluate ( $actual ) )] ;	$actual = $expected	and $evaluateError = 0	and $evaluateErrorActual = 0)]]></Calculation>
 						<DisplayCalculation>
-							<Chunk type="NoRef">$actual = $expected</Chunk>
+							<Chunk type="FunctionRef">Let</Chunk>
+							<Chunk type="NoRef"> ( [	$evaluateError = </Chunk>
+							<Chunk type="FunctionRef">EvaluationError</Chunk>
+							<Chunk type="NoRef"> ( </Chunk>
+							<Chunk type="FunctionRef">Evaluate</Chunk>
+							<Chunk type="NoRef"> ( $actual ) )] ;	$actual = $expected	</Chunk>
+							<Chunk type="FunctionRef">and</Chunk>
+							<Chunk type="NoRef"> $evaluateError = 0	</Chunk>
+							<Chunk type="FunctionRef">and</Chunk>
+							<Chunk type="NoRef"> $evaluateErrorActual = 0)</Chunk>
 						</DisplayCalculation>
 					</Value>
 					<Repetition>
@@ -39925,9 +39989,9 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<StepText>End Loop</StepText>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
-					<StepText>Set Variable [ $test; Value:TestDirective ( 1 ; &quot;REPEAT&quot; ; $testCount )or TestOK ( $testPass ; $testName )or TestDiagnostic (	&quot;actual:	&quot;	&amp; Quote ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; Quote ( $expected )	&amp; &quot;¶value:	&quot;	&amp; Quote ( $value )) ]</StepText>
+					<StepText>Set Variable [ $test; Value:TestDirective ( 1 ; &quot;REPEAT&quot; ; $testCount )or TestOK ( $testPass ; $testName )or TestDiagnostic (	&quot;actual:	&quot;		&amp; Quote ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; Quote ( $expected )	&amp; &quot;¶value:	&quot;	&amp; Quote ( $value )	&amp; &quot;¶evaluateError:	&quot;	&amp; $evaluateError	&amp; &quot;¶evaluateErrorActual:	&quot;	&amp; $evaluateErrorActual) ]</StepText>
 					<Value>
-						<Calculation><![CDATA[TestDirective ( 1 ; "REPEAT" ; $testCount )or TestOK ( $testPass ; $testName )or TestDiagnostic (	"actual:	"	& Quote ( $actual )	& "¶expected:	"	& Quote ( $expected )	& "¶value:	"	& Quote ( $value ))]]></Calculation>
+						<Calculation><![CDATA[TestDirective ( 1 ; "REPEAT" ; $testCount )or TestOK ( $testPass ; $testName )or TestDiagnostic (	"actual:	"		& Quote ( $actual )	& "¶expected:	"	& Quote ( $expected )	& "¶value:	"	& Quote ( $value )	& "¶evaluateError:	"	& $evaluateError	& "¶evaluateErrorActual:	"	& $evaluateErrorActual)]]></Calculation>
 						<DisplayCalculation>
 							<Chunk type="CustomFunctionRef">TestDirective</Chunk>
 							<Chunk type="NoRef"> ( 1 ; &quot;REPEAT&quot; ; $testCount )</Chunk>
@@ -39938,13 +40002,13 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 							<Chunk type="FunctionRef">or</Chunk>
 							<Chunk type="NoRef"> </Chunk>
 							<Chunk type="CustomFunctionRef">TestDiagnostic</Chunk>
-							<Chunk type="NoRef"> (	&quot;actual:	&quot;	&amp; </Chunk>
+							<Chunk type="NoRef"> (	&quot;actual:	&quot;		&amp; </Chunk>
 							<Chunk type="FunctionRef">Quote</Chunk>
-							<Chunk type="NoRef"> ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; </Chunk>
+							<Chunk type="NoRef"> ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; </Chunk>
 							<Chunk type="FunctionRef">Quote</Chunk>
-							<Chunk type="NoRef"> ( $expected )	&amp; &quot;¶value:	&quot;	&amp; </Chunk>
+							<Chunk type="NoRef"> ( $expected )	&amp; &quot;¶value:	&quot;	&amp; </Chunk>
 							<Chunk type="FunctionRef">Quote</Chunk>
-							<Chunk type="NoRef"> ( $value ))</Chunk>
+							<Chunk type="NoRef"> ( $value )	&amp; &quot;¶evaluateError:	&quot;	&amp; $evaluateError	&amp; &quot;¶evaluateErrorActual:	&quot;	&amp; $evaluateErrorActual)</Chunk>
 						</DisplayCalculation>
 					</Value>
 					<Repetition>
@@ -40097,12 +40161,16 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<Name>$value</Name>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
-					<StepText>Set Variable [ $actual; Value:#List ( $value ) ]</StepText>
+					<StepText>Set Variable [ $evaluateErrorActual; Value:EvaluationError (	Let ( $actual = #List ( $value ) ; &quot;&quot; )) ]</StepText>
 					<Value>
-						<Calculation><![CDATA[#List ( $value )]]></Calculation>
+						<Calculation><![CDATA[EvaluationError (	Let ( $actual = #List ( $value ) ; "" ))]]></Calculation>
 						<DisplayCalculation>
+							<Chunk type="FunctionRef">EvaluationError</Chunk>
+							<Chunk type="NoRef"> (	</Chunk>
+							<Chunk type="FunctionRef">Let</Chunk>
+							<Chunk type="NoRef"> ( $actual = </Chunk>
 							<Chunk type="CustomFunctionRef">#List</Chunk>
-							<Chunk type="NoRef"> ( $value )</Chunk>
+							<Chunk type="NoRef"> ( $value ) ; &quot;&quot; ))</Chunk>
 						</DisplayCalculation>
 					</Value>
 					<Repetition>
@@ -40111,7 +40179,7 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 							<Chunk type="NoRef">1</Chunk>
 						</DisplayCalculation>
 					</Repetition>
-					<Name>$actual</Name>
+					<Name>$evaluateErrorActual</Name>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
 					<StepText>Set Variable [ $expected; Value:Quote ( $value )&amp; &quot;¶&quot; ]</StepText>
@@ -40131,11 +40199,20 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<Name>$expected</Name>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
-					<StepText>Set Variable [ $testPass; Value:$actual = $expected ]</StepText>
+					<StepText>Set Variable [ $testPass; Value:Let ( [	$evaluateError = EvaluationError ( Evaluate ( $actual ) )] ;	$actual = $expected	and $evaluateError = 0	and $evaluateErrorActual = 0) ]</StepText>
 					<Value>
-						<Calculation><![CDATA[$actual = $expected]]></Calculation>
+						<Calculation><![CDATA[Let ( [	$evaluateError = EvaluationError ( Evaluate ( $actual ) )] ;	$actual = $expected	and $evaluateError = 0	and $evaluateErrorActual = 0)]]></Calculation>
 						<DisplayCalculation>
-							<Chunk type="NoRef">$actual = $expected</Chunk>
+							<Chunk type="FunctionRef">Let</Chunk>
+							<Chunk type="NoRef"> ( [	$evaluateError = </Chunk>
+							<Chunk type="FunctionRef">EvaluationError</Chunk>
+							<Chunk type="NoRef"> ( </Chunk>
+							<Chunk type="FunctionRef">Evaluate</Chunk>
+							<Chunk type="NoRef"> ( $actual ) )] ;	$actual = $expected	</Chunk>
+							<Chunk type="FunctionRef">and</Chunk>
+							<Chunk type="NoRef"> $evaluateError = 0	</Chunk>
+							<Chunk type="FunctionRef">and</Chunk>
+							<Chunk type="NoRef"> $evaluateErrorActual = 0)</Chunk>
 						</DisplayCalculation>
 					</Value>
 					<Repetition>
@@ -40166,9 +40243,9 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<StepText>End Loop</StepText>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
-					<StepText>Set Variable [ $test; Value:TestDirective ( 1 ; &quot;REPEAT&quot; ; $testCount )or TestOK ( $testPass ; $testName )or TestDiagnostic (	&quot;actual:	&quot;	&amp; Quote ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; Quote ( $expected )	&amp; &quot;¶value:	&quot;	&amp; Quote ( $value )) ]</StepText>
+					<StepText>Set Variable [ $test; Value:TestDirective ( 1 ; &quot;REPEAT&quot; ; $testCount )or TestOK ( $testPass ; $testName )or TestDiagnostic (	&quot;actual:	&quot;		&amp; Quote ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; Quote ( $expected )	&amp; &quot;¶value:	&quot;	&amp; Quote ( $value )	&amp; &quot;¶evaluateError:	&quot;	&amp; $evaluateError	&amp; &quot;¶evaluateErrorActual:	&quot;	&amp; $evaluateErrorActual) ]</StepText>
 					<Value>
-						<Calculation><![CDATA[TestDirective ( 1 ; "REPEAT" ; $testCount )or TestOK ( $testPass ; $testName )or TestDiagnostic (	"actual:	"	& Quote ( $actual )	& "¶expected:	"	& Quote ( $expected )	& "¶value:	"	& Quote ( $value ))]]></Calculation>
+						<Calculation><![CDATA[TestDirective ( 1 ; "REPEAT" ; $testCount )or TestOK ( $testPass ; $testName )or TestDiagnostic (	"actual:	"		& Quote ( $actual )	& "¶expected:	"	& Quote ( $expected )	& "¶value:	"	& Quote ( $value )	& "¶evaluateError:	"	& $evaluateError	& "¶evaluateErrorActual:	"	& $evaluateErrorActual)]]></Calculation>
 						<DisplayCalculation>
 							<Chunk type="CustomFunctionRef">TestDirective</Chunk>
 							<Chunk type="NoRef"> ( 1 ; &quot;REPEAT&quot; ; $testCount )</Chunk>
@@ -40179,13 +40256,13 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 							<Chunk type="FunctionRef">or</Chunk>
 							<Chunk type="NoRef"> </Chunk>
 							<Chunk type="CustomFunctionRef">TestDiagnostic</Chunk>
-							<Chunk type="NoRef"> (	&quot;actual:	&quot;	&amp; </Chunk>
+							<Chunk type="NoRef"> (	&quot;actual:	&quot;		&amp; </Chunk>
 							<Chunk type="FunctionRef">Quote</Chunk>
-							<Chunk type="NoRef"> ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; </Chunk>
+							<Chunk type="NoRef"> ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; </Chunk>
 							<Chunk type="FunctionRef">Quote</Chunk>
-							<Chunk type="NoRef"> ( $expected )	&amp; &quot;¶value:	&quot;	&amp; </Chunk>
+							<Chunk type="NoRef"> ( $expected )	&amp; &quot;¶value:	&quot;	&amp; </Chunk>
 							<Chunk type="FunctionRef">Quote</Chunk>
-							<Chunk type="NoRef"> ( $value ))</Chunk>
+							<Chunk type="NoRef"> ( $value )	&amp; &quot;¶evaluateError:	&quot;	&amp; $evaluateError	&amp; &quot;¶evaluateErrorActual:	&quot;	&amp; $evaluateErrorActual)</Chunk>
 						</DisplayCalculation>
 					</Value>
 					<Repetition>
@@ -40375,12 +40452,16 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<StepText>End Loop</StepText>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
-					<StepText>Set Variable [ $actual; Value:#List ( $value ) ]</StepText>
+					<StepText>Set Variable [ $evaluateErrorActual; Value:EvaluationError (	Let ( $actual = #List ( $value ) ; &quot;&quot; )) ]</StepText>
 					<Value>
-						<Calculation><![CDATA[#List ( $value )]]></Calculation>
+						<Calculation><![CDATA[EvaluationError (	Let ( $actual = #List ( $value ) ; "" ))]]></Calculation>
 						<DisplayCalculation>
+							<Chunk type="FunctionRef">EvaluationError</Chunk>
+							<Chunk type="NoRef"> (	</Chunk>
+							<Chunk type="FunctionRef">Let</Chunk>
+							<Chunk type="NoRef"> ( $actual = </Chunk>
 							<Chunk type="CustomFunctionRef">#List</Chunk>
-							<Chunk type="NoRef"> ( $value )</Chunk>
+							<Chunk type="NoRef"> ( $value ) ; &quot;&quot; ))</Chunk>
 						</DisplayCalculation>
 					</Value>
 					<Repetition>
@@ -40389,7 +40470,7 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 							<Chunk type="NoRef">1</Chunk>
 						</DisplayCalculation>
 					</Repetition>
-					<Name>$actual</Name>
+					<Name>$evaluateErrorActual</Name>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
 					<StepText>Set Variable [ $expected; Value:&quot;GetAsTimestamp ( &quot;&amp; Quote ( $value )&amp; &quot; )¶&quot; ]</StepText>
@@ -40410,11 +40491,20 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<Name>$expected</Name>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
-					<StepText>Set Variable [ $testPass; Value:$actual = $expected ]</StepText>
+					<StepText>Set Variable [ $testPass; Value:Let ( [	$evaluateError = EvaluationError ( Evaluate ( $actual ) )] ;	$actual = $expected	and $evaluateError = 0	and $evaluateErrorActual = 0) ]</StepText>
 					<Value>
-						<Calculation><![CDATA[$actual = $expected]]></Calculation>
+						<Calculation><![CDATA[Let ( [	$evaluateError = EvaluationError ( Evaluate ( $actual ) )] ;	$actual = $expected	and $evaluateError = 0	and $evaluateErrorActual = 0)]]></Calculation>
 						<DisplayCalculation>
-							<Chunk type="NoRef">$actual = $expected</Chunk>
+							<Chunk type="FunctionRef">Let</Chunk>
+							<Chunk type="NoRef"> ( [	$evaluateError = </Chunk>
+							<Chunk type="FunctionRef">EvaluationError</Chunk>
+							<Chunk type="NoRef"> ( </Chunk>
+							<Chunk type="FunctionRef">Evaluate</Chunk>
+							<Chunk type="NoRef"> ( $actual ) )] ;	$actual = $expected	</Chunk>
+							<Chunk type="FunctionRef">and</Chunk>
+							<Chunk type="NoRef"> $evaluateError = 0	</Chunk>
+							<Chunk type="FunctionRef">and</Chunk>
+							<Chunk type="NoRef"> $evaluateErrorActual = 0)</Chunk>
 						</DisplayCalculation>
 					</Value>
 					<Repetition>
@@ -40445,9 +40535,9 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<StepText>End Loop</StepText>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
-					<StepText>Set Variable [ $test; Value:TestDirective ( 1 ; &quot;REPEAT&quot; ; $testCount )or TestOK ( $testPass ; $testName )or TestDiagnostic (	&quot;actual:	&quot;	&amp; Quote ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; Quote ( $expected )	&amp; &quot;¶value:	&quot;	&amp; Quote ( $value )) ]</StepText>
+					<StepText>Set Variable [ $test; Value:TestDirective ( 1 ; &quot;REPEAT&quot; ; $testCount )or TestOK ( $testPass ; $testName )or TestDiagnostic (	&quot;actual:	&quot;		&amp; Quote ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; Quote ( $expected )	&amp; &quot;¶value:	&quot;	&amp; Quote ( $value )	&amp; &quot;¶evaluateError:	&quot;	&amp; $evaluateError	&amp; &quot;¶evaluateErrorActual:	&quot;	&amp; $evaluateErrorActual) ]</StepText>
 					<Value>
-						<Calculation><![CDATA[TestDirective ( 1 ; "REPEAT" ; $testCount )or TestOK ( $testPass ; $testName )or TestDiagnostic (	"actual:	"	& Quote ( $actual )	& "¶expected:	"	& Quote ( $expected )	& "¶value:	"	& Quote ( $value ))]]></Calculation>
+						<Calculation><![CDATA[TestDirective ( 1 ; "REPEAT" ; $testCount )or TestOK ( $testPass ; $testName )or TestDiagnostic (	"actual:	"		& Quote ( $actual )	& "¶expected:	"	& Quote ( $expected )	& "¶value:	"	& Quote ( $value )	& "¶evaluateError:	"	& $evaluateError	& "¶evaluateErrorActual:	"	& $evaluateErrorActual)]]></Calculation>
 						<DisplayCalculation>
 							<Chunk type="CustomFunctionRef">TestDirective</Chunk>
 							<Chunk type="NoRef"> ( 1 ; &quot;REPEAT&quot; ; $testCount )</Chunk>
@@ -40458,13 +40548,13 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 							<Chunk type="FunctionRef">or</Chunk>
 							<Chunk type="NoRef"> </Chunk>
 							<Chunk type="CustomFunctionRef">TestDiagnostic</Chunk>
-							<Chunk type="NoRef"> (	&quot;actual:	&quot;	&amp; </Chunk>
+							<Chunk type="NoRef"> (	&quot;actual:	&quot;		&amp; </Chunk>
 							<Chunk type="FunctionRef">Quote</Chunk>
-							<Chunk type="NoRef"> ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; </Chunk>
+							<Chunk type="NoRef"> ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; </Chunk>
 							<Chunk type="FunctionRef">Quote</Chunk>
-							<Chunk type="NoRef"> ( $expected )	&amp; &quot;¶value:	&quot;	&amp; </Chunk>
+							<Chunk type="NoRef"> ( $expected )	&amp; &quot;¶value:	&quot;	&amp; </Chunk>
 							<Chunk type="FunctionRef">Quote</Chunk>
-							<Chunk type="NoRef"> ( $value ))</Chunk>
+							<Chunk type="NoRef"> ( $value )	&amp; &quot;¶evaluateError:	&quot;	&amp; $evaluateError	&amp; &quot;¶evaluateErrorActual:	&quot;	&amp; $evaluateErrorActual)</Chunk>
 						</DisplayCalculation>
 					</Value>
 					<Repetition>
@@ -40643,12 +40733,16 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<StepText>End Loop</StepText>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
-					<StepText>Set Variable [ $actual; Value:#List ( $value ) ]</StepText>
+					<StepText>Set Variable [ $evaluateErrorActual; Value:EvaluationError (	Let ( $actual = #List ( $value ) ; &quot;&quot; )) ]</StepText>
 					<Value>
-						<Calculation><![CDATA[#List ( $value )]]></Calculation>
+						<Calculation><![CDATA[EvaluationError (	Let ( $actual = #List ( $value ) ; "" ))]]></Calculation>
 						<DisplayCalculation>
+							<Chunk type="FunctionRef">EvaluationError</Chunk>
+							<Chunk type="NoRef"> (	</Chunk>
+							<Chunk type="FunctionRef">Let</Chunk>
+							<Chunk type="NoRef"> ( $actual = </Chunk>
 							<Chunk type="CustomFunctionRef">#List</Chunk>
-							<Chunk type="NoRef"> ( $value )</Chunk>
+							<Chunk type="NoRef"> ( $value ) ; &quot;&quot; ))</Chunk>
 						</DisplayCalculation>
 					</Value>
 					<Repetition>
@@ -40657,7 +40751,7 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 							<Chunk type="NoRef">1</Chunk>
 						</DisplayCalculation>
 					</Repetition>
-					<Name>$actual</Name>
+					<Name>$evaluateErrorActual</Name>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
 					<StepText>Set Variable [ $expected; Value:&quot;GetAsDate ( &quot;&amp; Quote ( $value )&amp; &quot; )¶&quot; ]</StepText>
@@ -40678,11 +40772,20 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<Name>$expected</Name>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
-					<StepText>Set Variable [ $testPass; Value:$actual = $expected ]</StepText>
+					<StepText>Set Variable [ $testPass; Value:Let ( [	$evaluateError = EvaluationError ( Evaluate ( $actual ) )] ;	$actual = $expected	and $evaluateError = 0	and $evaluateErrorActual = 0) ]</StepText>
 					<Value>
-						<Calculation><![CDATA[$actual = $expected]]></Calculation>
+						<Calculation><![CDATA[Let ( [	$evaluateError = EvaluationError ( Evaluate ( $actual ) )] ;	$actual = $expected	and $evaluateError = 0	and $evaluateErrorActual = 0)]]></Calculation>
 						<DisplayCalculation>
-							<Chunk type="NoRef">$actual = $expected</Chunk>
+							<Chunk type="FunctionRef">Let</Chunk>
+							<Chunk type="NoRef"> ( [	$evaluateError = </Chunk>
+							<Chunk type="FunctionRef">EvaluationError</Chunk>
+							<Chunk type="NoRef"> ( </Chunk>
+							<Chunk type="FunctionRef">Evaluate</Chunk>
+							<Chunk type="NoRef"> ( $actual ) )] ;	$actual = $expected	</Chunk>
+							<Chunk type="FunctionRef">and</Chunk>
+							<Chunk type="NoRef"> $evaluateError = 0	</Chunk>
+							<Chunk type="FunctionRef">and</Chunk>
+							<Chunk type="NoRef"> $evaluateErrorActual = 0)</Chunk>
 						</DisplayCalculation>
 					</Value>
 					<Repetition>
@@ -40713,9 +40816,9 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<StepText>End Loop</StepText>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
-					<StepText>Set Variable [ $test; Value:TestDirective ( 1 ; &quot;REPEAT&quot; ; $testCount )or TestOK ( $testPass ; $testName )or TestDiagnostic (	&quot;actual:	&quot;	&amp; Quote ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; Quote ( $expected )	&amp; &quot;¶value:	&quot;	&amp; Quote ( $value )) ]</StepText>
+					<StepText>Set Variable [ $test; Value:TestDirective ( 1 ; &quot;REPEAT&quot; ; $testCount )or TestOK ( $testPass ; $testName )or TestDiagnostic (	&quot;actual:	&quot;		&amp; Quote ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; Quote ( $expected )	&amp; &quot;¶value:	&quot;	&amp; Quote ( $value )	&amp; &quot;¶evaluateError:	&quot;	&amp; $evaluateError	&amp; &quot;¶evaluateErrorActual:	&quot;	&amp; $evaluateErrorActual) ]</StepText>
 					<Value>
-						<Calculation><![CDATA[TestDirective ( 1 ; "REPEAT" ; $testCount )or TestOK ( $testPass ; $testName )or TestDiagnostic (	"actual:	"	& Quote ( $actual )	& "¶expected:	"	& Quote ( $expected )	& "¶value:	"	& Quote ( $value ))]]></Calculation>
+						<Calculation><![CDATA[TestDirective ( 1 ; "REPEAT" ; $testCount )or TestOK ( $testPass ; $testName )or TestDiagnostic (	"actual:	"		& Quote ( $actual )	& "¶expected:	"	& Quote ( $expected )	& "¶value:	"	& Quote ( $value )	& "¶evaluateError:	"	& $evaluateError	& "¶evaluateErrorActual:	"	& $evaluateErrorActual)]]></Calculation>
 						<DisplayCalculation>
 							<Chunk type="CustomFunctionRef">TestDirective</Chunk>
 							<Chunk type="NoRef"> ( 1 ; &quot;REPEAT&quot; ; $testCount )</Chunk>
@@ -40726,13 +40829,13 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 							<Chunk type="FunctionRef">or</Chunk>
 							<Chunk type="NoRef"> </Chunk>
 							<Chunk type="CustomFunctionRef">TestDiagnostic</Chunk>
-							<Chunk type="NoRef"> (	&quot;actual:	&quot;	&amp; </Chunk>
+							<Chunk type="NoRef"> (	&quot;actual:	&quot;		&amp; </Chunk>
 							<Chunk type="FunctionRef">Quote</Chunk>
-							<Chunk type="NoRef"> ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; </Chunk>
+							<Chunk type="NoRef"> ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; </Chunk>
 							<Chunk type="FunctionRef">Quote</Chunk>
-							<Chunk type="NoRef"> ( $expected )	&amp; &quot;¶value:	&quot;	&amp; </Chunk>
+							<Chunk type="NoRef"> ( $expected )	&amp; &quot;¶value:	&quot;	&amp; </Chunk>
 							<Chunk type="FunctionRef">Quote</Chunk>
-							<Chunk type="NoRef"> ( $value ))</Chunk>
+							<Chunk type="NoRef"> ( $value )	&amp; &quot;¶evaluateError:	&quot;	&amp; $evaluateError	&amp; &quot;¶evaluateErrorActual:	&quot;	&amp; $evaluateErrorActual)</Chunk>
 						</DisplayCalculation>
 					</Value>
 					<Repetition>
@@ -40966,12 +41069,16 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<Name>$value</Name>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
-					<StepText>Set Variable [ $actual; Value:#List ( $value ) ]</StepText>
+					<StepText>Set Variable [ $evaluateErrorActual; Value:EvaluationError (	Let ( $actual = #List ( $value ) ; &quot;&quot; )) ]</StepText>
 					<Value>
-						<Calculation><![CDATA[#List ( $value )]]></Calculation>
+						<Calculation><![CDATA[EvaluationError (	Let ( $actual = #List ( $value ) ; "" ))]]></Calculation>
 						<DisplayCalculation>
+							<Chunk type="FunctionRef">EvaluationError</Chunk>
+							<Chunk type="NoRef"> (	</Chunk>
+							<Chunk type="FunctionRef">Let</Chunk>
+							<Chunk type="NoRef"> ( $actual = </Chunk>
 							<Chunk type="CustomFunctionRef">#List</Chunk>
-							<Chunk type="NoRef"> ( $value )</Chunk>
+							<Chunk type="NoRef"> ( $value ) ; &quot;&quot; ))</Chunk>
 						</DisplayCalculation>
 					</Value>
 					<Repetition>
@@ -40980,7 +41087,7 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 							<Chunk type="NoRef">1</Chunk>
 						</DisplayCalculation>
 					</Repetition>
-					<Name>$actual</Name>
+					<Name>$evaluateErrorActual</Name>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
 					<StepText>Set Variable [ $expected; Value:Quote ( $value ) &amp; ¶ ]</StepText>
@@ -41000,11 +41107,20 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<Name>$expected</Name>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
-					<StepText>Set Variable [ $testPass; Value:$actual = $expected ]</StepText>
+					<StepText>Set Variable [ $testPass; Value:Let ( [	$evaluateError = EvaluationError ( Evaluate ( $actual ) )] ;	$actual = $expected	and $evaluateError = 0	and $evaluateErrorActual = 0) ]</StepText>
 					<Value>
-						<Calculation><![CDATA[$actual = $expected]]></Calculation>
+						<Calculation><![CDATA[Let ( [	$evaluateError = EvaluationError ( Evaluate ( $actual ) )] ;	$actual = $expected	and $evaluateError = 0	and $evaluateErrorActual = 0)]]></Calculation>
 						<DisplayCalculation>
-							<Chunk type="NoRef">$actual = $expected</Chunk>
+							<Chunk type="FunctionRef">Let</Chunk>
+							<Chunk type="NoRef"> ( [	$evaluateError = </Chunk>
+							<Chunk type="FunctionRef">EvaluationError</Chunk>
+							<Chunk type="NoRef"> ( </Chunk>
+							<Chunk type="FunctionRef">Evaluate</Chunk>
+							<Chunk type="NoRef"> ( $actual ) )] ;	$actual = $expected	</Chunk>
+							<Chunk type="FunctionRef">and</Chunk>
+							<Chunk type="NoRef"> $evaluateError = 0	</Chunk>
+							<Chunk type="FunctionRef">and</Chunk>
+							<Chunk type="NoRef"> $evaluateErrorActual = 0)</Chunk>
 						</DisplayCalculation>
 					</Value>
 					<Repetition>
@@ -41027,18 +41143,24 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<StepText>End Loop</StepText>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
-					<StepText>Set Variable [ $test; Value:TestOK ( $testPass ; $testName )or TestDiagnostic (	&quot;delimiter:	&quot; &amp; $delimiter &amp; &quot; (&quot; &amp; Code ( $delimiter ) &amp; &quot;)&quot;	&amp; &quot;¶actual:	&quot; &amp; $actual	&amp; &quot;¶expected:	&quot; &amp; $expected) ]</StepText>
+					<StepText>Set Variable [ $test; Value:TestOK ( $testPass ; $testName )or TestDiagnostic (	&quot;actual:	&quot;		&amp; Quote ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; Quote ( $expected )	&amp; &quot;¶value:	&quot;	&amp; Quote ( $value )	&amp; &quot;¶evaluateError:	&quot;	&amp; $evaluateError	&amp; &quot;¶evaluateErrorActual:	&quot;	&amp; $evaluateErrorActual	&amp; &quot;¶delimiter:	&quot; &amp; $delimiter &amp; &quot; (&quot; &amp; Code ( $delimiter ) &amp; &quot;)&quot;) ]</StepText>
 					<Value>
-						<Calculation><![CDATA[TestOK ( $testPass ; $testName )or TestDiagnostic (	"delimiter:	" & $delimiter & " (" & Code ( $delimiter ) & ")"	& "¶actual:	" & $actual	& "¶expected:	" & $expected)]]></Calculation>
+						<Calculation><![CDATA[TestOK ( $testPass ; $testName )or TestDiagnostic (	"actual:	"		& Quote ( $actual )	& "¶expected:	"	& Quote ( $expected )	& "¶value:	"	& Quote ( $value )	& "¶evaluateError:	"	& $evaluateError	& "¶evaluateErrorActual:	"	& $evaluateErrorActual	& "¶delimiter:	" & $delimiter & " (" & Code ( $delimiter ) & ")")]]></Calculation>
 						<DisplayCalculation>
 							<Chunk type="CustomFunctionRef">TestOK</Chunk>
 							<Chunk type="NoRef"> ( $testPass ; $testName )</Chunk>
 							<Chunk type="FunctionRef">or</Chunk>
 							<Chunk type="NoRef"> </Chunk>
 							<Chunk type="CustomFunctionRef">TestDiagnostic</Chunk>
-							<Chunk type="NoRef"> (	&quot;delimiter:	&quot; &amp; $delimiter &amp; &quot; (&quot; &amp; </Chunk>
+							<Chunk type="NoRef"> (	&quot;actual:	&quot;		&amp; </Chunk>
+							<Chunk type="FunctionRef">Quote</Chunk>
+							<Chunk type="NoRef"> ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; </Chunk>
+							<Chunk type="FunctionRef">Quote</Chunk>
+							<Chunk type="NoRef"> ( $expected )	&amp; &quot;¶value:	&quot;	&amp; </Chunk>
+							<Chunk type="FunctionRef">Quote</Chunk>
+							<Chunk type="NoRef"> ( $value )	&amp; &quot;¶evaluateError:	&quot;	&amp; $evaluateError	&amp; &quot;¶evaluateErrorActual:	&quot;	&amp; $evaluateErrorActual	&amp; &quot;¶delimiter:	&quot; &amp; $delimiter &amp; &quot; (&quot; &amp; </Chunk>
 							<Chunk type="FunctionRef">Code</Chunk>
-							<Chunk type="NoRef"> ( $delimiter ) &amp; &quot;)&quot;	&amp; &quot;¶actual:	&quot; &amp; $actual	&amp; &quot;¶expected:	&quot; &amp; $expected)</Chunk>
+							<Chunk type="NoRef"> ( $delimiter ) &amp; &quot;)&quot;)</Chunk>
 						</DisplayCalculation>
 					</Value>
 					<Repetition>
@@ -41214,12 +41336,16 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<StepText>End Loop</StepText>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
-					<StepText>Set Variable [ $actual; Value:#List ( $value ) ]</StepText>
+					<StepText>Set Variable [ $evaluateErrorActual; Value:EvaluationError (	Let ( $actual = #List ( $value ) ; &quot;&quot; )) ]</StepText>
 					<Value>
-						<Calculation><![CDATA[#List ( $value )]]></Calculation>
+						<Calculation><![CDATA[EvaluationError (	Let ( $actual = #List ( $value ) ; "" ))]]></Calculation>
 						<DisplayCalculation>
+							<Chunk type="FunctionRef">EvaluationError</Chunk>
+							<Chunk type="NoRef"> (	</Chunk>
+							<Chunk type="FunctionRef">Let</Chunk>
+							<Chunk type="NoRef"> ( $actual = </Chunk>
 							<Chunk type="CustomFunctionRef">#List</Chunk>
-							<Chunk type="NoRef"> ( $value )</Chunk>
+							<Chunk type="NoRef"> ( $value ) ; &quot;&quot; ))</Chunk>
 						</DisplayCalculation>
 					</Value>
 					<Repetition>
@@ -41228,7 +41354,7 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 							<Chunk type="NoRef">1</Chunk>
 						</DisplayCalculation>
 					</Repetition>
-					<Name>$actual</Name>
+					<Name>$evaluateErrorActual</Name>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
 					<StepText>Set Variable [ $expected; Value:&quot;GetAsTime ( &quot;&amp; Quote ( $value )&amp; &quot; )¶&quot; ]</StepText>
@@ -41249,11 +41375,20 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<Name>$expected</Name>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
-					<StepText>Set Variable [ $testPass; Value:$actual = $expected ]</StepText>
+					<StepText>Set Variable [ $testPass; Value:Let ( [	$evaluateError = EvaluationError ( Evaluate ( $actual ) )] ;	$actual = $expected	and $evaluateError = 0	and $evaluateErrorActual = 0) ]</StepText>
 					<Value>
-						<Calculation><![CDATA[$actual = $expected]]></Calculation>
+						<Calculation><![CDATA[Let ( [	$evaluateError = EvaluationError ( Evaluate ( $actual ) )] ;	$actual = $expected	and $evaluateError = 0	and $evaluateErrorActual = 0)]]></Calculation>
 						<DisplayCalculation>
-							<Chunk type="NoRef">$actual = $expected</Chunk>
+							<Chunk type="FunctionRef">Let</Chunk>
+							<Chunk type="NoRef"> ( [	$evaluateError = </Chunk>
+							<Chunk type="FunctionRef">EvaluationError</Chunk>
+							<Chunk type="NoRef"> ( </Chunk>
+							<Chunk type="FunctionRef">Evaluate</Chunk>
+							<Chunk type="NoRef"> ( $actual ) )] ;	$actual = $expected	</Chunk>
+							<Chunk type="FunctionRef">and</Chunk>
+							<Chunk type="NoRef"> $evaluateError = 0	</Chunk>
+							<Chunk type="FunctionRef">and</Chunk>
+							<Chunk type="NoRef"> $evaluateErrorActual = 0)</Chunk>
 						</DisplayCalculation>
 					</Value>
 					<Repetition>
@@ -41284,9 +41419,9 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<StepText>End Loop</StepText>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
-					<StepText>Set Variable [ $test; Value:TestDirective ( 1 ; &quot;REPEAT&quot; ; $testCount )or TestOK ( $testPass ; $testName )or TestDiagnostic (	&quot;actual:	&quot;	&amp; Quote ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; Quote ( $expected )	&amp; &quot;¶value:	&quot;	&amp; Quote ( $value )) ]</StepText>
+					<StepText>Set Variable [ $test; Value:TestDirective ( 1 ; &quot;REPEAT&quot; ; $testCount )or TestOK ( $testPass ; $testName )or TestDiagnostic (	&quot;actual:	&quot;		&amp; Quote ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; Quote ( $expected )	&amp; &quot;¶value:	&quot;	&amp; Quote ( $value )	&amp; &quot;¶evaluateError:	&quot;	&amp; $evaluateError	&amp; &quot;¶evaluateErrorActual:	&quot;	&amp; $evaluateErrorActual) ]</StepText>
 					<Value>
-						<Calculation><![CDATA[TestDirective ( 1 ; "REPEAT" ; $testCount )or TestOK ( $testPass ; $testName )or TestDiagnostic (	"actual:	"	& Quote ( $actual )	& "¶expected:	"	& Quote ( $expected )	& "¶value:	"	& Quote ( $value ))]]></Calculation>
+						<Calculation><![CDATA[TestDirective ( 1 ; "REPEAT" ; $testCount )or TestOK ( $testPass ; $testName )or TestDiagnostic (	"actual:	"		& Quote ( $actual )	& "¶expected:	"	& Quote ( $expected )	& "¶value:	"	& Quote ( $value )	& "¶evaluateError:	"	& $evaluateError	& "¶evaluateErrorActual:	"	& $evaluateErrorActual)]]></Calculation>
 						<DisplayCalculation>
 							<Chunk type="CustomFunctionRef">TestDirective</Chunk>
 							<Chunk type="NoRef"> ( 1 ; &quot;REPEAT&quot; ; $testCount )</Chunk>
@@ -41297,13 +41432,13 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 							<Chunk type="FunctionRef">or</Chunk>
 							<Chunk type="NoRef"> </Chunk>
 							<Chunk type="CustomFunctionRef">TestDiagnostic</Chunk>
-							<Chunk type="NoRef"> (	&quot;actual:	&quot;	&amp; </Chunk>
+							<Chunk type="NoRef"> (	&quot;actual:	&quot;		&amp; </Chunk>
 							<Chunk type="FunctionRef">Quote</Chunk>
-							<Chunk type="NoRef"> ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; </Chunk>
+							<Chunk type="NoRef"> ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; </Chunk>
 							<Chunk type="FunctionRef">Quote</Chunk>
-							<Chunk type="NoRef"> ( $expected )	&amp; &quot;¶value:	&quot;	&amp; </Chunk>
+							<Chunk type="NoRef"> ( $expected )	&amp; &quot;¶value:	&quot;	&amp; </Chunk>
 							<Chunk type="FunctionRef">Quote</Chunk>
-							<Chunk type="NoRef"> ( $value ))</Chunk>
+							<Chunk type="NoRef"> ( $value )	&amp; &quot;¶evaluateError:	&quot;	&amp; $evaluateError	&amp; &quot;¶evaluateErrorActual:	&quot;	&amp; $evaluateErrorActual)</Chunk>
 						</DisplayCalculation>
 					</Value>
 					<Repetition>
@@ -41368,12 +41503,16 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<Name>$value</Name>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
-					<StepText>Set Variable [ $actual; Value:#List ( $value ) ]</StepText>
+					<StepText>Set Variable [ $evaluateErrorActual; Value:EvaluationError (	Let ( $actual = #List ( $value ) ; &quot;&quot; )) ]</StepText>
 					<Value>
-						<Calculation><![CDATA[#List ( $value )]]></Calculation>
+						<Calculation><![CDATA[EvaluationError (	Let ( $actual = #List ( $value ) ; "" ))]]></Calculation>
 						<DisplayCalculation>
+							<Chunk type="FunctionRef">EvaluationError</Chunk>
+							<Chunk type="NoRef"> (	</Chunk>
+							<Chunk type="FunctionRef">Let</Chunk>
+							<Chunk type="NoRef"> ( $actual = </Chunk>
 							<Chunk type="CustomFunctionRef">#List</Chunk>
-							<Chunk type="NoRef"> ( $value )</Chunk>
+							<Chunk type="NoRef"> ( $value ) ; &quot;&quot; ))</Chunk>
 						</DisplayCalculation>
 					</Value>
 					<Repetition>
@@ -41382,7 +41521,7 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 							<Chunk type="NoRef">1</Chunk>
 						</DisplayCalculation>
 					</Repetition>
-					<Name>$actual</Name>
+					<Name>$evaluateErrorActual</Name>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
 					<StepText>Set Variable [ $expected; Value:Quote ( &quot;&quot; )&amp; &quot;¶&quot; ]</StepText>
@@ -41402,11 +41541,20 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<Name>$expected</Name>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
-					<StepText>Set Variable [ $testPass; Value:$actual = $expected ]</StepText>
+					<StepText>Set Variable [ $testPass; Value:Let ( [	$evaluateError = EvaluationError ( Evaluate ( $actual ) )] ;	$actual = $expected	and $evaluateError = 0	and $evaluateErrorActual = 0) ]</StepText>
 					<Value>
-						<Calculation><![CDATA[$actual = $expected]]></Calculation>
+						<Calculation><![CDATA[Let ( [	$evaluateError = EvaluationError ( Evaluate ( $actual ) )] ;	$actual = $expected	and $evaluateError = 0	and $evaluateErrorActual = 0)]]></Calculation>
 						<DisplayCalculation>
-							<Chunk type="NoRef">$actual = $expected</Chunk>
+							<Chunk type="FunctionRef">Let</Chunk>
+							<Chunk type="NoRef"> ( [	$evaluateError = </Chunk>
+							<Chunk type="FunctionRef">EvaluationError</Chunk>
+							<Chunk type="NoRef"> ( </Chunk>
+							<Chunk type="FunctionRef">Evaluate</Chunk>
+							<Chunk type="NoRef"> ( $actual ) )] ;	$actual = $expected	</Chunk>
+							<Chunk type="FunctionRef">and</Chunk>
+							<Chunk type="NoRef"> $evaluateError = 0	</Chunk>
+							<Chunk type="FunctionRef">and</Chunk>
+							<Chunk type="NoRef"> $evaluateErrorActual = 0)</Chunk>
 						</DisplayCalculation>
 					</Value>
 					<Repetition>
@@ -41418,12 +41566,22 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<Name>$testPass</Name>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
-					<StepText>Set Variable [ $test; Value:TestEqual ( $actual ; $expected ; $testName ) ]</StepText>
+					<StepText>Set Variable [ $test; Value:TestOK ( $testPass ; $testName )or TestDiagnostic (	&quot;actual:	&quot;		&amp; Quote ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; Quote ( $expected )	&amp; &quot;¶value:	&quot;	&amp; Quote ( $value )	&amp; &quot;¶evaluateError:	&quot;	&amp; $evaluateError	&amp; &quot;¶evaluateErrorActual:	&quot;	&amp; $evaluateErrorActual) ]</StepText>
 					<Value>
-						<Calculation><![CDATA[TestEqual ( $actual ; $expected ; $testName )]]></Calculation>
+						<Calculation><![CDATA[TestOK ( $testPass ; $testName )or TestDiagnostic (	"actual:	"		& Quote ( $actual )	& "¶expected:	"	& Quote ( $expected )	& "¶value:	"	& Quote ( $value )	& "¶evaluateError:	"	& $evaluateError	& "¶evaluateErrorActual:	"	& $evaluateErrorActual)]]></Calculation>
 						<DisplayCalculation>
-							<Chunk type="CustomFunctionRef">TestEqual</Chunk>
-							<Chunk type="NoRef"> ( $actual ; $expected ; $testName )</Chunk>
+							<Chunk type="CustomFunctionRef">TestOK</Chunk>
+							<Chunk type="NoRef"> ( $testPass ; $testName )</Chunk>
+							<Chunk type="FunctionRef">or</Chunk>
+							<Chunk type="NoRef"> </Chunk>
+							<Chunk type="CustomFunctionRef">TestDiagnostic</Chunk>
+							<Chunk type="NoRef"> (	&quot;actual:	&quot;		&amp; </Chunk>
+							<Chunk type="FunctionRef">Quote</Chunk>
+							<Chunk type="NoRef"> ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; </Chunk>
+							<Chunk type="FunctionRef">Quote</Chunk>
+							<Chunk type="NoRef"> ( $expected )	&amp; &quot;¶value:	&quot;	&amp; </Chunk>
+							<Chunk type="FunctionRef">Quote</Chunk>
+							<Chunk type="NoRef"> ( $value )	&amp; &quot;¶evaluateError:	&quot;	&amp; $evaluateError	&amp; &quot;¶evaluateErrorActual:	&quot;	&amp; $evaluateErrorActual)</Chunk>
 						</DisplayCalculation>
 					</Value>
 					<Repetition>
@@ -41485,12 +41643,16 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<Name>$value</Name>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
-					<StepText>Set Variable [ $actual; Value:#List ( $value ) ]</StepText>
+					<StepText>Set Variable [ $evaluateErrorActual; Value:EvaluationError (	Let ( $actual = #List ( $value ) ; &quot;&quot; )) ]</StepText>
 					<Value>
-						<Calculation><![CDATA[#List ( $value )]]></Calculation>
+						<Calculation><![CDATA[EvaluationError (	Let ( $actual = #List ( $value ) ; "" ))]]></Calculation>
 						<DisplayCalculation>
+							<Chunk type="FunctionRef">EvaluationError</Chunk>
+							<Chunk type="NoRef"> (	</Chunk>
+							<Chunk type="FunctionRef">Let</Chunk>
+							<Chunk type="NoRef"> ( $actual = </Chunk>
 							<Chunk type="CustomFunctionRef">#List</Chunk>
-							<Chunk type="NoRef"> ( $value )</Chunk>
+							<Chunk type="NoRef"> ( $value ) ; &quot;&quot; ))</Chunk>
 						</DisplayCalculation>
 					</Value>
 					<Repetition>
@@ -41499,7 +41661,7 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 							<Chunk type="NoRef">1</Chunk>
 						</DisplayCalculation>
 					</Repetition>
-					<Name>$actual</Name>
+					<Name>$evaluateErrorActual</Name>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
 					<StepText>Set Variable [ $expected; Value:Quote ( &quot;?&quot; )&amp; &quot;¶&quot; ]</StepText>
@@ -41519,11 +41681,20 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<Name>$expected</Name>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
-					<StepText>Set Variable [ $testPass; Value:$actual = $expected ]</StepText>
+					<StepText>Set Variable [ $testPass; Value:Let ( [	$evaluateError = EvaluationError ( Evaluate ( $actual ) )] ;	$actual = $expected	and $evaluateError = 0	and $evaluateErrorActual = 0) ]</StepText>
 					<Value>
-						<Calculation><![CDATA[$actual = $expected]]></Calculation>
+						<Calculation><![CDATA[Let ( [	$evaluateError = EvaluationError ( Evaluate ( $actual ) )] ;	$actual = $expected	and $evaluateError = 0	and $evaluateErrorActual = 0)]]></Calculation>
 						<DisplayCalculation>
-							<Chunk type="NoRef">$actual = $expected</Chunk>
+							<Chunk type="FunctionRef">Let</Chunk>
+							<Chunk type="NoRef"> ( [	$evaluateError = </Chunk>
+							<Chunk type="FunctionRef">EvaluationError</Chunk>
+							<Chunk type="NoRef"> ( </Chunk>
+							<Chunk type="FunctionRef">Evaluate</Chunk>
+							<Chunk type="NoRef"> ( $actual ) )] ;	$actual = $expected	</Chunk>
+							<Chunk type="FunctionRef">and</Chunk>
+							<Chunk type="NoRef"> $evaluateError = 0	</Chunk>
+							<Chunk type="FunctionRef">and</Chunk>
+							<Chunk type="NoRef"> $evaluateErrorActual = 0)</Chunk>
 						</DisplayCalculation>
 					</Value>
 					<Repetition>
@@ -41535,12 +41706,22 @@ self&#10;{&#10;&#09;font-family: -fm-font-family(tahoma,sans-serif,roman);&#10;&
 					<Name>$testPass</Name>
 				</Step>
 				<Step enable="True" id="141" name="Set Variable">
-					<StepText>Set Variable [ $test; Value:TestEqual ( $actual ; $expected ; $testName ) ]</StepText>
+					<StepText>Set Variable [ $test; Value:TestOK ( $testPass ; $testName )or TestDiagnostic (	&quot;actual:	&quot;		&amp; Quote ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; Quote ( $expected )	&amp; &quot;¶value:	&quot;	&amp; Quote ( $value )	&amp; &quot;¶evaluateError:	&quot;	&amp; $evaluateError	&amp; &quot;¶evaluateErrorActual:	&quot;	&amp; $evaluateErrorActual) ]</StepText>
 					<Value>
-						<Calculation><![CDATA[TestEqual ( $actual ; $expected ; $testName )]]></Calculation>
+						<Calculation><![CDATA[TestOK ( $testPass ; $testName )or TestDiagnostic (	"actual:	"		& Quote ( $actual )	& "¶expected:	"	& Quote ( $expected )	& "¶value:	"	& Quote ( $value )	& "¶evaluateError:	"	& $evaluateError	& "¶evaluateErrorActual:	"	& $evaluateErrorActual)]]></Calculation>
 						<DisplayCalculation>
-							<Chunk type="CustomFunctionRef">TestEqual</Chunk>
-							<Chunk type="NoRef"> ( $actual ; $expected ; $testName )</Chunk>
+							<Chunk type="CustomFunctionRef">TestOK</Chunk>
+							<Chunk type="NoRef"> ( $testPass ; $testName )</Chunk>
+							<Chunk type="FunctionRef">or</Chunk>
+							<Chunk type="NoRef"> </Chunk>
+							<Chunk type="CustomFunctionRef">TestDiagnostic</Chunk>
+							<Chunk type="NoRef"> (	&quot;actual:	&quot;		&amp; </Chunk>
+							<Chunk type="FunctionRef">Quote</Chunk>
+							<Chunk type="NoRef"> ( $actual )	&amp; &quot;¶expected:	&quot;	&amp; </Chunk>
+							<Chunk type="FunctionRef">Quote</Chunk>
+							<Chunk type="NoRef"> ( $expected )	&amp; &quot;¶value:	&quot;	&amp; </Chunk>
+							<Chunk type="FunctionRef">Quote</Chunk>
+							<Chunk type="NoRef"> ( $value )	&amp; &quot;¶evaluateError:	&quot;	&amp; $evaluateError	&amp; &quot;¶evaluateErrorActual:	&quot;	&amp; $evaluateErrorActual)</Chunk>
 						</DisplayCalculation>
 					</Value>
 					<Repetition>
