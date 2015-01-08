@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-16"?>
-<FMPReport link="Summary.xml" creationTime="3:28:32 PM" creationDate="1/8/2015" type="Report" version="13.0v4">
+<FMPReport link="Summary.xml" creationTime="3:46 PM" creationDate="1/8/2015" type="Report" version="13.0v4">
 <File name="FM-Parameters.fmp12" path="E:\Dan\GitHub\fmpstandards\Functions\#Name-Value\">
 <BaseTableCatalog>
 	<BaseTable id="130" records="0" name="NullTable">
@@ -58416,13 +58416,25 @@ Created on 2012-08-17 by Jeremy Bante &lt;http://scr.im/jbante&gt;.</Text>
 		</DisplayCalculation>
 	</CustomFunction>
 	<CustomFunction id="76" functionArity="1" visible="True" parameters="value" name="#List">
-		<Calculation><![CDATA[/** * ===================================== * #List ( value ) * * RETURNS: *		Encoded value with trailing return and data type preserved. * * PARAMETERS: *		value: The value to encode. * * EXAMPLE: *		#List ( "value1" ) *		& #List ( *			#List ( "subValue" ) *			&  #List ( "subValue2" ) *		) * * DEPENDENCIES: none * * HISTORY: *		MODIFIED on 2014-06-06 by Jeremy Bante <http://scr.im/jbante> to fix an *		issue where long sequences of digits could be interpreted as timestamps. *		MODIFIED on 2014-05-26 by Jeremy Bante <http://scr.im/jbante> to detect *		type using a different method suggested by Arnold Kegebein. *		MODIFIED on 2013-12-24 by Jeremy Bante <http://scr.im/jbante> to *		specially encode newline characters in values, and to update type *		detection to match the # function. *		MODIFIED on 2013-MAY-09 by Daniel Smith dansmith65@gmail.com to encode *		a value like the current version of # ( name ; value ) custom function *		CREATED on 2012-NOV-26 by Daniel Smith dansmith65@gmail.com * ===================================== */Let ( [	~plusOneText = GetAsText ( value + 1 ) ;	~number = GetAsNumber ( value ) ;	~value =		Case (			value = "" or value = "?" or ~number = "?" ;				Quote ( value ) ;			GetAsText ( GetAsTimestamp ( value ) + 1 ) = ~plusOneText ;				"GetAsTimestamp ( " & Quote ( value ) & " )" ;			GetAsText ( GetAsTime ( value ) + 1 ) = ~plusOneText ;				"GetAsTime ( " & Quote ( value ) & " )" ;			GetAsText ( GetAsDate ( value ) + 1 ) = ~plusOneText ;				"GetAsDate ( " & Quote ( value ) & " )" ;			value ≠ ~number ;				Substitute ( Quote ( value ) ;					[ Char ( 10 ) ; "\" & Char ( 10 ) & \"" ] ;					[ Char ( 8232 ) ; "\" & Char ( 8232 ) & \"" ] ;					[ Char ( 8233 ) ; "\" & Char ( 8233 ) & \"" ]				) ;			/* Else */				~number		)] ;	Case (		IsValidExpression ( ~value )			/**			 * the following Evaluate statement causes the function to calculate			 *  ~30% slower, so it may be best to comment it in a production			 * environment and only use it for development/testing			 */			// and Evaluate ( ~value ) = value		;		~value & ¶ ;		//else, ~value is not a valid expression...		"/* Error "		& 1200	// Generic calculation error		& " value: "		& Quote (			Substitute (	// escape comment character sequences				value ;				[ "*/" ; "\*\/" ] ;				[ "/*" ; "\/\*" ]			)		)		& " */"		& ¶	))]]></Calculation>
+		<Calculation><![CDATA[/** * ===================================== * #List ( value ) * * RETURNS: *		Encoded value with trailing return and data type preserved. * * PARAMETERS: *		value: The value to encode. * * EXAMPLE: *		#List ( "value1" ) *		& #List ( *			#List ( "subValue" ) *			&  #List ( "subValue2" ) *		) * * DEPENDENCIES: none * * HISTORY: *		MODIFIED on 2015-01-08 by Daniel Smith dansmith65@gmail.com to prevent *		from returning an EvaluationError. *		MODIFIED on 2014-06-06 by Jeremy Bante <http://scr.im/jbante> to fix an *		issue where long sequences of digits could be interpreted as timestamps. *		MODIFIED on 2014-05-26 by Jeremy Bante <http://scr.im/jbante> to detect *		type using a different method suggested by Arnold Kegebein. *		MODIFIED on 2013-12-24 by Jeremy Bante <http://scr.im/jbante> to *		specially encode newline characters in values, and to update type *		detection to match the # function. *		MODIFIED on 2013-MAY-09 by Daniel Smith dansmith65@gmail.com to encode *		a value like the current version of # ( name ; value ) custom function *		CREATED on 2012-NOV-26 by Daniel Smith dansmith65@gmail.com * ===================================== */Let ( [	~plusOneText = GetAsText ( value + 1 ) ;	~isValidDate = not EvaluationError ( GetAsDate ( value ) ) ;	~isValidTime = not EvaluationError ( GetAsTime ( value ) ) ;	~number = GetAsNumber ( value ) ;	~value =		Case (			value = "" or value = "?" or ~number = "?" ;				Quote ( value ) ;			~isValidDate			and ~isValidTime			and GetAsText ( GetAsTimestamp ( value ) + 1 ) = ~plusOneText ;				"GetAsTimestamp ( " & Quote ( value ) & " )" ;			~isValidTime			and GetAsText ( GetAsTime ( value ) + 1 ) = ~plusOneText ;				"GetAsTime ( " & Quote ( value ) & " )" ;			~isValidDate			and GetAsText ( GetAsDate ( value ) + 1 ) = ~plusOneText ;				"GetAsDate ( " & Quote ( value ) & " )" ;			value ≠ ~number ;				Substitute ( Quote ( value ) ;					[ Char ( 10 ) ; "\" & Char ( 10 ) & \"" ] ;					[ Char ( 8232 ) ; "\" & Char ( 8232 ) & \"" ] ;					[ Char ( 8233 ) ; "\" & Char ( 8233 ) & \"" ]				) ;			/* Else */				~number		)] ;	Case (		IsValidExpression ( ~value )			/**			 * the following Evaluate statement causes the function to calculate			 *  ~30% slower, so it may be best to comment it in a production			 * environment and only use it for development/testing			 */			// and Evaluate ( ~value ) = value		;		~value & ¶ ;		//else, ~value is not a valid expression...		"/* Error "		& 1200	// Generic calculation error		& " value: "		& Quote (			Substitute (	// escape comment character sequences				value ;				[ "*/" ; "\*\/" ] ;				[ "/*" ; "\/\*" ]			)		)		& " */"		& ¶	))]]></Calculation>
 		<DisplayCalculation>
-			<Chunk type="NoRef">/** * ===================================== * #List ( value ) * * RETURNS: *		Encoded value with trailing return and data type preserved. * * PARAMETERS: *		value: The value to encode. * * EXAMPLE: *		#List ( &quot;value1&quot; ) *		&amp; #List ( *			#List ( &quot;subValue&quot; ) *			&amp;  #List ( &quot;subValue2&quot; ) *		) * * DEPENDENCIES: none * * HISTORY: *		MODIFIED on 2014-06-06 by Jeremy Bante &lt;http://scr.im/jbante&gt; to fix an *		issue where long sequences of digits could be interpreted as timestamps. *		MODIFIED on 2014-05-26 by Jeremy Bante &lt;http://scr.im/jbante&gt; to detect *		type using a different method suggested by Arnold Kegebein. *		MODIFIED on 2013-12-24 by Jeremy Bante &lt;http://scr.im/jbante&gt; to *		specially encode newline characters in values, and to update type *		detection to match the # function. *		MODIFIED on 2013-MAY-09 by Daniel Smith dansmith65@gmail.com to encode *		a value like the current version of # ( name ; value ) custom function *		CREATED on 2012-NOV-26 by Daniel Smith dansmith65@gmail.com * ===================================== */</Chunk>
+			<Chunk type="NoRef">/** * ===================================== * #List ( value ) * * RETURNS: *		Encoded value with trailing return and data type preserved. * * PARAMETERS: *		value: The value to encode. * * EXAMPLE: *		#List ( &quot;value1&quot; ) *		&amp; #List ( *			#List ( &quot;subValue&quot; ) *			&amp;  #List ( &quot;subValue2&quot; ) *		) * * DEPENDENCIES: none * * HISTORY: *		MODIFIED on 2015-01-08 by Daniel Smith dansmith65@gmail.com to prevent *		from returning an EvaluationError. *		MODIFIED on 2014-06-06 by Jeremy Bante &lt;http://scr.im/jbante&gt; to fix an *		issue where long sequences of digits could be interpreted as timestamps. *		MODIFIED on 2014-05-26 by Jeremy Bante &lt;http://scr.im/jbante&gt; to detect *		type using a different method suggested by Arnold Kegebein. *		MODIFIED on 2013-12-24 by Jeremy Bante &lt;http://scr.im/jbante&gt; to *		specially encode newline characters in values, and to update type *		detection to match the # function. *		MODIFIED on 2013-MAY-09 by Daniel Smith dansmith65@gmail.com to encode *		a value like the current version of # ( name ; value ) custom function *		CREATED on 2012-NOV-26 by Daniel Smith dansmith65@gmail.com * ===================================== */</Chunk>
 			<Chunk type="FunctionRef">Let</Chunk>
 			<Chunk type="NoRef"> ( [	~plusOneText = </Chunk>
 			<Chunk type="FunctionRef">GetAsText</Chunk>
-			<Chunk type="NoRef"> ( value + 1 ) ;	~number = </Chunk>
+			<Chunk type="NoRef"> ( value + 1 ) ;	~isValidDate = </Chunk>
+			<Chunk type="FunctionRef">not</Chunk>
+			<Chunk type="NoRef"> </Chunk>
+			<Chunk type="FunctionRef">EvaluationError</Chunk>
+			<Chunk type="NoRef"> ( </Chunk>
+			<Chunk type="FunctionRef">GetAsDate</Chunk>
+			<Chunk type="NoRef"> ( value ) ) ;	~isValidTime = </Chunk>
+			<Chunk type="FunctionRef">not</Chunk>
+			<Chunk type="NoRef"> </Chunk>
+			<Chunk type="FunctionRef">EvaluationError</Chunk>
+			<Chunk type="NoRef"> ( </Chunk>
+			<Chunk type="FunctionRef">GetAsTime</Chunk>
+			<Chunk type="NoRef"> ( value ) ) ;	~number = </Chunk>
 			<Chunk type="FunctionRef">GetAsNumber</Chunk>
 			<Chunk type="NoRef"> ( value ) ;	~value =		</Chunk>
 			<Chunk type="FunctionRef">Case</Chunk>
@@ -58432,19 +58444,27 @@ Created on 2012-08-17 by Jeremy Bante &lt;http://scr.im/jbante&gt;.</Text>
 			<Chunk type="FunctionRef">or</Chunk>
 			<Chunk type="NoRef"> ~number = &quot;?&quot; ;				</Chunk>
 			<Chunk type="FunctionRef">Quote</Chunk>
-			<Chunk type="NoRef"> ( value ) ;			</Chunk>
+			<Chunk type="NoRef"> ( value ) ;			~isValidDate			</Chunk>
+			<Chunk type="FunctionRef">and</Chunk>
+			<Chunk type="NoRef"> ~isValidTime			</Chunk>
+			<Chunk type="FunctionRef">and</Chunk>
+			<Chunk type="NoRef"> </Chunk>
 			<Chunk type="FunctionRef">GetAsText</Chunk>
 			<Chunk type="NoRef"> ( </Chunk>
 			<Chunk type="FunctionRef">GetAsTimestamp</Chunk>
 			<Chunk type="NoRef"> ( value ) + 1 ) = ~plusOneText ;				&quot;GetAsTimestamp ( &quot; &amp; </Chunk>
 			<Chunk type="FunctionRef">Quote</Chunk>
-			<Chunk type="NoRef"> ( value ) &amp; &quot; )&quot; ;			</Chunk>
+			<Chunk type="NoRef"> ( value ) &amp; &quot; )&quot; ;			~isValidTime			</Chunk>
+			<Chunk type="FunctionRef">and</Chunk>
+			<Chunk type="NoRef"> </Chunk>
 			<Chunk type="FunctionRef">GetAsText</Chunk>
 			<Chunk type="NoRef"> ( </Chunk>
 			<Chunk type="FunctionRef">GetAsTime</Chunk>
 			<Chunk type="NoRef"> ( value ) + 1 ) = ~plusOneText ;				&quot;GetAsTime ( &quot; &amp; </Chunk>
 			<Chunk type="FunctionRef">Quote</Chunk>
-			<Chunk type="NoRef"> ( value ) &amp; &quot; )&quot; ;			</Chunk>
+			<Chunk type="NoRef"> ( value ) &amp; &quot; )&quot; ;			~isValidDate			</Chunk>
+			<Chunk type="FunctionRef">and</Chunk>
+			<Chunk type="NoRef"> </Chunk>
 			<Chunk type="FunctionRef">GetAsText</Chunk>
 			<Chunk type="NoRef"> ( </Chunk>
 			<Chunk type="FunctionRef">GetAsDate</Chunk>
