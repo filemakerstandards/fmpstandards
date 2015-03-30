@@ -31,7 +31,7 @@
 Let ( [
 	~file = If ( IsEmpty ( file );
 						Get ( FileName ); // use current file name... otherwise
-						~file
+						file
 	);
 	layout = Case (
 							IsEmpty ( layout );
