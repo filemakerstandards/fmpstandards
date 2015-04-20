@@ -1,0 +1,56 @@
+/**
+ * =====================================
+ * #FPath( parameters ; path )
+ *
+ * PURPOSE:
+ *		Parses a Let dictionary of name-value parameters using an XPath inspired syntax
+ *
+ * RETURNS:
+ *		returns the value of the specified entry or "" if it can't select one
+ *
+ * PARAMETERS:
+ *		parameters: A Let format dictionary, such as produced by the
+ *		# ( name ; value ) function.
+ *		
+ *		path: an expression like this "invoices/(2)/date"
+ *
+ * DEPENDENCIES: #Get and #ListGet
+ *
+ * NOTES:
+ *		Notes go here
+ *
+ * HISTORY:
+ *		CREATED on 2013-07-06 by Todd Geist <todd@geistinteractive.com>
+ * =====================================
+ */
+
+Let ( [
+		// snip the first path element off the path
+		p = Position ( path ; "/" ; 1 ; 1 ) - 1 ;
+		p = Case ( p < 0 ; Length ( path ) ; p ) ;
+		firstName = Left ( path ; p ) ;
+
+		//check to see if it is a number in the form "(n)"
+		n =
+		Case (
+			Left ( firstName ; 1 ) = "(" ;
+			Filter ( firstName ; "0123456789" ) ;
+			0
+		) ;
+
+		// get the rest of the path
+		remainder = Middle ( path ; p + 2 ; 10000000 ) ;
+
+		// get the result for this loop
+		result =
+		Case (
+			n = 0 ; #Get ( parameters ; firstName ) ;
+			#ListGet ( parameters ; n )
+		)
+	] ;
+	
+	If ( 
+		IsEmpty ( remainder ) ; result ; 
+		#xFPath ( result ; remainder ) // go around the loop again
+	)
+)
