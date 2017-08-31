@@ -16,6 +16,8 @@
  * DEPENDENCIES: none
  *
  * HISTORY:
+ *		MODIFIED on 2017-08-31 by Nick Lewis nilness@gmail.com to fix an
+ *		issue where long sequences of text could be interpreted as numbers.
  *		MODIFIED on 2014-10-07 by Daniel Smith dansmith65@gmail.com to prevent
  *		from returning an EvaluationError.
  *		MODIFIED on 2014-06-06 by Jeremy Bante <http://scr.im/jbante> to fix an
@@ -63,7 +65,7 @@ Let ( [
 	~number = GetAsNumber ( value ) ;
 	~value =
 		Case (
-			value = "" or value = "?" or ~number = "?" ;
+			value = "" or value = "?" or ~number = "?" or number = "";
 				Quote ( value ) ;
 
 			~isValidDate
