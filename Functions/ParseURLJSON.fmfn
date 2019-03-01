@@ -1,0 +1,113 @@
+/**
+ * =====================================
+ * ParseURLJSON ( url )
+ *
+ * PURPOSE:
+ *		Parse a url into its constituent parts.
+ *
+ * RETURNS:
+ *		(json) A valid JSON string of the url parts.
+ *
+ * PARAMETERS:
+ *		url: (string) a valid url
+ *
+ * EXAMPLES:
+ *		Set Variable [$json;
+ *			Value: ParseURL ( GetLayoutObjectAttribute ( "webviewer" ; "source" ) )]
+ *
+ * DEPENDENCIES:
+ *		none
+ *
+ * NOTES:
+ *		Only provides parsing for a URL and not a URI.
+ *
+ * HISTORY:
+ *		CREATED on 2019-02-28 by matt@filemakermagazine.com - added
+ *
+ * REFERENCES:
+ *		https://en.wikipedia.org/wiki/URL
+ * =====================================
+ */
+
+ Let ( [
+	~parts = Substitute ( url ;
+		[ "://" ; ¶ ];
+		[ "/" ; ¶ ];
+		[ "?" ; "¶?" ];
+		[ "#" ; "¶#" ]
+	);
+	~parts = Substitute ( ~parts ; "¶¶" ; "¶" ); // fix the trailing slash with query and make it so we can match on a trailing return.
+
+	~hasQuery = Position ( ~parts ; "?" ; 1 ; 1 );
+	~hasFragment = Position ( ~parts ; "#" ; 1 ; 1 );
+
+	~scheme = GetValue ( ~parts ; 1 );
+	~host = GetValue ( ~parts ; 2 );
+	~hasUser = Position ( ~host ; "@" ; 1 ; 1 );
+	~host = Substitute ( ~host ; "@" ; ¶  );
+
+	~hasPass = ~hasUser and Position ( GetValue ( ~host ; 1 ) ; ":" ; 1 ; 1 );
+
+	~user = If ( ~hasUser ; LeftWords ( ~host ; 1 ) );
+	~pass = If ( ~hasPass ; RightWords ( LeftWords ( ~host ; 2 ) ; 1 ) );
+
+	~host = If ( ValueCount ( ~host ) = 2 ; GetValue ( ~host ; 2 ) ; ~host );
+
+	~hasPort = Position ( ~host ; ":" ; 1 ; 1 );
+	~host =  Substitute ( ~host ; ":" ; ¶ );
+
+	~port = If ( ~hasPort ; GetValue ( ~host ; 2 ) ); // port must be set before host.
+	~host = If ( ~hasPort ; GetValue ( ~host ; 1 ) ; ~host );
+
+	~query = Position ( ~parts & ¶ ; ¶ ; ~hasQuery ; 1 );
+	~query = If ( ~hasQuery ; Middle ( ~parts ; ~hasQuery ; ~query - ~hasQuery ) );
+	~queryPairs = Substitute ( ~query ; [ "?" ; "" ] ; [ "&" ; ¶ ] );
+	~queryJSON = Substitute ( "\"" & ~queryPairs & "\"" ; [ "=" ; "\":\"" ] ; [ ¶ ; "\",\"" ] );
+
+	~fragment = Position ( ~parts & ¶ ; ¶ ; ~hasFragment ; 1 );
+	~fragment = If ( ~hasFragment ; Middle ( ~parts ; ~hasFragment ; ~fragment - ~hasFragment ) );
+
+	~path = MiddleValues ( ~parts ; 3 ; ValueCount ( ~parts ) - 2 - If ( ~hasQuery ; 1 ) - If ( ~hasFragment ; 1 ) );
+	~path = Substitute ( ~path ; ¶ ; "/" );
+	~path = If ( Right ( ~path ; 1 ) = "/" ; Left ( ~path ; Length ( ~path ) - 1 ) ; ~path ); // remove the trailing slash
+
+	~folders = Substitute ( ~path ; [ "/" ; ¶ ]  );
+	~foldersArray = "[\"" & Substitute ( ~folders ; ¶ ; "\",\"" ) & "\"]";
+
+	~json = JSONSetElement ( "{}" ;
+		[ "scheme" ; ~scheme ; JSONString ];
+		[ "auth" ; "{}" ; JSONObject ];
+		[ "auth.user" ; ~user ; If ( IsEmpty ( ~user ) ; JSONNull ; JSONString ) ];
+		[ "auth.pass" ; ~pass ; If ( IsEmpty ( ~pass ) ; JSONNull ; JSONString ) ];
+		[ "host" ; ~host ; JSONString ];
+		[ "port" ; ~port ; If ( IsEmpty ( ~port ) ; JSONNull ; JSONNumber ) ];
+		[ "path" ; "{}" ; JSONObject ];
+		[ "path.string" ; ~path ; JSONString ];
+		[ "path.dirs" ; ~foldersArray ; JSONArray ];
+		[ "query" ; "{}" ; JSONObject ];
+		[ "query.string" ; ~query ; If ( IsEmpty ( ~query ) ; JSONNull ; JSONString ) ];
+		[ "query.values" ; "{" & ~queryJSON & "}" ; JSONObject ];
+		[ "fragment" ; ~fragment ; If ( IsEmpty ( ~fragment ) ; JSONNull ; JSONString ) ]
+	);
+
+	~debug = List (
+		"---- Parts ----";
+		~parts;
+		"---- Values ----";
+		"scheme: " & ~scheme;
+		"user: " & ~user;
+		"pass: " & ~pass;
+		"host: " & ~host;
+		"port: " & ~port;
+		"path: " & ~path;
+		"folders: " & ~folders;
+		"query: " & ~query;
+		"fragment: " & ~fragment;
+		"---- JSON ----";
+		JSONFormatElements ( ~json );
+		"---- RESULT ----¶";
+		)
+];
+	If ( False ; ~debug ) // set to True to see debugging
+	& ~json
+)
