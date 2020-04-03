@@ -1,0 +1,96 @@
+/**
+* AAMVACard ( data )
+*
+* Parses a valid United States drivers license or other valid ID Card
+* according to the specifications of the American Association of Motor
+* Vehicle Administrators (AAMVA).
+*
+* @param [string] data A valid string of text which meets AAMVA card standards.
+*
+* @return [json] A json object containing the parts of an AAMVA card string.
+*
+* @requires FileMaker 18+
+* @author  Matt Petrowsky <matt@isoproductions.com>
+* @version 1.0
+* @link https://www.aamva.org/DL-ID-Card-Design-Standard/
+*/
+
+Let ( [
+	~data = data;
+	~check = 13000300001000064; // Code() of first for chars which is decimal 64 10 30 13
+	~isValid = Code ( Left ( ~data ; 4 ) ) = ~check;
+	~compliance = Left ( ~data ; 1 );
+	~elementSeparator = Middle ( ~data ; 2 ; 1 );
+	~recordSeparator = Middle ( ~data ; 3 ; 1 );
+	~segmentTerminator = Middle ( ~data ; 4 ; 1 );
+	~fileType = Middle ( ~data ; 5 ; 5 );
+	~issuerNumber = Middle ( ~data ; 10 ; 6 );
+	~AAMVAVersionNumber = Middle ( ~data ; 16 ; 2 );
+	~AAMVAVersionDate = Choose ( ~AAMVAVersionNumber ;
+			"PRE 2000" ;
+			"AAMVA DL/ID-2000" ;
+			"09-2003 / AAMVA Card Design Specification version 1.0";
+			"03-2005 / AAMVA Card Design Specification version 2.0";
+			"07-2009 / AAMVA Card Design Standard version 1.0";
+			"07-2010 / AAMVA Card Design Standard version 1.0";
+			"07-2011 / AAMVA Card Design Standard version 1.0";
+			"06-2012 / AAMVA Card Design Standard version 1.0";
+			"08-2013 / AAMVA Card Design Standard version 1.0";
+			"09-2016 / AAMVA Card Design Standard version 1.0";
+			);
+	~jurisdiction = Middle ( ~data ; 19 ; 2 );
+	~numberOfEntries = Middle ( ~data ; 20 ; 2 );
+	~entryBytes = 10;
+	~subfiles = While ( [
+			~i = 0;
+			~result = "[]"
+		]; 
+			~i < GetAsNumber ( ~numberOfEntries ) ;
+		[
+			~offset = ~i * ~entryBytes;
+			~subfile = Middle ( ~data ; 22 + ~offset  ; ~entryBytes );
+			~subfileType = Left ( ~subfile ; 2 );
+			~subfileOffset = Middle ( ~subfile ; 3 ; 4 );
+			~subfileLength = Middle ( ~subfile ; 7 ; 4 );
+			~subfileData = Middle ( ~data ; ~subfileOffset + 1 ; ~subfileLength );
+			~subfileDataJSON = While ( [
+								~j = 0;
+								~count = ValueCount ( ~subfileData );
+								~dataResult = "{}"
+							]; 
+								~j < ~count ;
+							[
+								~row = GetValue ( ~subfileData ; ~j );
+								~key = Left ( ~row ; 3 );
+								~value = Middle ( ~row ; 4 ; 1000 );
+								~dataResult = JSONSetElement ( ~dataResult ; ~key ; ~value ; JSONString );
+								~j = ~j + 1
+							];
+								~dataResult
+							);
+			~subfileJSON = JSONSetElement ( "{}" ;
+					[ "SubfileType" ; ~subfileType ; JSONString ];
+					[ "Offset" ; ~subfileOffset ; JSONNumber ];
+					[ "Length" ; ~subfileLength ; JSONNumber ];
+					[ "DataElements" ; ~subfileDataJSON ; JSONObject ]
+					);
+			~result = JSONSetElement ( ~result ; ~i ; ~subfileJSON ; JSONObject );
+			~i = ~i + 1
+		];
+			~result
+		)
+];
+	If ( not ~isValid ; "Invalid license" ;
+		//JSONFormatElements (
+		JSONSetElement ( "{}" ;
+			[ "FileType" ; ~fileType ; JSONString ];
+			[ "IssuerIdentificationNumber" ; ~issuerNumber ; JSONNumber ];
+			[ "AAMVAVersionNumber" ; ~AAMVAVersionNumber ; JSONNumber ];
+			[ "AAMVAVersionString" ; ~AAMVAVersionDate ; JSONString ];
+			[ "JurisdictionVersionNumber" ; ~jurisdiction ; JSONNumber ];
+			[ "NumberOfEntries" ; ~numberOfEntries ; JSONNumber ];
+			[ "Subfiles" ; ~subfiles ; JSONArray ]
+		)
+		//)
+	)
+)
