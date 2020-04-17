@@ -11,7 +11,7 @@
 *
 * @requires FileMaker 18+
 * @author  Matt Petrowsky <matt@isoproductions.com>
-* @version 1.0
+* @version 1.1
 * @link https://www.aamva.org/DL-ID-Card-Design-Standard/
 */
 
@@ -52,7 +52,8 @@ Let ( [
 			~subfileType = Left ( ~subfile ; 2 );
 			~subfileOffset = Middle ( ~subfile ; 3 ; 4 );
 			~subfileLength = Middle ( ~subfile ; 7 ; 4 );
-			~subfileData = Middle ( ~data ; ~subfileOffset + 1 ; ~subfileLength );
+			~subfileCheck = Middle ( ~data ; ~subfileOffset + 1 ; 2 );
+			~subfileData = Middle ( ~data ; ~subfileOffset + 3 ; ~subfileLength - 2 );
 			~subfileDataJSON = While ( [
 								~j = 0;
 								~count = ValueCount ( ~subfileData );
@@ -69,6 +70,7 @@ Let ( [
 								~dataResult
 							);
 			~subfileJSON = JSONSetElement ( "{}" ;
+					[ "SubfileCheck" ; ~subfileCheck ; JSONString ];
 					[ "SubfileType" ; ~subfileType ; JSONString ];
 					[ "Offset" ; ~subfileOffset ; JSONNumber ];
 					[ "Length" ; ~subfileLength ; JSONNumber ];
