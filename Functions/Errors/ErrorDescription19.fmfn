@@ -378,9 +378,7 @@ While ( [
 	~i = 0;
 	~result = ""
 	]; 
-
 		~i < 1716 ;
-
 	[
 		~i = ~i + 1;
 		~string = ErrorDescription ( ~i );
