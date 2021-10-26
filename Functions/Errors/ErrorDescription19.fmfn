@@ -316,13 +316,14 @@ Let ( [
 				~errorCode = 1507 ; "Unable to log in to the SMTP server" ;
 				~errorCode = 1550 ; "Cannot load the plug-in, or the plug-in is not a valid plug-in" ;
 				~errorCode = 1551 ; "Cannot install the plug-in; cannot delete an existing plug-in or write to the folder or disk" ;
-				~errorCode = 1552 ;	"Returned by plug-ins; see the documentation that came with the plug-in" ;
-				~errorCode = 1552 ;	"Returned by plug-ins; see the documentation that came with the plug-in" ;				~errorCode = 1552 ;	"Returned by plug-ins; see the documentation that came with the plug-in" ;
-				~errorCode = 1552 ;	"Returned by plug-ins; see the documentation that came with the plug-in" ;
-				~errorCode = 1552 ;	"Returned by plug-ins; see the documentation that came with the plug-in" ;
-				~errorCode = 1552 ;	"Returned by plug-ins; see the documentation that came with the plug-in" ;
-				~errorCode = 1552 ;	"Returned by plug-ins; see the documentation that came with the plug-in" ;
-				~errorCode = 1552 ;	"Returned by plug-ins; see the documentation that came with the plug-in" ;
+				~errorCode = 1552 ; "Returned by plug-ins; see the documentation that came with the plug-in" ;
+				~errorCode = 1553 ; "Returned by plug-ins; see the documentation that came with the plug-in" ;
+				~errorCode = 1554 ; "Returned by plug-ins; see the documentation that came with the plug-in" ;
+				~errorCode = 1555 ; "Returned by plug-ins; see the documentation that came with the plug-in" ;
+				~errorCode = 1556 ; "Returned by plug-ins; see the documentation that came with the plug-in" ;
+				~errorCode = 1557 ; "Returned by plug-ins; see the documentation that came with the plug-in" ;
+				~errorCode = 1558 ; "Returned by plug-ins; see the documentation that came with the plug-in" ;
+				~errorCode = 1559 ; "Returned by plug-ins; see the documentation that came with the plug-in" ;
 				"Unknown error code"
 			) ;
 
