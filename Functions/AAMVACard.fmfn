@@ -5,7 +5,7 @@
 * according to the specifications of the American Association of Motor
 * Vehicle Administrators (AAMVA).
 *
-* @param [string] data A valid string of text which meets AAMVA card standards.
+* @param [string] data - A valid string of text which meets AAMVA card standards.
 *
 * @return [json] A json object containing the parts of an AAMVA card string.
 *
@@ -17,7 +17,7 @@
 
 Let ( [
 	~data = data;
-	~check = 13000300001000064; // Code() of first for chars which is decimal 64 10 30 13
+	~check = 13000300001000064; // Code() of first four chars which is decimal 64 10 30 13
 	~isValid = Code ( Left ( ~data ; 4 ) ) = ~check;
 	~compliance = Left ( ~data ; 1 );
 	~elementSeparator = Middle ( ~data ; 2 ; 1 );
