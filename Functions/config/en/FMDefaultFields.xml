@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FMDefaultFields version="2.1.0.0" Source="19.0.1" locale="English">
+	<ObjectList membercount="7">
+		<Field DefaultStyle="" id="1" name="id" fieldtype="Normal" datatype="Text" comment="Primary key">
+			<AutoEnter type="Calculated" prohibitModification="True" overwriteExisting="True" alwaysEvaluate="False">
+				<Calculated>
+					<Calculation>
+						<Text><![CDATA[Get( UUID )]]></Text>
+					</Calculation>
+				</Calculated>
+			</AutoEnter>
+			<Validation type="OnlyDuringDataEntry" allowOverride="False" notEmpty="True" unique="True" existing="False"></Validation>
+			<Storage autoIndex="True" index="Minimal" global="False" maxRepetitions="1">
+				<LanguageReference name="Unicode" id="2"></LanguageReference>
+			</Storage>
+			<TagList primary="True">#_FMI_0 </TagList>
+		</Field>
+		<Field DefaultStyle="" id="2" name="createdOn" fieldtype="Normal" datatype="Timestamp" comment="The timestamp for when the record was created.">
+			<AutoEnter type="CreationTimestamp" prohibitModification="True"></AutoEnter>
+			<Validation type="OnlyDuringDataEntry" allowOverride="False" notEmpty="True" unique="False" existing="False">
+				<Strict>FourDigitYear</Strict>
+			</Validation>
+			<Storage autoIndex="True" index="None" global="False" maxRepetitions="1">
+				<LanguageReference name="English" id="21"></LanguageReference>
+			</Storage>
+			<TagList>#_FMI_0 </TagList>
+		</Field>
+		<Field DefaultStyle="" id="3" name="createdBy" fieldtype="Normal" datatype="Text" comment="The account of record creation.">
+			<AutoEnter type="CreationAccountName" prohibitModification="True"></AutoEnter>
+			<Validation type="OnlyDuringDataEntry" allowOverride="False" notEmpty="True" unique="False" existing="False"></Validation>
+			<Storage autoIndex="True" index="None" global="False" maxRepetitions="1">
+				<LanguageReference name="English" id="21"></LanguageReference>
+			</Storage>
+			<TagList>#_FMI_0 </TagList>
+		</Field>
+		<Field DefaultStyle="" id="4" name="modifiedOn" fieldtype="Normal" datatype="Timestamp" comment="The timestamp for when the record was last modified.">
+			<AutoEnter type="ModificationTimestamp" prohibitModification="True"></AutoEnter>
+			<Validation type="OnlyDuringDataEntry" allowOverride="False" notEmpty="True" unique="False" existing="False">
+				<Strict>FourDigitYear</Strict>
+			</Validation>
+			<Storage autoIndex="True" index="None" global="False" maxRepetitions="1">
+				<LanguageReference name="English" id="21"></LanguageReference>
+			</Storage>
+			<TagList>#_FMI_0 </TagList>
+		</Field>
+		<Field DefaultStyle="" id="5" name="modifiedBy" fieldtype="Normal" datatype="Text" comment="Most recent account to modify the record.">
+			<AutoEnter type="ModificationAccountName" prohibitModification="True"></AutoEnter>
+			<Validation type="OnlyDuringDataEntry" allowOverride="False" notEmpty="True" unique="False" existing="False"></Validation>
+			<Storage autoIndex="True" index="None" global="False" maxRepetitions="1">
+				<LanguageReference name="English" id="21"></LanguageReference>
+			</Storage>
+			<TagList>#_FMI_0 </TagList>
+		</Field>
+		<Field id="6" name="createdUTC" fieldtype="Normal" datatype="Number" comment="UTC Timestamp when the record was created.">
+			<AutoEnter type="Calculated" prohibitModification="True" overwriteExisting="False" alwaysEvaluate="False">
+				<Calculated>
+					<Calculation>
+						<Text><![CDATA[Get ( CurrentTimeUTCMilliseconds )]]></Text>
+					</Calculation>
+				</Calculated>
+			</AutoEnter>
+			<Validation type="OnlyDuringDataEntry" allowOverride="False" notEmpty="True" unique="False" existing="False"></Validation>
+			<Storage autoIndex="True" index="None" global="False" maxRepetitions="1">
+				<LanguageReference name="English" id="21"></LanguageReference>
+			</Storage>
+			<TagList>#_FMI_0 </TagList>
+		</Field>
+		<Field id="7" name="modifiedUTC" fieldtype="Normal" datatype="Number" comment="UTC Timestamp when the record was last modified.">
+			<AutoEnter type="Calculated" prohibitModification="True" overwriteExisting="True" alwaysEvaluate="False">
+				<Calculated>
+					<Calculation>
+						<Text><![CDATA[Let ( ~trigger = GetField ( "" ) ; Get ( CurrentTimeUTCMilliseconds ) )]]></Text>
+					</Calculation>
+				</Calculated>
+			</AutoEnter>
+			<Validation type="OnlyDuringDataEntry" allowOverride="False" notEmpty="True" unique="False" existing="False"></Validation>
+			<Storage autoIndex="True" index="None" global="False" maxRepetitions="1">
+				<LanguageReference name="English" id="21"></LanguageReference>
+			</Storage>
+			<TagList>#_FMI_0 </TagList>
+		</Field>
+	</ObjectList>
+</FMDefaultFields>
