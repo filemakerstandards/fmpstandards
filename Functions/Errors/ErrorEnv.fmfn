@@ -1,0 +1,292 @@
+/**
+ * =====================================
+ * ErrorEnv ( includeList )
+ *
+ * RETURNS:
+ *		JSON object containing desired environment information.
+ *
+ * PARAMETERS:
+ *		includeList = (text) List of matching keywords. See ~all variable below.
+ *
+ * EXAMPLES:
+ *		ErrorEnv ( List ( "security" ) ) = {"default":{<data>},"security":{<data>}}
+ *		ErrorEnv ( "datetime¶security" ) = {"datetime":{<data>},"default":{<data>},"security":{<data>}
+ *
+ * DEPENDENCIES:
+ *		None
+ *
+ * NOTE:
+ *		Default values are always included. Adjust as desired.
+ *
+ * HISTORY:
+ *		CREATED on 2022-AUG-01 by Matt Petrowsky editor@filemakermagazine.com
+ *
+ * REFERENCES:
+ *		None
+ * =====================================
+ */
+
+Let ( [
+
+	~all = List (
+		"datetime";
+		"default";
+		"field";
+		"file";
+		"include";
+		"keyboard";
+		"layout";
+		"misc";
+		"mobile";
+		"object";
+		"path";
+		"portal";
+		"record";
+		"request";
+		"security";
+		"system";
+		"trigger";
+		"user";
+		"window";
+	);
+
+	~include = If ( includeList = "all" ; ¶ & ~all ; ¶ & includeList );
+
+	// Controls whether a given sections should evaluate or not.
+
+	~datetimeOn = If ( Position ( ~include ; "¶datetime" ; 1 ; 1 ) ; True ; False );
+	~securityOn = If ( Position ( ~include ; "¶security" ; 1 ; 1 ) ; True ; False );
+	~userOn = If ( Position ( ~include ; "¶user" ; 1 ; 1 ) ; True ; False );
+	~systemOn = If ( Position ( ~include ; "¶system" ; 1 ; 1 ) ; True ; False );
+	~mobileOn = If ( Position ( ~include ; "¶mobile" ; 1 ; 1 ) ; True ; False );
+	~keyboardOn = If ( Position ( ~include ; "¶keyboard" ; 1 ; 1 ) ; True ; False );
+	~recordOn = If ( Position ( ~include ; "¶record" ; 1 ; 1 ) ; True ; False );
+	~portalOn = If ( Position ( ~include ; "¶portal" ; 1 ; 1 ) ; True ; False );
+	~layoutOn = If ( Position ( ~include ; "¶layout" ; 1 ; 1 ) ; True ; False );
+	~triggerOn = If ( Position ( ~include ; "¶trigger" ; 1 ; 1 ) ; True ; False );
+	~objectOn = If ( Position ( ~include ; "¶object" ; 1 ; 1 ) ; True ; False );
+	~fileOn = If ( Position ( ~include ; "¶file" ; 1 ; 1 ) ; True ; False );
+	~pathOn = If ( Position ( ~include ; "¶path" ; 1 ; 1 ) ; True ; False );
+	~requestOn = If ( Position ( ~include ; "¶request" ; 1 ; 1 ) ; True ; False );
+	~fieldOn = If ( Position ( ~include ; "¶field" ; 1 ; 1 ) ; True ; False );
+	~windowOn = If ( Position ( ~include ; "¶window" ; 1 ; 1 ) ; True ; False );
+	~miscOn = If ( Position ( ~include ; "¶misc" ; 1 ; 1 ) ; True ; False );
+
+	~default = JSONSetElement ( "{}" ;
+			[ "allowabortstate" ; Get ( AllowAbortState ) ; JSONNumber ];
+			[ "currenttimeutcmilliseconds" ; Get ( CurrentTimeUTCMilliseconds ) ; JSONNumber ];
+			[ "errorcapturestate" ; Get ( ErrorCaptureState ) ; JSONNumber ];
+			[ "lastexternalerrordetail" ; Get ( LastExternalErrorDetail ) ; JSONString ];
+			[ "scriptname" ; Get ( ScriptName ) ; JSONString ];
+			[ "scriptparameter" ; Get ( ScriptParameter ) ; JSONString ];
+			[ "scriptresult" ; Get ( ScriptResult ) ; JSONString ]
+		);
+
+	~datetime = If ( ~datetimeOn ; JSONSetElement ( "{}" ;
+			[ "currentdate" ; Get ( CurrentDate ) ; JSONString ];
+			[ "currenthosttimestamp" ; Get ( CurrentHostTimestamp ) ; JSONString ];
+			[ "currenttime" ; Get ( CurrentTime ) ; JSONString ];
+			[ "currenttimestamp" ; Get ( CurrentTimestamp ) ; JSONString ]
+		)
+	);
+
+	~security = If ( ~securityOn ; JSONSetElement ( "{}" ;
+			[ "accountextendedprivileges" ; Get ( AccountExtendedPrivileges ) ; JSONString ];
+			[ "accountgroupname" ; Get ( AccountGroupName ) ; JSONString ];
+			[ "accountname" ; Get ( AccountName ) ; JSONString ];
+			[ "accountprivilegesetName" ; Get ( AccountPrivilegeSetName ) ; JSONString ];
+			[ "accounttype" ; Get ( AccountType ) ; JSONString ];
+			[ "allowformattingbarState" ; Get ( AllowFormattingBarState ) ; JSONNumber ];
+			[ "currentextendedprivileges" ; Get ( CurrentExtendedPrivileges ) ; JSONString ];
+			[ "currentprivilegesetName" ; Get ( CurrentPrivilegeSetName ) ; JSONString ];
+			[ "encryptionstate" ; Get ( EncryptionState ) ; JSONNumber ];
+			[ "layoutaccess" ; Get ( LayoutAccess ) ; JSONNumber ];
+			[ "recordaccess" ; Get ( RecordAccess ) ; JSONNumber ]
+		)
+	);
+
+	~user = If ( ~userOn ; JSONSetElement ( "{}" ;
+			[ "usercount" ; Get ( UserCount ) ; JSONNumber ];
+			[ "username" ; Get ( UserName ) ; JSONString ]
+		)
+	);
+
+	~system = If ( ~systemOn ; JSONSetElement ( "{}" ;
+			[ "applicationarchitecture" ; Get ( ApplicationArchitecture ) ; JSONString ];
+			[ "applicationlanguage" ; Get ( ApplicationLanguage ) ; JSONString ];
+			[ "applicationversion" ; Get ( ApplicationVersion ) ; JSONString ];
+			[ "connectionattributes" ; Get ( ConnectionAttributes ) ; JSONString ];
+			[ "connectionstate" ; Get ( ConnectionState ) ; JSONNumber ];
+			[ "custommenusetname" ; Get ( CustomMenuSetName ) ; JSONString ];
+			[ "device" ; Get ( Device ) ; JSONNumber ];
+			[ "highcontraststate" ; Get ( HighContrastState ) ; JSONNumber ];
+			[ "hostapplicationversion" ; Get ( HostApplicationVersion ) ; JSONString ];
+			[ "hostipaddress" ; Get ( HostIPAddress ) ; JSONString ];
+			[ "hostname" ; Get ( HostName ) ; JSONString ];
+			[ "installedfmplugins" ; Get ( InstalledFMPlugins ) ; JSONString ];
+			[ "multiuserstate" ; Get ( MultiUserState ) ; JSONNumber ];
+			[ "networkprotocol" ; Get ( NetworkProtocol ) ; JSONString ];
+			[ "networktype" ; Get ( NetworkType ) ; JSONNumber ];
+			[ "persistentid" ; Get ( PersistentID ) ; JSONString ];
+			[ "printername" ; Get ( PrinterName ) ; JSONString ];
+			[ "systemappearance" ; Get ( SystemAppearance ) ; JSONString ];
+			[ "systemdrive" ; Get ( SystemDrive ) ; JSONString ];
+			[ "systemipaddress" ; Get ( SystemIPAddress ) ; JSONString ];
+			[ "systemlanguage" ; Get ( SystemLanguage ) ; JSONString ];
+			[ "systemnicaddress" ; Get ( SystemNICAddress ) ; JSONString ];
+			[ "systemplatform" ; Get ( SystemPlatform ) ; JSONNumber ];
+			[ "systemversion" ; Get ( SystemVersion ) ; JSONString ];
+			[ "usesystemformatsstate" ; Get ( UseSystemFormatsState ) ; JSONString ]
+		)
+	);
+
+	~mobile = If ( ~mobileOn ; JSONSetElement ( "{}" ;
+			[ "regionmonitorevents" ; Get ( RegionMonitorEvents ) ; JSONString ];
+			[ "touchkeyboardstate" ; Get ( TouchKeyboardState ) ; JSONNumber ]
+		)
+	);
+
+	~keyboard = If ( ~keyboardOn ; JSONSetElement ( "{}" ;
+			[ "activemodifierkeys" ; Get ( ActiveModifierKeys ) ; JSONNumber ]
+		)
+	);
+
+	~record = If ( ~recordOn ; JSONSetElement ( "{}" ;
+			[ "activerecordnumber" ; Get ( ActiveRecordNumber ) ; JSONNumber ];
+			[ "foundcount" ; Get ( FoundCount ) ; JSONNumber ];
+			[ "recordid" ; Get ( RecordID ) ; JSONNumber ];
+			[ "recordmodificationCount" ; Get ( RecordModificationCount ) ; JSONNumber ];
+			[ "recordnumber" ; Get ( RecordNumber ) ; JSONNumber ];
+			[ "recordopencount" ; Get ( RecordOpenCount ) ; JSONNumber ];
+			[ "recordopenstate" ; Get ( RecordOpenState ) ; JSONNumber ];
+			[ "sortstate" ; Get ( SortState ) ; JSONNumber ];
+			[ "totalrecordcount" ; Get ( TotalRecordCount ) ; JSONNumber ]
+		)
+	);
+
+	~portal = If ( ~portalOn ; JSONSetElement ( "{}" ;
+			[ "activeportalrownumber" ; Get ( ActivePortalRowNumber ) ; JSONNumber ]
+		)
+	);
+
+	~layout = If ( ~layoutOn ; JSONSetElement ( "{}" ;
+			[ "layoutcount" ; Get ( LayoutCount ) ; JSONNumber ];
+			[ "layoutname" ; Get ( LayoutName ) ; JSONString ];
+			[ "layoutnumber" ; Get ( LayoutNumber ) ; JSONNumber ];
+			[ "layouttablename" ; Get ( LayoutTableName ) ; JSONString ];
+			[ "layoutviewstate" ; Get ( LayoutViewState ) ; JSONNumber ]
+		)
+	);
+
+	~trigger = If ( ~triggerOn ; JSONSetElement ( "{}" ;
+			[ "triggercurrentpanel" ; Get(TriggerCurrentPanel) ; JSONString ];
+			[ "triggerexternalevent" ; Get(TriggerExternalEvent) ; JSONNumber ];
+			[ "triggergestureinfo" ; Get(TriggerGestureInfo) ; JSONString ];
+			[ "triggerkeystroke" ; Get(TriggerKeystroke) ; JSONString ];
+			[ "triggermodifierkeys" ; Get(TriggerModifierKeys) ; JSONNumber ];
+			[ "triggertargetpanel" ; Get(TriggerTargetPanel) ; JSONString ]
+		)
+	);
+
+	~object = If ( ~objectOn ; JSONSetElement ( "{}" ;
+			[ "activelayoutobjectName" ; Get ( ActiveLayoutObjectName ) ; JSONString ]
+		)
+	);
+
+	~file = If ( ~fileOn ; JSONSetElement ( "{}" ;
+			[ "filename" ; Get ( FileName ) ; JSONString ];
+			[ "filesize" ; Get ( FileSize ) ; JSONString ];
+			[ "opendatafileinfo" ; Get ( OpenDataFileInfo ) ; JSONString ]
+		)
+	);
+
+	~path = If ( ~pathOn ; JSONSetElement ( "{}" ;
+			[ "desktoppath" ; Get ( DesktopPath ) ; JSONString ];
+			[ "documentspath" ; Get ( DocumentsPath ) ; JSONString ];
+			// Commenting out the following because a lot of files will take a lot of time!
+			//[ "documentspathlisting" ; Get ( DocumentsPathListing ) ; JSONString ];
+			[ "filemakerpath" ; Get ( FileMakerPath ) ; JSONString ];
+			[ "filepath" ; Get ( FilePath ) ; JSONString ];
+			[ "preferencespath" ; Get ( PreferencesPath ) ; JSONString ];
+			[ "temporarypath" ; Get ( TemporaryPath ) ; JSONString ]
+		)
+	);
+
+	~request = If ( ~requestOn ; JSONSetElement ( "{}" ;
+			[ "quickfindtext" ; Get ( QuickFindText ) ; JSONString ];
+			[ "requestcount" ; Get ( RequestCount ) ; JSONNumber ];
+			[ "requestomitstate" ; Get ( RequestOmitState ) ; JSONNumber ]
+		)
+	);
+
+	~field = If ( ~fieldOn ; JSONSetElement ( "{}" ;
+			[ "activefieldcontents" ; Get ( ActiveFieldContents ) ; JSONString ];
+			[ "activefieldname" ; Get ( ActiveFieldName ) ; JSONString ];
+			[ "activefieldtablename" ; Get ( ActiveFieldTableName ) ; JSONString ];
+			[ "activerepetitionnumber" ; Get ( ActiveRepetitionNumber ) ; JSONNumber ];
+			[ "calculationrepetitionNumber" ; Get ( CalculationRepetitionNumber ) ; JSONNumber ];
+			[ "modifiedfields" ; Get ( ModifiedFields ) ; JSONString ]
+		)
+	);
+
+	~window = If ( ~windowOn ; JSONSetElement ( "{}" ;
+			[ "menubarstate" ; Get ( MenubarState ) ; JSONNumber ];
+			[ "pagecount" ; Get ( PageCount ) ; JSONNumber ];
+			[ "pagenumber" ; Get ( PageNumber ) ; JSONNumber ];
+			[ "screendepth" ; Get ( ScreenDepth ) ; JSONNumber ];
+			[ "screenheight" ; Get ( ScreenHeight ) ; JSONNumber ];
+			[ "screenscalefactor" ; Get ( ScreenScaleFactor ) ; JSONNumber ];
+			[ "screenwidth" ; Get ( ScreenWidth ) ; JSONNumber ];
+			[ "statusareastate" ; Get ( StatusAreaState ) ; JSONNumber ];
+			[ "textrulervisible" ; Get ( TextRulerVisible ) ; JSONNumber ];
+			[ "windowcontentheight" ; Get ( WindowContentHeight ) ; JSONNumber ];
+			[ "windowcontentwidth" ; Get ( WindowContentWidth ) ; JSONNumber ];
+			[ "windowdesktopheight" ; Get ( WindowDesktopHeight ) ; JSONNumber ];
+			[ "windowdesktopwidth" ; Get ( WindowDesktopWidth ) ; JSONNumber ];
+			[ "windowheight" ; Get ( WindowHeight ) ; JSONNumber ];
+			[ "windowleft" ; Get ( WindowLeft ) ; JSONNumber ];
+			[ "windowmode" ; Get ( WindowMode ) ; JSONNumber ];
+			[ "windowname" ; Get ( WindowName ) ; JSONString ];
+			[ "windoworientation" ; Get ( WindowOrientation ) ; JSONNumber ];
+			[ "windowstyle" ; Get ( WindowStyle ) ; JSONNumber ];
+			[ "windowtop" ; Get ( WindowTop ) ; JSONNumber ];
+			[ "windowvisible" ; Get ( WindowVisible ) ; JSONNumber ];
+			[ "windowwidth" ; Get ( WindowWidth ) ; JSONNumber ];
+			[ "windowzoomlevel" ; Get ( WindowZoomLevel ) ; JSONNumber ]
+		)
+	);
+
+	~misc = If ( ~miscOn ; JSONSetElement ( "{}" ;
+			[ "activeselectionsize" ; Get ( ActiveSelectionSize ) ; JSONNumber ];
+			[ "activeselectionstart" ; Get ( ActiveSelectionStart ) ; JSONNumber ];
+			[ "lastmessagechoice" ; Get ( LastMessageChoice ) ; JSONNumber ];
+			[ "scriptanimationstate" ; Get ( ScriptAnimationState ) ; JSONNumber ]
+		)
+	)
+];
+	// Result is built up based on included desired options.
+	Let ( [
+		~result = JSONSetElement ( "{}" ; "default" ; ~default ; JSONObject );
+		~result = If ( ~datetimeOn ; JSONSetElement ( ~result ; "datetime" ; ~datetime ; JSONObject ); ~result );
+		~result = If ( ~fieldOn ; JSONSetElement ( ~result ; "field" ; ~field ; JSONObject ); ~result );
+		~result = If ( ~fileOn ; JSONSetElement ( ~result ; "file" ; ~file ; JSONObject ); ~result );
+		~result = If ( ~keyboardOn ; JSONSetElement ( ~result ; "keyboard" ; ~keyboard ; JSONObject ); ~result );
+		~result = If ( ~layoutOn ; JSONSetElement ( ~result ; "layout" ; ~layout ; JSONObject ); ~result );
+		~result = If ( ~miscOn ; JSONSetElement ( ~result ; "misc" ; ~misc ; JSONObject ); ~result );
+		~result = If ( ~mobileOn ; JSONSetElement ( ~result ; "mobile" ; ~mobile ; JSONObject ); ~result );
+		~result = If ( ~objectOn ; JSONSetElement ( ~result ; "object" ; ~object ; JSONObject ); ~result );
+		~result = If ( ~pathOn ; JSONSetElement ( ~result ; "path" ; ~path ; JSONObject ); ~result );
+		~result = If ( ~portalOn ; JSONSetElement ( ~result ; "portal" ; ~portal ; JSONObject ); ~result );
+		~result = If ( ~recordOn ; JSONSetElement ( ~result ; "record" ; ~record ; JSONObject ); ~result );
+		~result = If ( ~requestOn ; JSONSetElement ( ~result ; "request" ; ~request ; JSONObject ); ~result );
+		~result = If ( ~securityOn ; JSONSetElement ( ~result ; "security" ; ~security ; JSONObject ); ~result );
+		~result = If ( ~systemOn ; JSONSetElement ( ~result ; "system" ; ~system ; JSONObject ); ~result );
+		~result = If ( ~triggerOn ; JSONSetElement ( ~result ; "trigger" ; ~trigger ; JSONObject ); ~result );
+		~result = If ( ~userOn ; JSONSetElement ( ~result ; "user" ; ~user ; JSONObject ); ~result );
+		~result = If ( ~windowOn ; JSONSetElement ( ~result ; "window" ; ~window ; JSONObject ); ~result )
+	];
+		//JSONFormatElements ( // Used for testing.
+		~result
+		//)
+	)
+)
