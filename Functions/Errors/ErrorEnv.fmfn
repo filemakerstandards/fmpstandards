@@ -1,6 +1,6 @@
 /**
  * =====================================
- * ErrorEnv ( includeList )
+ * ErrorEnvironment ( includeList )
  *
  * RETURNS:
  *		JSON object containing desired environment information.

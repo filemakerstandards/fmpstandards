@@ -1,37 +1,31 @@
 /**
  * =====================================
- * Error ( theErrorType ; theErrorCode ; theErrorDescription ; theErrorInfo )
+ * Error ( type ; errorCode ; description ; details )
  *
  * RETURNS:
- *		Let Notation containing information about the error and the environment
- *		it occurred in.
+ *		JSON object containing information about the error.
  *
  * PARAMETERS:
- *		theErrorType = (text) origin of the error
- *			(e.g., "Fmp", "App", "Plugin: ScriptMaster", "mFM: JSON", etc.)
- *		theErrorCode = (number) code for the error
- *		theErrorDescription = (text) description of the error, preferably human
- *			readable and decipherable
- *		theErrorInfo = (text, optional) some text describing the particular
- *			instance of this error. This should help a developer locate where
- *			in a script the error occured.
- *			(e.g., "create new invoice record")
+ *		type = (text) Origin of the error.
+ *			(e.g., "fmp", "app", "plugin:ScriptMaster", etc.)
+ *		code = (number) Code for the error.
+ *		description = (text) description of the error, preferably
+ *			human readable and decipherable.
+ *		details = (object) JSON object including desired details
+ *			at the time of error generation. This should help a developer
+ *			determine why the error occured. See ErrorEnv() function.
+ *			(e.g., "creating a new invoice record")
  *
  * DEPENDENCIES:
- *		Custom Functions: #
+ *		ErrorFmp()
  *
  * NOTE:
- *		This function contains a recommended set of environmental data, but you
- *		may choose to add or remove name/value pairs from this function as you
- *		see fit for your solution. All error generating custom functions
- *		call this function, so it is the central place to define default
- *		environmental data collected when an error occurs.
- *
- *		Environmental data that is likely to change from the time the error occurs
- *		to the time log data is collected should be included in this function.
- *
+ *		Environmental data should be included at the time the error occurs.
+ *		See the ErrorEnv() function.
  *
  * HISTORY:
+ *		MODIFIED on 2022-AUG-01 by Matt Petrowsky editor@filemakermagazine.com
+ *			- Updated to use JSON functions.
  *		MODIFIED on 2013-NOV-22 by Daniel Smith dansmith65@gmail.com
  *			- change name to Error, update documentation
  *		CREATED on 2013-OCT-11 by Daniel Smith dansmith65@gmail.com
@@ -41,27 +35,23 @@
  * =====================================
  */
 
-// information about the error
-// these should NOT be modified, they should be consistent from one database to the next
-# ( "errorType" ; theErrorType )
-& # ( "errorCode" ; theErrorCode )
-& # ( "errorDescription" ; theErrorDescription )
-& If ( not IsEmpty ( theErrorInfo ) and GetAsBoolean ( theErrorCode ) ;
-	# ( "errorInfo" ; theErrorInfo )
-)
 
+Let ( [
+	// Defaulting to FMP type errors when empty.
+	~type = If ( IsEmpty ( type ) ; "fmp" ; type );
+	~code = Case (
+				~type = "fmp" and IsEmpty ( errorCode );
+					0;
 
-// information about the environment
-// these values should be adjusted as needed for the database
-& If (
-	GetAsBoolean ( theErrorCode ) ;
-	""
-		& # ( "AllowAbortState" ; Get ( AllowAbortState ) )
-		& # ( "CurrentHostTimestamp" ; Get ( CurrentHostTimeStamp ) )
-		& # ( "ErrorCaptureState" ; Get ( ErrorCaptureState ) )
-		& # ( "LastODBCError" ; Get ( LastODBCError ) )
-		& # ( "ScriptName" ; Get ( ScriptName ) )
-		& # ( "ScriptParameter" ; Get ( ScriptParameter ) )
-		& # ( "ScriptResult" ; Get ( ScriptResult ) )
-		& # ( "UserCount" ; Get ( UserCount ) )
+				GetAsNumber ( errorCode )
+			);
+	~description = If ( ~type = "fmp" ; ErrorFmp ( ~code ) ; description );
+	~details = details
+];
+	JSONSetElement( "{}" ; 
+		[ "error.type" ; ~type ; JSONString ];
+		[ "error.code" ; ~code ; JSONNumber ];
+		[ "error.description" ; ~description ; JSONString ];
+		[ "error.details" ; details ; JSONObject ] 
+	)
 )

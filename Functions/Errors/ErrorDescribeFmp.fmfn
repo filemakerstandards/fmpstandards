@@ -1,13 +1,12 @@
 /**
  * =====================================
- * ErrorDescription ( errorCode )
+ * ErrorDescribeFmp ( errorCode )
  *
  * RETURNS:
- *		String description of a supplied FileMaker error
- *		and the environment it occurred in.
+ *		String description of a supplied FileMaker error.
  *
  * PARAMETERS:
- *		errorCode = (number) code for a FileMaker error
+ *		errorCode = (number) code for a FileMaker error.
  *
  * DEPENDENCIES:
  *		None
@@ -19,8 +18,7 @@
  *		CREATED on 2013-OCT-11 Daniel Smith dansmith65@gmail.com
  *
  * REFERENCES:
- *		http://www.filemaker.com/help/html/error_codes.html
- *		http://filemakerstandards.org/x/AoA-/
+ *		https://help.claris.com/en/pro-help/content/error-codes.html
  * =====================================
  */
 

@@ -1,6 +1,6 @@
 /**
  * =====================================
- * ErrorApp ( theErrorCode ; theErrorInfo )
+ * ErrorGetApp ( errorCode ; errorDetails )
  *
  * RETURNS:
  *		Let Notation containing information about the specified
@@ -37,27 +37,22 @@
  *			https://github.com/filemakerstandards/fmpstandards/tree/master/Functions
  *
  * REFERENCES:
- *		http://filemakerstandards.org/x/AoA-/
+ *
  * =====================================
  */
 
 Let ( [
-	// Get human-readable error string associated with the error code
-	~errorDescription =
+	~code = errorCode;
+	// Human-readable error strings associated with the error codes for your app.
+	~description =
 		Case (
-			// TODO: the next four lines are an example only, they should be modified before this function is used
-			theErrorCode = -1 ; "Unknown error" ;
-			theErrorCode = 0 ; "No error" ;
-			theErrorCode = 1 ; "User canceled action" ;
+			// Change/update the following values as you develop your solution.
+			~code = -1 ; "Unknown error" ;
+			~code = 0 ; "No error" ;
+			~code = 1 ; "User canceled action" ;
+			/*Default*/
 			"Unknown error code"
 		)
 ] ;
-	Error ( "App" ; theErrorCode ; ~errorDescription ; theErrorInfo )
-	// add additional info useful for debugging specific errors
-	// TODO: the following Case an example only, it should be modified before this function is used
-	& Case (
-		theErrorCode = 3 ;
-		# ( "WindowMode" ; Get ( WindowMode ) ) ;
-		/* else */ ""
-	)
+	Error ( "app" ; errorCode ; ~description ; errorDetails )
 )

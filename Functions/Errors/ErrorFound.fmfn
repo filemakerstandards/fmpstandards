@@ -1,19 +1,21 @@
 /**
  * =====================================
- * ErrorFound ( theErrorData )
+ * ErrorFound ( errorData )
  *
  * RETURNS:
- *		ErrorCode contained in theErrorData as a Boolean. In other words,
+ *		Boolean true for anything other than 0. In other words,
  *		if any error occurred at all, return True (1), otherwise return
  *		False (0).
  *
  * PARAMETERS:
- *		theErrorData = (let notation) output of Error custom function
+ *		errorData = (JSON) output of Error custom function.
  *
  * DEPENDENCIES:
- *		Custom Functions: #Get
+ *		None
  *
  * HISTORY:
+*		MODIFIED on 2022-AUG-01 by Matt Petrowsky editor@filemakermagazine.com
+ *			- Refactored to use JSON.
  *		MODIFIED on 2013-NOV-22 by Daniel Smith dansmith65@gmail.com
  *			- renamed to ErrorFound, update documentation
  *		MODIFIED on 2013-OCT-11 by Daniel Smith dansmith65@gmail.com
@@ -28,6 +30,4 @@
  * =====================================
  */
 
-GetAsBoolean (
-	#Get ( theErrorData ; "errorCode" )
-)
+GetAsBoolean ( JSONGetElement ( errorData ; "error.code" ) )

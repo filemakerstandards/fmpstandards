@@ -1,0 +1,29 @@
+/**
+ * =====================================
+ * ErrorFmp ( errorDetails )
+ *
+ * RETURNS:
+ *		Let Notation containing information about a FileMaker error
+ *		and the environment it occurred in.
+ *
+ * PARAMETERS:
+ *		theErrorCode = (number) code for a FileMaker error
+ *		theErrorInfo = (text, optional) some text describing the particular
+ *			instance of this error. This should help a developer locate where
+ *			in a script the error occured.
+ *			(e.g., "create new invoice record")
+ *
+ * DEPENDENCIES:
+ *		ErrorDescribeFmp()
+ *
+ * HISTORY:
+ *		MODIFIED on 2013-NOV-22 by Daniel Smith dansmith65@gmail.com
+ *			- rename to ErrorFmp, update documentation
+ *		CREATED on 2013-OCT-11 Daniel Smith dansmith65@gmail.com
+ *
+ * REFERENCES:
+ *		http://www.filemaker.com/help/html/error_codes.html
+ * =====================================
+ */
+
+Error ( "fmp" ; Get ( LastError ) ; "" ; errorDetails )
