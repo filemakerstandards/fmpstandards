@@ -20,6 +20,11 @@
  *		ErrorDescribeFmp()
  *
  * NOTE:
+ *		IMPORTANT! You typically don't call this function directly.
+ *		Most error calls within your scripts should use ErrorGet* functions
+ *		directly after a potential error happens. This function can be used
+ *		if you collect multiple error codes within a script and perform
+ *		post processing on those error codes.
  *		Environmental data should be included at the time the error occurs.
  *		See the ErrorEnv() function.
  *
