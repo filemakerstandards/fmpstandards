@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fmxmlsnippet type="FMObjectList">
+  <CustomFunction id="4" functionArity="2" visible="True" parameters="errorCode;errorDetails" name="ErrorGetApp">
+    <Calculation><![CDATA[/**
+ * =====================================
+ * ErrorGetApp ( errorCode ; errorDetails )
+ *
+ * RETURNS:
+ *		JSON object with error information.
+ *
+ * PARAMETERS:
+ *		errorCode = (number) code for an application error.
+ *		errorDetails = (text, optional) text describing the particular error.
+ *			(e.g., "creating new invoice record")
+ *
+ * DEPENDENCIES:
+ *		Error()
+ *
+ * NOTE:
+ *		This function should be modified by each developer/solution to map your
+ *		own error codes to error descriptions.
+ *
+ * HISTORY:
+ *		MODIFIED on 2022-AUG-01 by Matt Petrowsky editor@filemakermagazine.com
+ *			- Refactor to using JSON.	
+ *		MODIFIED on 2013-NOV-22 by Daniel Smith dansmith65@gmail.com
+ *			- renamed to ErrorApp, update documentation
+ *		MODIFIED on 2013-OCT-11 by Daniel Smith dansmith65@gmail.com
+ *			- change from ErrorDataApp ( theErrorCode )
+ *			  to #AppError ( theErrorCode ; theErrorInfo )
+ *			- add dependency on custom function: #Error
+ *		MODIFIED on 2012-NOV-22 by Daniel Smith dansmith65@gmail.com
+ *			- rename to: ErrorDataApp
+ *		MODIFIED on 2012-NOV-21 by Daniel Smith dansmith65@gmail.com
+ *			- don't access $error variable directly
+ *		CREATED on 2012-NOV-20 Daniel Smith dansmith65@gmail.com
+ *		INSPIRED by ErrorString and ErrorData by matt@filemakermagazine.com
+ *			https://github.com/filemakerstandards/fmpstandards/tree/master/Functions
+ *
+ * REFERENCES:
+ *		https://github.com/filemakerstandards/fmpstandards/tree/master/Functions/Errors
+ * =====================================
+ */
+
+Let ( [
+	~code = errorCode;
+	// Human-readable error strings associated with the error codes for your app.
+	~description =
+		Case (
+			// Change/update the following values as you develop your solution.
+			~code = -1 ; "Unknown error" ;
+			~code = 0 ; "No error" ;
+			~code = 1 ; "User canceled action" ;
+			/*Default*/
+			"Unknown error code"
+		)
+] ;
+	Error ( "app" ; errorCode ; ~description ; errorDetails )
+)]]></Calculation>
+  </CustomFunction>
+</fmxmlsnippet>

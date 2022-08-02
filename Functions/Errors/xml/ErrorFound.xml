@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fmxmlsnippet type="FMObjectList">
+  <CustomFunction id="5" functionArity="1" visible="True" parameters="errorData" name="ErrorFound">
+    <Calculation><![CDATA[/**
+ * =====================================
+ * ErrorFound ( errorData )
+ *
+ * RETURNS:
+ *		Boolean true for anything other than 0. In other words,
+ *		if any error occurred at all, return True (1), otherwise return
+ *		False (0).
+ *
+ * PARAMETERS:
+ *		errorData = (JSON) output of Error custom function.
+ *
+ * DEPENDENCIES:
+ *		None
+ *
+ * HISTORY:
+*		MODIFIED on 2022-AUG-01 by Matt Petrowsky editor@filemakermagazine.com
+ *			- Refactored to use JSON.
+ *		MODIFIED on 2013-NOV-22 by Daniel Smith dansmith65@gmail.com
+ *			- renamed to ErrorFound, update documentation
+ *		MODIFIED on 2013-OCT-11 by Daniel Smith dansmith65@gmail.com
+ *			- renamed from IsError to #IsError
+ *			- update documentation in script header
+ *		MODIFIED on 2012-NOV-21 by Daniel Smith dansmith65@gmail.com
+ *			- don't access $error variable directly
+ *		CREATED on 2012-NOV-20 Daniel Smith dansmith65@gmail.com
+ *
+ * REFERENCES:
+ *		https://github.com/filemakerstandards/fmpstandards/tree/master/Functions/Errors
+ * =====================================
+ */
+
+GetAsBoolean ( JSONGetElement ( errorData ; "error.code" ) )]]></Calculation>
+  </CustomFunction>
+</fmxmlsnippet>

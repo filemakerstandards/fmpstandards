@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fmxmlsnippet type="FMObjectList">
+  <CustomFunction id="3" functionArity="4" visible="True" parameters="type;errorCode;description;details" name="Error">
+    <Calculation><![CDATA[/**
+ * =====================================
+ * Error ( type ; errorCode ; description ; details )
+ *
+ * RETURNS:
+ *		JSON object containing information about the error.
+ *
+ * PARAMETERS:
+ *		type = (text) Origin of the error.
+ *			(e.g., "fmp", "app", "plugin:ScriptMaster", etc.)
+ *		code = (number) Code for the error.
+ *		description = (text) description of the error, preferably
+ *			human readable and decipherable.
+ *		details = (object) JSON object including desired details
+ *			at the time of error generation. This should help a developer
+ *			determine why the error occured. See ErrorEnv() function.
+ *			(e.g., "creating a new invoice record")
+ *
+ * DEPENDENCIES:
+ *		ErrorDescribeFmp()
+ *
+ * NOTE:
+ *		IMPORTANT! You typically don't call this function directly.
+ *		Most error calls within your scripts should use ErrorGet* functions
+ *		directly after a potential error happens. This function can be used
+ *		if you collect multiple error codes within a script and perform
+ *		post processing on those error codes.
+ *		Environmental data should be included at the time the error occurs.
+ *		See the ErrorEnv() function.
+ *
+ * HISTORY:
+ *		MODIFIED on 2022-AUG-01 by Matt Petrowsky editor@filemakermagazine.com
+ *			- Updated to use JSON functions.
+ *		MODIFIED on 2013-NOV-22 by Daniel Smith dansmith65@gmail.com
+ *			- change name to Error, update documentation
+ *		CREATED on 2013-OCT-11 by Daniel Smith dansmith65@gmail.com
+ *
+ * REFERENCES:
+ *		https://github.com/filemakerstandards/fmpstandards/tree/master/Functions/Errors
+ * =====================================
+ */
+
+
+Let ( [
+	// Defaulting to FMP type errors when empty.
+	~type = If ( IsEmpty ( type ) ; "fmp" ; type );
+	~code = Case (
+				~type = "fmp" and IsEmpty ( errorCode );
+					0;
+
+				GetAsNumber ( errorCode )
+			);
+	~description = If ( ~type = "fmp" ; ErrorDescribeFmp ( ~code ) ; description );
+	~details = details
+];
+	JSONSetElement( "{}" ; 
+		[ "error.type" ; ~type ; JSONString ];
+		[ "error.code" ; ~code ; JSONNumber ];
+		[ "error.description" ; ~description ; JSONString ];
+		[ "error.details" ; details ; JSONObject ] 
+	)
+)]]></Calculation>
+  </CustomFunction>
+</fmxmlsnippet>
