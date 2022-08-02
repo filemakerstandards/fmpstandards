@@ -380,7 +380,7 @@ While ( [
 		~i < 1716 ;
 	[
 		~i = ~i + 1;
-		~string = ErrorDescription ( ~i );
+		~string = ErrorDescribeFmp ( ~i );
 		~result = List ( ~result ; If ( ~string ≠ "Unknown error code" ; ~i & " " & ~string ) )
 	];
 

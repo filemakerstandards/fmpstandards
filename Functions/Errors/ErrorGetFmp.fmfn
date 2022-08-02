@@ -1,6 +1,6 @@
 /**
  * =====================================
- * ErrorFmp ( errorDetails )
+ * ErrorGetFmp ( errorDetails )
  *
  * RETURNS:
  *		Let Notation containing information about a FileMaker error
@@ -14,7 +14,7 @@
  *			(e.g., "create new invoice record")
  *
  * DEPENDENCIES:
- *		ErrorDescribeFmp()
+ *		Error(), ErrorDescribeFmp()
  *
  * HISTORY:
  *		MODIFIED on 2013-NOV-22 by Daniel Smith dansmith65@gmail.com
@@ -22,6 +22,7 @@
  *		CREATED on 2013-OCT-11 Daniel Smith dansmith65@gmail.com
  *
  * REFERENCES:
+ *      https://github.com/filemakerstandards/fmpstandards/tree/master/Functions/Errors
  *		http://www.filemaker.com/help/html/error_codes.html
  * =====================================
  */

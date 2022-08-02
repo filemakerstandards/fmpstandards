@@ -17,7 +17,7 @@
  *			(e.g., "creating a new invoice record")
  *
  * DEPENDENCIES:
- *		ErrorFmp()
+ *		ErrorDescribeFmp()
  *
  * NOTE:
  *		Environmental data should be included at the time the error occurs.
@@ -31,7 +31,7 @@
  *		CREATED on 2013-OCT-11 by Daniel Smith dansmith65@gmail.com
  *
  * REFERENCES:
- *		http://filemakerstandards.org/x/AoA-/
+ *		https://github.com/filemakerstandards/fmpstandards/tree/master/Functions/Errors
  * =====================================
  */
 
@@ -45,7 +45,7 @@ Let ( [
 
 				GetAsNumber ( errorCode )
 			);
-	~description = If ( ~type = "fmp" ; ErrorFmp ( ~code ) ; description );
+	~description = If ( ~type = "fmp" ; ErrorDescribeFmp ( ~code ) ; description );
 	~details = details
 ];
 	JSONSetElement( "{}" ; 
