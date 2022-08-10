@@ -27,3 +27,4 @@ This configuration file is used for debugging and testing purposes. It will coll
 - Enable/disable the file by simply changing the extension between **.txt** and **.off** or simply appending/removing .off to the end of the file name (restart required).
 - Performance WILL be impacted based on the extra collection of data.
 - Mac OS users can use **Console app** and clear results while watching individual actions.
+- The option [extraflags:no_portal_drs](https://support.claris.com/s/article/Related-data-is-missing-in-a-portal-when-accessing-a-custom-app-on-the-Windows-platform?language=en_US) deals with possible Windows portal rendering issues.
