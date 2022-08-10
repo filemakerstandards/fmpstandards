@@ -6,14 +6,10 @@
  * ErrorGetFmp ( errorDetails )
  *
  * RETURNS:
- *		Let Notation containing information about a FileMaker error
- *		and the environment it occurred in.
+ *		JSON object with error information.
  *
  * PARAMETERS:
- *		theErrorCode = (number) code for a FileMaker error
- *		theErrorInfo = (text, optional) some text describing the particular
- *			instance of this error. This should help a developer locate where
- *			in a script the error occured.
+ *		errorDetails = (text, optional) text describing the particular error.
  *			(e.g., "create new invoice record")
  *
  * DEPENDENCIES:
@@ -28,7 +24,7 @@
  *
  * REFERENCES:
  *      https://github.com/filemakerstandards/fmpstandards/tree/master/Functions/Errors
- *		http://www.filemaker.com/help/html/error_codes.html
+ *      https://help.claris.com/en/pro-help/content/error-codes.html
  * =====================================
  */
 
