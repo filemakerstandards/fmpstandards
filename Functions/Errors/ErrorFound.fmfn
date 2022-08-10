@@ -14,7 +14,9 @@
  *		None
  *
  * HISTORY:
-*		MODIFIED on 2022-AUG-01 by Matt Petrowsky editor@filemakermagazine.com
+ *		MODIFIED on 2022-AUG-10 by Matt Petrowsky editor@filemakermagazine.com
+ *			- Validating JSON as GetAsBoolean would take any positive value.
+ *		MODIFIED on 2022-AUG-01 by Matt Petrowsky editor@filemakermagazine.com
  *			- Refactored to use JSON.
  *		MODIFIED on 2013-NOV-22 by Daniel Smith dansmith65@gmail.com
  *			- renamed to ErrorFound, update documentation
@@ -30,4 +32,8 @@
  * =====================================
  */
 
-GetAsBoolean ( JSONGetElement ( errorData ; "error.code" ) )
+Let ( [
+	~test = JSONGetElement ( errorData ; "error.code" )
+];
+	Left ( ~test ; 1 ) ≠ "?" and GetAsBoolean ( ~test )
+)
