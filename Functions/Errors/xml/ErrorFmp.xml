@@ -3,7 +3,7 @@
   <CustomFunction id="6" functionArity="1" visible="True" parameters="errorDetails" name="ErrorGetFmp">
     <Calculation><![CDATA[/**
  * =====================================
- * ErrorGetFmp ( errorDetails )
+ * ErrorFmp ( errorDetails )
  *
  * RETURNS:
  *		JSON object with error information.

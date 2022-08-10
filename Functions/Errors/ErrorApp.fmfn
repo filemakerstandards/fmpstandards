@@ -1,6 +1,6 @@
 /**
  * =====================================
- * ErrorGetApp ( errorCode ; errorDetails )
+ * ErrorApp ( errorCode ; errorDetails )
  *
  * RETURNS:
  *		JSON object with error information.

@@ -3,7 +3,7 @@
   <CustomFunction id="4" functionArity="2" visible="True" parameters="errorCode;errorDetails" name="ErrorGetApp">
     <Calculation><![CDATA[/**
  * =====================================
- * ErrorGetApp ( errorCode ; errorDetails )
+ * ErrorApp ( errorCode ; errorDetails )
  *
  * RETURNS:
  *		JSON object with error information.

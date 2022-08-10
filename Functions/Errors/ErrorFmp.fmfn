@@ -1,6 +1,6 @@
 /**
  * =====================================
- * ErrorGetFmp ( errorDetails )
+ * ErrorFmp ( errorDetails )
  *
  * RETURNS:
  *		JSON object with error information.
