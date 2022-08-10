@@ -16,3 +16,14 @@ The file should be located in this location (version 19+).
 - The tag **#\_FMI_0** in `<TagList>#_FMI_0 </TagList>` (note the exta space, it's required) is a setting that means the field will NOT be added to the default layout created by Claris/FileMaker.
 
 - With CP/FMP (Claris Pro/FileMaker Pro 19+) you can use the **Save a Copy as XML...** menu option under the **Tools** menu to access the XML of defined fields.
+
+## ReleaseDebugOn.txt
+
+This configuration file is used for debugging and testing purposes. It will collect a log of the calls made between a client and server. The file can be used on either the client or server or both. Various settings will only have effect on certain platforms (as indicated within the file). See the documentation within the file for more information.
+
+**Developer notes:**
+
+- The file must exist in a specific location and be named exactly as presented.
+- Enable/disable the file by simply changing the extension between **.txt** and **.off** or simply appending/removing .off to the end of the file name (restart required).
+- Performance WILL be impacted based on the extra collection of data.
+- Mac OS users can use **Console app** and clear results while watching individual actions.

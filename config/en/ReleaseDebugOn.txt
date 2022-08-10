@@ -1,0 +1,86 @@
+# The most common settings are ForceOutput & RemoteCalls.
+# Credit to Mislav Kos from Soliant Consulting for documenting.
+# Source: https://www.soliantconsulting.com/blog/filemaker-sharing-locks-feature-flags/
+
+# File locations:
+# Server macOS/Linux = /Database Server/bin/
+# Server Windows = /Database Server/
+# Client macOS/Windows = Same location as application
+
+# Resulting files:
+# DBDebug.log will be relative to file location above.
+# fmscwpc.log (QuickStart preview related)
+
+# Uncomment the following items in order to:
+
+# -----------------------------------------
+# Use the older temp file method of multi-key indexing.
+# Pro/Go [ √ ] - Server [ X ]
+# -----------------------------------------
+#DisableMemoryKeyCmpIndexing
+
+
+# -----------------------------------------
+# Don't sort records on the server.
+# Pro/Go [ √ ] - Server [ √ ]
+# -----------------------------------------
+#DisableServerSideSorting
+
+# -----------------------------------------
+# Don't allow server side summary generation.
+# 19.5 Release
+# Pro/Go [ √ ] - Server [ √ ]
+# -----------------------------------------
+#DisableServerSideSummary
+
+# -----------------------------------------
+# Turn off the the sharing lock.
+# Do not confuse with record locking.
+# This is a lower level of locking
+# specific to server.
+# Pro/Go [ X ] - Server [ √ ]
+# -----------------------------------------
+#DisableSharingLockOnServer
+
+
+# -----------------------------------------
+# Turn on output for the log file.
+# Pro/Go [ √ ] - Server [ √ ]
+# -----------------------------------------
+ForceOutput
+
+
+# -----------------------------------------
+# Use the older method of a temporary file. (Pre v15)
+# Otherwise the newer persistent cache file is used.
+# Pro/Go [ √ ] - Server [ X ]
+# -----------------------------------------
+#NormalTempFile
+
+
+# -----------------------------------------
+# Log all the remote calls.
+# Pro/Go [ √ ] - Server [ √ ]
+# -----------------------------------------
+RemoteCalls
+
+
+# -----------------------------------------
+# When sorting client side, use multiple threads.
+# Pro/Go [ √ ] - Server [ X ]
+# -----------------------------------------
+#SharingLock4Pro
+
+
+# -----------------------------------------
+# Use multiple threads if sorting on server.
+# Pro/Go [ √ ] - Server [ √ ]
+# -----------------------------------------
+#ThreadedSorting
+
+
+# -----------------------------------------
+# Unknown: Something dealing with portals
+# and rendering data.
+# -----------------------------------------
+#extraflags:no_portal_drs
