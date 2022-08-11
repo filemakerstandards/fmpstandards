@@ -6,7 +6,7 @@
  *		none
  *
  * RETURNS:
- *		string) A list of informative values
+ *		[string] A list of informative values
  * 		about the current FMP environment.
  *
  * DEPENDENCIES:
@@ -14,9 +14,13 @@
  *
  * NOTES:
  *
- * RELEASE:
- * 		101009 - Initial by Matt Petrowsky
- * 		2013-01-25 - Updated to be recursive and use better output. Included more functions
+ * HISTORY:
+ *		MODIFIED on 2022-AUG-10 by Matt Petrowsky
+ *			- Refactored with some historical flair.
+ *		MODIFIED on 2013-JAN-25 by Matt Petrowsky
+ *			- Updated to be recursive and use better output.
+ *		RELEASED on 2010-10-09 Matt Petrowsky
+ *
  * =====================================================
  * 
  */
@@ -26,52 +30,74 @@ If ( Developer;
 		~input = List (
 			"Environment";
 			"	ApplicationVersion";
-			"	SystemPlatform";
-			"	SystemVersion";
+			"	ApplicationArchitecture";
 			"	ApplicationLanguage";
+			"	SystemVersion";
+			"	SystemPlatform";
 			"	SystemLanguage";
 			"	HostName";
 			"	HostApplicationVersion";
-			"	SystemIPAddress";
 			"	HostIPAddress";
+			"	SystemIPAddress";
 			"	CurrentTimeStamp";
 			"	CurrentHostTimeStamp";
+			"	CurrentTimeUTCMilliseconds";
 			"	InstalledFMPlugins";
-			"	AllowAbortState";
-			"	ConnectionState";
-			"	CustomMenuSetName";
-			"	FileName";
-			"	FileSize";
-			"	FoundCount";
-			"	SystemNICAddress";
 			"	PersistentID";
-			"	RecordOpenCount";
+			"	UseSystemFormatsState";
+			"	Device";
+			"	SystemAppearance";
+			"	ActiveModifierKeys";
+			"Network";
+			"	ConnectionState";
+			"	ConnectionAttributes";
+			"	SystemNICAddress";
+			"	NetworkType";
+			"	NetworkProtocol";
+			"	MultiUserState";
 			"Errors";
 			"	LastError";
 			"	LastODBCError";
+			"	LastExternalErrorDetail";
+			"File";
+			"	FileName";
+			"	FileSize";
+			"	EncryptionState";
+			"	CustomMenuSetName";
+			"	OpenDataFileInfo";
 			"User";
 			"	AccountName";
+			"	AccountType";
+			"	AccountGroupName";			
 			"	AccountPrivilegeSetName";
 			"	CurrentPrivilegeSetName";
 			"	AccountExtendedPrivileges";
 			"	CurrentExtendedPrivileges";
+			"	UserName";
+			"	UserCount";
 			"Layout";
 			"	LayoutName";
 			"	LayoutNumber";
 			"	LayoutTableName";
 			"	LayoutViewState";
 			"	LayoutAccess";
-			"	LayoutTableName";
 			"	ActiveLayoutObjectName";
 			"	ActivePortalRowNumber";
+			"	LayoutCount";
 			"Records";
 			"	RecordID";
 			"	RecordNumber";
+			"	ActiveRecordNumber";
+			"	RecordOpenState";
+			"	RecordOpenCount";
 			"	RecordAccess";
 			"	RecordModificationCount";
-			"	RecordOpenState";
 			"	SortState";
+			"	FoundCount";
 			"	TotalRecordCount";
+			"	RequestCount";
+			"	RequestOmitState";
+			"	QuickFindText";
 			"Field";
 			"	ActiveFieldName";
 			"	ActiveFieldTableName";
@@ -80,10 +106,21 @@ If ( Developer;
 			"	ActiveSelectionStart";
 			"	ActiveSelectionSize";
 			"	CalculationRepetitionNumber";
+			"	ModifiedFields";
 			"Script";
 			"	ScriptName";
 			"	ScriptParameter";
 			"	ScriptResult";
+			"	ScriptAnimationState";
+			"	ErrorCaptureState";
+			"	AllowAbortState";
+			"Triggers";
+			"	TriggerCurrentPanel";
+			"	TriggerExternalEvent";
+			"	TriggerGestureInfo";
+			"	TriggerKeystroke";
+			"	TriggerModifierKeys";
+			"	TriggerTargetPanel";
 			"Paths";
 			"	TemporaryPath";
 			"	DesktopPath";
@@ -92,32 +129,67 @@ If ( Developer;
 			"	FilePath";
 			"	PreferencesPath";
 			"	SystemDrive";
+			"Mobile";
+			"	RegionMonitorEvents";
+			"	TouchKeyboardState";
+			"Window";
+			"	AllowFormattingBarState";
+			"	StatusAreaState";
+			"	MenubarState";
+			"	TextRulerVisible";
+			"	ScreenDepth";
+			"	ScreenHeight";
+			"	ScreenScaleFactor";
+			"	ScreenWidth";
+			"	WindowContentHeight";
+			"	WindowContentWidth";
+			"	WindowDesktopHeight";
+			"	WindowDesktopWidth";
+			"	WindowHeight";
+			"	WindowLeft";
+			"	WindowMode";
+			"	WindowName";
+			"	WindowOrientation";
+			"	WindowStyle";
+			"	WindowTop";
+			"	WindowVisible";
+			"	WindowWidth";
+			"	WindowZoomLevel";
+			"	HighContrastState";
+			"	PageCount";
+			"	PageNumber";
+			"	PrinterName";
 		);
+		// Do YOU remember the coffee cup days?
+		$$~☕️ = If ( IsEmpty ( $$~☕️ ) ; ~input ; $$~☕️ );
 		~tab = "	";
-		~line = GetValue ( ~input ; $~debugCounter );
+		~line = GetValue ( ~input ; ValueCount ( $$~☕️ ) );
 		~eval = If ( Left ( ~line ; 1 ) = ~tab ; // evaluate lines prefixed with tabs
 			Let ( [
 				~function = Trim ( ~line );
 				~padding = "                              "; // 30 chars is longest function name
-				~result = Evaluate ( "Get(" & ~function & ")" )
+				~result = Evaluate ( "Get(" & ~function & ") & \"\"" )
 			];
 				~function
 				& Left ( ~padding ; Length ( ~padding ) - Length ( ~function ) ) // spacing out result
-				& If ( valuecount ( ~result ) > 1; // some functions return multiple lines
+				& If ( ValueCount ( ~result ) > 1; // some functions return multiple lines
 					Substitute ( ~result ; ¶ ; ¶ & ~tab & Left ( ~padding ; Length ( ~padding ) - 1 ) );
 					~result
 				)
 			);
 
+			/*else*/
+
 			~line
 		);
-		~lastValue = RightWords ( ~input ; 1 );
-		~itemCount = ValueCount ( ~input );
-		$~debugOutput = List ( $~debugOutput ; ~eval )
+
+		// How about the filing cabinet?
+		$$~🗄 = List ( ~eval ; $$~🗄 );
+		$$~☕️ = LeftValues ( $$~☕️ ; ValueCount ( $$~☕️ ) - 1 )
 	];
-		If ( $~debugCounter = ~itemCount;
-			// don't want the result to continously build and length will vary based on function results with multiple lines
-			Left ( $~debugOutput ; Position ( $~debugOutput ; ¶ ; Position ( $~debugOutput ; ~lastValue ; 1 ; 1 ) ; 1 ) - 1 ); // better way to do this?
-			Let ( $~debugCounter = $~debugCounter + 1 ; Debug ) )
+		If ( IsEmpty ( $$~☕️ );
+			Let ( [ ~result = $$~🗄 ; $$~🗄 = "" ] ; ~result );
+			Debug
+		)
 	)
 )
