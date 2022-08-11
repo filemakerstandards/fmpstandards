@@ -1,47 +1,34 @@
 /**
  * =====================================================
  * Developer ( )
- *		https://github.com/petrowsky/fmpstandards/blob/master/Functions/Developer.fmfn
- * 
- * PARAMETERS:
- *		none
  *
  * RETURNS:
- *		(bool) True or False based on proper   
- *		evaluation
+ *		(bool) True or False based on proper evaluation. 
+ *
+ * PARAMETERS:
+ *		none
  *
  * DEPENDENCIES:
  *		none
  *
- * NOTES:
- *		Because Filemaker Changed Get ( PrivilegeSetName )
- *		Evaluate () must be used
+ * HISTORY:
+ *		MODIFIED on 2022-AUG-10 by Matt Petrowsky
+ *			- Removed older pre v11 code and simplified.
+ *		RELEASED on 2011-02-23
  *
- * RELEASE:
- *		2011-02-23
+ * REFERENCES:
+ *		https://github.com/filemakerstandards/fmpstandards
  * =====================================================
  * 
  */
 
 Let ( [ 
-	~developers = List ( "" ; "" );  // Add names of the accounts which are valid developer accounts
-	~version = Get ( ApplicationVersion );
-	~isGo = PatternCount ( ~version; "Go" ) = True;
-	~versionNumber = GetAsNumber ( Substitute ( ~version ; "," ; "." ) ); // account for foreign versions using comma
-	// Add "developer" extended privilege to groups which are valid developer groups
-	~extendedPrivileges = 
-		If ( ~isGo or ~versionNumber ≥ 11 ;
-			Evaluate ( "Get ( AccountExtendedPrivileges )" ) ;
-			/*else*/
-			Evaluate ( "Get ( ExtendedPrivileges )" )
-		)
+	// Add account names which are valid developer accounts if they do not meet other criteria.
+	~developers = List ( "" ; "" )
+
+	// Add "developer" extended privilege to groups which are valid developer groups.
 ];
 	PatternCount ( ¶& ~developers &¶ ; ¶& Get ( AccountName ) &¶ ) ≥ 1
-	or PatternCount ( ¶& ~extendedPrivileges &¶ ; ¶& "developer" &¶ ) ≥ 1
-	or
-	If ( ~isGo or ~versionNumber ≥ 11 ;
-		Evaluate ( "Get ( AccountPrivilegeSetName )" ) = "[Full Access]" ;
-		/*else*/
-		Evaluate ( "Get ( PrivilegeSetName )" ) = "[Full Access]"
-	)
+	or PatternCount ( ¶& Get ( AccountExtendedPrivileges ) &¶ ; ¶& "developer" &¶ ) ≥ 1
+	or Get ( AccountPrivilegeSetName ) = "[Full Access]"
 )
