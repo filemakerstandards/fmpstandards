@@ -84,3 +84,10 @@ RemoteCalls
 # and rendering data.
 # -----------------------------------------
 #extraflags:no_portal_drs
+
+# -----------------------------------------
+# Support for "Perform Script on Server" on Server.
+# 19.5+ Required
+# Pro/Go [ X ] - Server [ √ ]
+# -----------------------------------------
+#SupportNestedPSOS
