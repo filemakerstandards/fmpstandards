@@ -168,7 +168,7 @@ If ( Developer;
 			Let ( [
 				~function = Trim ( ~line );
 				~padding = "                              "; // 30 chars is longest function name
-				~result = Evaluate ( "Get(" & ~function & ") & \"\"" )
+				~result = Evaluate ( "Get(" & ~function & ")" )
 			];
 				~function
 				& Left ( ~padding ; Length ( ~padding ) - Length ( ~function ) ) // spacing out result
