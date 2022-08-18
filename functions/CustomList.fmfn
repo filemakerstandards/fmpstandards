@@ -1,6 +1,6 @@
 /**
  * =====================================
- * CustomList ( start ; end ; function )
+ * CustomList ( start ; end ; function ) v_4.8.1
  *
  * PURPOSE:
  * 		Evaluate a FileMaker function across a specified range of data
@@ -41,13 +41,15 @@
  *		appropriate explanatory code, else the result will be set to "?"
  *
  * HISTORY:
+ *		UPDATED NOV 2012 for FileMaker IWP
+ *		UPDATED NOV 2011 for FileMaker Server
  * 		ADAPTED to fit filemakerstandards.org by Matt Petrowsky on 4/1/11
  *		UPDATED August'10 for adaptation to FileMaker Go
  *		MAJOR UPDATE July'08 to account for a larger range
  * 		CREATED by Agnès Barouh - filemaker@tictac.fr
  *
  * REFERENCES:
- * 		Master version found at: http://fmfunctions.com/functions_display_record.php?functionId=118
+ * 		Master version found at: https://www.briandunning.com/cf/868
  * =====================================
  *		Special Thanks to Ugo Di Luca - Grazie Mille for all his comments and his notice ® Ugo Di Luca
  *		See the 'Under the Hood' part at the end of this function to fully understand the processing of this function
@@ -64,17 +66,26 @@ Case (
 		start = GetAsNumber ( start );
 		end = GetAsNumber ( end );
 		diff = end - start + 1;
-		V = Left ( Get ( ApplicationVersion ) ; 2 ) = "Go";
-		PL = Choose ( V ; 1700  ; 400 );
+		V = Case (
+				Left ( Get ( ApplicationVersion ) ; 2 ) = "Go"; // FM Go
+					1;
+				Left ( Get ( ApplicationVersion ) ; 2 ) = "Se"; // Server
+					2;
+				Left ( Get ( ApplicationVersion ) ; 2 ) = "We"; // WebDirect
+					3;
+				0
+				);
+		PL = Choose ( V ; 1700  ; 400 ; 300 ; 900 );
 
 		/*
-		Check for a range higher than 500,000 values or
-		150 000 values for FmGo. CustomList() is voluntarily
-		restrained to these limits.
+		Check for a range higher than 500,000 values
+		( max 150000 values for FmGo and 120000 for FmS and 250000 for IWP )
+		For FMPro/Adv, CustomList() is voluntarily
+		restrained to 500 000 but you can go beyond.
 		*/
 
 		end = Case (
-				( diff > Choose ( V ; 500000  ; 150000 ) )
+				( diff > Choose ( V ; 500000  ; 150000 ; 120000 ; 250000 ) )
 				or ( end < start )
 				or IsEmpty ( start )
 				or IsEmpty ( end );
@@ -92,6 +103,7 @@ Case (
 		variable for evaluation
 		*/
 
+		// Note: If you change the name of the function from "CustomList" change it here too.
 		iter = Let ( $~CLExeCount = $~CLExeCount + 1 ; $~CLExeCount & PatternCount ( function ; "CustomList" ) + 1 );
 		$~CLn[ iter ] = start - 1;
 
@@ -103,8 +115,8 @@ Case (
 				);
 
 		/*
-		Here where the "magic" starts for the Substitutions and
-		the entire mechanism.  CustomList() evaluates
+		Here's where the "magic" of the Substitutions and
+		the entire mechanism starts.  CustomList() evaluates
 		stacks of 1,700 values at a time ( 400 for FileMakerGo ),
 		which is the current limit of the FileMaker Evaluate function
 		*/
@@ -115,7 +127,7 @@ Case (
 
 		/*When the "function" argument is left empty, CustomList() will return a numeric list based on the range defined */
 
-		functionR = Case ( IsEmpty ( function ); "~CLNum"; Substitute ( function; ["[n]"; "~CLNum"] ; [¶ ; ""] ) );
+		functionR = Case ( IsEmpty ( function ); "~CLNum"; Substitute ( function ; [ "[n]"; "~CLNum" ] ; [ ¶ ; "" ] ) );
 
 		/*
 		Each repeating variable's content is parsed in order
@@ -137,13 +149,18 @@ Case (
 		beyond each group of 1,700 values is treated now.
 		*/
 
-		 final = Case ( X > 0; Substitute ( ( 10 ^ X ) - 1; 9; "Evaluate ( $~CLExecute[" & iter & "] & $~null ) & " ) ) &
+		 final = Case ( X > 0 ; Substitute ( ( 10 ^ X ) - 1 ; 9 ; "Evaluate ( $~CLExecute[" & iter & "] & $~null ) & " ) ) &
 		             "Evaluate( LeftValues ( $~CLExecute[" & iter & "] ; $~CLRemainder[" & iter & "]  ) & $~null ) & " & $~null;
 
 		/*The Final variable can now be evaluated to get our List*/
 
 		 Result  =   Case ( end <> "Error"; Substitute ( "#^#" & Evaluate  ( final ) & "#^#";
-		                  [ "#^#|#^#"; "¶" ]; [ "¶"; "¶#^#" ]; [ "#^#¶"; "" ]; [ "¶#^#"; "¶" ]; [ "¶#^#"; "" ]; [ "#^#"; "" ] ) ) ;
+		            	[ "#^#|#^#" ; "¶" ];
+						[ "¶" ; "¶#^#" ];
+						[ "#^#¶" ; "" ];
+						[ "¶#^#" ; "¶" ];
+						[ "¶#^#" ; "" ];
+						[ "#^#" ; "" ] ) );
 		 $~CLExecute[ iter ]  = "" 
 
 	]; // ----------- FUNCTION RESULT BELOW -----------
@@ -158,16 +175,16 @@ Case (
 			( Length ( Result ) and ( Result = Filter ( Result; "?" ) ) )
 			or end = "Error";
 				Let ([
-					/*****DEBUGGING MODE*****/   // Case Debug = 1, returned error "[error_CL], Number, Name and Calculation error" ,if Debug  <> 1, returned error is "?"
+					/*****DEBUGGING MODE*****/   // Case Debug = 1, returned error "[error_CL], Number, Name and Calculation error", if Debug  <> 1, returned error is "?"
 					Debug = "1";
-					Write = Substitute ( function; "[n]"; 1 ); NumError = EvaluationError ( Evaluate ( Write ) );
+					Write = Substitute ( function ; "[n]" ; 1 ); NumError = EvaluationError ( Evaluate ( Write ) );
 					Error = "[" & NumError & "] " & "Unlisted error | Unknown error, check calculation or check \"start\" and \"end\" ¶102 | Field is missing¶103 | Relationship is missing¶106 | Table is missing¶113 | Function is missing¶1204 | Number, text constant, field name or \"(\" expected¶1205 | Comment is not terminated with \"*/\"¶1206 | Text constant must end with a quotation mark¶1207 | Unbalanced parenthesis¶1208 | Operator or function missing or \"(\" not expected¶1211 | List usage is not allowed in this function¶1212 | An operator (for example, +, -, *,;) is expected here¶1215 | This parameter is an invalid Get function parameter";
 					Pos = ValueCount ( Left ( Error; Position ( Error; NumError & " "; 1; 1 ) ) )
 				];
 					Case (
 						Debug = 1;
 							"[Error_CL]  | Return error : "
-							& GetValue ( Error; Case ( Pos = 0; 1; Pos ) )
+							& GetValue ( Error; Case ( Pos = 0 ; 1 ; Pos ) )
 							& ¶
 							& TextStyleAdd ( "Calculation ( for [n] = 1 ) : "; Bold )
 							& Write;
@@ -188,7 +205,7 @@ Case (
 
 	1) First, transform your formula into a litteral chain:
 
-	CustomList ( 1; 4; "GetNthRecord ( Field ; [n])")
+	CustomList ( 1 ; 4 ; "GetNthRecord ( Field ; [n])")
 	therefore becomes...
 
 	"Let ([ ~CLNum = 1 ] ; GetNthRecord ( Field ; ~CLNum )) & ¶ &
