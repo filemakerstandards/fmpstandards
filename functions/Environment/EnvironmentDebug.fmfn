@@ -1,6 +1,6 @@
 /**
  * =====================================================
- * Debug ( )
+ * EnvironmentDebug ( )
  * 
  * PARAMETERS:
  *		none
@@ -15,6 +15,8 @@
  * NOTES:
  *
  * HISTORY:
+  *		MODIFIED on 2022-AUG-24 by Matt Petrowsky
+ *			- Referencing Environment functions for canonical use.
  *		MODIFIED on 2022-AUG-10 by Matt Petrowsky
  *			- Refactored with some historical flair.
  *		MODIFIED on 2013-JAN-25 by Matt Petrowsky
