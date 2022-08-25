@@ -82,7 +82,7 @@ If ( Developer;
 	];
 		If ( IsEmpty ( $$~☕️ );
 			Let ( [ ~result = $$~🗄 ; $$~🗄 = "" ] ; ~result );
-			Debug
+			EnvironmentDebug
 		)
 	)
 )
