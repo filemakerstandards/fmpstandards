@@ -1,0 +1,7 @@
+List (
+	"LayoutCount"; // number
+	"LayoutName"; // text
+	"LayoutNumber"; // number
+	"LayoutTableName"; // name
+	"LayoutViewState"; // number
+)

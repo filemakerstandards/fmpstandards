@@ -1,0 +1,12 @@
+List (
+	"ConnectionAttributes"; // text
+	"ConnectionState"; // number
+	"HostApplicationVersion"; // version
+	"HostIPAddress"; // text
+	"HostName"; // text
+	"MultiUserState"; // number
+	"NetworkProtocol"; // text
+	"NetworkType"; // number
+	"SystemIPAddress"; // text
+	"SystemNICAddress"; // text
+)

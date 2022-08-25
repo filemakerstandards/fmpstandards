@@ -1,0 +1,12 @@
+List (
+	"AccountExtendedPrivileges"; // text
+	"AccountGroupName"; // text
+	"AccountName"; // text
+	"AccountPrivilegeSetName"; // text
+	"AccountType"; // text
+	"CurrentExtendedPrivileges"; // text
+	"CurrentPrivilegeSetName"; // text
+	"EncryptionState"; // text
+	"LayoutAccess"; // number
+	"RecordAccess"; // number
+)

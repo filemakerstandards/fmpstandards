@@ -1,0 +1,7 @@
+List (
+	"ActiveFieldContents"; // text
+	"ActiveFieldName"; // text
+	"ActiveFieldTableName"; // text
+	"ModifiedFields"; // text
+	"CalculationRepetitionNumber"; // number
+)

@@ -1,0 +1,56 @@
+/*
+	DEPENDENCIES: GetDataTypes, Time.ToISO, Date.ToISO, Timestamp.ToISO
+*/
+
+
+Let ( [
+	~input = valuelist;
+	~format = format // any of "debug", "eval", "json", "let", "global"
+];
+	While ( [
+		~i = 0;
+		~result = ""
+		]; 
+
+		~i < ValueCount ( ~input ) ;
+
+	[
+		~i = ~i + 1;
+		~key = "" & GetValue ( ~input ; ~i );
+		~function = "Get ( " & ~key & " )";
+		~value = Evaluate ( ~function );
+		~let = "$" & ~key & " = Quote ( " & ~function & " )";
+		~output = Case (
+					~format = "debug"; // When you want to see it on screen.
+						~key & " = " & Substitute ( ~value ; ¶ ; ", " );
+
+					~format = "eval"; // When you want be able to evaluate it.
+						~key & " = " & ~function;
+
+					~format = "json"; // When you need proper JSON.
+						Let ( [
+							~datatype = "" & JSONGetElement ( GetDataTypes ; Lower ( ~key ) );
+							~coerced = Case (
+										~datatype = "time"; Time.ToISO ( ~value );
+										~datatype = "date"; Date.ToISO ( ~value );
+										~datatype = "timestamp"; Timestamp.ToISO ( ~value );
+										~value
+									)
+											
+						];
+							JSONSetElement ( "{}" ; Lower ( ~key ) ; ~coerced ; If ( ~datatype = "number" ; JSONNumber ; JSONString ) )
+						);
+
+					// Default is Let format.
+						If ( ~format = "global" ; "$" & Upper ( ~let ) ; ~let )
+					);
+
+		~result = List ( ~result ; ~output )
+	];
+
+		If ( ~format = "json" ;
+			Substitute ( ~result ; [ "}¶{" ; "," ] );
+			~result
+		)
+	)
+)

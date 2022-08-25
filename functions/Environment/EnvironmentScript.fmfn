@@ -1,0 +1,8 @@
+List (
+	"AllowAbortState"; // number
+	"ErrorCaptureState"; // number
+	"ScriptAnimationState"; // number
+	"ScriptName"; // text
+	"ScriptParameter"; // text
+	"ScriptResult"; // text
+)

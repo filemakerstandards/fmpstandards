@@ -1,0 +1,14 @@
+List (
+	"ActiveRecordNumber"; // number
+	"FoundCount"; // number
+	"RecordID"; // number
+	"RecordModificationCount"; // number
+	"RecordNumber"; // number
+	"RecordOpenCount"; // number
+	"RecordOpenState"; // number
+	"RequestCount"; // number
+	"RequestOmitState"; // number
+	"SortState"; // number
+	"TotalRecordCount"; // number
+	"QuickFindText"; // text
+)

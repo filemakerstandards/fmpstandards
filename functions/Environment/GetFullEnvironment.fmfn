@@ -1,0 +1,16 @@
+JSONSetElement ( "{}" ;
+	[ "default" ; GetEnvironment ( EnvironmentDefault ; "json" ) ; JSONObject ];
+	[ "application" ; GetEnvironment ( EnvironmentApplication ; "json" ) ; JSONObject ];
+	[ "fields" ; GetEnvironment ( EnvironmentFields ; "json" ) ; JSONObject ];
+	[ "layouts" ; GetEnvironment ( EnvironmentLayouts ; "json" ) ; JSONObject ];
+	[ "mobile" ; GetEnvironment ( EnvironmentMobile ; "json" ) ; JSONObject ];
+	[ "network" ; GetEnvironment ( EnvironmentNetwork ; "json" ) ; JSONObject ];
+	[ "records" ; GetEnvironment ( EnvironmentRecords ; "json" ) ; JSONObject ];
+	[ "script" ; GetEnvironment ( EnvironmentScript ; "json" ) ; JSONObject ];
+	[ "security" ; GetEnvironment ( EnvironmentSecurity ; "json" ) ; JSONObject ];
+	[ "window" ; GetEnvironment ( EnvironmentWindow ; "json" ) ; JSONObject ]
+)
+
+/*
+Returns everything we have about the current environment.
+*/

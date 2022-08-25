@@ -1,0 +1,9 @@
+JSONSetElement ( "{}" ;
+	[ "default" ; GetEnvironment ( EnvironmentDefault ; "json" ) ; JSONObject ]
+)
+
+/*
+Modify this function to include whatever environment data you wish to include.
+
+IMPORTANT!!! Don't remove the "default" or exclude applicationversion from the default.
+*/

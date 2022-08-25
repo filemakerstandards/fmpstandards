@@ -1,0 +1,19 @@
+// Will contain a few duplicates.
+
+List (
+	"AccountName";
+	"AllowAbortState";
+	"ApplicationVersion";
+	"CurrentTimestamp";
+	"CurrentTimeUTCMilliseconds";
+	"ErrorCaptureState";
+	"LastExternalErrorDetail";
+	"ScriptName";
+	"ScriptParameter";
+	"ScriptResult";
+	"UserName";
+)
+& If ( Get ( AccountName ) = "[set_name_here]";
+// Include other details as desired.
+""
+)
