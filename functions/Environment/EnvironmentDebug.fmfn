@@ -1,0 +1,86 @@
+/**
+ * =====================================================
+ * Debug ( )
+ * 
+ * PARAMETERS:
+ *		none
+ *
+ * RETURNS:
+ *		[string] A list of informative values
+ * 		about the current FMP environment.
+ *
+ * DEPENDENCIES:
+ * 		Developer (), Environment*
+ *
+ * NOTES:
+ *
+ * HISTORY:
+ *		MODIFIED on 2022-AUG-10 by Matt Petrowsky
+ *			- Refactored with some historical flair.
+ *		MODIFIED on 2013-JAN-25 by Matt Petrowsky
+ *			- Updated to be recursive and use better output.
+ *		RELEASED on 2010-10-09 Matt Petrowsky
+ *
+ * =====================================================
+ * 
+ */
+
+If ( Developer;
+	Let ( [
+		// NOTICE! You can only include valid Get() functions within the input.
+		~input = List (
+			"Date/Time";
+			"	CurrentTimestamp";
+			"	CurrentHostTimestamp";
+			"Application";
+			Char ( 9 ) & Substitute ( EnvironmentApplication ; ¶ ; ¶ & Char ( 9 ) );
+			"Fields";
+			Char ( 9 ) & Substitute ( EnvironmentFields ; ¶ ; ¶ & Char ( 9 ) );
+			"Layouts";
+			Char ( 9 ) & Substitute ( EnvironmentLayouts ; ¶ ; ¶ & Char ( 9 ) );
+			"Mobile";
+			Char ( 9 ) & Substitute ( EnvironmentMobile ; ¶ ; ¶ & Char ( 9 ) );
+			"Network";
+			Char ( 9 ) & Substitute ( EnvironmentNetwork ; ¶ ; ¶ & Char ( 9 ) );
+			"Records";
+			Char ( 9 ) & Substitute ( EnvironmentRecords ; ¶ ; ¶ & Char ( 9 ) );
+			"Script";
+			Char ( 9 ) & Substitute ( EnvironmentScript ; ¶ ; ¶ & Char ( 9 ) );
+			"Security";
+			Char ( 9 ) & Substitute ( EnvironmentSecurity ; ¶ ; ¶ & Char ( 9 ) );
+			"Window";
+			Char ( 9 ) & Substitute ( EnvironmentWindow ; ¶ ; ¶ & Char ( 9 ) );
+		);
+		// Do YOU remember the coffee cup days?
+		$$~☕️ = If ( IsEmpty ( $$~☕️ ) ; ~input ; $$~☕️ );
+		~tab = "	";
+		~line = GetValue ( ~input ; ValueCount ( $$~☕️ ) );
+		~eval = If ( Left ( ~line ; 1 ) = ~tab ; // evaluate lines prefixed with tabs
+			Let ( [
+				~function = Trim ( ~line );
+				~padding = "                              "; // 30 chars is longest function name
+				~result = Evaluate ( "Get(" & ~function & ")" )
+			];
+				~function
+				& Left ( ~padding ; Length ( ~padding ) - Length ( ~function ) ) // spacing out result
+				& If ( ValueCount ( ~result ) > 1; // some functions return multiple lines
+					Substitute ( ~result ; ¶ ; ¶ & ~tab & Left ( ~padding ; Length ( ~padding ) - 1 ) );
+					~result
+				)
+			);
+
+			/*else*/
+
+			~line
+		);
+
+		// How about the filing cabinet?
+		$$~🗄 = List ( ~eval ; $$~🗄 );
+		$$~☕️ = LeftValues ( $$~☕️ ; ValueCount ( $$~☕️ ) - 1 )
+	];
+		If ( IsEmpty ( $$~☕️ );
+			Let ( [ ~result = $$~🗄 ; $$~🗄 = "" ] ; ~result );
+			Debug
+		)
+	)
+)
