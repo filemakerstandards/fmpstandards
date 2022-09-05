@@ -1,0 +1,54 @@
+/**
+* JSONLetify ( json ; eval )
+*
+* Converts FileMaker's JSONFormatElements result into
+* a valid Let() statement which can be evaluated.
+*
+* @param [json] json - A valid single dimensional JSON object.
+* @param [bool] eval - True or False based on desired evaluation.(see note)
+*
+* @return [string] Let formatted conversion of the inbound JSON object.
+*
+* @note This function validates JSON keys based on a ~match value.
+* You can change this value to whatever is desired. This is required
+* to prevent access to changing variable values other than those specified.
+*
+* @requires FileMaker 16+
+* @author  Matt Petrowsky <matt@isoproductions.com>
+* @version 1.0
+*/
+
+Let ( [
+	~json = JSONFormatElements ( json );
+	~letify = Substitute ( ~json;
+		[ "\" : \"" ; " = \"" ]; // change : into =
+		[ "¶	\"" ; "¶	" ]; // remove leading quotes
+		[ ",¶" ; ";¶" ]; // change , into ;
+		[ "\r\n" ; "\n" ]; // account for windows line endings
+		[ "\n" ; "\r"	]; // new lines to fmp returns
+		[ "\r" ; "\¶"	]; // line endings to proper pilcrows
+		[ "{" ; "Let ( [" ]; // prepend Let
+		[ "}" ; "]; True )" ] // append closing of Let
+		)
+];
+	// You can remove the eval parameter and this part if you don't want built in evaluation.
+    // Just return the ~letify result.
+	If ( eval ;
+		Let ( [
+			// Validate that we don't have any unexpected keys.
+			// We're looking for $@ as a prefix. Change as desired.
+			~match = "$@";
+			~keys = JSONListKeys ( ~json ; "" );
+			~found = PatternCount ( ~keys ; ~match );
+			~isClean = ValueCount ( ~keys ) = ~found;
+
+			~evaluated = If ( ~isClean ; not EvaluationError ( Evaluate ( ~letify ) ) ; False );
+			$$@.ERROR.LETIFY = If ( not ~evaluated ; "Could not evaluate JSONLetify" )
+		];
+			If ( ~evaluated ; "OK¶" ; "ERROR¶" )
+			& ~letify
+		);
+	// Default without eval is to just return Let function.
+	~letify
+	)
+)
