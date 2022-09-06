@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FMDefaultFields version="2.1.0.0" Source="19.0.1" locale="English">
 	<ObjectList membercount="7">
-		<Field DefaultStyle="" id="1" name="id" fieldtype="Normal" datatype="Text" comment="Primary key">
+		<Field DefaultStyle="" id="1" name="id" fieldtype="Normal" datatype="Text" comment="{&quot;comment&quot;:&quot;Primary key&quot;}">
 			<AutoEnter type="Calculated" prohibitModification="True" overwriteExisting="True" alwaysEvaluate="False">
 				<Calculated>
 					<Calculation>
@@ -15,7 +15,7 @@
 			</Storage>
 			<TagList primary="True">#_FMI_0 </TagList>
 		</Field>
-		<Field DefaultStyle="" id="2" name="createdOn" fieldtype="Normal" datatype="Timestamp" comment="The timestamp for when the record was created.">
+		<Field DefaultStyle="" id="2" name="createdOn" fieldtype="Normal" datatype="Timestamp" comment="{&quot;comment&quot;:&quot;The timestamp for when the record was created.&quot;}">
 			<AutoEnter type="CreationTimestamp" prohibitModification="True"></AutoEnter>
 			<Validation type="OnlyDuringDataEntry" allowOverride="False" notEmpty="True" unique="False" existing="False">
 				<Strict>FourDigitYear</Strict>
@@ -25,7 +25,7 @@
 			</Storage>
 			<TagList>#_FMI_0 </TagList>
 		</Field>
-		<Field DefaultStyle="" id="3" name="createdBy" fieldtype="Normal" datatype="Text" comment="The account of record creation.">
+		<Field DefaultStyle="" id="3" name="createdBy" fieldtype="Normal" datatype="Text" comment="{&quot;comment&quot;:&quot;The account of record creation.&quot;}">
 			<AutoEnter type="CreationAccountName" prohibitModification="True"></AutoEnter>
 			<Validation type="OnlyDuringDataEntry" allowOverride="False" notEmpty="True" unique="False" existing="False"></Validation>
 			<Storage autoIndex="True" index="None" global="False" maxRepetitions="1">
@@ -33,7 +33,7 @@
 			</Storage>
 			<TagList>#_FMI_0 </TagList>
 		</Field>
-		<Field DefaultStyle="" id="4" name="modifiedOn" fieldtype="Normal" datatype="Timestamp" comment="The timestamp for when the record was last modified.">
+		<Field DefaultStyle="" id="4" name="modifiedOn" fieldtype="Normal" datatype="Timestamp" comment="{&quot;comment&quot;:&quot;The timestamp for when the record was last modified.&quot;}">
 			<AutoEnter type="ModificationTimestamp" prohibitModification="True"></AutoEnter>
 			<Validation type="OnlyDuringDataEntry" allowOverride="False" notEmpty="True" unique="False" existing="False">
 				<Strict>FourDigitYear</Strict>
@@ -43,7 +43,7 @@
 			</Storage>
 			<TagList>#_FMI_0 </TagList>
 		</Field>
-		<Field DefaultStyle="" id="5" name="modifiedBy" fieldtype="Normal" datatype="Text" comment="Most recent account to modify the record.">
+		<Field DefaultStyle="" id="5" name="modifiedBy" fieldtype="Normal" datatype="Text" comment="{&quot;comment&quot;:&quot;Most recent account to modify the record.&quot;}">
 			<AutoEnter type="ModificationAccountName" prohibitModification="True"></AutoEnter>
 			<Validation type="OnlyDuringDataEntry" allowOverride="False" notEmpty="True" unique="False" existing="False"></Validation>
 			<Storage autoIndex="True" index="None" global="False" maxRepetitions="1">
@@ -51,7 +51,7 @@
 			</Storage>
 			<TagList>#_FMI_0 </TagList>
 		</Field>
-		<Field id="6" name="createdUTC" fieldtype="Normal" datatype="Number" comment="UTC Timestamp when the record was created.">
+		<Field id="6" name="createdUTC" fieldtype="Normal" datatype="Number" comment="{&quot;comment&quot;:&quot;UTC Timestamp when the record was created.&quot;}">
 			<AutoEnter type="Calculated" prohibitModification="True" overwriteExisting="False" alwaysEvaluate="False">
 				<Calculated>
 					<Calculation>
@@ -65,7 +65,7 @@
 			</Storage>
 			<TagList>#_FMI_0 </TagList>
 		</Field>
-		<Field id="7" name="modifiedUTC" fieldtype="Normal" datatype="Number" comment="UTC Timestamp when the record was last modified.">
+		<Field id="7" name="modifiedUTC" fieldtype="Normal" datatype="Number" comment="{&quot;comment&quot;:&quot;UTC Timestamp when the record was last modified.&quot;}">
 			<AutoEnter type="Calculated" prohibitModification="True" overwriteExisting="True" alwaysEvaluate="False">
 				<Calculated>
 					<Calculation>
