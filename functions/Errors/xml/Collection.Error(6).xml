@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <fmxmlsnippet type="FMObjectList">
 	<CustomFunction id="1" functionArity="4" visible="True" parameters="type;errorCode;description;details" name="Error">
 		<Calculation><![CDATA[/**
