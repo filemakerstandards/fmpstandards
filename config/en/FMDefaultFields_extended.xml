@@ -118,7 +118,7 @@
 			</Storage>
 			<TagList>#_FMI_0 </TagList>
 		</Field>
-		<Field id="12" name="unindexed" fieldtype="Normal" datatype="Text" comment="">
+		<Field id="12" name="unindexed" fieldtype="Normal" datatype="Text" comment="{&quot;comment&quot;:&quot;Template field for duplicating. Forces unindexed fields until you set turn the index on.&quot;}">
 			<AutoEnter prohibitModification="False"></AutoEnter>
 			<Storage autoIndex="False" index="None" global="False" maxRepetitions="1">
 				<LanguageReference name="English" id="21"></LanguageReference>
