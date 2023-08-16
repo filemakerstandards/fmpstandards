@@ -80,17 +80,12 @@
 			<TagList>#_FMI_0 </TagList>
 		</Field>
 		<Field id="8" name="FOUNDCOUNT" fieldtype="Calculated" datatype="Number" comment="{&quot;comment&quot;:&quot;Used to show found count of related records. Typically used with portals.&quot;}">
-			<AutoEnter type="Calculated" prohibitModification="True" overwriteExisting="True" alwaysEvaluate="False">
-				<Calculated>
-					<Calculation>
-						<Text><![CDATA[Get ( FoundCount )]]></Text>
-					</Calculation>
-				</Calculated>
-			</AutoEnter>
-			<Validation type="OnlyDuringDataEntry" allowOverride="False" notEmpty="True" unique="False" existing="False"></Validation>
-			<Storage storeCalculationResults="False" indexLanguage="English" global="False" maxRepetition="1">
+			<Storage storeCalculationResults="False" indexLanguage="English" global="False" maxRepetitions="1">
 				<LanguageReference name="English" id="21"></LanguageReference>
 			</Storage>
+			<Calculation>
+				<Text><![CDATA[Get ( FoundCount )]]></Text>
+			</Calculation>
 			<TagList>#_FMI_0 </TagList>
 		</Field>
 		<Field id="9" name="LOAD" fieldtype="Normal" datatype="Text" comment="{&quot;comment&quot;:&quot;Dedicated global for loading one or more records.&quot;}">
