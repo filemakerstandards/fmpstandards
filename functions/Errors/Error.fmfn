@@ -3,7 +3,7 @@
  * Error ( type ; errorCode ; description ; details )
  *
  * RETURNS:
- *		JSON object containing information about the error.
+ *		Specified errorCode. Raises $error as JSON.
  *
  * PARAMETERS:
  *		type = (text) Origin of the error.
@@ -14,10 +14,11 @@
  *		details = (object) JSON object including desired details
  *			at the time of error generation. This should help a developer
  *			determine why the error occured. See ErrorEnv() function.
+ *			It can also be a text string.
  *			(e.g., "creating a new invoice record")
  *
  * DEPENDENCIES:
- *		ErrorDescribeFmp()
+ *		ErrorMessage()
  *
  * NOTE:
  *		IMPORTANT! You typically don't call this function directly.
@@ -29,6 +30,8 @@
  *		See the ErrorEnv() function.
  *
  * HISTORY:
+ *		MODIFIED on 2023-DEC-23 by Robert Naud robert@accoladeplusaccolade.com
+ *			- Updated to return errorCode instead of JSON and raise $error.
  *		MODIFIED on 2022-AUG-01 by Matt Petrowsky editor@filemakermagazine.com
  *			- Updated to use JSON functions.
  *		MODIFIED on 2013-NOV-22 by Daniel Smith dansmith65@gmail.com
@@ -40,23 +43,51 @@
  * =====================================
  */
 
-
 Let ( [
-	// Defaulting to FMP type errors when empty.
-	~type = If ( IsEmpty ( type ) ; "fmp" ; type );
-	~code = Case (
-				~type = "fmp" and IsEmpty ( errorCode );
-					0;
+	// Special notice: Do not use or maintain any calls to this function within the Data Viewer while debugging!
 
-				GetAsNumber ( errorCode )
+	~code = errorCode;
+	~description = description;
+	~contextData = details;
+	~contextDataInJSON = "{\"test\":" & ~contextData & "}";
+	~contextDataType = JSONGetElementType ( ~contextDataInJSON ; "test" );
+	~contextDataType = If ( ~contextDataType > 1 ; ~contextDataType ; 1);
+	~errorDetailType = If ( IsEmpty ( Get ( LastErrorDetail ) ) ; JSONNull ; JSONString );
+
+	~script = Get ( ScriptName );
+
+	~json = JSONSetElement ( "{}" ; [ "code" ; ~code ; JSONNumber ] ; [ "type" ; type ; JSONString ] );
+	~json = Case ( not IsEmpty ( ~description );
+				JSONSetElement ( ~json ; "description" ; ~description ; JSONString );
+
+			type = "fmp";
+				JSONSetElement ( ~json ; "description" ; ErrorMessage ( ~code ) ; JSONString );
+			/*else*/
+				~json
 			);
-	~description = If ( ~type = "fmp" ; ErrorDescribeFmp ( ~code ) ; description );
-	~details = details
+
+	~json = Case (
+		Get ( LastError ) ;
+			JSONSetElement ( ~json ;
+				[ "location.scriptName" ; GetValue ( Get ( LastErrorLocation ) ; 1 ) ; JSONString ];
+				[ "location.stepName" ; GetValue ( Get ( LastErrorLocation ) ; 2 ) ; JSONString ];
+				[ "location.lineNumber" ; GetValue ( Get ( LastErrorLocation ) ; 3 ) ; JSONNumber ];
+				[ "detail" ; Get ( LastErrorDetail ) ; ~errorDetailType ]
+			);
+	
+		/*default result, Get( LastError ) = 0*/
+			JSONSetElement ( ~json ;
+				[ "location.scriptName" ; ~script ; JSONString ] )
+		);
+
+	~json = JSONSetElement ( ~json ; "environment" ; ErrorDetails ; JSONObject );
+	~json = If ( IsEmpty ( ~contextData ) ; ~json ; JSONSetElement ( ~json ; "context.data" ; ~contextData ; ~contextDataType ) );
+
+	// Assign reserved $error variable to json only when a script is running.
+	//~assign = If ( not IsEmpty ( ~script ) ; Let ( $error = ~json ; "" ) )
+	$error = ~json
+
 ];
-	JSONSetElement( "{}" ; 
-		[ "error.type" ; ~type ; JSONString ];
-		[ "error.code" ; ~code ; JSONNumber ];
-		[ "error.description" ; ~description ; JSONString ];
-		[ "error.details" ; details ; JSONObject ] 
-	)
+	// Simply passing error code through.
+	~code
 )
