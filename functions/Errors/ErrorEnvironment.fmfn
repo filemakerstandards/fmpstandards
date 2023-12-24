@@ -74,9 +74,11 @@ Let ( [
 
 	~default = JSONSetElement ( "{}" ;
 			[ "allowabortstate" ; Get ( AllowAbortState ) ; JSONNumber ];
+			[ "currenttimeutcmicroseconds" ; Get ( CurrentTimeUTCMicroseconds ) ; JSONNumber ];
 			[ "currenttimeutcmilliseconds" ; Get ( CurrentTimeUTCMilliseconds ) ; JSONNumber ];
 			[ "errorcapturestate" ; Get ( ErrorCaptureState ) ; JSONNumber ];
-			[ "lastexternalerrordetail" ; Get ( LastExternalErrorDetail ) ; JSONString ];
+			[ "lasterrordetail" ; Get ( LastErrorDetail ) ; JSONString ];
+			[ "lasterrorlocation" ; Get ( LastErrorLocation ) ; JSONString ];
 			[ "scriptname" ; Get ( ScriptName ) ; JSONString ];
 			[ "scriptparameter" ; Get ( ScriptParameter ) ; JSONString ];
 			[ "scriptresult" ; Get ( ScriptResult ) ; JSONString ]
@@ -124,6 +126,7 @@ Let ( [
 			[ "hostipaddress" ; Get ( HostIPAddress ) ; JSONString ];
 			[ "hostname" ; Get ( HostName ) ; JSONString ];
 			[ "installedfmplugins" ; Get ( InstalledFMPlugins ) ; JSONString ];
+			[ "installedfmpluginsasjson" ; Get ( InstalledFMPluginsAsJSON ) ; JSONObject ];
 			[ "multiuserstate" ; Get ( MultiUserState ) ; JSONNumber ];
 			[ "networkprotocol" ; Get ( NetworkProtocol ) ; JSONString ];
 			[ "networktype" ; Get ( NetworkType ) ; JSONNumber ];
@@ -136,7 +139,10 @@ Let ( [
 			[ "systemnicaddress" ; Get ( SystemNICAddress ) ; JSONString ];
 			[ "systemplatform" ; Get ( SystemPlatform ) ; JSONNumber ];
 			[ "systemversion" ; Get ( SystemVersion ) ; JSONString ];
-			[ "usesystemformatsstate" ; Get ( UseSystemFormatsState ) ; JSONString ]
+			[ "usesystemformatsstate" ; Get ( UseSystemFormatsState ) ; JSONString ];
+
+			[ "systemlocaleelements" ; Get ( SystemLocaleElements ) ; JSONObject ]
+
 		)
 	);
 
@@ -196,7 +202,10 @@ Let ( [
 	~file = If ( ~fileOn ; JSONSetElement ( "{}" ;
 			[ "filename" ; Get ( FileName ) ; JSONString ];
 			[ "filesize" ; Get ( FileSize ) ; JSONString ];
-			[ "opendatafileinfo" ; Get ( OpenDataFileInfo ) ; JSONString ]
+			[ "opendatafileinfo" ; Get ( OpenDataFileInfo ) ; JSONString ];
+
+			[ "filelocaleelements" ; Get ( FileLocaleElements ) ; JSONObject ]
+
 		)
 	);
 
@@ -260,7 +269,13 @@ Let ( [
 			[ "activeselectionsize" ; Get ( ActiveSelectionSize ) ; JSONNumber ];
 			[ "activeselectionstart" ; Get ( ActiveSelectionStart ) ; JSONNumber ];
 			[ "lastmessagechoice" ; Get ( LastMessageChoice ) ; JSONNumber ];
-			[ "scriptanimationstate" ; Get ( ScriptAnimationState ) ; JSONNumber ]
+			[ "scriptanimationstate" ; Get ( ScriptAnimationState ) ; JSONNumber ];
+
+			[ "cachefilename" ; Get ( CacheFileName ) ; JSONString ];
+			[ "cachefilepath" ; Get ( CacheFilePath ) ; JSONString ];
+			[ "sessionidentifier" ; Get ( SessionIdentifier ) ; JSONString ];
+			[ "transactionopenstate" ; Get ( TransactionOpenState ) ; JSONNumber ]
+
 		)
 	)
 ];
