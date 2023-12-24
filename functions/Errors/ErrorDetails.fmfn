@@ -1,0 +1,46 @@
+/*
+Use this function to control what is included with your error details.
+This allows the user to control what they include and how. For example,
+you could set a variable named $errorLevel within a script and at run time
+this function would include a variable amount of information based on that
+var. Returns a value of type JSONObject.
+*/
+Case ( $errorLevel = 1 ;
+
+JSONSetElement ( "{}" ;
+	[ "location.host.name" ; Get ( HostName ) ; JSONString ] ;
+	[ "location.host.ipAdress" ; Get ( HostIPAddress ) ; JSONString ]  ;
+	[ "location.fileName" ; Get ( FileName ) ; JSONString ] ;
+	[ "context.host.applicationVersion" ; Get ( HostApplicationVersion ) ; JSONString ] ;
+	[ "context.host.timestamp" ; Get ( CurrentHostTimestamp ) ; JSONString ] ;
+	[ "context.client.applicationVersion" ; Get ( ApplicationVersion ) ; JSONString ] ;
+  [ "context.client.applicationArchitecture" ; Get ( ApplicationArchitecture ) ; JSONString ] ;
+	[ "context.account.name" ; Get ( AccountName ) ; JSONString ] ;
+	[ "context.account.privilegeSetName" ; Get ( AccountPrivilegeSetName ) ; JSONString ] ;
+	[ "context.window.name" ; Get ( WindowName ) ; JSONString ] ;
+	[ "context.window.mode" ; Choose ( Get ( WindowMode ) ; "browse" ; "find" ; "preview" ; "printing" ; "layout" ) ; JSONString ] ;
+	[ "context.window.style" ; Get ( WindowStyle ) ; JSONString ] ;
+	[ "context.window.isVisible" ; Get ( WindowVisible ) ; JSONBoolean ] ;
+	[ "context.layout.name" ; Get ( LayoutName ) ; JSONString ] ;
+	[ "context.tableOccurrence.name" ; Get ( LayoutTableName ) ; JSONString ] ;
+	[ "context.active.privilegeSetName" ; Get ( CurrentPrivilegeSetName ) ; JSONString ] ;
+	[ "context.records.foundCount" ; Get ( FoundCount ) ; JSONString ] ;
+	[ "context.records.recordNumber" ; Get ( RecordNumber ) ; JSONString ] ;
+	[ "context.records.totalCount" ; Get ( TotalRecordCount ) ; JSONString ] ;
+	[ "context.script.parameter" ; Get ( ScriptParameter ) ; JSONString ] ;
+	[ "context.system.platform" ; Choose ( Abs ( Get ( SystemPlatform ) ) - 1 ;
+							"macOS" ;
+							"Windows" ;
+							"iOS/iPadOS" ;
+							"WebDirect" ;
+							"CentOS" ;
+							"" ;
+							"" ;
+							"Ubuntu" ); JSONString ] ;
+	[ "context.system.version" ; Get ( SystemVersion ) ; JSONString ] ;
+	[ "uuid" ; Get ( UUID ) ; JSONString ] 
+) ;
+
+	/*default result if $errorLevel is unknown*/
+		"{}"
+)
