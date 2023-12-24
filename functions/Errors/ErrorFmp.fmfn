@@ -1,12 +1,12 @@
 /**
  * =====================================
- * ErrorFmp ( errorDetails )
+ * ErrorFmp ( details )
  *
  * RETURNS:
  *		Specified errorCode. Raises $error as JSON.
  *
  * PARAMETERS:
- *		errorDetails = (text, optional) text describing the particular error.
+ *		details = (text, optional) text describing the particular error.
  *			(e.g., "create new invoice record")
  *
  * DEPENDENCIES:
@@ -27,4 +27,4 @@
  * =====================================
  */
 
-Error ( "fmp" ; Get ( LastError ) ; "" ; ErrorDetails )
+Error ( "fmp" ; Get ( LastError ) ; "" ; details )
