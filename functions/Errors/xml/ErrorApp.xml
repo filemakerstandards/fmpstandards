@@ -2,7 +2,7 @@
 	<CustomFunction id="13" functionArity="2" visible="True" parameters="errorCode;details" name="ErrorApp">
 		<Calculation><![CDATA[/**
  * =====================================
- * ErrorApp ( errorCode ; errorDetails )
+ * ErrorApp ( errorCode ; details )
  *
  * RETURNS:
  *		Specified errorCode. Raises $error as JSON.
@@ -56,7 +56,7 @@ Let ( [
 			"Unknown error code"
 		)
 ] ;
-	Error ( "app" ; errorCode ; ~description ; ErrorDetails )
+	Error ( "app" ; errorCode ; ~description ; details )
 )]]></Calculation>
 	</CustomFunction>
 </fmxmlsnippet>
