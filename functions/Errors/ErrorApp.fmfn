@@ -1,6 +1,6 @@
 /**
  * =====================================
- * ErrorApp ( errorCode ; errorDetails )
+ * ErrorApp ( errorCode ; details )
  *
  * RETURNS:
  *		Specified errorCode. Raises $error as JSON.
@@ -54,5 +54,5 @@ Let ( [
 			"Unknown error code"
 		)
 ] ;
-	Error ( "app" ; errorCode ; ~description ; ErrorDetails )
+	Error ( "app" ; ~code ; ~description ; details )
 )
