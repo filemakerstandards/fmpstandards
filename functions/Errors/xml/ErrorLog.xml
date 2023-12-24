@@ -1,0 +1,30 @@
+<fmxmlsnippet type="FMObjectList">
+	<CustomFunction id="11" functionArity="4" visible="True" parameters="level;component;entry;errorCode" name="ErrorLog">
+		<Calculation><![CDATA[/*
+SUPER CRITICAL: Because of parameter evaluation order the function instantiating the $error variable MUST come after the reference to the $error variable itself!
+
+For example: ErrorLog ( "Critical" ; "app" ; $error ; Error ( -1 ; "Missing parameter(s)" ) )
+*/
+
+Let ( [
+	~id = Get ( UUID );
+
+	~valid = not IsEmpty ( errorCode )
+		and not IsEmpty ( level );
+
+	~result = If ( ~valid ; MBS ( "FM.InsertRecord"; Get ( FileName );
+	GetFieldName ( Log::id );
+		// Primary key
+		GetFieldName ( Log::id ); ~id;
+
+		// Optional values pulled from json data.
+		GetFieldName ( Log::code ) ; GetAsNumber ( errorCode ) ;
+		GetFieldName ( Log::component ) ; GetAsText ( If ( IsEmpty ( component ) ; "fmp" ; component ) ) ;
+		GetFieldName ( Log::level ) ; GetAsText ( level ) ;
+		GetFieldName ( Log::entry ) ; GetAsText ( entry ) ;
+	))
+];
+	If ( ~result = "OK" ; ~id ; False )
+)]]></Calculation>
+	</CustomFunction>
+</fmxmlsnippet>
