@@ -12,7 +12,7 @@
  *
  *
  * DEPENDENCIES:
- *		Error(), ErrorFound ()
+ *		Error(), ErrorFmp(), ErrorFound ()
  *
  * HISTORY:
  *		CREATED on 2023-DEC-23 by Robert Naud robert@accoladeplusaccolade.com
@@ -23,7 +23,7 @@
  */
 
 Let ( [
-~error.code = ErrorLast ( "" ) ;
+~error.code = ErrorFmp ( "" ) ;
 ~result = Get ( ScriptResult ) ;
 ~result.json.isValid = Left ( JSONGetElement ( ~result ; "" ) ; 3 ) ≠ "? *" ;
 ~error = Case (
