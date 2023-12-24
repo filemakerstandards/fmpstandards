@@ -1,0 +1,33 @@
+<fmxmlsnippet type="FMObjectList">
+	<CustomFunction id="7" functionArity="5" visible="True" parameters="test;type;errorCode;description;details" name="ErrorIf">
+		<Calculation><![CDATA[/**
+ * =====================================
+ * ErrorIf ( test ; errorCode ; description )
+ *
+ * RETURNS:
+ *		Boolean result for the specified test. Raises $error only if test is true.
+ *
+ * PARAMETERS:
+ *		test = expression to perform test with.
+ * 		See Error() function for other parameters.
+ *
+ * DEPENDENCIES:
+ *		Error ()
+ *
+ * HISTORY:
+ *		CREATED on 2023-DEC-23 by Robert Naud robert@accoladeplusaccolade.com
+  *
+ * REFERENCES:
+ *		https://github.com/filemakerstandards/fmpstandards/tree/master/Functions/Errors
+ * =====================================
+ */
+
+Case (
+	test ;
+		Error ( type ; errorCode ; description ; details ) ;
+
+	/*default result*/
+		False
+)]]></Calculation>
+	</CustomFunction>
+</fmxmlsnippet>
