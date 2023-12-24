@@ -48,6 +48,7 @@ Let ( [
 
 	~code = errorCode;
 	~description = description;
+	~type = If ( IsEmpty ( type ) ; "fmp" ; type );
 	~contextData = details;
 	~contextDataInJSON = "{\"test\":" & ~contextData & "}";
 	~contextDataType = JSONGetElementType ( ~contextDataInJSON ; "test" );
@@ -56,11 +57,11 @@ Let ( [
 
 	~script = Get ( ScriptName );
 
-	~json = JSONSetElement ( "{}" ; [ "code" ; ~code ; JSONNumber ] ; [ "type" ; type ; JSONString ] );
+	~json = JSONSetElement ( "{}" ; [ "code" ; ~code ; JSONNumber ] ; [ "type" ; ~type ; JSONString ] );
 	~json = Case ( not IsEmpty ( ~description );
 				JSONSetElement ( ~json ; "description" ; ~description ; JSONString );
 
-			type = "fmp";
+			~type = "fmp";
 				JSONSetElement ( ~json ; "description" ; ErrorMessage ( ~code ) ; JSONString );
 			/*else*/
 				~json
