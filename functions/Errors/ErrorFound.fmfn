@@ -3,17 +3,19 @@
  * ErrorFound ( errorData )
  *
  * RETURNS:
- *		Boolean true for anything other than 0. In other words,
+ *		Boolean true for anything other than 0 and empty. In other words,
  *		if any error occurred at all, return True (1), otherwise return
  *		False (0).
  *
  * PARAMETERS:
- *		errorData = (JSON) output of Error custom function.
+ *		errorData = (JSON) output of Error custom function instantiated as $error. Can also be a numerical error code.
  *
  * DEPENDENCIES:
  *		None
  *
  * HISTORY:
+ *		MODIFIED on 2023-DEC-23 by Robert Naud robert@accoladeplusaccolade.com
+ *			- Updated for implementation of reserved $error variable.
  *		MODIFIED on 2022-AUG-10 by Matt Petrowsky editor@filemakermagazine.com
  *			- Validating JSON as GetAsBoolean would take any positive value.
  *		MODIFIED on 2022-AUG-01 by Matt Petrowsky editor@filemakermagazine.com
@@ -33,7 +35,23 @@
  */
 
 Let ( [
-	~test = JSONGetElement ( errorData ; "error.code" )
+	~jsonCode = JSONGetElement ( errorData ; "code" );
+	~jsonType = JSONGetElementType ( errorData ; "code" )
 ];
-	Left ( ~test ; 1 ) ≠ "?" and GetAsBoolean ( ~test )
+	Case ( 
+		IsEmpty ( errorData ) ;
+			False; 
+	
+		Exact ( errorData ; Filter ( errorData ; "-0123456789" ) ) ;
+			GetAsBoolean ( errorData );
+	
+		~jsonType = JSONNumber ;
+			GetAsBoolean ( ~jsonCode );
+	
+		Left ( ~jsonType ; 1 ) = "?" ;
+			GetAsBoolean ( ~jsonCode );
+	
+		/*default result*/ 
+			True
+	)
 )
