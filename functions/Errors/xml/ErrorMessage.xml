@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <fmxmlsnippet type="FMObjectList">
-  <CustomFunction id="1" functionArity="1" visible="True" parameters="errorCode" name="ErrorDescribeFmp">
-    <Calculation><![CDATA[/**
+	<CustomFunction id="9" functionArity="1" visible="True" parameters="errorCode" name="ErrorMessage">
+		<Calculation><![CDATA[/**
  * =====================================
- * ErrorDescribeFmp ( errorCode )
+ * ErrorMessage ( errorCode )
  *
  * RETURNS:
  *		String description of a supplied FileMaker error.
@@ -15,6 +14,8 @@
  *		None
  *
  * HISTORY:
+ *		REVISED on 2023-DEC-03 by Matt Petrowsky editor@filemakermagazine.com
+ *			- Added Revert Transaction errors. Renamed to ErrorMessage.
  *		REVISED on 2021-OCT-26 by Matt Petrowsky editor@filemakermagazine.com
  *		MODIFIED on 2013-NOV-22 by Daniel Smith dansmith65@gmail.com
  *			- rename to ErrorFmp, update documentation
@@ -42,7 +43,7 @@ Let ( [
 				~errorCode = 5 ; "Command is invalid (for example, a Set Field script step does not have a calculation specified)" ;
 				~errorCode = 6 ; "File is read-only" ;
 				~errorCode = 7 ; "Running out of memory" ;
-				~errorCode = 8 ; "Empty result" ;
+				~errorCode = 8 ; "Empty result" ; // Removed from FMP 20 docs.
 				~errorCode = 9 ; "Insufficient privileges" ;
 				~errorCode = 10 ; "Requested data is missing" ;
 				~errorCode = 11 ; "Name is not valid" ;
@@ -364,6 +365,9 @@ Let ( [
 				"Unknown error code"
 			) ;
 
+			~errorCode >= 5000 and ~errorCode < 6000 ; // Revert transaction errors
+			Get ( LastErrorDetail ) ;
+
 		// else
 
 			"Unrecognized error code - check documentation for updates"
@@ -377,18 +381,17 @@ Let ( [
 // Testing code
 
 While ( [
-	~i = 0;
-	~result = ""
-	]; 
+		~i = 0;
+		~result = ""
+	];
 		~i < 1716 ;
 	[
 		~i = ~i + 1;
-		~string = ErrorDescribeFmp ( ~i );
+		~string = ErrorMessage ( ~i );
 		~result = List ( ~result ; If ( ~string ≠ "Unknown error code" ; ~i & " " & ~string ) )
 	];
-
-	~result
+		~result
 )
 */]]></Calculation>
-  </CustomFunction>
+	</CustomFunction>
 </fmxmlsnippet>
