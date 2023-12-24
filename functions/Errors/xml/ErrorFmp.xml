@@ -2,13 +2,13 @@
 	<CustomFunction id="16" functionArity="1" visible="True" parameters="details" name="ErrorFmp">
 		<Calculation><![CDATA[/**
  * =====================================
- * ErrorFmp ( errorDetails )
+ * ErrorFmp ( details )
  *
  * RETURNS:
  *		Specified errorCode. Raises $error as JSON.
  *
  * PARAMETERS:
- *		errorDetails = (text, optional) text describing the particular error.
+ *		details = (text, optional) text describing the particular error.
  *			(e.g., "create new invoice record")
  *
  * DEPENDENCIES:
@@ -29,6 +29,6 @@
  * =====================================
  */
 
-Error ( "fmp" ; Get ( LastError ) ; "" ; ErrorDetails )]]></Calculation>
+Error ( "fmp" ; Get ( LastError ) ; "" ; details )]]></Calculation>
 	</CustomFunction>
 </fmxmlsnippet>
