@@ -9,8 +9,8 @@
  *		includeList = (text) List of matching keywords. See ~all variable below.
  *
  * EXAMPLES:
- *		ErrorEnv ( List ( "security" ) ) = {"default":{<data>},"security":{<data>}}
- *		ErrorEnv ( "datetime¶security" ) = {"datetime":{<data>},"default":{<data>},"security":{<data>}
+ *		ErrorEnvironment ( List ( "security" ) ) = {"default":{<data>},"security":{<data>}}
+ *		ErrorEnvironment ( "datetime¶security" ) = {"datetime":{<data>},"default":{<data>},"security":{<data>}
  *
  * DEPENDENCIES:
  *		None
