@@ -15,7 +15,7 @@
  *			human readable and decipherable.
  *		details = (object) JSON object including desired details
  *			at the time of error generation. This should help a developer
- *			determine why the error occured. See ErrorEnv() function.
+ *			determine why the error occured. See ErrorEnvironment() function.
  *			It can also be a text string.
  *			(e.g., "creating a new invoice record")
  *
@@ -29,7 +29,7 @@
  *		if you collect multiple error codes within a script and perform
  *		post processing on those error codes.
  *		Environmental data should be included at the time the error occurs.
- *		See the ErrorEnv() function.
+ *		See the ErrorEnvironment() function.
  *
  * HISTORY:
  *		MODIFIED on 2023-DEC-23 by Robert Naud robert@accoladeplusaccolade.com
