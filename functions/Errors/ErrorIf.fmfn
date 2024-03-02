@@ -1,6 +1,6 @@
 /**
  * =====================================
- * ErrorIf ( test ; type ; errorCode ; description ;details )
+ * ErrorIf ( test ; type ; errorCode ; description ; details )
  *
  * RETURNS:
  *		Boolean result for the specified test. Raises $error only if test is true.
