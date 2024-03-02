@@ -2,7 +2,7 @@
 	<CustomFunction id="7" functionArity="5" visible="True" parameters="test;type;errorCode;description;details" name="ErrorIf">
 		<Calculation><![CDATA[/**
  * =====================================
- * ErrorIf ( test ; type ; errorCode ; description ;details )
+ * ErrorIf ( test ; type ; errorCode ; description ; details )
  *
  * RETURNS:
  *		Boolean result for the specified test. Raises $error only if test is true.
