@@ -29,6 +29,11 @@
  * =====================================
  */
 
-Error ( "fmp" ; Get ( LastError ) ; "" ; details )]]></Calculation>
+If ( 
+	Get ( LastError ) ;
+		Error ( "fmp" ; Get ( LastError ) ; "" ; details ) ;
+
+		False // & Let ( $error = "{\"code\":0}" ; "" ) /*lightweight error*/
+)]]></Calculation>
 	</CustomFunction>
 </fmxmlsnippet>
