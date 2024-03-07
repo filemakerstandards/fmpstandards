@@ -27,4 +27,10 @@
  * =====================================
  */
 
-Error ( "fmp" ; Get ( LastError ) ; "" ; details )
+If ( 
+	Get ( LastError ) ;
+		Error ( "fmp" ; Get ( LastError ) ; "" ; details ) ;
+
+		False // & Let ( $error = "{\"code\":0}" ; "" ) /*lightweight error*/
+)
+
