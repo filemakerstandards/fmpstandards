@@ -1,21 +1,22 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <fmxmlsnippet type="FMObjectList">
-  <CustomFunction id="6" functionArity="1" visible="True" parameters="errorDetails" name="ErrorGetFmp">
-    <Calculation><![CDATA[/**
+	<CustomFunction id="16" functionArity="1" visible="True" parameters="details" name="ErrorFmp">
+		<Calculation><![CDATA[/**
  * =====================================
- * ErrorFmp ( errorDetails )
+ * ErrorFmp ( details )
  *
  * RETURNS:
- *		JSON object with error information.
+ *		Specified errorCode. Raises $error as JSON.
  *
  * PARAMETERS:
- *		errorDetails = (text, optional) text describing the particular error.
+ *		details = (text, optional) text describing the particular error.
  *			(e.g., "create new invoice record")
  *
  * DEPENDENCIES:
- *		Error(), ErrorDescribeFmp()
+ *		Error(), ErrorMessage()
  *
  * HISTORY:
+ *		MODIFIED on 2023-DEC-23 by Robert Naud robert@accoladeplusaccolade.com
+ *			- Updated to return errorCode instead of JSON and raise $error.
  *		MODIFIED on 2022-AUG-01 by Matt Petrowsky editor@filemakermagazine.com
  *			- Refactor to using JSON.	
  *		MODIFIED on 2013-NOV-22 by Daniel Smith dansmith65@gmail.com
@@ -24,10 +25,15 @@
  *
  * REFERENCES:
  *      https://github.com/filemakerstandards/fmpstandards/tree/master/Functions/Errors
- *      https://help.claris.com/en/pro-help/content/error-codes.html
+ *		https://help.claris.com/en/pro-help/content/error-codes.html
  * =====================================
  */
 
-Error ( "fmp" ; Get ( LastError ) ; "" ; errorDetails )]]></Calculation>
-  </CustomFunction>
+If ( 
+	Get ( LastError ) ;
+		Error ( "fmp" ; Get ( LastError ) ; "" ; details ) ;
+
+		False // & Let ( $error = "{\"code\":0}" ; "" ) /*lightweight error*/
+)]]></Calculation>
+	</CustomFunction>
 </fmxmlsnippet>

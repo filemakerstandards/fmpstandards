@@ -1,0 +1,54 @@
+/**
+ * =====================================
+ * ErrorInScriptResult ( )
+ *
+ * RETURNS:
+ *		Boolean result. Raises $error and $result based on ScriptResult and LastError.
+ *
+ * PARAMETERS:
+ *		None.
+ *
+ *
+ * DEPENDENCIES:
+ *		Error(), ErrorFmp(), ErrorFound ()
+ *
+ * HISTORY:
+ *		CREATED on 2023-DEC-23 by Robert Naud robert@accoladeplusaccolade.com
+  *
+ * REFERENCES:
+ *		https://github.com/filemakerstandards/fmpstandards/tree/master/Functions/Errors
+ * =====================================
+ */
+
+Let ( [
+~error.code = ErrorFmp ( "" ) ;
+~result = Get ( ScriptResult ) ;
+~result.json.isValid = Left ( JSONGetElement ( ~result ; "" ) ; 3 ) ≠ "? *" ;
+~error = Case (
+	~error.code ;
+		$error ;
+	not ~result.json.isValid ;
+		Error ( "app" ; -2 ; "Script result is not valid JSON." ; Get ( ScriptResult ) ) ;
+	/*default result*/
+		$error
+);
+$error = Case (
+	ErrorFound ( ~error ) ;
+		$error ;
+	ErrorFound ( ~result ) ;
+		~result ;
+
+	/*default result*/
+		$error
+);
+$result = Case (
+	~result.json.isValid ;
+		~result ;
+	/*default result*/
+		$error
+)
+] ; 
+
+GetAsBoolean ( ~error.code + not ~result.json.isValid + ErrorFound ( $error ) )
+
+)

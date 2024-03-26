@@ -1,16 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <fmxmlsnippet type="FMObjectList">
-  <CustomFunction id="4" functionArity="2" visible="True" parameters="errorCode;errorDetails" name="ErrorGetApp">
-    <Calculation><![CDATA[/**
+	<CustomFunction id="13" functionArity="2" visible="True" parameters="errorCode;details" name="ErrorApp">
+		<Calculation><![CDATA[/**
  * =====================================
- * ErrorApp ( errorCode ; errorDetails )
+ * ErrorApp ( errorCode ; details )
  *
  * RETURNS:
- *		JSON object with error information.
+ *		Specified errorCode. Raises $error as JSON.
  *
  * PARAMETERS:
  *		errorCode = (number) code for an application error.
- *		errorDetails = (text, optional) text describing the particular error.
+ *		errorDetails = (text or JSON, optional) text describing the particular error.
  *			(e.g., "creating new invoice record")
  *
  * DEPENDENCIES:
@@ -21,6 +20,8 @@
  *		own error codes to error descriptions.
  *
  * HISTORY:
+ *		MODIFIED on 2023-DEC-23 by Robert Naud robert@accoladeplusaccolade.com
+ *			- Updated to return errorCode instead of JSON and raise $error.
  *		MODIFIED on 2022-AUG-01 by Matt Petrowsky editor@filemakermagazine.com
  *			- Refactor to using JSON.	
  *		MODIFIED on 2013-NOV-22 by Daniel Smith dansmith65@gmail.com
@@ -55,7 +56,7 @@ Let ( [
 			"Unknown error code"
 		)
 ] ;
-	Error ( "app" ; errorCode ; ~description ; errorDetails )
+	Error ( "app" ; errorCode ; ~description ; details )
 )]]></Calculation>
-  </CustomFunction>
+	</CustomFunction>
 </fmxmlsnippet>

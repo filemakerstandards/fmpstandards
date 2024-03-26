@@ -1,0 +1,29 @@
+/**
+ * =====================================
+ * ErrorIf ( test ; type ; errorCode ; description ; details )
+ *
+ * RETURNS:
+ *		Boolean result for the specified test. Raises $error only if test is true.
+ *
+ * PARAMETERS:
+ *		test = expression to perform test with.
+ * 		See Error() function for other parameters.
+ *
+ * DEPENDENCIES:
+ *		Error ()
+ *
+ * HISTORY:
+ *		CREATED on 2023-DEC-23 by Robert Naud robert@accoladeplusaccolade.com
+  *
+ * REFERENCES:
+ *		https://github.com/filemakerstandards/fmpstandards/tree/master/Functions/Errors
+ * =====================================
+ */
+
+Case (
+	test ;
+		Error ( type ; errorCode ; description ; details ) ;
+
+	/*default result*/
+		False
+)
