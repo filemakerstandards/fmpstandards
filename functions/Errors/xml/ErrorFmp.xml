@@ -1,5 +1,5 @@
 <fmxmlsnippet type="FMObjectList">
-	<CustomFunction id="16" functionArity="1" visible="True" parameters="details" name="ErrorFmp">
+	<CustomFunction id="0" functionArity="1" visible="True" parameters="details" name="ErrorFmp">
 		<Calculation><![CDATA[/**
  * =====================================
  * ErrorFmp ( details )
@@ -18,7 +18,7 @@
  *		MODIFIED on 2023-DEC-23 by Robert Naud robert@accoladeplusaccolade.com
  *			- Updated to return errorCode instead of JSON and raise $error.
  *		MODIFIED on 2022-AUG-01 by Matt Petrowsky editor@filemakermagazine.com
- *			- Refactor to using JSON.	
+ *			- Refactor to using JSON.
  *		MODIFIED on 2013-NOV-22 by Daniel Smith dansmith65@gmail.com
  *			- rename to ErrorFmp, update documentation
  *		CREATED on 2013-OCT-11 Daniel Smith dansmith65@gmail.com
@@ -29,7 +29,7 @@
  * =====================================
  */
 
-If ( 
+If (
 	Get ( LastError ) ;
 		Error ( "fmp" ; Get ( LastError ) ; "" ; details ) ;
 

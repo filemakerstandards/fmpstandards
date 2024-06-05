@@ -1,5 +1,5 @@
 <fmxmlsnippet type="FMObjectList">
-	<CustomFunction id="4" functionArity="0" visible="True" parameters="" name="ErrorInScriptResult">
+	<CustomFunction id="0" functionArity="0" visible="True" parameters="" name="ErrorInScriptResult">
 		<Calculation><![CDATA[/**
  * =====================================
  * ErrorInScriptResult ( )
@@ -49,7 +49,7 @@ $result = Case (
 	/*default result*/
 		$error
 )
-] ; 
+] ;
 
 GetAsBoolean ( ~error.code + not ~result.json.isValid + ErrorFound ( $error ) )
 

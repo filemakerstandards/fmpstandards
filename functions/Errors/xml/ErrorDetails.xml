@@ -1,5 +1,5 @@
 <fmxmlsnippet type="FMObjectList">
-	<CustomFunction id="10" functionArity="0" visible="True" parameters="" name="ErrorDetails">
+	<CustomFunction id="0" functionArity="0" visible="True" parameters="" name="ErrorDetails">
 		<Calculation><![CDATA[/*
 Use this function to control what is included with your error details.
 This allows the user to control what they include and how. For example,
@@ -40,7 +40,7 @@ JSONSetElement ( "{}" ;
 							"" ;
 							"Ubuntu" ); JSONString ] ;
 	[ "context.system.version" ; Get ( SystemVersion ) ; JSONString ] ;
-	[ "uuid" ; Get ( UUID ) ; JSONString ] 
+	[ "uuid" ; Get ( UUID ) ; JSONString ]
 ) ;
 
 	/*default result if $errorLevel is unknown*/

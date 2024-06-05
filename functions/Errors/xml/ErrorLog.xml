@@ -1,5 +1,5 @@
 <fmxmlsnippet type="FMObjectList">
-	<CustomFunction id="11" functionArity="4" visible="True" parameters="level;component;entry;errorCode" name="ErrorLog">
+	<CustomFunction id="0" functionArity="4" visible="True" parameters="level;component;entry;errorCode" name="ErrorLog">
 		<Calculation><![CDATA[/*
 SUPER CRITICAL: Because of parameter evaluation order the function instantiating the $error variable MUST come after the reference to the $error variable itself!
 

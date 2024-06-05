@@ -38,7 +38,7 @@ JSONSetElement ( "{}" ;
 							"" ;
 							"Ubuntu" ); JSONString ] ;
 	[ "context.system.version" ; Get ( SystemVersion ) ; JSONString ] ;
-	[ "uuid" ; Get ( UUID ) ; JSONString ] 
+	[ "uuid" ; Get ( UUID ) ; JSONString ]
 ) ;
 
 	/*default result if $errorLevel is unknown*/

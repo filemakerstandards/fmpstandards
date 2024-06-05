@@ -1,5 +1,5 @@
 <fmxmlsnippet type="FMObjectList">
-	<CustomFunction id="1" functionArity="1" visible="True" parameters="errorData" name="ErrorFound">
+	<CustomFunction id="0" functionArity="1" visible="True" parameters="errorData" name="ErrorFound">
 		<Calculation><![CDATA[/**
  * =====================================
  * ErrorFound ( errorData )
@@ -40,20 +40,20 @@ Let ( [
 	~jsonCode = JSONGetElement ( errorData ; "code" );
 	~jsonType = JSONGetElementType ( errorData ; "code" )
 ];
-	Case ( 
+	Case (
 		IsEmpty ( errorData ) ;
-			False; 
-	
+			False;
+
 		Exact ( errorData ; Filter ( errorData ; "-0123456789" ) ) ;
 			GetAsBoolean ( errorData );
-	
+
 		~jsonType = JSONNumber ;
 			GetAsBoolean ( ~jsonCode );
-	
+
 		Left ( ~jsonType ; 1 ) = "?" ;
 			GetAsBoolean ( ~jsonCode );
-	
-		/*default result*/ 
+
+		/*default result*/
 			True
 	)
 )]]></Calculation>

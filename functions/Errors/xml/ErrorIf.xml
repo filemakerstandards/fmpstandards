@@ -1,5 +1,5 @@
 <fmxmlsnippet type="FMObjectList">
-	<CustomFunction id="7" functionArity="5" visible="True" parameters="test;type;errorCode;description;details" name="ErrorIf">
+	<CustomFunction id="0" functionArity="5" visible="True" parameters="test;type;errorCode;description;details" name="ErrorIf">
 		<Calculation><![CDATA[/**
  * =====================================
  * ErrorIf ( test ; type ; errorCode ; description ; details )

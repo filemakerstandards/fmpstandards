@@ -47,7 +47,7 @@ $result = Case (
 	/*default result*/
 		$error
 )
-] ; 
+] ;
 
 GetAsBoolean ( ~error.code + not ~result.json.isValid + ErrorFound ( $error ) )
 
