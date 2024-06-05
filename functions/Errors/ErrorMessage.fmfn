@@ -363,7 +363,7 @@ Let ( [
 				"Unknown error code"
 			) ;
 
-			~errorCode >= 5000 and ~errorCode < 6000 ; // Revert transaction errors
+			~errorCode >= 5000 and ~errorCode < 5500 ; // Revert transaction errors
 			Get ( LastErrorDetail ) ;
 
 		// else

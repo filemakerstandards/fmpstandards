@@ -1,5 +1,5 @@
 <fmxmlsnippet type="FMObjectList">
-	<CustomFunction id="3" functionArity="4" visible="True" parameters="type;errorCode;description;details" name="Error">
+	<CustomFunction id="0" functionArity="4" visible="True" parameters="type;errorCode;description;details" name="Error">
 		<Calculation><![CDATA[/**
  * =====================================
  * Error ( type ; errorCode ; description ; details )
@@ -24,7 +24,7 @@
  *
  * NOTE:
  *		IMPORTANT! You typically don't call this function directly.
- *		Most error calls within your scripts should use ErrorGet* functions
+ *		Most error calls within your scripts should use Error* functions
  *		directly after a potential error happens. This function can be used
  *		if you collect multiple error codes within a script and perform
  *		post processing on those error codes.
@@ -32,6 +32,8 @@
  *		See the ErrorEnvironment() function.
  *
  * HISTORY:
+ *		MODIFIED on 2024-JUN-04 by Matt Petrowsky editor@filemakermagazine.com
+ *			- Modified to use Get ( LastErrorDetail ) as an object.
  *		MODIFIED on 2023-DEC-23 by Robert Naud robert@accoladeplusaccolade.com
  *			- Updated to return errorCode instead of JSON and raise $error.
  *		MODIFIED on 2022-AUG-01 by Matt Petrowsky editor@filemakermagazine.com
@@ -55,29 +57,39 @@ Let ( [
 	~contextDataInJSON = "{\"test\":" & ~contextData & "}";
 	~contextDataType = JSONGetElementType ( ~contextDataInJSON ; "test" );
 	~contextDataType = If ( ~contextDataType > 1 ; ~contextDataType ; 1);
-	~errorDetailType = If ( IsEmpty ( Get ( LastErrorDetail ) ) ; JSONNull ; JSONString );
+	~errorDetailType = If ( IsEmpty ( Get ( LastErrorDetail ) ) ; JSONNull ; JSONObject );
+	~errorDetailJSON = If ( ~errorDetailType = JSONObject ;
+			JSONSetElement ( "{}" ;
+			[ "script" ; GetValue ( Get ( LastErrorDetail ) ; 1 ) ; JSONString ];
+			[ "step" ; GetValue ( Get ( LastErrorDetail ) ; 2 ) ; JSONString ];
+			[ "line" ; GetValue ( Get ( LastErrorDetail ) ; 3 ) ; JSONNumber ];
+			[ "message" ; GetValue ( Get ( LastErrorDetail ) ; 4 ) ; JSONString ]
+		)
+	);
 
 	~script = Get ( ScriptName );
 
 	~json = JSONSetElement ( "{}" ; [ "code" ; ~code ; JSONNumber ] ; [ "type" ; ~type ; JSONString ] );
-	~json = Case ( not IsEmpty ( ~description );
-				JSONSetElement ( ~json ; "description" ; ~description ; JSONString );
+	~json = Case (
+				not IsEmpty ( ~description );
+					JSONSetElement ( ~json ; "description" ; ~description ; JSONString );
 
-			~type = "fmp";
-				JSONSetElement ( ~json ; "description" ; ErrorMessage ( ~code ) ; JSONString );
-			/*else*/
-				~json
+				~type = "fmp";
+					JSONSetElement ( ~json ; "description" ; ErrorMessage ( ~code ) ; JSONString );
+
+				/*default*/
+					~json
 			);
 
 	~json = Case (
 		Get ( LastError ) ;
 			JSONSetElement ( ~json ;
-				[ "location.scriptName" ; GetValue ( Get ( LastErrorLocation ) ; 1 ) ; JSONString ];
-				[ "location.stepName" ; GetValue ( Get ( LastErrorLocation ) ; 2 ) ; JSONString ];
-				[ "location.lineNumber" ; GetValue ( Get ( LastErrorLocation ) ; 3 ) ; JSONNumber ];
-				[ "detail" ; Get ( LastErrorDetail ) ; ~errorDetailType ]
+				[ "location.script" ; GetValue ( Get ( LastErrorLocation ) ; 1 ) ; JSONString ];
+				[ "location.step" ; GetValue ( Get ( LastErrorLocation ) ; 2 ) ; JSONString ];
+				[ "location.line" ; GetValue ( Get ( LastErrorLocation ) ; 3 ) ; JSONNumber ];
+				[ "detail" ; ~errorDetailJSON ; ~errorDetailType ]
 			);
-	
+
 		/*default result, Get( LastError ) = 0*/
 			JSONSetElement ( ~json ;
 				[ "location.scriptName" ; ~script ; JSONString ] )
@@ -95,10 +107,10 @@ Let ( [
 	~code
 )]]></Calculation>
 	</CustomFunction>
-	<CustomFunction id="13" functionArity="2" visible="True" parameters="errorCode;details" name="ErrorApp">
+	<CustomFunction id="0" functionArity="2" visible="True" parameters="errorCode;description" name="ErrorApp">
 		<Calculation><![CDATA[/**
  * =====================================
- * ErrorApp ( errorCode ; errorDetails )
+ * ErrorApp ( errorCode ; description )
  *
  * RETURNS:
  *		Specified errorCode. Raises $error as JSON.
@@ -116,10 +128,13 @@ Let ( [
  *		own error codes to error descriptions.
  *
  * HISTORY:
+ *		MODIFIED on 2024-JUN-04 by Matt Petrowsky editor@filemakermagazine.com
+ *			- Rename and passing description parameter through so app errors
+ *			- always have explicit descriptions.
  *		MODIFIED on 2023-DEC-23 by Robert Naud robert@accoladeplusaccolade.com
  *			- Updated to return errorCode instead of JSON and raise $error.
  *		MODIFIED on 2022-AUG-01 by Matt Petrowsky editor@filemakermagazine.com
- *			- Refactor to using JSON.	
+ *			- Refactor to using JSON.
  *		MODIFIED on 2013-NOV-22 by Daniel Smith dansmith65@gmail.com
  *			- renamed to ErrorApp, update documentation
  *		MODIFIED on 2013-OCT-11 by Daniel Smith dansmith65@gmail.com
@@ -141,6 +156,7 @@ Let ( [
 
 Let ( [
 	~code = errorCode;
+
 	// Human-readable error strings associated with the error codes for your app.
 	~description =
 		Case (
@@ -148,14 +164,15 @@ Let ( [
 			~code = -1 ; "Unknown error" ;
 			~code = 0 ; "No error" ;
 			~code = 1 ; "User canceled action" ;
+
 			/*Default*/
-			"Unknown error code"
+			description
 		)
 ] ;
-	Error ( "app" ; errorCode ; ~description ; ErrorDetails )
+	Error ( "app" ; ~code ; ~description ; ErrorDetails )
 )]]></Calculation>
 	</CustomFunction>
-	<CustomFunction id="10" functionArity="0" visible="True" parameters="" name="ErrorDetails">
+	<CustomFunction id="0" functionArity="0" visible="True" parameters="" name="ErrorDetails">
 		<Calculation><![CDATA[/*
 Use this function to control what is included with your error details.
 This allows the user to control what they include and how. For example,
@@ -196,14 +213,14 @@ JSONSetElement ( "{}" ;
 							"" ;
 							"Ubuntu" ); JSONString ] ;
 	[ "context.system.version" ; Get ( SystemVersion ) ; JSONString ] ;
-	[ "uuid" ; Get ( UUID ) ; JSONString ] 
+	[ "uuid" ; Get ( UUID ) ; JSONString ]
 ) ;
 
 	/*default result if $errorLevel is unknown*/
 		"{}"
 )]]></Calculation>
 	</CustomFunction>
-	<CustomFunction id="15" functionArity="1" visible="True" parameters="includeList" name="ErrorEnvironment">
+	<CustomFunction id="0" functionArity="1" visible="True" parameters="includeList" name="ErrorEnvironment">
 		<Calculation><![CDATA[/**
  * =====================================
  * ErrorEnvironment ( includeList )
@@ -512,7 +529,7 @@ Let ( [
 	)
 )]]></Calculation>
 	</CustomFunction>
-	<CustomFunction id="16" functionArity="1" visible="True" parameters="details" name="ErrorFmp">
+	<CustomFunction id="0" functionArity="1" visible="True" parameters="details" name="ErrorFmp">
 		<Calculation><![CDATA[/**
  * =====================================
  * ErrorFmp ( errorDetails )
@@ -531,7 +548,7 @@ Let ( [
  *		MODIFIED on 2023-DEC-23 by Robert Naud robert@accoladeplusaccolade.com
  *			- Updated to return errorCode instead of JSON and raise $error.
  *		MODIFIED on 2022-AUG-01 by Matt Petrowsky editor@filemakermagazine.com
- *			- Refactor to using JSON.	
+ *			- Refactor to using JSON.
  *		MODIFIED on 2013-NOV-22 by Daniel Smith dansmith65@gmail.com
  *			- rename to ErrorFmp, update documentation
  *		CREATED on 2013-OCT-11 Daniel Smith dansmith65@gmail.com
@@ -544,7 +561,7 @@ Let ( [
 
 Error ( "fmp" ; Get ( LastError ) ; "" ; ErrorDetails )]]></Calculation>
 	</CustomFunction>
-	<CustomFunction id="1" functionArity="1" visible="True" parameters="errorData" name="ErrorFound">
+	<CustomFunction id="0" functionArity="1" visible="True" parameters="errorData" name="ErrorFound">
 		<Calculation><![CDATA[/**
  * =====================================
  * ErrorFound ( errorData )
@@ -585,25 +602,25 @@ Let ( [
 	~jsonCode = JSONGetElement ( errorData ; "code" );
 	~jsonType = JSONGetElementType ( errorData ; "code" )
 ];
-	Case ( 
+	Case (
 		IsEmpty ( errorData ) ;
-			False; 
-	
+			False;
+
 		Exact ( errorData ; Filter ( errorData ; "-0123456789" ) ) ;
 			GetAsBoolean ( errorData );
-	
+
 		~jsonType = JSONNumber ;
 			GetAsBoolean ( ~jsonCode );
-	
+
 		Left ( ~jsonType ; 1 ) = "?" ;
 			GetAsBoolean ( ~jsonCode );
-	
-		/*default result*/ 
+
+		/*default result*/
 			True
 	)
 )]]></Calculation>
 	</CustomFunction>
-	<CustomFunction id="7" functionArity="5" visible="True" parameters="test;type;errorCode;description;details" name="ErrorIf">
+	<CustomFunction id="0" functionArity="5" visible="True" parameters="test;type;errorCode;description;details" name="ErrorIf">
 		<Calculation><![CDATA[/**
  * =====================================
  * ErrorIf ( test ; errorCode ; description )
@@ -634,8 +651,8 @@ Case (
 		False
 )]]></Calculation>
 	</CustomFunction>
-	<CustomFunction id="4" functionArity="0" visible="True" parameters="" name="ErrorInScriptResult">
-		<Calculation><![CDATA[/**
+	<CustomFunction id="0" functionArity="0" visible="True" parameters="" name="ErrorInScriptResult">
+		<Calculation><![CDATA[/*/**
  * =====================================
  * ErrorInScriptResult ( )
  *
@@ -684,14 +701,14 @@ $result = Case (
 	/*default result*/
 		$error
 )
-] ; 
+] ;
 
 GetAsBoolean ( ~error.code + not ~result.json.isValid + ErrorFound ( $error ) )
 
-)]]></Calculation>
+)*/]]></Calculation>
 	</CustomFunction>
-	<CustomFunction id="11" functionArity="4" visible="True" parameters="level;component;entry;errorCode" name="ErrorLog">
-		<Calculation><![CDATA[/*
+	<CustomFunction id="0" functionArity="4" visible="True" parameters="level;component;entry;errorCode" name="ErrorLog">
+		<Calculation><![CDATA[/*/*
 SUPER CRITICAL: Because of parameter evaluation order the function instantiating the $error variable MUST come after the reference to the $error variable itself!
 
 For example: ErrorLog ( "Critical" ; "app" ; $error ; Error ( -1 ; "Missing parameter(s)" ) )
@@ -716,9 +733,9 @@ Let ( [
 	))
 ];
 	If ( ~result = "OK" ; ~id ; False )
-)]]></Calculation>
+)*/]]></Calculation>
 	</CustomFunction>
-	<CustomFunction id="9" functionArity="1" visible="True" parameters="errorCode" name="ErrorMessage">
+	<CustomFunction id="0" functionArity="1" visible="True" parameters="errorCode" name="ErrorMessage">
 		<Calculation><![CDATA[/**
  * =====================================
  * ErrorMessage ( errorCode )
@@ -1084,7 +1101,7 @@ Let ( [
 				"Unknown error code"
 			) ;
 
-			~errorCode >= 5000 and ~errorCode < 6000 ; // Revert transaction errors
+			~errorCode >= 5000 and ~errorCode < 5500 ; // Revert transaction errors
 			Get ( LastErrorDetail ) ;
 
 		// else

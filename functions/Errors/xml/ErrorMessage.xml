@@ -1,5 +1,5 @@
 <fmxmlsnippet type="FMObjectList">
-	<CustomFunction id="9" functionArity="1" visible="True" parameters="errorCode" name="ErrorMessage">
+	<CustomFunction id="0" functionArity="1" visible="True" parameters="errorCode" name="ErrorMessage">
 		<Calculation><![CDATA[/**
  * =====================================
  * ErrorMessage ( errorCode )
@@ -365,7 +365,7 @@ Let ( [
 				"Unknown error code"
 			) ;
 
-			~errorCode >= 5000 and ~errorCode < 6000 ; // Revert transaction errors
+			~errorCode >= 5000 and ~errorCode < 5500 ; // Revert transaction errors
 			Get ( LastErrorDetail ) ;
 
 		// else

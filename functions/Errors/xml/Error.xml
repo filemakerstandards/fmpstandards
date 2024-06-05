@@ -1,5 +1,5 @@
 <fmxmlsnippet type="FMObjectList">
-	<CustomFunction id="3" functionArity="4" visible="True" parameters="type;errorCode;description;details" name="Error">
+	<CustomFunction id="0" functionArity="4" visible="True" parameters="type;errorCode;description;details" name="Error">
 		<Calculation><![CDATA[/**
  * =====================================
  * Error ( type ; errorCode ; description ; details )
@@ -24,7 +24,7 @@
  *
  * NOTE:
  *		IMPORTANT! You typically don't call this function directly.
- *		Most error calls within your scripts should use ErrorGet* functions
+ *		Most error calls within your scripts should use Error* functions
  *		directly after a potential error happens. This function can be used
  *		if you collect multiple error codes within a script and perform
  *		post processing on those error codes.
@@ -32,6 +32,8 @@
  *		See the ErrorEnvironment() function.
  *
  * HISTORY:
+ *		MODIFIED on 2024-JUN-04 by Matt Petrowsky editor@filemakermagazine.com
+ *			- Modified to use Get ( LastErrorDetail ) as an object.
  *		MODIFIED on 2023-DEC-23 by Robert Naud robert@accoladeplusaccolade.com
  *			- Updated to return errorCode instead of JSON and raise $error.
  *		MODIFIED on 2022-AUG-01 by Matt Petrowsky editor@filemakermagazine.com
@@ -55,29 +57,39 @@ Let ( [
 	~contextDataInJSON = "{\"test\":" & ~contextData & "}";
 	~contextDataType = JSONGetElementType ( ~contextDataInJSON ; "test" );
 	~contextDataType = If ( ~contextDataType > 1 ; ~contextDataType ; 1);
-	~errorDetailType = If ( IsEmpty ( Get ( LastErrorDetail ) ) ; JSONNull ; JSONString );
+	~errorDetailType = If ( IsEmpty ( Get ( LastErrorDetail ) ) ; JSONNull ; JSONObject );
+	~errorDetailJSON = If ( ~errorDetailType = JSONObject ;
+			JSONSetElement ( "{}" ;
+			[ "script" ; GetValue ( Get ( LastErrorDetail ) ; 1 ) ; JSONString ];
+			[ "step" ; GetValue ( Get ( LastErrorDetail ) ; 2 ) ; JSONString ];
+			[ "line" ; GetValue ( Get ( LastErrorDetail ) ; 3 ) ; JSONNumber ];
+			[ "message" ; GetValue ( Get ( LastErrorDetail ) ; 4 ) ; JSONString ]
+		)
+	);
 
 	~script = Get ( ScriptName );
 
 	~json = JSONSetElement ( "{}" ; [ "code" ; ~code ; JSONNumber ] ; [ "type" ; ~type ; JSONString ] );
-	~json = Case ( not IsEmpty ( ~description );
-				JSONSetElement ( ~json ; "description" ; ~description ; JSONString );
+	~json = Case (
+				not IsEmpty ( ~description );
+					JSONSetElement ( ~json ; "description" ; ~description ; JSONString );
 
-			~type = "fmp";
-				JSONSetElement ( ~json ; "description" ; ErrorMessage ( ~code ) ; JSONString );
-			/*else*/
-				~json
+				~type = "fmp";
+					JSONSetElement ( ~json ; "description" ; ErrorMessage ( ~code ) ; JSONString );
+
+				/*default*/
+					~json
 			);
 
 	~json = Case (
 		Get ( LastError ) ;
 			JSONSetElement ( ~json ;
-				[ "location.scriptName" ; GetValue ( Get ( LastErrorLocation ) ; 1 ) ; JSONString ];
-				[ "location.stepName" ; GetValue ( Get ( LastErrorLocation ) ; 2 ) ; JSONString ];
-				[ "location.lineNumber" ; GetValue ( Get ( LastErrorLocation ) ; 3 ) ; JSONNumber ];
-				[ "detail" ; Get ( LastErrorDetail ) ; ~errorDetailType ]
+				[ "location.script" ; GetValue ( Get ( LastErrorLocation ) ; 1 ) ; JSONString ];
+				[ "location.step" ; GetValue ( Get ( LastErrorLocation ) ; 2 ) ; JSONString ];
+				[ "location.line" ; GetValue ( Get ( LastErrorLocation ) ; 3 ) ; JSONNumber ];
+				[ "detail" ; ~errorDetailJSON ; ~errorDetailType ]
 			);
-	
+
 		/*default result, Get( LastError ) = 0*/
 			JSONSetElement ( ~json ;
 				[ "location.scriptName" ; ~script ; JSONString ] )
