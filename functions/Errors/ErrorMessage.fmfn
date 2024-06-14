@@ -173,8 +173,8 @@ Let ( [
 				~errorCode = 715 ; "Specified Excel worksheet or named range is missing" ;
 				~errorCode = 716 ; "A SQL query using DELETE, INSERT, or UPDATE is not allowed for ODBC import" ;
 				~errorCode = 717 ; "There is not enough XML/XSL information to proceed with the import or export" ;
-				~errorCode = 718 ; "Error in parsing XML file (from Xerces)" ;
-				~errorCode = 719 ; "Error in transforming XML using XSL (from Xalan)" ;
+				~errorCode = 718 ; "Error in parsing XML file (from Xerces or libxml2)" ;
+				~errorCode = 719 ; "Error in transforming XML using XSL (from Xalan or libxslt)" ;
 				~errorCode = 720 ; "Error when exporting; intended format does not support repeating fields" ;
 				~errorCode = 721 ; "Unknown error occurred in the parser or the transformer" ;
 				~errorCode = 722 ; "Cannot import data into a file that has no fields" ;
