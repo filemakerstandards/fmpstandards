@@ -118,6 +118,7 @@ Let ( [
 				~errorCode = 306 ; "Record modification ID does not match" ;
 				~errorCode = 307 ; "Transaction could not be locked because of a communication error with the host" ;
 				~errorCode = 308 ; "Theme is locked and in use by another user" ;
+				~errorCode = 310 ; "Cannot modify items because another user is modifying them" ;
 				~errorCode = 400 ; "Find criteria are empty" ;
 				~errorCode = 401 ; "No records match the request" ;
 				~errorCode = 402 ; "Selected field is not a match field for a lookup" ;
@@ -230,6 +231,13 @@ Let ( [
 				~errorCode = 870 ; "Cannot modify file because another user is modifying it" ;
 				~errorCode = 871 ; "Error occurred loading Core ML model" ;
 				~errorCode = 872 ; "Core ML model was not loaded because it contained an unsupported input or output parameter" ;
+				~errorCode = 875 ; "Endpoint is empty" ;
+				~errorCode = 877 ; "Can’t find AI account" ;
+				~errorCode = 878 ; "JSON data for Options contains a formatting error and couldn’t be parsed" ;
+				~errorCode = 882 ; "Invalid AI request" ;
+				~errorCode = 883 ; "Invalid request to custom model provider" ;
+				~errorCode = 884 ; "Invalid AI request" ;
+				~errorCode = 885 ; "Endpoint is invalid or server is unreachable" ;
 				"Unknown error code"
 			) ;
 
@@ -339,6 +347,7 @@ Let ( [
 				~errorCode = 1633 ; "The certificate is self-signed" ;
 				~errorCode = 1634 ; "A certificate verification error occurred" ;
 				~errorCode = 1635 ; "Connection is unencrypted" ;
+				~errorCode = 1638 ; "The host is not allowing new connections. Try again later." ;
 				"Unknown error code"
 			) ;
 
