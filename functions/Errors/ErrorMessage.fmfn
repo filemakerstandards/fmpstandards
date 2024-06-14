@@ -27,6 +27,7 @@
 Let ( [
 	~errorCode = errorCode ;
 
+	~errorCodeUnknown = "Unrecognized error code - check official documentation for updates";
 	~errorDescription =
 		Case (
 			~errorCode = 0 ; "No error" ;
@@ -55,7 +56,7 @@ Let ( [
 				~errorCode = 19 ; "String contains characters other than A-Z, a-z, 0-9 (ASCII)" ;
 				~errorCode = 20 ; "Command/operation canceled by triggered script" ;
 				~errorCode = 21 ; "Request not supported (for example, when creating a hard link on a file system that does not support hard links)" ;
-				"Unknown error code"
+				~errorCodeUnknown
 			) ;
 
 			~errorCode < 200 ;
@@ -81,7 +82,7 @@ Let ( [
 				~errorCode = 118 ; "Theme is missing" ;
 				~errorCode = 130 ; "Files are damaged or missing and must be reinstalled" ;
 				~errorCode = 131 ; "Language pack files are missing" ;
-				"Unknown error code"
+				~errorCodeUnknown
 			) ;
 
 			~errorCode < 300 ;
@@ -105,7 +106,7 @@ Let ( [
 				~errorCode = 217 ; "User does not have sufficient privileges to modify administrator account" ;
 				~errorCode = 218 ; "Password and verify password do not match" ;
 				~errorCode = 219 ; "Cannot open file; must be licensed user; contact team manager" ;
-				"Unknown error code"
+				~errorCodeUnknown
 			) ;
 
 			~errorCode < 500 ;
@@ -136,7 +137,7 @@ Let ( [
 				~errorCode = 416 ; "A primary key is required from the data source table" ;
 				~errorCode = 417 ; "File is not a supported data source" ;
 				~errorCode = 418 ; "Internal failure in INSERT operation into a field" ;
-				"Unknown error code"
+				~errorCodeUnknown
 			) ;
 
 			~errorCode < 700 ;
@@ -159,7 +160,7 @@ Let ( [
 				~errorCode = 601 ; "Combined header and footer exceed one page" ;
 				~errorCode = 602 ; "Body doesn't fit on a page for current column setup" ;
 				~errorCode = 603 ; "Print connection lost" ;
-				"Unknown error code"
+				~errorCodeUnknown
 			) ;
 
 			~errorCode < 800 ;
@@ -192,7 +193,7 @@ Let ( [
 				~errorCode = 735 ; "This file type cannot be displayed as a picture; it will be inserted and displayed as a file" ;
 				~errorCode = 736 ; "Too much data to export to this format; data will be truncated" ;
 				~errorCode = 738 ; "The theme you are importing already exists" ;
-				"Unknown error code"
+				~errorCodeUnknown
 			) ;
 
 			~errorCode < 900 ;
@@ -238,7 +239,7 @@ Let ( [
 				~errorCode = 883 ; "Invalid request to custom model provider" ;
 				~errorCode = 884 ; "Invalid AI request" ;
 				~errorCode = 885 ; "Endpoint is invalid or server is unreachable" ;
-				"Unknown error code"
+				~errorCodeUnknown
 			) ;
 
 			~errorCode < 1200 ;
@@ -262,7 +263,7 @@ Let ( [
 				~errorCode = 958 ; "Parameter missing (*)" ;
 				~errorCode = 959 ; "Custom Web Publishing technology is disabled" ;
 				~errorCode = 960 ; "Parameter is invalid" ;
-				"Unknown error code"
+				~errorCodeUnknown
 			) ;
 
 			~errorCode < 1300 ;
@@ -293,7 +294,7 @@ Let ( [
 				~errorCode = 1223 ; "Function referred to is not yet implemented" ;
 				~errorCode = 1224 ; "Function referred to does not exist" ;
 				~errorCode = 1225 ; "Function referred to is not supported in this context" ;
-				"Unknown error code"
+				~errorCodeUnknown
 			) ;
 
 			~errorCode < 1600 ;
@@ -332,7 +333,7 @@ Let ( [
 				~errorCode = 1557 ; "Returned by plug-ins; see the documentation that came with the plug-in" ;
 				~errorCode = 1558 ; "Returned by plug-ins; see the documentation that came with the plug-in" ;
 				~errorCode = 1559 ; "Returned by plug-ins; see the documentation that came with the plug-in" ;
-				"Unknown error code"
+				~errorCodeUnknown
 			) ;
 
 			~errorCode < 1700 ;
@@ -348,7 +349,7 @@ Let ( [
 				~errorCode = 1634 ; "A certificate verification error occurred" ;
 				~errorCode = 1635 ; "Connection is unencrypted" ;
 				~errorCode = 1638 ; "The host is not allowing new connections. Try again later." ;
-				"Unknown error code"
+				~errorCodeUnknown
 			) ;
 
 			~errorCode < 1800 ;
@@ -369,7 +370,7 @@ Let ( [
 				~errorCode = 1713 ; "The API request is not supported for this operating system (*)" ;
 				~errorCode = 1714 ; "External group name is invalid (*)" ;
 				~errorCode = 1715 ; "External server account sign-in is not enabled (*)" ;
-				"Unknown error code"
+				~errorCodeUnknown
 			) ;
 
 			~errorCode >= 5000 and ~errorCode < 5500 ; // Revert transaction errors
@@ -377,7 +378,7 @@ Let ( [
 
 		// else
 
-			"Unrecognized error code - check documentation for updates"
+			~errorCodeUnknown
 		)
 ] ;
 	~errorDescription
@@ -395,7 +396,7 @@ While ( [
 	[
 		~i = ~i + 1;
 		~string = ErrorMessage ( ~i );
-		~result = List ( ~result ; If ( ~string ≠ "Unknown error code" ; ~i & " " & ~string ) )
+		~result = List ( ~result ; If ( ~string ≠ "Unrecognized error code - check official documentation for updates" ; ~i & " " & ~string ) )
 	];
 		~result
 )
