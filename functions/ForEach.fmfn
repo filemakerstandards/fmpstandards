@@ -1,85 +1,98 @@
 /**
  * =====================================
- * ForEach ( valueList ; expression )
+ * ForEach ( valuesOrArray ; iteratorString )
  *
  * PURPOSE:
- *		ForEach repeatedly applies a calculation to each value in a ¶-delimited
- *		list. For each value in valueList, evaluates expression, substituting
- *		the value for each "~n" in expression. Expressions may also reference
- *		the value index (line number) being evaluated with "$~i". This is
- *		analogous to Map functionality in functional programming languages.
+ *		ForEach is specifically designed as syntactic sugar for making it easy
+ *		to process either a simple list of values or a JSON array within the
+ *		Exit Loop If step. The function uses a creative technique of converting
+ *		the inbound iteratorString into a numerical value so it can be used
+ *		as a repetition number for "privately" scoped variables used for
+ *		processing the data.
  *
  * NOTE:
- *		This is the recursive version of this function. It is slower, but
- *		capable of processing larger lists.
+ *		This function adds some cycle processing overhead to a scripted Loop.
+ *		IMPORTANT: When processing a JSON array a unique $[iteratorString].value
+ *		is created for each array item.
  *
  * RETURNS:
- *		A ¶-delimited list of the results of evaluating expression on valueList.
+ *		A boolean value based on having processed all items in valuesOrArray.
  *
  * EXAMPLE:
- *		ForEach (
- *			List ( "1 One" ; "2 Two" ; "3 Three"  );
- *			"Left ( ~n ; 1 ) + $~i"
- *		)	// = "2¶4¶6"
+ *		Exit Loop If [ ForEach ( List ( "one"; "two"; "three" ) ; "$i" ) ]
+ *		Exit Loop If [ ForEach ( $array ; "$item" ) ] // Access with $item.value
  *
  * PARAMETERS:
- *		valueList: A ¶-delimited list of inputs to expression
- *		expression: A calculation to evaluate
+ *		valuesOrArray: A ¶-delimited list or a valid JSON array.
+ *		iteratorString: The name of your iterator. Either "i" or more clearly "$i"
  *
  * DEPENDENCIES: none
  *
- * RELEASE:	2012-01-06
+ * RELEASE:	2025-05-13
  *
  * REFERENCES:
- *		http://en.wikipedia.org/wiki/Map_(higher-order_function)
+ *		Original inspiration from Fabrice Nordmann's FOR.list function.
+ *		Adaptation by Josh Ormond and others 2023-OCT-12 to integrate $[iteratorString].value
+ *		Revised by Matt Petrowsky to accept both List() values and JSON
+ *			array items. Optimized to use private vars.
  * =====================================
  */
 
-Case (
-	/* Step 0, initialize routine */
-	not $~map.step;
-		Let ( [
-			$~map.valueCount = ValueCount ( valueList );
-			$~map.step = 1
-		];
-			ForEach ( valueList ; expression )
-		);
+Let ( [
+	// Converting the supplied iterator name into a number for use with privately scoped variables.
+	~code = Code ( iteratorString );
 
-	/* Step 1, evaluate expression */
-	$~map.step = 1;
-		Let ( [
-			$~i = $~i + 1;
-			~value =
-				Evaluate (
-					"Let ( ~n = "
-					& Quote ( GetValue ( valueList ; $~i ) )
-					& " ; "
-					& expression
-					& " )"
+	// Determine if it's a simple list of values or a JSON Array. Avoid multiple expensive calls!
+	~isArray = If ( IsEmpty ( $~ForEach_parsed[~code] ) ;
+			Let ( [
+					$~ForEach_parsed[~code] = JSONGetElementType ( valuesOrArray ; "" ) = JSONArray;
+					$~ForEach_values[~code] = If ( $~ForEach_parsed[~code] ; JSONListValues ( valuesOrArray ; "" ) );
+					$~ForEach_count[~code] = If ( $~ForEach_parsed[~code] ; ValueCount ( JSONListKeys ( valuesOrArray ; "" ) ) );
+
+					// Possible future use. Unclean means your JSONListValues() is a condensed list of values.
+					$~ForEach_clean[~code] = If ( $~ForEach_parsed[~code] ; $~ForEach_count[~code] = ValueCount ( $~ForEach_values[~code] ) )
+				];
+					$~ForEach_parsed[~code]
 				);
-			$~map.resultList =
-				If ( $~i > 1 ; $~map.resultList & ¶ )
-				& ~value;
-			$~map.step =
-				If ( $~i < $~map.valueCount;
-					$~map.step;
-					/* Else */ $~map.step + 1
-				)
-		];
-			ForEach ( valueList ; expression )
-		);
+					$~ForEach_parsed[~code]
+			);
 
-	/* Step 2, clean-up and return result */
-	$~map.step = 2;
-		Let ( [
-			~resultList = $~map.resultList;
+	// Warning: JSONListValues() may condense the array because of null and blank/empty values.
+	~values = If ( ~isArray ; $~ForEach_values[~code] ; valuesOrArray );
 
-			// Purge variables
-			$~i = "";
-			$~map.resultList = "";
-			$~map.step = "";
-			$~map.valueCount = ""
-		];
-			~resultList
-		)
+	// Only allowing local variables and filtering for invalid values (see below) allowing either "i" or "$i" (for clarity).
+	~iterator = Filter ( "$" & Substitute ( iteratorString ; "$" ; "" ) ; "$ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_." );
+	~increment = "Let (" & ~iterator & " = " & ~iterator & " + 1 ; False )";
+	~reset = "Let (" & ~iterator & " = " & "\"\" ; \"\")";
+
+	// Self-initializing iterators.
+	~initialize = "Let ( " & ~iterator & " = \"\" ; True )";
+	~iteratorValue = Int ( Evaluate ( ~iterator ) );
+	~iteratorValid = If ( IsEmpty ( ~iteratorValue ) ; not EvaluationError ( Evaluate ( ~initialize ) ) ; True );
+
+	// Compliments to Ormond, Halpern, & others.
+	~jsonElement = "Let ( " & ~iterator & ".value = " & Quote ( JSONGetElement ( valuesOrArray ; "[" & ~iteratorValue & "]" ) ) & "; \"\")";
+	~jsonEval = If ( ~isArray ; Evaluate ( ~jsonElement ) )
+];
+	Case (
+		IsEmpty ( valuesOrArray )
+		or IsEmpty ( ~iterator )
+		or Exact ( ~iterator ; "$" )
+		or not ~iteratorValid
+		or ~iteratorValue ≥ If ( ~isArray ; $~ForEach_count[~code] ; ValueCount ( ~values ) );
+			GetAsBoolean ( True & Evaluate ( ~reset ) );
+
+		Evaluate ( ~increment )
+	)
 )
+
+/*
+It's much easier to simply filter for allowed values within iterators than
+account for all the possible invalid variable choices.
+
+Invalid variable values from FileMaker prompt.
+• + - * / ^ & = ≠ < > ≤ ≥ ( , ; ) [ ] " :: $ }
+• contains: AND, OR, XOR, NOT
+• begins with a digit or a period
+• or has the same name as a function, parameter or keyword.
+*/
