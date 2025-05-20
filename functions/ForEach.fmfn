@@ -19,7 +19,7 @@
  *		A boolean value based on having processed all items in valuesOrArray.
  *
  * EXAMPLE:
- *		Exit Loop If [ ForEach ( List ( "one"; "two"; "three" ) ; "$i" ) ]
+ *		Exit Loop If [ ForEach ( List ( "one"; "two"; "three" ) ; "$i" ) ] // Access with $i.value
  *		Exit Loop If [ ForEach ( $array ; "$item" ) ] // Access with $item.value
  *
  * PARAMETERS:
@@ -30,6 +30,14 @@
  *
  * RELEASE:	2025-05-13
  *
+ * HISTORY:
+ *		MODIFIED on 2025-05-15 by dan@filemaker.consulting
+ *			- cache ValueCount
+ *			- remove unused ~values variable
+ *			- set $[iteratorString].value from a variable to maintain data type
+ *			- also set $[iteratorString].value for return-delimited lists
+ *			- clear internal variables on last iteration
+ *
  * REFERENCES:
  *		Original inspiration from Fabrice Nordmann's FOR.list function.
  *		Adaptation by Josh Ormond and others 2023-OCT-12 to integrate $[iteratorString].value
@@ -39,15 +47,20 @@
  */
 
 Let ( [
+	// Only allowing local variables and filtering for invalid values (see below) allowing either "i" or "$i" (for clarity).
+	~iterator = Filter ( "$" & Substitute ( iteratorString ; "$" ; "" ) ; "$ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_." );
+	~initialize = "Let ( " & ~iterator & " = \"\" ; True )";
+
 	// Converting the supplied iterator name into a number for use with privately scoped variables.
 	~code = Code ( iteratorString );
 
 	// Determine if it's a simple list of values or a JSON Array. Avoid multiple expensive calls!
 	~isArray = If ( IsEmpty ( $~ForEach_parsed[~code] ) ;
 			Let ( [
+					~clearIterator = Evaluate ( ~initialize ) ;
 					$~ForEach_parsed[~code] = JSONGetElementType ( valuesOrArray ; "" ) = JSONArray;
 					$~ForEach_values[~code] = If ( $~ForEach_parsed[~code] ; JSONListValues ( valuesOrArray ; "" ) );
-					$~ForEach_count[~code] = If ( $~ForEach_parsed[~code] ; ValueCount ( JSONListKeys ( valuesOrArray ; "" ) ) );
+					$~ForEach_count[~code] = If ( $~ForEach_parsed[~code] ; ValueCount ( JSONListKeys ( valuesOrArray ; "" ) ) ; ValueCount ( valuesOrArray )  );
 
 					// Possible future use. Unclean means your JSONListValues() is a condensed list of values.
 					$~ForEach_clean[~code] = If ( $~ForEach_parsed[~code] ; $~ForEach_count[~code] = ValueCount ( $~ForEach_values[~code] ) )
@@ -57,32 +70,36 @@ Let ( [
 					$~ForEach_parsed[~code]
 			);
 
-	// Warning: JSONListValues() may condense the array because of null and blank/empty values.
-	~values = If ( ~isArray ; $~ForEach_values[~code] ; valuesOrArray );
-
-	// Only allowing local variables and filtering for invalid values (see below) allowing either "i" or "$i" (for clarity).
-	~iterator = Filter ( "$" & Substitute ( iteratorString ; "$" ; "" ) ; "$ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_." );
-	~increment = "Let (" & ~iterator & " = " & ~iterator & " + 1 ; False )";
-	~reset = "Let (" & ~iterator & " = " & "\"\" ; \"\")";
-
 	// Self-initializing iterators.
-	~initialize = "Let ( " & ~iterator & " = \"\" ; True )";
 	~iteratorValue = Int ( Evaluate ( ~iterator ) );
 	~iteratorValid = If ( IsEmpty ( ~iteratorValue ) ; not EvaluationError ( Evaluate ( ~initialize ) ) ; True );
 
+	// Warning: JSONListValues() may condense the array because of null and blank/empty values.
+	$~ForEach_value = If ( ~isArray ;
+		JSONGetElement ( valuesOrArray ; "[" & ~iteratorValue & "]" ) ;
+		GetValue ( valuesOrArray ; ~iteratorValue + 1 )
+	);
+
 	// Compliments to Ormond, Halpern, & others.
-	~jsonElement = "Let ( " & ~iterator & ".value = " & Quote ( JSONGetElement ( valuesOrArray ; "[" & ~iteratorValue & "]" ) ) & "; \"\")";
-	~jsonEval = If ( ~isArray ; Evaluate ( ~jsonElement ) )
+	~setValue = Evaluate ( "Let ( [ " & ~iterator & ".value = $~ForEach_value; $~ForEach_value = \"\" ]; \"\")" )
 ];
 	Case (
 		IsEmpty ( valuesOrArray )
 		or IsEmpty ( ~iterator )
 		or Exact ( ~iterator ; "$" )
 		or not ~iteratorValid
-		or ~iteratorValue ≥ If ( ~isArray ; $~ForEach_count[~code] ; ValueCount ( ~values ) );
-			GetAsBoolean ( True & Evaluate ( ~reset ) );
+		or ~iteratorValue ≥ $~ForEach_count[~code];
+			Let ( [
+				$~ForEach_parsed[~code] = "" ;
+				$~ForEach_values[~code] = "" ;
+				$~ForEach_count[~code] = "" ;
+				$~ForEach_clean[~code] = ""
+			] ;
+				Evaluate ( "Let (" & ~iterator & " = " & "\"\" ; True)" )
+			)
+		;
 
-		Evaluate ( ~increment )
+		Evaluate ( "Let (" & ~iterator & " = " & ~iterator & " + 1 ; False )")
 	)
 )
 
